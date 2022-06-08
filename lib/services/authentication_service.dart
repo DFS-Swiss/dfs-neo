@@ -29,24 +29,39 @@ class AuthenticationService extends ChangeNotifier {
     try {
       session = await cognitoUser.authenticateUser(authDetails);
     } on CognitoUserNewPasswordRequiredException catch (e) {
+      rethrow;
       // handle New Password challenge
     } on CognitoUserMfaRequiredException catch (e) {
+      rethrow;
+
       // handle SMS_MFA challenge
     } on CognitoUserSelectMfaTypeException catch (e) {
+      rethrow;
+
       // handle SELECT_MFA_TYPE challenge
     } on CognitoUserMfaSetupException catch (e) {
+      rethrow;
+
       // handle MFA_SETUP challenge
     } on CognitoUserTotpRequiredException catch (e) {
+      rethrow;
+
       // handle SOFTWARE_TOKEN_MFA challenge
     } on CognitoUserCustomChallengeException catch (e) {
+      rethrow;
+
       // handle CUSTOM_CHALLENGE challenge
     } on CognitoUserConfirmationNecessaryException catch (e) {
+      rethrow;
+
       // handle User Confirmation Necessary
       // TODO: Handle verify
     } on CognitoClientException catch (e) {
+      rethrow;
       // handle Wrong Username and Password and Cognito Client
     } catch (e) {
       print(e);
+      rethrow;
     }
     authState = AuthState.signedIn;
     notifyListeners();
@@ -60,6 +75,7 @@ class AuthenticationService extends ChangeNotifier {
   logOut() async {
     await (await _userPool.getCurrentUser())!.signOut();
     authState = AuthState.signedOut;
+    notifyListeners();
   }
 
   Future<bool> tryReauth() async {
@@ -70,6 +86,8 @@ class AuthenticationService extends ChangeNotifier {
       try {
         session = await cognitoUser.refreshSession(
             CognitoRefreshToken(prefs.getString("refresh_token")));
+        authState = AuthState.signedIn;
+        notifyListeners();
         return true;
       } catch (e) {
         return false;

@@ -26,7 +26,7 @@ class AuthPageWrapper extends HookWidget {
           AnimatedContainer(
             decoration: BoxDecoration(
               color: Theme.of(context).backgroundColor,
-              borderRadius: NeoTheme.of(context)!.primaryBorderRadius,
+              borderRadius: NeoTheme.of(context)!.secondaryBorderRadius,
             ),
             height: state.value == AuthPageState.login ? 400 : 700,
             width: double.infinity,

@@ -32,9 +32,21 @@ class MyApp extends StatelessWidget {
       ],
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        scaffoldBackgroundColor: const Color.fromRGBO(248, 249, 251, 1),
+        progressIndicatorTheme: ProgressIndicatorThemeData(color: Colors.white),
+        scaffoldBackgroundColor: Color.fromARGB(255, 234, 248, 250),
         backgroundColor: Colors.white,
-        primarySwatch: Colors.blue,
+        primaryColor: const Color.fromRGBO(32, 209, 209, 1),
+        inputDecorationTheme: InputDecorationTheme(
+          focusColor: Color.fromRGBO(32, 209, 209, 1),
+          floatingLabelStyle: TextStyle(color: Color.fromRGBO(32, 209, 209, 1)),
+          suffixIconColor: Colors.grey,
+          hintStyle: TextStyle(
+              color: Colors.grey.withOpacity(0.8), fontSize: 12, height: 2.2),
+          focusedBorder: const UnderlineInputBorder(
+            borderSide: const BorderSide(
+                color: Color.fromRGBO(32, 209, 209, 1), width: 2.0),
+          ),
+        ),
         textTheme: const TextTheme(
           titleSmall: TextStyle(
             color: Color.fromRGBO(187, 187, 187, 1),

@@ -3,7 +3,14 @@ import 'package:neo/style/theme.dart';
 
 class BrandedButton extends StatelessWidget {
   final String text;
-  const BrandedButton({Key? key, required this.text}) : super(key: key);
+  final VoidCallback? onPressed;
+  final bool loading;
+  const BrandedButton(
+      {Key? key,
+      required this.text,
+      required this.onPressed,
+      this.loading = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,12 +20,20 @@ class BrandedButton extends StatelessWidget {
           gradient: NeoTheme.of(context)!.primaryGradient,
           borderRadius: NeoTheme.of(context)!.primaryBorderRadius),
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           primary: Colors.transparent,
           shadowColor: Colors.transparent,
         ),
-        child: Text(text),
+        child: loading
+            ? SizedBox(
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                ),
+              )
+            : Text(text),
       ),
     );
   }
