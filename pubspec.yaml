@@ -35,11 +35,11 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   flutter_hooks: ^0.18.4
-  dfs_sdk:
-    git: https://github.com/DFS-Swiss/dfs-api-sdk-dart
   flutter_localizations:
     sdk: flutter
-  intl: ^0.17.0 
+  intl: ^0.17.0
+  amazon_cognito_identity_dart_2: ^2.1.2
+  shared_preferences: ^2.0.15
 
 dev_dependencies:
   flutter_test:
