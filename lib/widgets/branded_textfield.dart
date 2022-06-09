@@ -4,9 +4,12 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 class BrandedTextfield extends HookWidget {
   final String labelText;
   final String hintText;
+  final String? errorText;
   final bool canHide;
   final TextInputType type;
   final Function(String value) onChanged;
+  final TextInputAction? textInputAction;
+  final Function(String)? onContinue;
   const BrandedTextfield({
     Key? key,
     required this.labelText,
@@ -14,6 +17,9 @@ class BrandedTextfield extends HookWidget {
     required this.type,
     required this.onChanged,
     this.canHide = false,
+    this.errorText,
+    this.textInputAction,
+    this.onContinue,
   }) : super(key: key);
 
   @override
@@ -24,11 +30,14 @@ class BrandedTextfield extends HookWidget {
       obscureText: textHidden.value,
       keyboardType: type,
       onChanged: onChanged,
+      textInputAction: textInputAction,
+      onFieldSubmitted: onContinue,
       style: TextStyle(fontSize: 12),
       cursorColor: Theme.of(context).primaryColor,
       decoration: InputDecoration(
         label: Text(labelText),
         hintText: hintText,
+        errorText: errorText,
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: canHide
             ? GestureDetector(

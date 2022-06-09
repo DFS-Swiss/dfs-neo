@@ -93,9 +93,10 @@ class AuthWrapper extends HookWidget {
     final authState = useAuthState();
     final tryingToReauth = useState(true);
     useEffect(() {
-      AuthenticationService.getInstance().tryReauth().then((value) {
+      tryingToReauth.value = false;
+      /*AuthenticationService.getInstance().tryReauth().then((value) {
         tryingToReauth.value = false;
-      });
+      });*/
       return;
     }, ["_"]);
 
@@ -104,7 +105,11 @@ class AuthWrapper extends HookWidget {
         body: Center(child: CircularProgressIndicator()),
       );
     }
-    if (authState == AuthState.signedOut) return const AuthPageWrapper();
+    if (authState == AuthState.signedOut ||
+        authState == AuthState.verifyAccount ||
+        authState == AuthState.newPasswordRequired) {
+      return const AuthPageWrapper();
+    }
     if (authState == AuthState.signedIn) return const MainPage();
     return const Scaffold(
       body: Center(child: Text("Unknown state")),

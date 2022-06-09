@@ -5,8 +5,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticationService extends ChangeNotifier {
   static final _userPool = CognitoUserPool(
-    'eu-central-1_Zg1jNzpcV',
-    '1io15mo8qbo38kcheuobpifsbc',
+    'eu-central-1_I3SXMv01c',
+    '45pmj4rj6amqlvh337p9dsafh4',
   );
 
   static AuthenticationService? _instance;
@@ -16,21 +16,24 @@ class AuthenticationService extends ChangeNotifier {
     return _instance ??= AuthenticationService._();
   }
 
-  AuthState authState = AuthState.signedOut;
+  AuthState authState = AuthState.verifyAccount;
   CognitoUserSession? session;
+  CognitoUser? cognitoUser;
 
   login(String userName, String password) async {
-    final cognitoUser = CognitoUser(userName, _userPool);
+    cognitoUser = CognitoUser(userName, _userPool);
     final authDetails = AuthenticationDetails(
       username: userName,
       password: password,
     );
 
     try {
-      session = await cognitoUser.authenticateUser(authDetails);
+      session = await cognitoUser!.authenticateUser(authDetails);
     } on CognitoUserNewPasswordRequiredException catch (e) {
-      rethrow;
-      // handle New Password challenge
+      print(e);
+      authState = AuthState.newPasswordRequired;
+      notifyListeners();
+      return;
     } on CognitoUserMfaRequiredException catch (e) {
       rethrow;
 
@@ -57,6 +60,8 @@ class AuthenticationService extends ChangeNotifier {
       // handle User Confirmation Necessary
       // TODO: Handle verify
     } on CognitoClientException catch (e) {
+      authState = AuthState.verifyAccount;
+      notifyListeners();
       rethrow;
       // handle Wrong Username and Password and Cognito Client
     } catch (e) {
@@ -76,6 +81,32 @@ class AuthenticationService extends ChangeNotifier {
     await (await _userPool.getCurrentUser())!.signOut();
     authState = AuthState.signedOut;
     notifyListeners();
+  }
+
+  Future completeForceChangePassword(String newPassword) async {
+    if (authState == AuthState.newPasswordRequired && cognitoUser != null) {
+      try {
+        await cognitoUser!.sendNewPasswordRequiredAnswer(newPassword);
+      } catch (e) {
+        rethrow;
+      }
+      authState = AuthState.signedOut;
+      notifyListeners();
+    }
+  }
+
+  Future confirmEmail(String code) async {
+    if (authState == AuthState.verifyAccount && cognitoUser != null) {
+      await cognitoUser!.confirmRegistration(code);
+      authState = AuthState.signedOut;
+      notifyListeners();
+    }
+  }
+
+  Future resendConfirmationCode() async {
+    if (authState == AuthState.verifyAccount && cognitoUser != null) {
+      await cognitoUser!.resendConfirmationCode();
+    }
   }
 
   Future<bool> tryReauth() async {

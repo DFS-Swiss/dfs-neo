@@ -1,3 +1,4 @@
+import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:neo/services/authentication_service.dart';
@@ -14,7 +15,33 @@ class LoginWidget extends HookWidget {
   Widget build(BuildContext context) {
     final userName = useState<String?>(null);
     final password = useState<String?>(null);
+    final error = useState<String?>(null);
     final loading = useState(false);
+
+    handleLogin() async {
+      if (userName.value != null && password.value != null) {
+        error.value = null;
+        loading.value = true;
+        try {
+          await AuthenticationService.getInstance()
+              .login(userName.value!, password.value!);
+        } on CognitoClientException catch (e) {
+          if (e.code == "UserNotFoundException") {
+            error.value = AppLocalizations.of(context)!.error_unknown_user;
+          } else if (e.code == "NotAuthorizedException") {
+            error.value = AppLocalizations.of(context)!.error_wrong_creds;
+          } else if (e.code == "NetworkError") {
+            error.value =
+                AppLocalizations.of(context)!.error_server_unreachable;
+          } else {
+            print(e);
+          }
+        } catch (e) {
+          print(e);
+        }
+        loading.value = false;
+      }
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -29,8 +56,10 @@ class LoginWidget extends HookWidget {
         BrandedTextfield(
           onChanged: (v) => userName.value = v,
           labelText: AppLocalizations.of(context)!.signin_username,
-          hintText: "Type in your Username",
+          hintText: AppLocalizations.of(context)!.signin_username_desc,
           type: TextInputType.emailAddress,
+          errorText: error.value,
+          textInputAction: TextInputAction.next,
         ),
         const SizedBox(
           height: 20,
@@ -41,6 +70,8 @@ class LoginWidget extends HookWidget {
           hintText: "**********",
           type: TextInputType.visiblePassword,
           canHide: true,
+          textInputAction: TextInputAction.go,
+          onContinue: (v) => handleLogin(),
         ),
         const SizedBox(
           height: 10,
@@ -61,22 +92,39 @@ class LoginWidget extends HookWidget {
           children: [
             Expanded(
               child: BrandedButton(
-                text: "Sign in",
+                text: AppLocalizations.of(context)!.signin_button,
                 loading: loading.value,
-                onPressed: userName.value != null && password.value != null
-                    ? () async {
-                        loading.value = true;
-                        try {
-                          await AuthenticationService.getInstance()
-                              .login(userName.value!, password.value!);
-                        } catch (e) {
-                          print(e);
-                        }
-                        loading.value = false;
-                      }
-                    : null,
+                onPressed: handleLogin,
               ),
             ),
+          ],
+        ),
+        SizedBox(
+          height: 15,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              AppLocalizations.of(context)!.signin_subtitle,
+              style: Theme.of(context).textTheme.bodySmall,
+            )
+          ],
+        ),
+        SizedBox(
+          height: 5,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              AppLocalizations.of(context)!.signin_register,
+              style: NeoTheme.of(context)!.linkTextStyle,
+            ),
+            Text(
+              " ${AppLocalizations.of(context)!.signin_register_your_account}",
+              style: Theme.of(context).textTheme.bodySmall,
+            )
           ],
         )
       ],

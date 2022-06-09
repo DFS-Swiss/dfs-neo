@@ -17,7 +17,7 @@ class NeoTheme extends InheritedWidget {
     decoration: TextDecoration.underline,
   );
   final BorderRadius primaryBorderRadius = BorderRadius.circular(12);
-  final BorderRadius secondaryBorderRadius = BorderRadius.circular(30);
+  final double secondaryBorderRadius = 30;
 
   static NeoTheme? of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<NeoTheme>();

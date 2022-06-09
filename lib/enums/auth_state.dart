@@ -1,4 +1,1 @@
-enum AuthState {
-  signedOut,
-  signedIn,
-}
+enum AuthState { signedOut, signedIn, verifyAccount, newPasswordRequired }

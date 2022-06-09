@@ -17,8 +17,9 @@ class BrandedButton extends StatelessWidget {
     return Container(
       height: 44.0,
       decoration: BoxDecoration(
-          gradient: NeoTheme.of(context)!.primaryGradient,
-          borderRadius: NeoTheme.of(context)!.primaryBorderRadius),
+        gradient: NeoTheme.of(context)!.primaryGradient,
+        borderRadius: NeoTheme.of(context)!.primaryBorderRadius,
+      ),
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
