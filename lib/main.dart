@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:neo/enums/auth_state.dart';
+import 'package:neo/hooks/use_auth_state.dart';
+import 'package:neo/pages/authentication/auth_page_wrapper.dart';
+import 'package:neo/pages/main_page.dart';
+import 'package:neo/style/theme.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,94 +30,87 @@ class MyApp extends StatelessWidget {
       ],
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        scaffoldBackgroundColor: const Color.fromRGBO(248, 249, 251, 1),
+        progressIndicatorTheme: ProgressIndicatorThemeData(color: Colors.white),
+        scaffoldBackgroundColor: Color.fromARGB(255, 234, 248, 250),
         backgroundColor: Colors.white,
-        primarySwatch: Colors.blue,
+        primaryColor: const Color.fromRGBO(32, 209, 209, 1),
+        inputDecorationTheme: InputDecorationTheme(
+          focusColor: Color.fromRGBO(32, 209, 209, 1),
+          floatingLabelStyle: TextStyle(color: Color.fromRGBO(32, 209, 209, 1)),
+          suffixIconColor: Colors.grey,
+          hintStyle: TextStyle(
+              color: Colors.grey.withOpacity(0.8), fontSize: 12, height: 2.2),
+          focusedBorder: const UnderlineInputBorder(
+            borderSide: const BorderSide(
+                color: Color.fromRGBO(32, 209, 209, 1), width: 2.0),
+          ),
+        ),
         textTheme: const TextTheme(
           titleSmall: TextStyle(
             color: Color.fromRGBO(187, 187, 187, 1),
             fontFamily: "Urbanist",
             fontSize: 12,
             fontWeight: FontWeight.w500,
-            height: 14.4,
           ),
           bodySmall: TextStyle(
             color: Color.fromRGBO(144, 144, 144, 1),
             fontFamily: "Urbanist",
             fontSize: 12,
             fontWeight: FontWeight.w500,
-            height: 14.4,
           ),
           bodyMedium: TextStyle(
             color: Color.fromRGBO(32, 37, 50, 1),
             fontFamily: "Urbanist",
             fontSize: 16,
             fontWeight: FontWeight.w600,
-            height: 19.2,
           ),
           headlineMedium: TextStyle(
             color: Color.fromRGBO(32, 37, 50, 1),
             fontFamily: "Urbanist",
             fontSize: 18,
             fontWeight: FontWeight.w600,
-            height: 21.6,
           ),
           headlineLarge: TextStyle(
             color: Color.fromRGBO(32, 37, 50, 1),
             fontFamily: "Urbanist",
             fontSize: 22,
             fontWeight: FontWeight.w600,
-            height: 30.8,
           ),
         ),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: NeoTheme(child: const AuthWrapper()),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+class AuthWrapper extends HookWidget {
+  const AuthWrapper({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              AppLocalizations.of(context)!.onboard_welcome,
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment 2',
-        child: const Icon(Icons.add),
-      ),
+    final authState = useAuthState();
+    final tryingToReauth = useState(true);
+    useEffect(() {
+      tryingToReauth.value = false;
+      /*AuthenticationService.getInstance().tryReauth().then((value) {
+        tryingToReauth.value = false;
+      });*/
+      return;
+    }, ["_"]);
+
+    if (tryingToReauth.value) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+    if (authState == AuthState.signedOut ||
+        authState == AuthState.verifyAccount ||
+        authState == AuthState.newPasswordRequired) {
+      return const AuthPageWrapper();
+    }
+    if (authState == AuthState.signedIn) return const MainPage();
+    return const Scaffold(
+      body: Center(child: Text("Unknown state")),
     );
   }
 }

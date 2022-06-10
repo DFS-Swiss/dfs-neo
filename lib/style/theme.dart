@@ -10,14 +10,14 @@ class NeoTheme extends InheritedWidget {
   final Color positiveColor = const Color.fromRGBO(101, 195, 136, 1);
   final Color negativeColor = const Color.fromRGBO(255, 125, 148, 1);
   final TextStyle linkTextStyle = const TextStyle(
-    color: Color(0x05889CFF),
+    color: Color(0xFF05889C),
     fontFamily: "Urbanist",
     fontSize: 12,
     fontWeight: FontWeight.w600,
-    height: 14.4,
     decoration: TextDecoration.underline,
   );
   final BorderRadius primaryBorderRadius = BorderRadius.circular(12);
+  final double secondaryBorderRadius = 30;
 
   static NeoTheme? of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<NeoTheme>();
