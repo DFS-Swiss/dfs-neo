@@ -113,5 +113,11 @@
     "list_toggle_etf": "ETF",
     "list_toggle_etc": "ETC",
     "list_featured": "Gewinner der Woche",
-    "list_tradable": "Aktuell handelbar"
+    "list_tradable": "Aktuell handelbar",
+    "tutorial_head1": "Anleger werden!",
+    "tutorial_head2": "Verwalte und analysiere deine Investments!",
+    "tutorial_head3": "Spar bares Geld!",
+    "tutorial_body1": "Investiere dein Kapital und entkomme der Inflation! Lass dein Geld für dich arbeiten.",
+    "tutorial_body2": "DFS neo erlaubt es dir deine Trading-Strategien blitzschnell anzupassen und deine Gewinne zu optimieren.",
+    "tutorial_body3": "Du zahlst keine Depot-, Transkation- oder sonstige Gebühren! Durch das Investieren auf der Blockhain sparst du sogar noch mächtig Steuern!"
 }

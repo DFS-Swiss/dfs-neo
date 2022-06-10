@@ -113,5 +113,11 @@
     "list_toggle_etf": "ETF",
     "list_toggle_etc": "ETC",
     "list_featured": "Winner of the week",
-    "list_tradable": "Currently tradabel"
+    "list_tradable": "Currently tradabel",
+    "tutorial_head1": "All investments",
+    "tutorial_head2": "Manage and analyise your investments!",
+    "tutorial_head3": "Save money",
+    "tutorial_body1": "Invest your money and fight inflation. Let your money work for you.",
+    "tutorial_body2": "With DFS neo you can adjust your trading strategy on the fly and maximise profits.",
+    "tutorial_body3": "You pay no fees, no spread and no commission. If thats not enought, investing on the blockchain will save you taxes!"
 }
