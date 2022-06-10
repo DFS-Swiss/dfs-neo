@@ -6,7 +6,6 @@ import 'package:neo/enums/auth_state.dart';
 import 'package:neo/hooks/use_auth_state.dart';
 import 'package:neo/pages/authentication/auth_page_wrapper.dart';
 import 'package:neo/pages/main_page.dart';
-import 'package:neo/pages/tutorial/tutorialwrapper_page.dart';
 import 'package:neo/style/theme.dart';
 
 void main() {
@@ -85,8 +84,8 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: NeoTheme(child: TutorialWrapper()),
-      //home: NeoTheme(child: const AuthWrapper()),
+      
+      home: NeoTheme(child: const AuthWrapper()),
     );
   }
 }
