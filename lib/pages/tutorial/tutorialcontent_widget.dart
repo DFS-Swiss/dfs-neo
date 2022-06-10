@@ -30,25 +30,19 @@ class TutorialContent extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              //TODO: Replace with actual Theme style
               Text(
                 headline,
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xFF05889C),
-                ),
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineLarge!
+                    .copyWith(color: Color(0xFF05889C)),
               ),
               SizedBox(
                 height: 12,
               ),
-              //TODO: Replace with actual Theme style
               Text(
                 subtext,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                ),
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
             ],
           ),

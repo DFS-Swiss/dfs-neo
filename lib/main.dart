@@ -6,6 +6,7 @@ import 'package:neo/enums/auth_state.dart';
 import 'package:neo/hooks/use_auth_state.dart';
 import 'package:neo/pages/authentication/auth_page_wrapper.dart';
 import 'package:neo/pages/main_page.dart';
+import 'package:neo/pages/tutorial/tutorialwrapper_page.dart';
 import 'package:neo/style/theme.dart';
 
 void main() {
@@ -64,6 +65,12 @@ class MyApp extends StatelessWidget {
             fontSize: 16,
             fontWeight: FontWeight.w600,
           ),
+          bodyLarge: TextStyle(
+            color: Color.fromRGBO(32, 37, 50, 1),
+            fontFamily: "Urbanist",
+            fontSize: 18,
+            fontWeight: FontWeight.w500,
+          ),
           headlineMedium: TextStyle(
             color: Color.fromRGBO(32, 37, 50, 1),
             fontFamily: "Urbanist",
@@ -78,7 +85,8 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: NeoTheme(child: const AuthWrapper()),
+      home: NeoTheme(child: TutorialWrapper()),
+      //home: NeoTheme(child: const AuthWrapper()),
     );
   }
 }

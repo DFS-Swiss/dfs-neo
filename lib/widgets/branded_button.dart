@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:neo/style/theme.dart';
 
 class BrandedButton extends StatelessWidget {
-  final String text;
+  final Widget child;
   final VoidCallback? onPressed;
   final bool loading;
   const BrandedButton(
       {Key? key,
-      required this.text,
       required this.onPressed,
-      this.loading = false})
+      this.loading = false, required this.child})
       : super(key: key);
 
   @override
@@ -34,7 +33,7 @@ class BrandedButton extends StatelessWidget {
                   strokeWidth: 2,
                 ),
               )
-            : Text(text),
+            : child,
       ),
     );
   }

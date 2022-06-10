@@ -92,9 +92,9 @@ class LoginWidget extends HookWidget {
           children: [
             Expanded(
               child: BrandedButton(
-                text: AppLocalizations.of(context)!.signin_button,
                 loading: loading.value,
                 onPressed: handleLogin,
+                child: Text(AppLocalizations.of(context)!.signin_button),
               ),
             ),
           ],

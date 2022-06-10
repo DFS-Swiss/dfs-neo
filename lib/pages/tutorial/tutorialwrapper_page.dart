@@ -4,6 +4,7 @@ import 'package:neo/pages/tutorial/backgroundgraphic_widget.dart';
 import 'package:neo/pages/tutorial/customprogressindicator_widget.dart';
 import 'package:neo/pages/tutorial/tutorialcontent_widget.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:neo/widgets/branded_button.dart';
 
 class TutorialWrapper extends HookWidget {
   TutorialWrapper({Key? key}) : super(key: key);
@@ -72,30 +73,21 @@ class TutorialWrapper extends HookWidget {
                   triggered: currentPage.value == 2 ? true : false,
                 ),
                 Expanded(child: Container()),
-                //TODO: Replace with real button
-                GestureDetector(
-                  onTap: () {
-                    if (currentPage.value == null || currentPage.value == 0) {
-                      currentPage.value = 1;
-                    } else {
-                      currentPage.value = currentPage.value! + 1;
-                    }
-                  },
-                  child: Container(
-                    width: 170,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(17),
-                      gradient: LinearGradient(
-                          colors: [Color(0xFF31BFD4), Color(0xFF20D1D1)]),
+                BrandedButton(
+                    child: Container(
+                      width: 120,
+                      alignment: Alignment.center,
+                      child: Text(
+                        currentPage.value == 2 ? "Get Started" : "Next",
+                      ),
                     ),
-                    alignment: Alignment.center,
-                    child: Text(
-                      currentPage.value == 2 ? "Get Started" : "Next",
-                      style: TextStyle(color: Colors.white, fontSize: 18),
-                    ),
-                  ),
-                ),
+                    onPressed: () {
+                      if (currentPage.value == null || currentPage.value == 0) {
+                        currentPage.value = 1;
+                      } else {
+                        currentPage.value = currentPage.value! + 1;
+                      }
+                    }),
               ],
             ),
           )
