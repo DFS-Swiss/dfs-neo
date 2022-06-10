@@ -5,11 +5,12 @@ class BrandedButton extends StatelessWidget {
   final Widget child;
   final VoidCallback? onPressed;
   final bool loading;
-  const BrandedButton(
-      {Key? key,
-      required this.onPressed,
-      this.loading = false, required this.child})
-      : super(key: key);
+  const BrandedButton({
+    Key? key,
+    required this.onPressed,
+    this.loading = false,
+    required this.child,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

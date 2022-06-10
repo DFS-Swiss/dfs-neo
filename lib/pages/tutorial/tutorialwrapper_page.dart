@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:neo/pages/authentication/auth_page_wrapper.dart';
 import 'package:neo/pages/tutorial/backgroundgraphic_widget.dart';
 import 'package:neo/pages/tutorial/customprogressindicator_widget.dart';
 import 'package:neo/pages/tutorial/tutorialcontent_widget.dart';
@@ -25,7 +26,9 @@ class TutorialWrapper extends HookWidget {
     return Scaffold(
       body: Stack(
         children: [
-          BackgroundGraphic(),
+          BackgroundGraphic(
+            drawCircle: true,
+          ),
           Padding(
             padding: EdgeInsets.symmetric(
                 vertical: MediaQuery.of(context).size.height * 0.2),
@@ -82,10 +85,20 @@ class TutorialWrapper extends HookWidget {
                       ),
                     ),
                     onPressed: () {
-                      if (currentPage.value == null || currentPage.value == 0) {
-                        currentPage.value = 1;
+                      if (currentPage.value == 2) {
+                        Navigator.of(context).popUntil((route) => route.isFirst);
+                        //TODO: Add parameter to Authpagewrapper to set initial State on Register
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AuthPageWrapper()));
                       } else {
-                        currentPage.value = currentPage.value! + 1;
+                        if (currentPage.value == null ||
+                            currentPage.value == 0) {
+                          currentPage.value = 1;
+                        } else {
+                          currentPage.value = currentPage.value! + 1;
+                        }
                       }
                     }),
               ],

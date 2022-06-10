@@ -5,7 +5,9 @@ import 'dart:ui' as ui;
 import 'package:neo/pages/tutorial/blurecircle_widget.dart';
 
 class BackgroundGraphic extends HookWidget {
-  const BackgroundGraphic({Key? key}) : super(key: key);
+  final bool drawCircle;
+  const BackgroundGraphic({required this.drawCircle, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,13 +23,18 @@ class BackgroundGraphic extends HookWidget {
           BlurCircle(
             alignment: Alignment(2.5, 1.3),
           ),
-          CustomPaint(
-            size: Size(
-                MediaQuery.of(context).size.width,
-                (MediaQuery.of(context).size.width * 1.12)
-                    .toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
-            painter: RPSCustomPainter(),
+          BlurCircle(
+            alignment: Alignment(2.5, -1.3),
           ),
+          drawCircle
+              ? CustomPaint(
+                  size: Size(
+                      MediaQuery.of(context).size.width,
+                      (MediaQuery.of(context).size.width * 1.12)
+                          .toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
+                  painter: RPSCustomPainter(),
+                )
+              : Container(),
         ],
       ),
     );
