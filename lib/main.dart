@@ -5,9 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:neo/enums/auth_state.dart';
 import 'package:neo/hooks/use_auth_state.dart';
 import 'package:neo/pages/authentication/auth_page_wrapper.dart';
-import 'package:neo/pages/authentication/login_widget.dart';
 import 'package:neo/pages/main_page.dart';
-import 'package:neo/services/authentication_service.dart';
 import 'package:neo/style/theme.dart';
 
 void main() {

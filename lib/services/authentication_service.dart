@@ -16,7 +16,7 @@ class AuthenticationService extends ChangeNotifier {
     return _instance ??= AuthenticationService._();
   }
 
-  AuthState authState = AuthState.verifyAccount;
+  AuthState authState = AuthState.signedOut;
   CognitoUserSession? session;
   CognitoUser? cognitoUser;
 
@@ -35,31 +35,38 @@ class AuthenticationService extends ChangeNotifier {
       notifyListeners();
       return;
     } on CognitoUserMfaRequiredException catch (e) {
+      print(e);
       rethrow;
 
       // handle SMS_MFA challenge
     } on CognitoUserSelectMfaTypeException catch (e) {
+      print(e);
       rethrow;
 
       // handle SELECT_MFA_TYPE challenge
     } on CognitoUserMfaSetupException catch (e) {
+      print(e);
       rethrow;
 
       // handle MFA_SETUP challenge
     } on CognitoUserTotpRequiredException catch (e) {
+      print(e);
       rethrow;
 
       // handle SOFTWARE_TOKEN_MFA challenge
     } on CognitoUserCustomChallengeException catch (e) {
+      print(e);
       rethrow;
 
       // handle CUSTOM_CHALLENGE challenge
     } on CognitoUserConfirmationNecessaryException catch (e) {
+      print(e);
       rethrow;
 
       // handle User Confirmation Necessary
       // TODO: Handle verify
     } on CognitoClientException catch (e) {
+      print(e);
       authState = AuthState.verifyAccount;
       notifyListeners();
       rethrow;
