@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:neo/enums/auth_state.dart';
@@ -82,6 +84,8 @@ class AuthenticationService extends ChangeNotifier {
     prefs.setString("refresh_token", session!.refreshToken!.getToken()!);
     prefs.setString("user_name", userName);
     print(session!.getAccessToken().getJwtToken());
+    log(session!.getAccessToken().getJwtToken() ?? "Error");
+    log(session!.getIdToken().getJwtToken() ?? "Error");
   }
 
   logOut() async {
