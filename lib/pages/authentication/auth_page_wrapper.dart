@@ -6,6 +6,7 @@ import 'package:neo/pages/authentication/login_widget.dart';
 import 'package:neo/pages/authentication/new_password_required_widget.dart';
 import 'package:neo/pages/authentication/register_widget.dart';
 import 'package:neo/pages/authentication/verify_account_widget.dart';
+import 'package:neo/pages/tutorial/backgroundgraphic_widget.dart';
 import 'package:neo/style/theme.dart';
 
 enum AuthPageState {
@@ -41,6 +42,7 @@ class AuthPageWrapper extends HookWidget {
     return Scaffold(
       body: Stack(
         children: [
+          BackgroundGraphic(drawCircle: false),
           Positioned(
             top: 0,
             right: 0,
@@ -48,8 +50,11 @@ class AuthPageWrapper extends HookWidget {
             bottom: getCurrentContainerHeight(context) -
                 MediaQuery.of(context).viewInsets.bottom,
             child: Center(
-              child: FlutterLogo(
-                size: 100,
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: 100,
+                    vertical: MediaQuery.of(context).size.height * 0.1),
+                child: Image.asset("assets/dfsicon.png"),
               ),
             ),
           ),

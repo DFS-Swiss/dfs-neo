@@ -73,8 +73,8 @@ class VerifyAccountWidget extends HookWidget {
         children: [
           Expanded(
             child: BrandedButton(
-              text: AppLocalizations.of(context)!.verify_account_submit,
               onPressed: handleSubmit,
+              child: Text(AppLocalizations.of(context)!.verify_account_submit),
             ),
           )
         ],

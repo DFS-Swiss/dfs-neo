@@ -68,8 +68,7 @@
 				2E85155088928DF52EB5912B /* Pods-Runner.release.xcconfig */,
 				ED7A0F7023EEF9A80AF666FB /* Pods-Runner.profile.xcconfig */,
 			);
-			name = Pods;
-			path = Pods;
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		9740EEB11CF90186004384FC /* Flutter */ = {
