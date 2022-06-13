@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -31,8 +32,16 @@ class MyApp extends StatelessWidget {
       ],
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        appBarTheme: AppBarTheme(
+            backgroundColor: Color(0xFFF8F9FB),
+            elevation: 0,
+            systemOverlayStyle: SystemUiOverlayStyle.dark,
+            titleTextStyle: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 17,
+                color: Colors.black)),
         progressIndicatorTheme: ProgressIndicatorThemeData(color: Colors.white),
-        scaffoldBackgroundColor: Color.fromARGB(255, 234, 248, 250),
+        scaffoldBackgroundColor: Color(0xFFF8F9FB),
         backgroundColor: Colors.white,
         primaryColor: const Color.fromRGBO(32, 209, 209, 1),
         inputDecorationTheme: InputDecorationTheme(
@@ -79,8 +88,8 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: NeoTheme(child: const AuthWrapper()),
-      //home: NeoTheme(child: const StockList()),
+      //home: NeoTheme(child: const AuthWrapper()),
+      home: NeoTheme(child: const StockList()),
     );
   }
 }
