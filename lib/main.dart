@@ -35,9 +35,31 @@ class MyApp extends StatelessWidget {
         ],
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
+          appBarTheme: AppBarTheme(
+              backgroundColor: Color(0xFFF8F9FB),
+              elevation: 0,
+              systemOverlayStyle: SystemUiOverlayStyle.dark,
+              titleTextStyle: TextStyle(
+                color: Colors.black,
+                fontSize: 17,
+                fontWeight: FontWeight.w600,
+              )),
+          textButtonTheme: TextButtonThemeData(
+            style: ButtonStyle(
+              foregroundColor: MaterialStateProperty.all(
+                Color(0xFF909090),
+              ),
+              overlayColor: MaterialStateProperty.all(Colors.grey[200]),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+              ),
+            ),
+          ),
           progressIndicatorTheme:
               ProgressIndicatorThemeData(color: Colors.white),
-          scaffoldBackgroundColor: Color.fromARGB(255, 234, 248, 250),
+          scaffoldBackgroundColor: Color(0xFFF8F9FB),
           backgroundColor: Colors.white,
           primaryColor: const Color.fromRGBO(32, 209, 209, 1),
           inputDecorationTheme: InputDecorationTheme(
@@ -91,7 +113,7 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        home: Onboarding(),
+        home: AuthWrapper(),
       ),
     );
   }
@@ -122,7 +144,9 @@ class AuthWrapper extends HookWidget {
         authState == AuthState.newPasswordRequired) {
       return const AuthPageWrapper();
     }
-    if (authState == AuthState.signedIn) return const MainPage();
+    //TODO: Handel basic wrapper for multiple pages via bottom nav bar
+    if (authState == AuthState.signedIn) return const StockList();
+    // if (authState == AuthState.signedIn) return const MainPage();
     return const Scaffold(
       body: Center(child: Text("Unknown state")),
     );
