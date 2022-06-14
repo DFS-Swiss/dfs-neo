@@ -12,7 +12,7 @@ class StockFilter extends HookWidget {
     final filterOptions = useState<List<int>>([]);
     return Padding(
       padding: const EdgeInsets.only(
-        top: 12,
+        top: 26,
       ),
       child: SizedBox(
         height: 32,

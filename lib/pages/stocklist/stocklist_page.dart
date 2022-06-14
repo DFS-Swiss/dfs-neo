@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:neo/pages/stocklist/stockfilter_widget.dart';
 import 'package:neo/pages/stocklist/stocksearchbar_widget.dart';
 import 'package:neo/pages/stocklist/stockswitchrow_widget.dart';
+import 'package:neo/widgets/appbaractionbutton_widget.dart';
 import 'package:neo/widgets/featuredstockcard_widget.dart';
 import 'package:neo/widgets/genericheadline_widget.dart';
 import 'package:neo/widgets/tradablestockcard_widget.dart';
@@ -19,15 +20,11 @@ class StockList extends HookWidget {
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.list_title),
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 12),
-            child: IconButton(
-              color: Colors.black,
-              onPressed: () {
-                //TODO: Add Route to Notification Screen
-              },
-              icon: Icon(Icons.notifications_none),
-            ),
+          AppBarActionButton(
+            icon: Icons.notifications_none,
+            callback: () {
+              print("Tapped notifications");
+            },
           ),
         ],
       ),
