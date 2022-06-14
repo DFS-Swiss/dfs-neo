@@ -6,6 +6,7 @@ import 'package:neo/enums/auth_state.dart';
 import 'package:neo/hooks/use_auth_state.dart';
 import 'package:neo/pages/authentication/auth_page_wrapper.dart';
 import 'package:neo/pages/main_page.dart';
+import 'package:neo/services/authentication_service.dart';
 import 'package:neo/style/theme.dart';
 
 void main() {
@@ -91,10 +92,10 @@ class AuthWrapper extends HookWidget {
     final authState = useAuthState();
     final tryingToReauth = useState(true);
     useEffect(() {
-      tryingToReauth.value = false;
-      /*AuthenticationService.getInstance().tryReauth().then((value) {
+      tryingToReauth.value = true;
+      AuthenticationService.getInstance().tryReauth().then((value) {
         tryingToReauth.value = false;
-      });*/
+      });
       return;
     }, ["_"]);
 
