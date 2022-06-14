@@ -141,6 +141,9 @@
     "error_unknown_user": "Benutzer existiert nicht",
     "error_wrong_creds": "Falscher Benutzername oder Passwort",
     "error_server_unreachable": "Server kann nicht erreicht werden",
-    "error_generic": "Es ist ein Fehler aufgetreten"
+    "error_generic": "Es ist ein Fehler aufgetreten",
+    "bottomnav_home": "Home",
+    "bottomnav_port": "Portfolio",
+    "bottomnav_trade": "Trade"
 
 }

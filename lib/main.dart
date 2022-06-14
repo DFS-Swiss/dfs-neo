@@ -7,6 +7,7 @@ import 'package:neo/enums/auth_state.dart';
 import 'package:neo/hooks/use_auth_state.dart';
 import 'package:neo/pages/authentication/auth_page_wrapper.dart';
 import 'package:neo/pages/main_page.dart';
+import 'package:neo/pages/navigation/mainnavigation_page.dart';
 import 'package:neo/pages/stocklist/stocklist_page.dart';
 import 'package:neo/pages/onboarding/onboarding_page.dart';
 import 'package:neo/services/authentication_service.dart';
@@ -35,6 +36,12 @@ class MyApp extends StatelessWidget {
         ],
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
+          bottomNavigationBarTheme: BottomNavigationBarThemeData(
+            selectedIconTheme: IconThemeData(
+              color: Color(0xFF05889C),
+            ),
+            selectedItemColor: Color(0xFF05889C),
+          ),
           appBarTheme: AppBarTheme(
               backgroundColor: Color(0xFFF8F9FB),
               elevation: 0,
@@ -145,7 +152,7 @@ class AuthWrapper extends HookWidget {
       return const AuthPageWrapper();
     }
     //TODO: Handel basic wrapper for multiple pages via bottom nav bar
-    if (authState == AuthState.signedIn) return const StockList();
+    if (authState == AuthState.signedIn) return const MainNavigation();
     // if (authState == AuthState.signedIn) return const MainPage();
     return const Scaffold(
       body: Center(child: Text("Unknown state")),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:neo/style/theme.dart';
 
 class SingleStockFilter extends HookWidget {
   final String text;
@@ -23,11 +24,15 @@ class SingleStockFilter extends HookWidget {
           alignment: Alignment.center,
           height: 32,
           width: 84,
-          decoration: BoxDecoration(
-              color: !selected.value
-                  ? Colors.white
-                  : Theme.of(context).primaryColor,
-              borderRadius: BorderRadius.circular(12)),
+          decoration: selected.value
+              ? BoxDecoration(
+                  gradient: NeoTheme.of(context)!.primaryGradient,
+                  borderRadius: BorderRadius.circular(12))
+              : BoxDecoration(
+                  color: Colors.white.withOpacity(0.75),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(width: 1, color: Colors.white),
+                ),
           child: Text(
             text,
             style: TextStyle(

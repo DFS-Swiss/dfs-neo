@@ -131,7 +131,7 @@
     "list_toggle_etf": "ETF",
     "list_toggle_etc": "ETC",
     "list_featured": "Winner of the week",
-    "list_tradable": "Currently tradabel",
+    "list_tradable": "Currently tradable",
     "tutorial_head1": "Smart investments",
     "tutorial_head2": "Manage and analyise your investments!",
     "tutorial_head3": "Save money",
@@ -141,5 +141,8 @@
     "error_unknown_user": "User does not exist",
     "error_wrong_creds": "Incorrect username or password",
     "error_server_unreachable": "Server not reachable",
-    "error_generic": "An error occured"
+    "error_generic": "An error occured",
+    "bottomnav_home": "Home",
+    "bottomnav_port": "Portfolio",
+    "bottomnav_trade": "Trade"
 }
