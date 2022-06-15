@@ -22,6 +22,20 @@ class AuthenticationService extends ChangeNotifier {
   CognitoUserSession? session;
   CognitoUser? cognitoUser;
 
+  Future<String> getCurrentApiKey() async {
+    if (session == null) {
+      throw "User not authenticated";
+    }
+    if (session!.idToken.getExpiration() <
+        DateTime.now().microsecondsSinceEpoch) {
+      if (!await tryRefreshingSession()) {
+        throw "Session is expired and could not be restored";
+      }
+    }
+    log(session!.getIdToken().jwtToken!);
+    return session!.getIdToken().jwtToken!;
+  }
+
   login(String userName, String password) async {
     cognitoUser = CognitoUser(userName, _userPool);
     final authDetails = AuthenticationDetails(
@@ -119,13 +133,28 @@ class AuthenticationService extends ChangeNotifier {
     }
   }
 
+  Future<bool> tryRefreshingSession() async {
+    if (session != null && cognitoUser != null) {
+      try {
+        cognitoUser!.refreshSession(session!.refreshToken!);
+        return true;
+      } catch (e) {
+        print(e);
+        authState = AuthState.signedOut;
+        notifyListeners();
+        return false;
+      }
+    }
+    throw "Could not reresh session; Missing user or session object";
+  }
+
   Future<bool> tryReauth() async {
     final prefs = await SharedPreferences.getInstance();
     if (prefs.getString("refresh_token") != null &&
         prefs.getString("user_name") != null) {
-      final cognitoUser = CognitoUser(prefs.getString("user_name")!, _userPool);
+      cognitoUser = CognitoUser(prefs.getString("user_name")!, _userPool);
       try {
-        session = await cognitoUser.refreshSession(
+        session = await cognitoUser!.refreshSession(
             CognitoRefreshToken(prefs.getString("refresh_token")));
         authState = AuthState.signedIn;
         notifyListeners();
