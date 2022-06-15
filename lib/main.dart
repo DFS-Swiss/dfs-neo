@@ -103,7 +103,7 @@ class AuthWrapper extends HookWidget {
     final authState = useAuthState();
     final tryingToReauth = useState(true);
     useEffect(() {
-      tryingToReauth.value = false;
+      tryingToReauth.value = true;
       AuthenticationService.getInstance().tryReauth().then((value) {
         tryingToReauth.value = false;
       });
