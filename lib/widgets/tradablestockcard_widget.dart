@@ -31,6 +31,7 @@ class TradableStockCard extends HookWidget {
     }, ["_", stockData.loading]);
 
     double roundDouble(double value, int places) {
+      print(stockData.data);
       num mod = pow(10.0, places);
       return ((value * mod).round().toDouble() / mod);
     }
@@ -59,8 +60,8 @@ class TradableStockCard extends HookWidget {
                       width: 50,
                       height: 50,
                       child: CircleAvatar(
-                        backgroundImage: NetworkImage(
-                           symbolInfo.data!.imageUrl),
+                        backgroundImage:
+                            NetworkImage(symbolInfo.data!.imageUrl),
                       ),
                     ),
                   ),
