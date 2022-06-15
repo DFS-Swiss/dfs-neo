@@ -66,8 +66,8 @@ class NewPasswordRequired extends HookWidget {
         children: [
           Expanded(
             child: BrandedButton(
-              text: AppLocalizations.of(context)!.force_change_password_submit,
               onPressed: handleSubmit,
+              child: Text(AppLocalizations.of(context)!.force_change_password_submit),
             ),
           )
         ],

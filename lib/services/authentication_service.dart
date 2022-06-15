@@ -77,16 +77,15 @@ class AuthenticationService extends ChangeNotifier {
       // handle CUSTOM_CHALLENGE challenge
     } on CognitoUserConfirmationNecessaryException catch (e) {
       print(e);
-      rethrow;
-
-      // handle User Confirmation Necessary
-      // TODO: Handle verify
-    } on CognitoClientException catch (e) {
-      print(e);
-      authState = AuthState.verifyAccount;
+            authState = AuthState.verifyAccount;
       notifyListeners();
       rethrow;
+
+    } on CognitoClientException catch (e) {
+      print(e);
+      rethrow;
       // handle Wrong Username and Password and Cognito Client
+      
     } catch (e) {
       print(e);
       rethrow;
