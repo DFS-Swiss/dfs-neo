@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:neo/pages/stocklist/stocklist_page.dart';
+import 'package:neo/services/websocket/websocket_service.dart';
 
 class MainNavigation extends HookWidget {
   const MainNavigation({Key? key}) : super(key: key);
@@ -9,7 +10,10 @@ class MainNavigation extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final currentPage = useState<int>(0);
-
+    useEffect(() {
+      WebsocketService.getInstance().init();
+      return;
+    }, ["_"]);
     getBody() {
       //TODO: Link pages when built
       switch (currentPage.value) {

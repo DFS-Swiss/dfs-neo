@@ -65,7 +65,7 @@ class StockList extends HookWidget {
                   width: 16,
                 ),
                 FeaturedStockCard(
-                  token: "dAAPL",
+                  token: "dGME",
                 ),
                 SizedBox(
                   width: 16,
