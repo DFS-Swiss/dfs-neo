@@ -17,15 +17,12 @@ class MainNavigation extends HookWidget {
           return Container(
             color: Colors.teal,
           );
-          break;
         case 1:
           return Container(
             color: Colors.orangeAccent,
           );
-          break;
         case 2:
           return StockList();
-          break;
         default:
           return Container(
             color: Colors.teal,
