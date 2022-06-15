@@ -63,15 +63,15 @@ class StockdataService {
 
   _handleBulkFetch() async {
     if (_bulkFetchCache.length > 1) {
-      await RESTService.getInstance().getStockdataBulk(
+      RESTService.getInstance().getStockdataBulk(
           StockdataBulkFetchRequest.fromMap({"symbols": _bulkFetchCache}));
     } else {
       final singleEntry = _bulkFetchCache.entries.first;
       if (singleEntry.value.length > 1) {
-        await RESTService.getInstance().getStockdataBulk(
+        RESTService.getInstance().getStockdataBulk(
             StockdataBulkFetchRequest.fromMap({"symbols": _bulkFetchCache}));
       } else {
-        await RESTService.getInstance()
+        RESTService.getInstance()
             .getStockdata(singleEntry.key, singleEntry.value.first);
       }
     }

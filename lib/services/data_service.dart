@@ -36,7 +36,6 @@ class DataService {
     yield* dataUpdateStream
         .where((event) => event["key"] == "user")
         .map((event) {
-      log(event.toString());
       return event["value"];
     });
   }
@@ -46,7 +45,6 @@ class DataService {
     yield* dataUpdateStream
         .where((event) => event["key"] == "symbol/$symbol")
         .map((event) {
-      log(event.toString());
       return event["value"];
     });
   }
@@ -56,7 +54,6 @@ class DataService {
     yield* dataUpdateStream
         .where((event) => event["key"] == "symbols")
         .map((event) {
-      log(event.toString());
       return event["value"];
     });
   }
