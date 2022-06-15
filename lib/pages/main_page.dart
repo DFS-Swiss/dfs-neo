@@ -23,7 +23,7 @@ class MainPage extends HookWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text("User data: " + userData.toString()),
+            Text("User data: ${userData.toString()}"),
             Divider(),
             Text(stockdata.loading
                 ? "loading"
@@ -33,8 +33,8 @@ class MainPage extends HookWidget {
                 ? "loading"
                 : stockdata2.data!.map((e) => e.time).toString()),
             Divider(),
-            Text("Stockdata: " + connState.name),
-            Text("User data: " + connStateUser.name),
+            Text("Stockdata: ${connState.name}"),
+            Text("User data: ${connStateUser.name}"),
             TextButton(
               onPressed: () {
                 RESTService.getInstance()

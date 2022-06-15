@@ -1,14 +1,10 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:dfs_sdk/api.dart';
 import 'package:neo/models/stockdata_datapoint.dart';
 import 'package:neo/models/user_model.dart';
 import 'package:neo/services/authentication_service.dart';
 import 'package:neo/services/data_service.dart';
 import 'package:neo/services/stockdata_service.dart';
-import 'package:neo/services/websocket/websocket_service.dart';
 import 'package:neo/types/api/stockdata_bulk_fetch_request.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
 

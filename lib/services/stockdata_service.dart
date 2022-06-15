@@ -132,5 +132,7 @@ class StockdataService {
   }
 
   propagateError(
-      Map<String, List<StockdataInterval>> relevantFields, dynamic error) {}
+      Map<String, List<StockdataInterval>> relevantFields, dynamic error) {
+    //TODO: Implement proper error propagation
+  }
 }
