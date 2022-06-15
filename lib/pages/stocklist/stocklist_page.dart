@@ -11,6 +11,7 @@ import 'package:neo/widgets/appbaractionbutton_widget.dart';
 import 'package:neo/widgets/featuredstockcard_widget.dart';
 import 'package:neo/widgets/genericheadline_widget.dart';
 import 'package:neo/widgets/tradablestockcard_widget.dart';
+import 'package:shimmer/shimmer.dart';
 
 class StockList extends HookWidget {
   const StockList({Key? key}) : super(key: key);
@@ -53,7 +54,7 @@ class StockList extends HookWidget {
             height: 139,
             child: ListView(
               scrollDirection: Axis.horizontal,
-              children: [
+              children: const [
                 SizedBox(
                   width: 24,
                 ),
@@ -63,22 +64,11 @@ class StockList extends HookWidget {
                 SizedBox(
                   width: 16,
                 ),
-                // FeaturedStockCard(
-                //   stockData: appleData,
-                //   positiveDemo: false,
-                // ),
+                FeaturedStockCard(
+                  token: "dAAPL",
+                ),
                 SizedBox(
                   width: 16,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 16),
-                  child: Container(
-                    height: 139,
-                    width: 210,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12)),
-                  ),
                 ),
               ],
             ),
@@ -86,9 +76,58 @@ class StockList extends HookWidget {
           GenericHeadline(
             title: AppLocalizations.of(context)!.list_tradable,
           ),
-          availableStocks.loading == false ? Column(
-            children: availableStocks.data!.map((e) => TradableStockCard(token: e.symbol)).toList(),
-          ) : Container(),
+          availableStocks.loading == false
+              ? Column(
+                  children: availableStocks.data!
+                      .map((e) => TradableStockCard(token: e.symbol))
+                      .toList(),
+                )
+              : Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 24, right: 24, bottom: 16),
+                      child: Shimmer.fromColors(
+                        baseColor: Color.fromRGBO(238, 238, 238, 0.75),
+                        highlightColor: Colors.white,
+                        child: Container(
+                          height: 74,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12)),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 24, right: 24, bottom: 16),
+                      child: Shimmer.fromColors(
+                        baseColor: Color.fromRGBO(238, 238, 238, 0.75),
+                        highlightColor: Colors.white,
+                        child: Container(
+                          height: 74,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12)),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 24, right: 24, bottom: 16),
+                      child: Shimmer.fromColors(
+                        baseColor: Color.fromRGBO(238, 238, 238, 0.75),
+                        highlightColor: Colors.white,
+                        child: Container(
+                          height: 74,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12)),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
         ],
       ),
     );
