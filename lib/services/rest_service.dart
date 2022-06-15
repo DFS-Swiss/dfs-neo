@@ -9,6 +9,7 @@ import 'package:neo/services/authentication_service.dart';
 import 'package:neo/services/data_service.dart';
 import 'package:neo/services/stockdata_service.dart';
 import 'package:neo/services/websocket/websocket_service.dart';
+import 'package:neo/types/api/stockdata_bulk_fetch_request.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
 
 const restApiBaseUrl = "https://rest.dfs-api.ch/v1";
@@ -67,6 +68,36 @@ class RESTService extends ChangeNotifier {
     } catch (e) {
       rethrow;
     }
+  }
+
+  Future<Map<String, Map<StockdataInterval, List<StockdataDatapoint>>>>
+      getStockdataBulk(StockdataBulkFetchRequest request) async {
+    print("Performing bulk query");
+    //try {
+    final Map<String, Map<StockdataInterval, List<StockdataDatapoint>>> out =
+        {};
+    final response = await dio.post("/stockdata/bulk", data: request.toMap());
+    //try {
+    final data = (response.data["body"]["symbols"] as Map<String, dynamic>);
+    for (var symbol in data.entries) {
+      if (out[symbol.key] == null) {
+        out[symbol.key] = {};
+      }
+      for (var interval in data[symbol.key]!.entries) {
+        out[symbol.key]![StockdataInterval.fromString(interval.key)] =
+            (data[symbol.key]![interval.key]! as List<dynamic>)
+                .map((e) => StockdataDatapoint.fromMap(e))
+                .toList();
+      }
+    }
+    //} catch (e) {
+    //throw "Parsing error: ${e.toString()}";
+    //}
+    StockdataService.getInstance().updateData(out);
+    return out;
+    //} catch (e) {
+    //  rethrow;
+    //}
   }
 
   Future<UserModel> getUserData() async {

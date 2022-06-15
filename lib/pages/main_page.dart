@@ -17,6 +17,7 @@ class MainPage extends HookWidget {
     final connStateUser = useUserDataSocketConnectionState();
     final userData = useUserData();
     final stockdata = useStockdata("dAAPL", StockdataInterval.twentyFourHours);
+    final stockdata2 = useStockdata("dAMZN", StockdataInterval.mtd);
     return Scaffold(
       body: Center(
         child: Column(
@@ -26,7 +27,11 @@ class MainPage extends HookWidget {
             Divider(),
             Text(stockdata.loading
                 ? "loading"
-                : stockdata.data!.map((e) => e.time).toString()),
+                : stockdata.data!.map((e) => e.price).toString()),
+            Divider(),
+            Text(stockdata2.loading
+                ? "loading"
+                : stockdata2.data!.map((e) => e.price).toString()),
             Divider(),
             Text("Stockdata: " + connState.name),
             Text("User data: " + connStateUser.name),

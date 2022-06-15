@@ -1,5 +1,6 @@
 import 'package:neo/models/stockdata_datapoint.dart';
 import 'package:neo/services/rest_service.dart';
+import 'package:neo/types/api/stockdata_bulk_fetch_request.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
 import 'package:neo/types/stockdata_storage_container.dart';
 import 'package:rxdart/rxdart.dart';
@@ -16,7 +17,7 @@ class StockdataService {
           Map<String, Map<StockdataInterval, StockdataStorageContainer>>>
       _dataStore = BehaviorSubject.seeded({});
 
-  final Map<String, Map<StockdataInterval, bool>> _bulkFetchCache = {};
+  final Map<String, List<StockdataInterval>> _bulkFetchCache = {};
   Future<void>? _bulkFetchTimer;
 
   Stream<List<StockdataDatapoint>> getStockdata(
@@ -50,9 +51,9 @@ class StockdataService {
   _registerFetchRequest(String symbol, StockdataInterval interval) {
     final shouldStartTimer = _bulkFetchCache.isEmpty && _bulkFetchTimer == null;
     if (_bulkFetchCache[symbol] == null) {
-      _bulkFetchCache[symbol] = {interval: true};
+      _bulkFetchCache[symbol] = [interval];
     } else {
-      _bulkFetchCache[symbol]![interval] = true;
+      _bulkFetchCache[symbol]!.add(interval);
     }
     if (shouldStartTimer) {
       _bulkFetchTimer =
@@ -62,14 +63,16 @@ class StockdataService {
 
   _handleBulkFetch() async {
     if (_bulkFetchCache.length > 1) {
-      //bulk fetch
+      await RESTService.getInstance().getStockdataBulk(
+          StockdataBulkFetchRequest.fromMap({"symbols": _bulkFetchCache}));
     } else {
       final singleEntry = _bulkFetchCache.entries.first;
       if (singleEntry.value.length > 1) {
-        //bulk fetch: multiple intervals for one symbol
+        await RESTService.getInstance().getStockdataBulk(
+            StockdataBulkFetchRequest.fromMap({"symbols": _bulkFetchCache}));
       } else {
         await RESTService.getInstance()
-            .getStockdata(singleEntry.key, singleEntry.value.keys.first);
+            .getStockdata(singleEntry.key, singleEntry.value.first);
       }
     }
     _bulkFetchCache.clear();
