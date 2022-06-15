@@ -130,4 +130,7 @@ class StockdataService {
     }
     _dataStore.add(tempStore);
   }
+
+  propagateError(
+      Map<String, List<StockdataInterval>> relevantFields, dynamic error) {}
 }

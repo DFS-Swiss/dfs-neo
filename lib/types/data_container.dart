@@ -1,7 +1,7 @@
 class DataContainer<T> {
   final T? data;
   final bool loading;
-  final Error? error;
+  final dynamic error;
 
   DataContainer({this.data, this.loading = false, this.error});
 

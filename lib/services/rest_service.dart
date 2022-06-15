@@ -118,6 +118,9 @@ class RESTService extends ChangeNotifier {
         throw "Unknown case: ${response.toString()}";
       }
     } catch (e) {
+      DataService.getInstance()
+          .dataUpdateStream
+          .addError({"key": "user", "value": e});
       rethrow;
     }
   }

@@ -27,11 +27,11 @@ class MainPage extends HookWidget {
             Divider(),
             Text(stockdata.loading
                 ? "loading"
-                : stockdata.data!.map((e) => e.price).toString()),
+                : stockdata.data!.map((e) => e.time).toString()),
             Divider(),
             Text(stockdata2.loading
                 ? "loading"
-                : stockdata2.data!.map((e) => e.price).toString()),
+                : stockdata2.data!.map((e) => e.time).toString()),
             Divider(),
             Text("Stockdata: " + connState.name),
             Text("User data: " + connStateUser.name),

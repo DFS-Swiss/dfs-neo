@@ -8,6 +8,8 @@ DataContainer<UserModel> useUserData() {
   useEffect(() {
     final sub = DataService.getInstance().getUserData().listen((event) {
       state.value = DataContainer(data: event);
+    }, onError: (e) {
+      state.value = DataContainer(error: e);
     });
     return sub.cancel;
   }, ["_"]);
