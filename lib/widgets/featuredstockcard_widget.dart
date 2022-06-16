@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:neo/hooks/use_stockdata.dart';
 import 'package:neo/hooks/use_stockdata_info.dart';
+import 'package:neo/services/formatting_service.dart';
 import 'package:neo/style/theme.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
 import 'package:neo/utils/chart_conversion.dart';
@@ -28,15 +29,6 @@ class FeaturedStockCard extends HookWidget {
 
       return;
     }, ["_", stockData.loading]);
-
-    double roundDouble(double value, int places) {
-      num mod = pow(10.0, places);
-      return ((value * mod).round().toDouble() / mod);
-    }
-
-    double calculatepercent(double first, double last) {
-      return roundDouble((1 - (last / first)) * 100, 2);
-    }
 
     return stockData.loading == false && symbolInfo.loading == false
         ? Container(
@@ -64,8 +56,8 @@ class FeaturedStockCard extends HookWidget {
                           width: 38,
                           height: 38,
                           child: CircleAvatar(
-                            backgroundImage: NetworkImage(
-                               symbolInfo.data!.imageUrl),
+                            backgroundImage:
+                                NetworkImage(symbolInfo.data!.imageUrl),
                           ),
                         ),
                         SizedBox(
@@ -110,7 +102,7 @@ class FeaturedStockCard extends HookWidget {
                               height: 3,
                             ),
                             Text(
-                              "\$${roundDouble(stockData.data!.last.price, 2).toString()}",
+                              "\$${FormattingService.roundDouble(stockData.data!.last.price, 2).toString()}",
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
@@ -118,7 +110,7 @@ class FeaturedStockCard extends HookWidget {
                             ),
                             Expanded(child: Container()),
                             Text(
-                              "${calculatepercent(chartData.value.first.y, chartData.value.last.y)}%",
+                              "${FormattingService.calculatepercent(chartData.value.first.y, chartData.value.last.y)}%",
                               style: TextStyle(
                                 fontSize: 12,
                                 color: chartData.value.first.y >

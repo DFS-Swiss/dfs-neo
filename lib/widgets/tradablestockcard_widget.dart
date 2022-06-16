@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:neo/hooks/use_stockdata.dart';
 import 'package:neo/hooks/use_stockdata_info.dart';
+import 'package:neo/services/formatting_service.dart';
 import 'package:neo/style/theme.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
 import 'package:neo/utils/chart_conversion.dart';
@@ -30,16 +31,6 @@ class TradableStockCard extends HookWidget {
 
         return;
       }, ["_", stockData.loading]);
-
-      double roundDouble(double value, int places) {
-        print(stockData.data);
-        num mod = pow(10.0, places);
-        return ((value * mod).round().toDouble() / mod);
-      }
-
-      double calculatepercent(double first, double last) {
-        return roundDouble((1 - (last / first)) * 100, 2);
-      }
 
       return symbolInfo.loading == false && stockData.loading == false
           ? Padding(
@@ -86,7 +77,8 @@ class TradableStockCard extends HookWidget {
                           ),
                           Expanded(child: Container()),
                           Container(
-                            constraints: BoxConstraints(maxWidth: 70),
+                            constraints:
+                                BoxConstraints(maxWidth: 70, minWidth: 70),
                             child: Text(
                               symbolInfo.data!.displayName,
                               overflow: TextOverflow.ellipsis,
@@ -139,7 +131,7 @@ class TradableStockCard extends HookWidget {
                               height: 3,
                             ),
                             Text(
-                              "\$${roundDouble(stockData.data!.last.price, 2).toString()}",
+                              "\$${FormattingService.roundDouble(stockData.data!.last.price, 2).toString()}",
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
@@ -160,7 +152,7 @@ class TradableStockCard extends HookWidget {
                                       : NeoTheme.of(context)!.negativeColor,
                                 ),
                                 Text(
-                                  "${calculatepercent(chartData.value.first.y, chartData.value.last.y)}%",
+                                  "${FormattingService.calculatepercent(chartData.value.first.y, chartData.value.last.y)}%",
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: chartData.value.first.y >
