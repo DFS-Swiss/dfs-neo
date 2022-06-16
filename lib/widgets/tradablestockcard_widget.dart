@@ -7,7 +7,7 @@ import 'package:neo/services/formatting_service.dart';
 import 'package:neo/style/theme.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
 import 'package:neo/utils/chart_conversion.dart';
-import 'dart:math';
+
 
 import 'package:shimmer/shimmer.dart';
 

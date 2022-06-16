@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
-
 import 'package:neo/models/stockdatadocument.dart';
 import 'package:neo/models/user_model.dart';
 import 'package:neo/models/userasset_datapoint.dart';
