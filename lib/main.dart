@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:neo/enums/auth_state.dart';
 import 'package:neo/hooks/use_auth_state.dart';
 import 'package:neo/pages/authentication/auth_page_wrapper.dart';
-import 'package:neo/pages/main_page.dart';
-import 'package:neo/pages/onboarding/onboarding_page.dart';
+import 'package:neo/pages/navigation/mainnavigation_page.dart';
 import 'package:neo/services/authentication_service.dart';
 import 'package:neo/style/theme.dart';
 
@@ -33,9 +33,37 @@ class MyApp extends StatelessWidget {
         ],
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
+          bottomNavigationBarTheme: BottomNavigationBarThemeData(
+            selectedIconTheme: IconThemeData(
+              color: Color(0xFF05889C),
+            ),
+            selectedItemColor: Color(0xFF05889C),
+          ),
+          appBarTheme: AppBarTheme(
+              backgroundColor: Color(0xFFF8F9FB),
+              elevation: 0,
+              systemOverlayStyle: SystemUiOverlayStyle.dark,
+              titleTextStyle: TextStyle(
+                color: Colors.black,
+                fontSize: 17,
+                fontWeight: FontWeight.w600,
+              )),
+          textButtonTheme: TextButtonThemeData(
+            style: ButtonStyle(
+              foregroundColor: MaterialStateProperty.all(
+                Color(0xFF909090),
+              ),
+              overlayColor: MaterialStateProperty.all(Colors.grey[200]),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+              ),
+            ),
+          ),
           progressIndicatorTheme:
               ProgressIndicatorThemeData(color: Colors.white),
-          scaffoldBackgroundColor: Color.fromARGB(255, 234, 248, 250),
+          scaffoldBackgroundColor: Color(0xFFF8F9FB),
           backgroundColor: Colors.white,
           primaryColor: const Color.fromRGBO(32, 209, 209, 1),
           inputDecorationTheme: InputDecorationTheme(
@@ -89,7 +117,7 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        home: Onboarding(),
+        home: AuthWrapper(),
       ),
     );
   }
@@ -120,7 +148,9 @@ class AuthWrapper extends HookWidget {
         authState == AuthState.newPasswordRequired) {
       return const AuthPageWrapper();
     }
-    if (authState == AuthState.signedIn) return const MainPage();
+    //TODO: Handel basic wrapper for multiple pages via bottom nav bar
+    if (authState == AuthState.signedIn) return const MainNavigation();
+    // if (authState == AuthState.signedIn) return const MainPage();
     return const Scaffold(
       body: Center(child: Text("Unknown state")),
     );

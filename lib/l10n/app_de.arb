@@ -126,12 +126,13 @@
     "list_search": "Suche nach Aktie",
     "list_switch_all": "Alle Aktien",
     "list_switch_my": "Meine Aktien",
-    "list_switch_fav": "Meine Favoriten",
+    "list_switch_fav": "Favoriten",
     "list_toggle_stocks": "Aktien",
     "list_toggle_etf": "ETF",
     "list_toggle_etc": "ETC",
-    "list_featured": "Gewinner der Woche",
+    "list_featured": "Aktuell relevant",
     "list_tradable": "Aktuell handelbar",
+    "list_mystocks": "Meine Investments",
     "tutorial_head1": "Anleger werden!",
     "tutorial_head2": "Verwalte und analysiere deine Investments!",
     "tutorial_head3": "Spar bares Geld!",
@@ -141,6 +142,9 @@
     "error_unknown_user": "Benutzer existiert nicht",
     "error_wrong_creds": "Falscher Benutzername oder Passwort",
     "error_server_unreachable": "Server kann nicht erreicht werden",
-    "error_generic": "Es ist ein Fehler aufgetreten"
+    "error_generic": "Es ist ein Fehler aufgetreten",
+    "bottomnav_home": "Home",
+    "bottomnav_port": "Portfolio",
+    "bottomnav_trade": "Trade"
 
 }

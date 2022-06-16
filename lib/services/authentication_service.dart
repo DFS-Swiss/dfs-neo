@@ -97,6 +97,8 @@ class AuthenticationService extends ChangeNotifier {
     prefs.setString("refresh_token", session!.refreshToken!.getToken()!);
     prefs.setString("user_name", userName);
     print(session!.getAccessToken().getJwtToken());
+    log(session!.getAccessToken().getJwtToken() ?? "Error");
+    log(session!.getIdToken().getJwtToken() ?? "Error");
   }
 
   logOut() async {
