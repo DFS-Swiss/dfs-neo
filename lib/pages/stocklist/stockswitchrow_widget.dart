@@ -5,11 +5,12 @@ import 'package:neo/widgets/branded_button.dart';
 
 class StockSwitchRow extends HookWidget {
   final Function callback;
-  const StockSwitchRow({required this.callback, Key? key}) : super(key: key);
+  final int initPos;
+  const StockSwitchRow({required this.initPos, required this.callback, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final switchPosition = useState(0);
+    final switchPosition = useState(initPos);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Container(

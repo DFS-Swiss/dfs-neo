@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:neo/hooks/use_available_stocks.dart';
+import 'package:neo/hooks/use_userassets.dart';
 import 'package:neo/pages/stocklist/stockfilter_widget.dart';
 import 'package:neo/pages/stocklist/stocksearchbar_widget.dart';
 import 'package:neo/pages/stocklist/stockswitchrow_widget.dart';
@@ -20,11 +21,17 @@ class StockList extends HookWidget {
     final selectedFilters = useState<List<int>>([]);
     final availableStocks = useAvailableStocks();
     final searchPattern = useState<String?>(null);
+    final userAssets = useUserassets();
     useEffect(() {
       if (searchPattern.value == null) {
       } else {}
       return;
     }, [searchPattern.value]);
+    useEffect(() {
+      if (!userAssets.loading) {
+      } else {}
+      return;
+    }, [userAssets.loading]);
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.list_title),
@@ -47,10 +54,12 @@ class StockList extends HookWidget {
               searchPattern.value = searchinput;
             }
           }),
-          StockSwitchRow(callback: (int i) {
-            print("Current index: $i");
-            switchPosition.value = i;
-          }),
+          StockSwitchRow(
+            callback: (int i) {
+              switchPosition.value = i;
+            },
+            initPos: switchPosition.value,
+          ),
           StockFilter(
             init: selectedFilters.value,
             callback: (List<int> selectedFilter) {
@@ -66,6 +75,7 @@ class StockList extends HookWidget {
               ? SizedBox(
                   height: 139,
                   child: ListView(
+                    addAutomaticKeepAlives: true,
                     scrollDirection: Axis.horizontal,
                     children: const [
                       SizedBox(
@@ -88,7 +98,9 @@ class StockList extends HookWidget {
                 )
               : Container(),
           GenericHeadline(
-            title: AppLocalizations.of(context)!.list_tradable,
+            title: switchPosition.value == 1
+                ? AppLocalizations.of(context)!.list_mystocks
+                : AppLocalizations.of(context)!.list_tradable,
           ),
           availableStocks.loading == false
               ? Column(
@@ -101,6 +113,18 @@ class StockList extends HookWidget {
                           return true;
                         } else {
                           return false;
+                        }
+                      })
+                      .where((element) {
+                        if (switchPosition.value == 1 && !userAssets.loading) {
+                          for (var asset in userAssets.data!.toList()) {
+                            if (asset.symbol == element.symbol) {
+                              return true;
+                            }
+                          }
+                          return false;
+                        } else {
+                          return true;
                         }
                       })
                       .where((element) {

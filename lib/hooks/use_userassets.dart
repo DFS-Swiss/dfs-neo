@@ -1,13 +1,13 @@
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:neo/models/stockdatadocument.dart';
 import 'package:neo/services/data_service.dart';
+import '../models/userasset_datapoint.dart';
 import '../types/data_container.dart';
 
-DataContainer<StockdataDocument> useSymbolInfo(String symbol) {
+DataContainer<List<UserassetDatapoint>> useUserassets() {
   final state =
-      useState<DataContainer<StockdataDocument>>(DataContainer.waiting());
+      useState<DataContainer<List<UserassetDatapoint>>>(DataContainer.waiting());
   useEffect(() {
-    final sub = DataService.getInstance().getStockInfo(symbol).listen((event) {
+    final sub = DataService.getInstance().getUserAssets().listen((event) {
       state.value = DataContainer(data: event);
     });
     return sub.cancel;

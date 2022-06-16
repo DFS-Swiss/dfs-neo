@@ -27,6 +27,10 @@ class MainNavigation extends HookWidget {
           );
         case 2:
           return StockList();
+        case 3:
+          return Container(
+            color: Colors.indigoAccent,
+          );
         default:
           return Container(
             color: Colors.teal,
@@ -37,6 +41,7 @@ class MainNavigation extends HookWidget {
     return Scaffold(
       body: getBody(),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         onTap: (i) {
           currentPage.value = i;
         },
@@ -56,6 +61,11 @@ class MainNavigation extends HookWidget {
                 Icons.line_axis_outlined,
               ),
               label: AppLocalizations.of(context)!.bottomnav_trade),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.person_outline,
+              ),
+              label: AppLocalizations.of(context)!.nav_acc),
         ],
       ),
     );

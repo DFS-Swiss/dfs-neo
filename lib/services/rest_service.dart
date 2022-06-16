@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:neo/models/stockdata_datapoint.dart';
 import 'package:neo/models/stockdatadocument.dart';
 import 'package:neo/models/user_model.dart';
+import 'package:neo/models/userasset_datapoint.dart';
 import 'package:neo/services/authentication_service.dart';
 import 'package:neo/services/data_service.dart';
 import 'package:neo/services/stockdata_service.dart';
@@ -24,6 +25,7 @@ class RESTService extends ChangeNotifier {
       },
     ));
     DataService.getInstance().registerUserDataHandler("user", getUserData);
+    DataService.getInstance().registerUserDataHandler("investments", getUserAssets);
   }
 
   static RESTService getInstance() {
@@ -170,6 +172,33 @@ class RESTService extends ChangeNotifier {
       DataService.getInstance()
           .dataUpdateStream
           .addError({"key": "symbols", "value": e});
+      rethrow;
+    }
+  }
+
+  Future<List<UserassetDatapoint>> getUserAssets() async {
+    try {
+      final response = await dio.get("/user/assets");
+      if (response.statusCode.toString().startsWith("2")) {
+        List<UserassetDatapoint> data;
+
+        try {
+          data = (response.data["body"]["items"] as List<dynamic>)
+              .map((e) => UserassetDatapoint.fromMap(e)).toList();
+        } catch (e) {
+          throw "Parsing error: ${e.toString()}";
+        }
+        DataService.getInstance().dataUpdateStream.add(
+          {"key": "investments", "value": data},
+        );
+        return data;
+      } else {
+        throw "Unknown case: ${response.toString()}";
+      }
+    } catch (e) {
+      DataService.getInstance()
+          .dataUpdateStream
+          .addError({"key": "investments", "value": e});
       rethrow;
     }
   }

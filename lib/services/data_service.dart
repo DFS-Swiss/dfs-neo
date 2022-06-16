@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:neo/models/stockdatadocument.dart';
 import 'package:neo/models/user_model.dart';
+import 'package:neo/models/userasset_datapoint.dart';
 import 'package:neo/services/rest_service.dart';
 import 'package:rxdart/subjects.dart';
 
@@ -53,6 +54,15 @@ class DataService {
     yield await RESTService.getInstance().getAvailiableStocks();
     yield* dataUpdateStream
         .where((event) => event["key"] == "symbols")
+        .map((event) {
+      return event["value"];
+    });
+  }
+
+    Stream<List<UserassetDatapoint>> getUserAssets() async* {
+    yield await RESTService.getInstance().getUserAssets();
+    yield* dataUpdateStream
+        .where((event) => event["key"] == "userassets")
         .map((event) {
       return event["value"];
     });
