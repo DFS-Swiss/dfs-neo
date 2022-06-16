@@ -5,11 +5,13 @@ class UserassetDatapoint {
   final String symbol;
   final double currentPrice;
   final DateTime time;
+  final double difference;
   UserassetDatapoint({
     required this.tokenAmmount,
     required this.symbol,
     required this.currentPrice,
     required this.time,
+    required this.difference,
   });
 
   UserassetDatapoint copyWith({
@@ -17,12 +19,14 @@ class UserassetDatapoint {
     String? symbol,
     double? currentPrice,
     DateTime? time,
+    double? difference,
   }) {
     return UserassetDatapoint(
       tokenAmmount: tokenAmmount ?? this.tokenAmmount,
       symbol: symbol ?? this.symbol,
       currentPrice: currentPrice ?? this.currentPrice,
       time: time ?? this.time,
+      difference: difference ?? this.difference,
     );
   }
 
@@ -33,6 +37,7 @@ class UserassetDatapoint {
     result.addAll({'symbol': symbol});
     result.addAll({'currentPrice': currentPrice});
     result.addAll({'time': time.millisecondsSinceEpoch});
+    result.addAll({'difference': difference});
   
     return result;
   }
@@ -43,6 +48,7 @@ class UserassetDatapoint {
       symbol: map['symbol'] ?? '',
       currentPrice: map['currentPrice']?.toDouble() ?? 0.0,
       time: DateTime.parse(map['time']),
+      difference: map['difference']?.toDouble() ?? 0.0,
     );
   }
 
@@ -53,7 +59,7 @@ class UserassetDatapoint {
 
   @override
   String toString() {
-    return 'UserassetDatapoint(tokenAmmount: $tokenAmmount, symbol: $symbol, currentPrice: $currentPrice, time: $time)';
+    return 'UserassetDatapoint(tokenAmmount: $tokenAmmount, symbol: $symbol, currentPrice: $currentPrice, time: $time, difference: $difference)';
   }
 
   @override
@@ -64,7 +70,8 @@ class UserassetDatapoint {
       other.tokenAmmount == tokenAmmount &&
       other.symbol == symbol &&
       other.currentPrice == currentPrice &&
-      other.time == time;
+      other.time == time &&
+      other.difference == difference;
   }
 
   @override
@@ -72,6 +79,7 @@ class UserassetDatapoint {
     return tokenAmmount.hashCode ^
       symbol.hashCode ^
       currentPrice.hashCode ^
-      time.hashCode;
+      time.hashCode ^
+      difference.hashCode;
   }
 }

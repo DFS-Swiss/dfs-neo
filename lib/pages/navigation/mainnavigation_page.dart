@@ -1,8 +1,11 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:neo/pages/stocklist/stocklist_page.dart';
+import 'package:neo/services/portfoliovalue_service.dart';
 import 'package:neo/services/websocket/websocket_service.dart';
+import 'package:neo/utils/chart_conversion.dart';
 
 class MainNavigation extends HookWidget {
   const MainNavigation({Key? key}) : super(key: key);
@@ -10,6 +13,8 @@ class MainNavigation extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final currentPage = useState<int>(0);
+    //TODO: Remove and move to appropiate sub page
+    final demoGraphic = useState<List<FlSpot>>([]);
     useEffect(() {
       WebsocketService.getInstance().init();
       return;
@@ -18,9 +23,37 @@ class MainNavigation extends HookWidget {
       //TODO: Link pages when built
       switch (currentPage.value) {
         case 0:
-          return Container(
-            color: Colors.teal,
-          );
+          return Scaffold(
+              body: ListView(
+            children: [
+              GestureDetector(
+                onTap: () async {
+                demoGraphic.value =
+                    await Portfoliovalue().queryInvestmentDocuments();
+              },
+                child: Container(
+                  width: 200,
+                  height: 200,
+                  color: Colors.white,
+                  child: demoGraphic.value.isEmpty ? Container() : SizedBox(
+                      //height: 100,
+                      width: 96,
+                      //width: 100,
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            left: 12, right: 12, top: 24, bottom: 24),
+                        child: LineChart(preview(
+                          demoGraphic.value,
+                          demoGraphic.value.first.y > demoGraphic.value.last.y
+                              ? true
+                              : false,
+                        )),
+                      ),
+                    ),
+                ),
+              )
+            ],
+          ));
         case 1:
           return Container(
             color: Colors.orangeAccent,
