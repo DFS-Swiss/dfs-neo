@@ -77,15 +77,14 @@ class AuthenticationService extends ChangeNotifier {
       // handle CUSTOM_CHALLENGE challenge
     } on CognitoUserConfirmationNecessaryException catch (e) {
       print(e);
-            authState = AuthState.verifyAccount;
+      authState = AuthState.verifyAccount;
       notifyListeners();
       rethrow;
-
     } on CognitoClientException catch (e) {
       print(e);
       rethrow;
       // handle Wrong Username and Password and Cognito Client
-      
+
     } catch (e) {
       print(e);
       rethrow;
@@ -103,6 +102,15 @@ class AuthenticationService extends ChangeNotifier {
     await (await _userPool.getCurrentUser())!.signOut();
     authState = AuthState.signedOut;
     notifyListeners();
+  }
+
+  Future register(String userName, String email, String password) async {
+    await _userPool.signUp(userName, password, userAttributes: [
+      AttributeArg(name: "email", value: email),
+    ], validationData: [
+      AttributeArg(name: "email", value: email)
+    ]);
+    await login(userName, password);
   }
 
   Future completeForceChangePassword(String newPassword) async {

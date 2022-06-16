@@ -9,7 +9,11 @@ import '../../widgets/branded_textfield.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginWidget extends HookWidget {
-  const LoginWidget({Key? key}) : super(key: key);
+  final VoidCallback clickedRegister;
+  const LoginWidget({
+    Key? key,
+    required this.clickedRegister,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -117,9 +121,12 @@ class LoginWidget extends HookWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              AppLocalizations.of(context)!.signin_register,
-              style: NeoTheme.of(context)!.linkTextStyle,
+            GestureDetector(
+              onTap: clickedRegister,
+              child: Text(
+                AppLocalizations.of(context)!.signin_register,
+                style: NeoTheme.of(context)!.linkTextStyle,
+              ),
             ),
             Text(
               " ${AppLocalizations.of(context)!.signin_register_your_account}",

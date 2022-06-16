@@ -27,11 +27,11 @@ class AuthPageWrapper extends HookWidget {
       if (authState == AuthState.newPasswordRequired) {
         contentHeight = 420;
       } else if (authState == AuthState.verifyAccount) {
-        contentHeight = 290;
+        contentHeight = 310;
       } else if (state.value == AuthPageState.login) {
         contentHeight = 380;
       } else if (state.value == AuthPageState.register) {
-        contentHeight = 700;
+        contentHeight = 440;
       } else {
         contentHeight = 0;
       }
@@ -81,8 +81,14 @@ class AuthPageWrapper extends HookWidget {
                     : authState == AuthState.newPasswordRequired
                         ? NewPasswordRequired()
                         : state.value == AuthPageState.login
-                            ? const LoginWidget()
-                            : const RegisterWidget(),
+                            ? LoginWidget(
+                                clickedRegister: () =>
+                                    state.value = AuthPageState.register,
+                              )
+                            : RegisterWidget(
+                                clickedLogin: () =>
+                                    state.value = AuthPageState.login,
+                              ),
               ),
             ),
           )
