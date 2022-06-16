@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:neo/models/stockdata_datapoint.dart';
+import 'package:neo/models/stockdatadocument.dart';
 import 'package:neo/models/user_model.dart';
+import 'package:neo/models/userasset_datapoint.dart';
 import 'package:neo/services/authentication_service.dart';
 import 'package:neo/services/data_service.dart';
 import 'package:neo/services/stockdata_service.dart';
@@ -23,6 +25,7 @@ class RESTService extends ChangeNotifier {
       },
     ));
     DataService.getInstance().registerUserDataHandler("user", getUserData);
+    DataService.getInstance().registerUserDataHandler("investments", getUserAssets);
   }
 
   static RESTService getInstance() {
@@ -117,6 +120,85 @@ class RESTService extends ChangeNotifier {
       DataService.getInstance()
           .dataUpdateStream
           .addError({"key": "user", "value": e});
+      rethrow;
+    }
+  }
+
+  Future<StockdataDocument> getStockInfo(String symbol) async {
+    try {
+      final response = await dio.get("/stockdata/$symbol/info");
+      if (response.statusCode.toString().startsWith("2")) {
+        StockdataDocument data;
+        try {
+          data = StockdataDocument.fromMap(response.data["body"]["item"]);
+        } catch (e) {
+          throw "Parsing error: ${e.toString()}";
+        }
+        DataService.getInstance().dataUpdateStream.add(
+          {"key": "symbol/$symbol", "value": data},
+        );
+        return data;
+      } else {
+        throw "Unknown case: ${response.toString()}";
+      }
+    } catch (e) {
+      DataService.getInstance()
+          .dataUpdateStream
+          .addError({"key": "symbol/$symbol", "value": e});
+      rethrow;
+    }
+  }
+
+  Future<List<StockdataDocument>> getAvailiableStocks() async {
+    try {
+      final response = await dio.get("/stockdata/");
+      if (response.statusCode.toString().startsWith("2")) {
+        List<StockdataDocument> data;
+
+        try {
+          data = (response.data["body"]["items"] as List<dynamic>)
+              .map((e) => StockdataDocument.fromMap(e)).toList();
+        } catch (e) {
+          throw "Parsing error: ${e.toString()}";
+        }
+        DataService.getInstance().dataUpdateStream.add(
+          {"key": "symbols", "value": data},
+        );
+        return data;
+      } else {
+        throw "Unknown case: ${response.toString()}";
+      }
+    } catch (e) {
+      DataService.getInstance()
+          .dataUpdateStream
+          .addError({"key": "symbols", "value": e});
+      rethrow;
+    }
+  }
+
+  Future<List<UserassetDatapoint>> getUserAssets() async {
+    try {
+      final response = await dio.get("/user/assets");
+      if (response.statusCode.toString().startsWith("2")) {
+        List<UserassetDatapoint> data;
+
+        try {
+          data = (response.data["body"]["items"] as List<dynamic>)
+              .map((e) => UserassetDatapoint.fromMap(e)).toList();
+        } catch (e) {
+          throw "Parsing error: ${e.toString()}";
+        }
+        DataService.getInstance().dataUpdateStream.add(
+          {"key": "investments", "value": data},
+        );
+        return data;
+      } else {
+        throw "Unknown case: ${response.toString()}";
+      }
+    } catch (e) {
+      DataService.getInstance()
+          .dataUpdateStream
+          .addError({"key": "investments", "value": e});
       rethrow;
     }
   }

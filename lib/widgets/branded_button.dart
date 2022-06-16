@@ -23,6 +23,7 @@ class BrandedButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
+          
           primary: Colors.transparent,
           shadowColor: Colors.transparent,
         ),

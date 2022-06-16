@@ -131,12 +131,13 @@
     "list_search": "Search for stocks",
     "list_switch_all": "All stocks",
     "list_switch_my": "My stocks",
-    "list_switch_fav": "My favourites",
+    "list_switch_fav": "Favorites",
     "list_toggle_stocks": "Stocks",
     "list_toggle_etf": "ETF",
     "list_toggle_etc": "ETC",
-    "list_featured": "Winner of the week",
-    "list_tradable": "Currently tradabel",
+    "list_featured": "May intrest you",
+    "list_mystocks": "My investments",
+    "list_tradable": "Currently tradable",
     "tutorial_head1": "Smart investments",
     "tutorial_head2": "Manage and analyise your investments!",
     "tutorial_head3": "Save money",
@@ -148,4 +149,7 @@
     "error_server_unreachable": "Server not reachable",
     "error_generic": "An error occured",
     "error_duplicate_user_name": "This username or email already exists"
+    "bottomnav_home": "Home",
+    "bottomnav_port": "Portfolio",
+    "bottomnav_trade": "Trade"
 }

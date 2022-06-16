@@ -19,10 +19,12 @@ dependencies:
   shared_preferences: ^2.0.15
   flutter_launcher_icons: ^0.9.3
   flutter_native_splash: ^2.2.3
+  fl_chart: ^0.51.0
   dfs_sdk:
     git: https://github.com/DFS-Swiss/dfs-api-sdk-dart
   dio: ^4.0.6
   rxdart: ^0.27.4
+  shimmer: ^2.0.0
 
 dev_dependencies:
   flutter_test:

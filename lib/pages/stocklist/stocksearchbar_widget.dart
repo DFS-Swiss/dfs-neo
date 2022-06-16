@@ -1,0 +1,60 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+class StockSearchBar extends HookWidget {
+  final Function callback;
+  const StockSearchBar({
+    required this.callback,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final searchController = useTextEditingController();
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+      child: Container(
+        alignment: Alignment.center,
+        height: 48,
+        decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.75),
+            borderRadius: BorderRadius.circular(12)),
+        child: TextFormField(
+          controller: searchController,
+          onChanged: (a) {
+            callback(a);
+          },
+          cursorColor: Theme.of(context).primaryColor,
+          textInputAction: TextInputAction.search,
+          decoration: InputDecoration(
+            suffix: Padding(
+              padding: const EdgeInsets.only(top: 0, right: 8),
+              child: GestureDetector(
+                onTap: () {
+                  callback("");
+                  searchController.text = "";
+                },
+                child: Icon(
+                  Icons.cancel,
+                  color: Colors.grey,
+                ),
+              ),
+            ),
+            iconColor: Color(0xFF909090),
+            focusColor: Color(0xFF909090),
+            hintText: AppLocalizations.of(context)!.list_search,
+            hintStyle: TextStyle(
+              color: Color(0xFF909090),
+              fontSize: 16,
+            ),
+            prefixIcon: Icon(Icons.search),
+            border: InputBorder.none,
+            enabledBorder: InputBorder.none,
+            focusedBorder: InputBorder.none,
+          ),
+        ),
+      ),
+    );
+  }
+}
