@@ -5,11 +5,12 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class StockFilter extends HookWidget {
   final Function callback;
-  const StockFilter({required this.callback, Key? key}) : super(key: key);
+  final List<int> init;
+  const StockFilter( {required this.init,required this.callback, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final filterOptions = useState<List<int>>([]);
+    final filterOptions = useState<List<int>>(init);
     return Padding(
       padding: const EdgeInsets.only(
         top: 26,
@@ -23,6 +24,7 @@ class StockFilter extends HookWidget {
               width: 24,
             ),
             SingleStockFilter(
+                initChecked: filterOptions.value.contains(0),
                 id: 0,
                 text: AppLocalizations.of(context)!.list_toggle_stocks,
                 callback: (int a) {
@@ -34,6 +36,7 @@ class StockFilter extends HookWidget {
                   callback(filterOptions.value);
                 }),
             SingleStockFilter(
+                initChecked: filterOptions.value.contains(1),
                 id: 1,
                 text: AppLocalizations.of(context)!.list_toggle_etc,
                 callback: (int a) {
@@ -45,29 +48,8 @@ class StockFilter extends HookWidget {
                   callback(filterOptions.value);
                 }),
             SingleStockFilter(
+                initChecked: filterOptions.value.contains(2),
                 id: 2,
-                text: AppLocalizations.of(context)!.list_toggle_etf,
-                callback: (int a) {
-                  if (filterOptions.value.contains(a)) {
-                    filterOptions.value.remove(a);
-                  } else {
-                    filterOptions.value.add(a);
-                  }
-                  callback(filterOptions.value);
-                }),
-            SingleStockFilter(
-                id: 3,
-                text: AppLocalizations.of(context)!.list_toggle_etf,
-                callback: (int a) {
-                  if (filterOptions.value.contains(a)) {
-                    filterOptions.value.remove(a);
-                  } else {
-                    filterOptions.value.add(a);
-                  }
-                  callback(filterOptions.value);
-                }),
-            SingleStockFilter(
-                id: 4,
                 text: AppLocalizations.of(context)!.list_toggle_etf,
                 callback: (int a) {
                   if (filterOptions.value.contains(a)) {

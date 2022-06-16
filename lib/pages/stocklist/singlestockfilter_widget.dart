@@ -4,27 +4,34 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:neo/style/theme.dart';
 
 class SingleStockFilter extends HookWidget {
+  final bool initChecked;
   final String text;
   final int id;
   final Function callback;
   const SingleStockFilter(
-      {required this.id, required this.text, required this.callback, Key? key})
+      {required this.initChecked,
+      required this.id,
+      required this.text,
+      required this.callback,
+      Key? key})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final initCheck = useState(initChecked);
     final selected = useState<bool>(false);
     return Padding(
       padding: const EdgeInsets.only(right: 8),
       child: GestureDetector(
         onTap: () {
           selected.value = !selected.value;
+          initCheck.value = !initCheck.value;
           callback(id);
         },
         child: Container(
           alignment: Alignment.center,
           height: 32,
           width: 84,
-          decoration: selected.value
+          decoration: selected.value || initCheck.value
               ? BoxDecoration(
                   gradient: NeoTheme.of(context)!.primaryGradient,
                   borderRadius: BorderRadius.circular(12))
@@ -36,7 +43,8 @@ class SingleStockFilter extends HookWidget {
           child: Text(
             text,
             style: TextStyle(
-                color: selected.value ? Colors.white : Colors.black,
+                color:
+                    selected.value || initCheck.value ? Colors.white : Colors.black,
                 fontWeight: FontWeight.w600,
                 fontSize: 14),
           ),
