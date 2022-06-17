@@ -148,7 +148,7 @@
     "error_wrong_creds": "Falscher Benutzername oder Passwort",
     "error_server_unreachable": "Server kann nicht erreicht werden",
     "error_generic": "Es ist ein Fehler aufgetreten",
-    "error_duplicate_user_name": "Dieser Nutzername oder Email existiert bereits"
+    "error_duplicate_user_name": "Dieser Nutzername oder Email existiert bereits",
     "bottomnav_home": "Home",
     "bottomnav_port": "Portfolio",
     "bottomnav_trade": "Trade"

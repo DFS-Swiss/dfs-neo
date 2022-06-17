@@ -148,7 +148,7 @@
     "error_wrong_creds": "Incorrect username or password",
     "error_server_unreachable": "Server not reachable",
     "error_generic": "An error occured",
-    "error_duplicate_user_name": "This username or email already exists"
+    "error_duplicate_user_name": "This username or email already exists",
     "bottomnav_home": "Home",
     "bottomnav_port": "Portfolio",
     "bottomnav_trade": "Trade"
