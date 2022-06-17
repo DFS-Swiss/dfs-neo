@@ -10,9 +10,14 @@ import 'package:neo/services/stockdata_service.dart';
 import 'package:neo/types/api/stockdata_bulk_fetch_request.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
 
+import '../service_locator.dart';
+
 const restApiBaseUrl = "https://rest.dfs-api.ch/v1";
 
 class RESTService extends ChangeNotifier {
+  final AuthenticationService _authenticationService =
+      locator<AuthenticationService>();
+
   static RESTService? _instance;
   late Dio dio;
   RESTService._() {
@@ -25,7 +30,8 @@ class RESTService extends ChangeNotifier {
       },
     ));
     DataService.getInstance().registerUserDataHandler("user", getUserData);
-    DataService.getInstance().registerUserDataHandler("investments", getUserAssets);
+    DataService.getInstance()
+        .registerUserDataHandler("investments", getUserAssets);
   }
 
   static RESTService getInstance() {
@@ -33,7 +39,7 @@ class RESTService extends ChangeNotifier {
   }
 
   Future<String> _getCurrentApiKey() async {
-    return AuthenticationService.getInstance().getCurrentApiKey();
+    return _authenticationService.getCurrentApiKey();
   }
 
   Future<dynamic> listSymbols() async {
@@ -157,7 +163,8 @@ class RESTService extends ChangeNotifier {
 
         try {
           data = (response.data["body"]["items"] as List<dynamic>)
-              .map((e) => StockdataDocument.fromMap(e)).toList();
+              .map((e) => StockdataDocument.fromMap(e))
+              .toList();
         } catch (e) {
           throw "Parsing error: ${e.toString()}";
         }
@@ -184,7 +191,8 @@ class RESTService extends ChangeNotifier {
 
         try {
           data = (response.data["body"]["items"] as List<dynamic>)
-              .map((e) => UserassetDatapoint.fromMap(e)).toList();
+              .map((e) => UserassetDatapoint.fromMap(e))
+              .toList();
         } catch (e) {
           throw "Parsing error: ${e.toString()}";
         }

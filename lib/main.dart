@@ -7,10 +7,12 @@ import 'package:neo/enums/auth_state.dart';
 import 'package:neo/hooks/use_auth_state.dart';
 import 'package:neo/pages/authentication/auth_page_wrapper.dart';
 import 'package:neo/pages/navigation/mainnavigation_page.dart';
+import 'package:neo/service_locator.dart';
 import 'package:neo/services/authentication_service.dart';
 import 'package:neo/style/theme.dart';
 
 void main() {
+  setupLocator();
   runApp(const MyApp());
 }
 
@@ -132,7 +134,7 @@ class AuthWrapper extends HookWidget {
     final tryingToReauth = useState(true);
     useEffect(() {
       tryingToReauth.value = true;
-      AuthenticationService.getInstance().tryReauth().then((value) {
+      locator<AuthenticationService>().tryReauth().then((value) {
         tryingToReauth.value = false;
       });
       return;

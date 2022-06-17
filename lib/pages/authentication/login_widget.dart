@@ -5,6 +5,7 @@ import 'package:neo/services/authentication_service.dart';
 import 'package:neo/style/theme.dart';
 import 'package:neo/widgets/branded_button.dart';
 
+import '../../service_locator.dart';
 import '../../widgets/branded_textfield.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -23,7 +24,7 @@ class LoginWidget extends HookWidget {
         error.value = null;
         loading.value = true;
         try {
-          await AuthenticationService.getInstance()
+          await locator<AuthenticationService>()
               .login(userName.value!, password.value!);
         } on CognitoClientException catch (e) {
           if (e.code == "UserNotFoundException") {
