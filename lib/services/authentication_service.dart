@@ -14,7 +14,7 @@ class AuthenticationService extends ChangeNotifier {
   AuthState authState = AuthState.signedOut;
 
   Future<String> getCurrentApiKey() async {
-    if (_cognitoService.isSessionPresent() == false) {
+    if (!_cognitoService.isSessionPresent()) {
       throw "User not authenticated";
     }
     if (_cognitoService.isIdTokenExpired()) {
