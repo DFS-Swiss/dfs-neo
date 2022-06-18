@@ -1,4 +1,3 @@
-import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:neo/service_locator.dart';
