@@ -13,6 +13,22 @@ class CognitoService {
     return _session;
   }
 
+  bool isSessionPresent() {
+    return _session != null;
+  }
+
+  bool isIdTokenExpired() {
+    return _getIdTokenExpiration() < DateTime.now().microsecondsSinceEpoch;
+  }
+
+  int _getIdTokenExpiration() {
+    return _session!.idToken.getExpiration();
+  }
+
+  String? getIdJwtToken() {
+    return _session!.getIdToken().getJwtToken();
+  }
+
   setSession(CognitoUserSession? userSession) {
     _session = userSession;
   }
@@ -23,6 +39,10 @@ class CognitoService {
 
   getCognitoUser() {
     return _cognitoUser;
+  }
+
+  refreshSession() {
+    _cognitoUser!.refreshSession(_session!.refreshToken!);
   }
 
   Future<CognitoUser?> getCurrentPoolUser() async {

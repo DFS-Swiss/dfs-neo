@@ -1,7 +1,9 @@
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:neo/service_locator.dart';
 import 'package:neo/services/authentication_service.dart';
+import 'package:neo/services/cognito_service.dart';
 
 import '../helpers/test_helpers.dart';
 
@@ -13,8 +15,22 @@ void main() {
     test('getCurrrentApiKey_sessionNull_throwsException', () async {
       // arrange
       var authServiceInstance = AuthenticationService();
-      var cognitoService = getAndRegisterCognitoService();
-      when(cognitoService.getSession()).thenReturn(null);
+      var cognitoService = locator<CognitoService>();
+      when(cognitoService.isSessionPresent()).thenReturn(false);
+
+      // act
+      // assert
+      expect(await authServiceInstance.getCurrentApiKey(),
+          throwsA("Could not reresh session; Missing user or session object"));
+    });
+
+    test('getCurrrentApiKey_sessionCouldNotBeRestored_throwsException',
+        () async {
+      // arrange
+      var authServiceInstance = AuthenticationService();
+      var cognitoService = locator<CognitoService>();
+      when(cognitoService.isSessionPresent()).thenReturn(true);
+      when(cognitoService.isIdTokenExpired()).thenReturn(true);
 
       // act
       // assert
@@ -22,22 +38,13 @@ void main() {
           throwsA("User not authenticated"));
     });
 
-    test('getCurrrentApiKey_sessionCouldNotBeRestored_throwsException',
-        () async {
-      // To be tested
-    });
-
     test('getCurrrentApiKey_sessionActive_returnsJwtToken', () async {
       // arrange
       var authServiceInstance = AuthenticationService();
-      var cognitoService = getAndRegisterCognitoService();
-      var mockIdToken = getAndRegisterCognitoIdToken();
-      when(mockIdToken.getExpiration())
-          .thenReturn(DateTime.now().microsecondsSinceEpoch - 100);
-      when(mockIdToken.jwtToken).thenReturn("testToken");
-      CognitoUserSession session =
-          CognitoUserSession(mockIdToken, CognitoAccessToken("1234567890"));
-      when(cognitoService.getSession()).thenReturn(session);
+      var cognitoService = locator<CognitoService>();
+      when(cognitoService.isSessionPresent()).thenReturn(true);
+      when(cognitoService.isIdTokenExpired()).thenReturn(false);
+      when(cognitoService.getIdJwtToken()).thenReturn("testToken");
 
       // act
       var apiKey = await authServiceInstance.getCurrentApiKey();

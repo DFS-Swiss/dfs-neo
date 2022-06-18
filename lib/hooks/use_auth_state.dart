@@ -5,17 +5,17 @@ import 'package:neo/services/authentication_service.dart';
 import '../service_locator.dart';
 
 AuthState useAuthState() {
-  final AuthenticationService _authenticationService =
+  final AuthenticationService authenticationService =
       locator<AuthenticationService>();
-  final state = useState(_authenticationService.authState);
+  final state = useState(authenticationService.authState);
   useEffect(() {
     listen() {
-      state.value = _authenticationService.authState;
+      state.value = authenticationService.authState;
     }
 
-    _authenticationService.addListener(listen);
+    authenticationService.addListener(listen);
     return () {
-      _authenticationService.removeListener(listen);
+      authenticationService.removeListener(listen);
     };
   }, ["_"]);
   return state.value;

@@ -14,17 +14,16 @@ class AuthenticationService extends ChangeNotifier {
   AuthState authState = AuthState.signedOut;
 
   Future<String> getCurrentApiKey() async {
-    if (_cognitoService.getSession() == null) {
+    if (_cognitoService.isSessionPresent() == false) {
       throw "User not authenticated";
     }
-    if (_cognitoService.getSession()!.idToken.getExpiration() <
-        DateTime.now().microsecondsSinceEpoch) {
+    if (_cognitoService.isIdTokenExpired()) {
       if (!await tryRefreshingSession()) {
         throw "Session is expired and could not be restored";
       }
     }
-    log(_cognitoService.getSession()!.getIdToken().jwtToken!);
-    return _cognitoService.getSession()!.getIdToken().jwtToken!;
+    log(_cognitoService.getIdJwtToken()!);
+    return _cognitoService.getIdJwtToken()!;
   }
 
   login(String userName, String password) async {
@@ -133,12 +132,10 @@ class AuthenticationService extends ChangeNotifier {
   }
 
   Future<bool> tryRefreshingSession() async {
-    if (_cognitoService.getSession() != null &&
+    if (_cognitoService.isSessionPresent() &&
         _cognitoService.getCognitoUser() != null) {
       try {
-        _cognitoService
-            .getCognitoUser()!
-            .refreshSession(_cognitoService.getSession()!.refreshToken!);
+        _cognitoService.refreshSession();
         return true;
       } catch (e) {
         print(e);
