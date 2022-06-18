@@ -19,8 +19,8 @@ void main() {
 
       // act
       // assert
-      expect(await authServiceInstance.getCurrentApiKey(),
-          throwsA("Could not reresh session; Missing user or session object"));
+      expect(() async => await authServiceInstance.getCurrentApiKey(),
+          throwsA("User not authenticated"));
     });
 
     test('getCurrrentApiKey_sessionCouldNotBeRestored_throwsException',
@@ -33,8 +33,8 @@ void main() {
 
       // act
       // assert
-      expect(await authServiceInstance.getCurrentApiKey(),
-          throwsA("User not authenticated"));
+      expect(() async => await authServiceInstance.getCurrentApiKey(),
+          throwsA("Could not reresh session; Missing user or session object"));
     });
 
     test('getCurrrentApiKey_sessionActive_returnsJwtToken', () async {
