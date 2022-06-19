@@ -23,13 +23,24 @@ import 'package:neo/services/cognito_service.dart' as _i2;
 /// See the documentation for Mockito's code generation for more information.
 class MockCognitoService extends _i1.Mock implements _i2.CognitoService {
   @override
+  bool isIdTokenExpired() =>
+      (super.noSuchMethod(Invocation.method(#isIdTokenExpired, []),
+          returnValue: false) as bool);
+  @override
   bool isSessionPresent() =>
       (super.noSuchMethod(Invocation.method(#isSessionPresent, []),
           returnValue: false) as bool);
   @override
-  bool isIdTokenExpired() =>
-      (super.noSuchMethod(Invocation.method(#isIdTokenExpired, []),
+  dynamic createAndAuthenticateUser(String? username, String? password) =>
+      super.noSuchMethod(
+          Invocation.method(#createAndAuthenticateUser, [username, password]));
+  @override
+  bool isUserPresent() =>
+      (super.noSuchMethod(Invocation.method(#isUserPresent, []),
           returnValue: false) as bool);
+  @override
+  dynamic sendNewPasswordRequired(String? newPassword) => super
+      .noSuchMethod(Invocation.method(#sendNewPasswordRequired, [newPassword]));
   @override
   _i3.Future<_i4.CognitoUser?> getCurrentPoolUser() =>
       (super.noSuchMethod(Invocation.method(#getCurrentPoolUser, []),

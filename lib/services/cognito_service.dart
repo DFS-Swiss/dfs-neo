@@ -1,4 +1,5 @@
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CognitoService {
   static final _userPool = CognitoUserPool(
@@ -9,13 +10,7 @@ class CognitoService {
   CognitoUserSession? _session;
   CognitoUser? _cognitoUser;
 
-  CognitoUserSession? getSession() {
-    return _session;
-  }
-
-  bool isSessionPresent() {
-    return _session != null;
-  }
+  // Token
 
   bool isIdTokenExpired() {
     return _getIdTokenExpiration() < DateTime.now().microsecondsSinceEpoch;
@@ -29,8 +24,43 @@ class CognitoService {
     return _session!.getIdToken().getJwtToken();
   }
 
+  String? getAccesTokenJwtToken() {
+    return _session!.getAccessToken().getJwtToken();
+  }
+
+  String? getRefreshToken() {
+    return _session!.refreshToken!.getToken()!;
+  }
+
+  // Session
+
+  bool isSessionPresent() {
+    return _session != null;
+  }
+
   setSession(CognitoUserSession? userSession) {
     _session = userSession;
+  }
+
+  setRefreshSession() async {
+    final prefs = await SharedPreferences.getInstance();
+    _session = await _cognitoUser!
+        .refreshSession(CognitoRefreshToken(prefs.getString("refresh_token")));
+  }
+
+  refreshSession() {
+    _cognitoUser!.refreshSession(_session!.refreshToken!);
+  }
+
+  // User
+
+  createAndAuthenticateUser(String username, String password) async {
+    createCognitoUser(username);
+    final authDetails = AuthenticationDetails(
+      username: username,
+      password: password,
+    );
+    setSession(await _cognitoUser!.authenticateUser(authDetails));
   }
 
   createCognitoUser(String? userName) {
@@ -41,11 +71,23 @@ class CognitoService {
     return _cognitoUser;
   }
 
-  refreshSession() {
-    _cognitoUser!.refreshSession(_session!.refreshToken!);
+  bool isUserPresent() {
+    return _cognitoUser != null;
+  }
+
+  sendNewPasswordRequired(String newPassword) async {
+    await _cognitoUser!.sendNewPasswordRequiredAnswer(newPassword);
+  }
+
+  resendConfirmationCode() async {
+    await _cognitoUser!.resendConfirmationCode();
   }
 
   Future<CognitoUser?> getCurrentPoolUser() async {
     return await _userPool.getCurrentUser();
+  }
+
+  logoutCurrentPoolUser() async {
+    await (await getCurrentPoolUser())!.signOut();
   }
 }
