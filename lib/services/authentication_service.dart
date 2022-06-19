@@ -106,7 +106,7 @@ class AuthenticationService extends ChangeNotifier {
   Future confirmEmail(String code) async {
     if (authState == AuthState.verifyAccount &&
         _cognitoService.isUserPresent()) {
-      await _cognitoService.getCognitoUser()!.confirmRegistration(code);
+      await _cognitoService.confirmRegistration(code);
       authState = AuthState.signedOut;
       notifyListeners();
     }

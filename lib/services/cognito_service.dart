@@ -67,8 +67,8 @@ class CognitoService {
     _cognitoUser = CognitoUser(userName, _userPool);
   }
 
-  getCognitoUser() {
-    return _cognitoUser;
+  confirmRegistration(String code) async {
+    await _cognitoUser!.confirmRegistration(code);
   }
 
   bool isUserPresent() {
