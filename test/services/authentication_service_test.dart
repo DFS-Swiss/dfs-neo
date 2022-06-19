@@ -33,6 +33,7 @@ void main() {
       var cognitoService = locator<CognitoService>();
       when(cognitoService.isSessionPresent()).thenReturn(true);
       when(cognitoService.isIdTokenExpired()).thenReturn(true);
+      when(cognitoService.isUserPresent()).thenReturn(false);
 
       // act
       // assert
