@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:neo/services/authentication_service.dart';
 import 'package:neo/style/theme.dart';
 
+import '../../service_locator.dart';
 import '../../widgets/branded_button.dart';
 import '../../widgets/branded_textfield.dart';
 
@@ -20,7 +21,7 @@ class VerifyAccountWidget extends HookWidget {
       if (code.value != null) {
         loading.value = true;
         try {
-          await AuthenticationService.getInstance().confirmEmail(code.value!);
+          await locator<AuthenticationService>().confirmEmail(code.value!);
         } catch (e) {
           error.value = AppLocalizations.of(context)!.error_generic;
         }
@@ -30,7 +31,7 @@ class VerifyAccountWidget extends HookWidget {
 
     handleResend() async {
       loading.value = true;
-      await AuthenticationService.getInstance().resendConfirmationCode();
+      await locator<AuthenticationService>().resendConfirmationCode();
       loading.value = false;
     }
 
