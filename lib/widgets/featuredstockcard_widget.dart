@@ -15,19 +15,8 @@ class FeaturedStockCard extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final chartData = useState<List<FlSpot>>([]);
     final stockData = useStockdata(token, StockdataInterval.twentyFourHours);
     final symbolInfo = useSymbolInfo(token);
-    useEffect(() {
-      if (stockData.loading == false) {
-        chartData.value = stockData.data!
-            .map((e) =>
-                FlSpot(e.time.millisecondsSinceEpoch.toDouble(), e.price))
-            .toList();
-      }
-
-      return;
-    }, ["_", stockData.loading]);
 
     return stockData.loading == false && symbolInfo.loading == false
         ? Container(
@@ -101,7 +90,7 @@ class FeaturedStockCard extends HookWidget {
                               height: 3,
                             ),
                             Text(
-                              "\$${FormattingService.roundDouble(stockData.data!.last.price, 2).toString()}",
+                              "\$${FormattingService.roundDouble(stockData.data!.first.price, 2).toString()}",
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
@@ -109,11 +98,11 @@ class FeaturedStockCard extends HookWidget {
                             ),
                             Expanded(child: Container()),
                             Text(
-                              "${FormattingService.calculatepercent(chartData.value.first.y, chartData.value.last.y)}%",
+                              "${FormattingService.calculatepercent(stockData.data!.first.price, stockData.data!.last.price)}%",
                               style: TextStyle(
                                 fontSize: 12,
-                                color: chartData.value.first.y >
-                                        chartData.value.last.y
+                                color: stockData.data!.first.price >
+                                        stockData.data!.last.price
                                     ? NeoTheme.of(context)!.positiveColor
                                     : NeoTheme.of(context)!.negativeColor,
                                 fontWeight: FontWeight.w400,
@@ -135,12 +124,18 @@ class FeaturedStockCard extends HookWidget {
                   child: Padding(
                     padding:
                         const EdgeInsets.only(left: 12, right: 12, bottom: 15),
-                    child: LineChart(preview(
-                      chartData.value,
-                      chartData.value.first.y < chartData.value.last.y
-                          ? true
-                          : false,
-                    )),
+                    child: LineChart(
+                      preview(
+                        stockData.data!
+                            .map((e) => FlSpot(
+                                e.time.millisecondsSinceEpoch.toDouble(),
+                                e.price))
+                            .toList(),
+                        stockData.data!.first.price < stockData.data!.last.price
+                            ? true
+                            : false,
+                      ),
+                    ),
                   ),
                 ),
               ],

@@ -7,15 +7,14 @@ import 'package:neo/services/formatting_service.dart';
 import 'package:neo/style/theme.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
 import 'package:neo/utils/chart_conversion.dart';
-
+import 'package:neo/widgets/small_change_indicator.dart';
 
 import 'package:shimmer/shimmer.dart';
 
 class TradableStockCard extends HookWidget {
   final String token;
 
-  const TradableStockCard({required this.token, Key? key})
-      : super(key: key);
+  const TradableStockCard({required this.token, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -133,38 +132,20 @@ class TradableStockCard extends HookWidget {
                               height: 3,
                             ),
                             Text(
-                              "\$${FormattingService.roundDouble(stockData.data!.last.price, 2).toString()}",
+                              "\$${FormattingService.roundDouble(stockData.data!.first.price, 2).toString()}",
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
                             Expanded(child: Container()),
-                            Row(
-                              children: [
-                                Icon(
-                                  chartData.value.first.y >
-                                          chartData.value.last.y
-                                      ? Icons.arrow_drop_up_outlined
-                                      : Icons.arrow_drop_down_outlined,
-                                  size: 25,
-                                  color: chartData.value.first.y >
-                                          chartData.value.last.y
-                                      ? NeoTheme.of(context)!.positiveColor
-                                      : NeoTheme.of(context)!.negativeColor,
-                                ),
-                                Text(
-                                  "${FormattingService.calculatepercent(chartData.value.first.y, chartData.value.last.y)}%",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: chartData.value.first.y >
-                                            chartData.value.last.y
-                                        ? NeoTheme.of(context)!.positiveColor
-                                        : NeoTheme.of(context)!.negativeColor,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                              ],
+                            SmallDevelopmentIndicator(
+                              positive: chartData.value.first.y >
+                                  chartData.value.last.y,
+                              changePercentage:
+                                  FormattingService.calculatepercent(
+                                      chartData.value.first.y,
+                                      chartData.value.last.y),
                             ),
                             SizedBox(
                               height: 3,

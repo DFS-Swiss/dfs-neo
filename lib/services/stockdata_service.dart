@@ -89,8 +89,20 @@ class StockdataService {
     final Map<String, Map<StockdataInterval, List<StockdataDatapoint>>>
         tempMap = {};
     for (var singleDatapoint in castedData) {
+      var existingData = [];
+      if (_dataStore.value[singleDatapoint.symbol] != null &&
+          _dataStore.value[singleDatapoint.symbol]![
+                  StockdataInterval.twentyFourHours] !=
+              null) {
+        existingData = _dataStore
+            .value[singleDatapoint.symbol]![StockdataInterval.twentyFourHours]!
+            .getSorted();
+      }
+
       tempMap[singleDatapoint.symbol] = {
-        StockdataInterval.twentyFourHours: [singleDatapoint]
+        StockdataInterval.twentyFourHours: existingData.isEmpty
+            ? [singleDatapoint]
+            : [...existingData, singleDatapoint]
       };
     }
     updateData(tempMap);
@@ -102,22 +114,31 @@ class StockdataService {
     final tempStore = _dataStore.value;
     for (var singleSymbol in streamValue.entries) {
       if (tempStore[singleSymbol.key] == null) {
-        tempStore[singleSymbol.key] = singleSymbol.value.map(
-          (key, value) => MapEntry(
+        tempStore[singleSymbol.key] = singleSymbol.value.map((key, value) {
+          if (value.length < 2) {
+            print("Error in update detected");
+          }
+          return MapEntry(
             key,
             StockdataStorageContainer(
               key,
               singleSymbol.key,
               value,
             ),
-          ),
-        );
+          );
+        });
       } else {
         for (var singleInterval in singleSymbol.value.entries) {
           if (tempStore[singleSymbol.key]![singleInterval.key] != null) {
+            if (singleInterval.value.length < 2) {
+              print("Single entry detected, could be fine though");
+            }
             tempStore[singleSymbol.key]![singleInterval.key]!
                 .merge(singleInterval.value);
           } else {
+            if (singleInterval.value.length < 2) {
+              print("Error in update detected");
+            }
             tempStore[singleSymbol.key]![singleInterval.key] =
                 StockdataStorageContainer(
               singleInterval.key,

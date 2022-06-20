@@ -3,13 +3,13 @@ import 'dart:convert';
 class UserassetDatapoint {
   final double tokenAmmount;
   final String symbol;
-  final double currentPrice;
+  final double currentValue;
   final DateTime time;
   final double difference;
   UserassetDatapoint({
     required this.tokenAmmount,
     required this.symbol,
-    required this.currentPrice,
+    required this.currentValue,
     required this.time,
     required this.difference,
   });
@@ -17,36 +17,34 @@ class UserassetDatapoint {
   UserassetDatapoint copyWith({
     double? tokenAmmount,
     String? symbol,
-    double? currentPrice,
+    double? currentValue,
     DateTime? time,
     double? difference,
   }) {
     return UserassetDatapoint(
       tokenAmmount: tokenAmmount ?? this.tokenAmmount,
       symbol: symbol ?? this.symbol,
-      currentPrice: currentPrice ?? this.currentPrice,
+      currentValue: currentValue ?? this.currentValue,
       time: time ?? this.time,
       difference: difference ?? this.difference,
     );
   }
 
   Map<String, dynamic> toMap() {
-    final result = <String, dynamic>{};
-  
-    result.addAll({'tokenAmmount': tokenAmmount});
-    result.addAll({'symbol': symbol});
-    result.addAll({'currentPrice': currentPrice});
-    result.addAll({'time': time.millisecondsSinceEpoch});
-    result.addAll({'difference': difference});
-  
-    return result;
+    return {
+      'tokenAmmount': tokenAmmount,
+      'symbol': symbol,
+      'currentValue': currentValue,
+      'time': time.millisecondsSinceEpoch,
+      'difference': difference,
+    };
   }
 
   factory UserassetDatapoint.fromMap(Map<String, dynamic> map) {
     return UserassetDatapoint(
       tokenAmmount: map['tokenAmmount']?.toDouble() ?? 0.0,
       symbol: map['symbol'] ?? '',
-      currentPrice: map['currentPrice']?.toDouble() ?? 0.0,
+      currentValue: map['currentValue']?.toDouble() ?? 0.0,
       time: DateTime.parse(map['time']),
       difference: map['difference']?.toDouble() ?? 0.0,
     );
@@ -59,27 +57,27 @@ class UserassetDatapoint {
 
   @override
   String toString() {
-    return 'UserassetDatapoint(tokenAmmount: $tokenAmmount, symbol: $symbol, currentPrice: $currentPrice, time: $time, difference: $difference)';
+    return 'UserassetDatapoint(tokenAmmount: $tokenAmmount, symbol: $symbol, currentValue: $currentValue, time: $time, difference: $difference)';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
+
     return other is UserassetDatapoint &&
-      other.tokenAmmount == tokenAmmount &&
-      other.symbol == symbol &&
-      other.currentPrice == currentPrice &&
-      other.time == time &&
-      other.difference == difference;
+        other.tokenAmmount == tokenAmmount &&
+        other.symbol == symbol &&
+        other.currentValue == currentValue &&
+        other.time == time &&
+        other.difference == difference;
   }
 
   @override
   int get hashCode {
     return tokenAmmount.hashCode ^
-      symbol.hashCode ^
-      currentPrice.hashCode ^
-      time.hashCode ^
-      difference.hashCode;
+        symbol.hashCode ^
+        currentValue.hashCode ^
+        time.hashCode ^
+        difference.hashCode;
   }
 }

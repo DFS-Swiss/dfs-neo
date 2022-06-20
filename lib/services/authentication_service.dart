@@ -27,12 +27,11 @@ class AuthenticationService extends ChangeNotifier {
       throw "User not authenticated";
     }
     if (session!.idToken.getExpiration() <
-        DateTime.now().microsecondsSinceEpoch) {
+        (DateTime.now().microsecondsSinceEpoch / 1000000).floor()) {
       if (!await tryRefreshingSession()) {
         throw "Session is expired and could not be restored";
       }
     }
-    log(session!.getIdToken().jwtToken!);
     return session!.getIdToken().jwtToken!;
   }
 
@@ -77,15 +76,14 @@ class AuthenticationService extends ChangeNotifier {
       // handle CUSTOM_CHALLENGE challenge
     } on CognitoUserConfirmationNecessaryException catch (e) {
       print(e);
-            authState = AuthState.verifyAccount;
+      authState = AuthState.verifyAccount;
       notifyListeners();
       rethrow;
-
     } on CognitoClientException catch (e) {
       print(e);
       rethrow;
       // handle Wrong Username and Password and Cognito Client
-      
+
     } catch (e) {
       print(e);
       rethrow;
@@ -136,7 +134,8 @@ class AuthenticationService extends ChangeNotifier {
   Future<bool> tryRefreshingSession() async {
     if (session != null && cognitoUser != null) {
       try {
-        cognitoUser!.refreshSession(session!.refreshToken!);
+        session = await cognitoUser!.refreshSession(session!.refreshToken!);
+        log(session!.getIdToken().jwtToken!);
         return true;
       } catch (e) {
         print(e);
@@ -158,6 +157,7 @@ class AuthenticationService extends ChangeNotifier {
             CognitoRefreshToken(prefs.getString("refresh_token")));
         authState = AuthState.signedIn;
         notifyListeners();
+        log(session!.getIdToken().jwtToken!);
         return true;
       } catch (e) {
         return false;
