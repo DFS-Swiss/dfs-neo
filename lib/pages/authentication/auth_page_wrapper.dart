@@ -9,6 +9,8 @@ import 'package:neo/pages/authentication/verify_account_widget.dart';
 import 'package:neo/pages/tutorial/backgroundgraphic_widget.dart';
 import 'package:neo/style/theme.dart';
 
+import '../../constants/ui.dart';
+
 enum AuthPageState {
   login,
   register,
@@ -25,13 +27,13 @@ class AuthPageWrapper extends HookWidget {
     double getCurrentContainerHeight(BuildContext context) {
       double contentHeight;
       if (authState == AuthState.newPasswordRequired) {
-        contentHeight = 420;
+        contentHeight = AUTH_NEWPW_CONTAINTER_HEIGHT;
       } else if (authState == AuthState.verifyAccount) {
-        contentHeight = 310;
+        contentHeight = AUTH_VERIFYACC_CONTAINTER_HEIGHT;
       } else if (state.value == AuthPageState.login) {
-        contentHeight = 380;
+        contentHeight = AUTH_LOGIN_CONTAINTER_HEIGHT;
       } else if (state.value == AuthPageState.register) {
-        contentHeight = 440;
+        contentHeight = AUTH_REGISTER_CONTAINTER_HEIGHT;
       } else {
         contentHeight = 0;
       }
