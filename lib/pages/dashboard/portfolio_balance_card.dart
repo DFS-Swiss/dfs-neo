@@ -99,7 +99,7 @@ class PortfolioBalanceCard extends HookWidget {
                 SizedBox(
                   height: 19.5,
                 ),
-                Container(
+                SizedBox(
                   height: 108,
                   child: PortfolioDevelopmentChart(data: balanceHistory.data!),
                 ),

@@ -1,5 +1,4 @@
 import 'package:neo/models/stockdata_datapoint.dart';
-import 'package:neo/models/stockdatadocument.dart';
 import 'package:neo/models/userasset_datapoint.dart';
 import 'package:neo/services/data_service.dart';
 import 'package:neo/services/stockdata_service.dart';
@@ -235,103 +234,5 @@ class PortfolioValueUtil {
     List<UserBalanceDatapoint> historicData =
         await DataService.getInstance().getUserBalanceHistory().first;
     return historicData;
-  }
-
-  Future<List<PriceDevelopmentDatapoint>> _getValueHistoryForSymbol(
-      String symbol,
-      StockdataInterval interval,
-      List<UserassetDatapoint> investments) async {
-    List<PriceDevelopmentDatapoint> output = [];
-    //await Future.delayed(Duration(milliseconds: 500));
-
-    List<StockdataDatapoint> historicData =
-        await _queryHistoricStockData(symbol, interval);
-
-    List<PriceDevelopmentDatapoint> singleHistory = historicData
-        .map((e) => PriceDevelopmentDatapoint(time: e.time, price: e.price))
-        .toList();
-
-    singleHistory.sort(
-      (a, b) => a.time.compareTo(b.time),
-    );
-
-    //Wir müssen jetzt die Datenpunkte in dem singleHistory Dokument entsprechend des hinterlegten Amounts in investments manipulieren
-    investments.sort(
-      (a, b) => a.time.millisecondsSinceEpoch
-          .compareTo(b.time.millisecondsSinceEpoch),
-    );
-
-    for (var singleDP in singleHistory) {
-      //wir Laufden jeden Datenpunkt durch und schauen, von welcher Manipulation er betroffen seien muss
-      if (singleDP.time.millisecondsSinceEpoch <
-          investments.first.time.millisecondsSinceEpoch) {
-        if (investments.first.difference != investments.first.tokenAmmount) {
-          //Der Nutzer hatte die Aktie schon besessen bevor das erste Investment-Dokument für diesen Zeitraum aufgezeichnet wurde. D.h. dass die Aktie gewichtet werden muss mit tokenAmount-Differenz zu der jeweilgien Zeit
-          output.add(
-            PriceDevelopmentDatapoint(
-              time: singleDP.time,
-              price: singleDP.price *
-                  (investments.first.tokenAmmount -
-                      investments.first.difference),
-            ),
-          );
-        } else {
-          //Der Nutzer hat die Aktie zu diesem Zeitpunkt nicht besessen, somit wird dieser Datenpunkt ignoriert
-          output.add(
-            PriceDevelopmentDatapoint(
-              time: singleDP.time,
-              price: 0,
-            ),
-          );
-        }
-      } else {
-        if (investments.length > 1) {
-          //Gibt es überhaupt noch ein neueres Invesment als das aktuelle?
-          //Falls ja
-          if (singleDP.time.millisecondsSinceEpoch <
-              investments[1].time.millisecondsSinceEpoch) {
-            //Wir sind jetzt zwischen dem ititalen Kauf und dem nächsten Investment Dokument angelangt
-            //In dieser Zeitspanne gewichten wir alle Dokumente mit dem Amount des initialen Kaufs
-            output.add(
-              PriceDevelopmentDatapoint(
-                time: singleDP.time,
-                price: singleDP.price * (investments.first.tokenAmmount),
-              ),
-            );
-          } else {
-            //Wir sind jetzt an einem Zeitpunkt hinter dem ersten Investmentdokument des Zeitraums angekommen. Nun muss geprüft werden ob es ein neueres gibt
-
-            if (investments.length == 1) {
-              //Wenn es KEIN aktuelleres Investmentdokument gibt, bedeutet dass das der Nutzer die Aktie nicht weiter getradet hat und sie kann mit der Menge des letzten Dokumentes gewichtet werden
-              output.add(
-                PriceDevelopmentDatapoint(
-                  time: singleDP.time,
-                  price: singleDP.price * (investments.first.tokenAmmount),
-                ),
-              );
-            } else if (investments.length > 1) {
-              //Es gibt ein aktuelleres Datenelement, also muss das erste gelöscht werden und die aktuellen Datenpunkte mit dem Amount im "neuen ersten" Dokument gewichtet werden
-              investments.removeAt(0);
-              output.add(
-                PriceDevelopmentDatapoint(
-                  time: singleDP.time,
-                  price: singleDP.price * (investments.first.tokenAmmount),
-                ),
-              );
-            }
-          }
-        } else {
-          //Falls nein bewerten wir jetzt alle restlichen Datenpunkte mit dem Amount des aktuellsten Investmentdokuments
-          output.add(
-            PriceDevelopmentDatapoint(
-              time: singleDP.time,
-              price: singleDP.price * (investments.first.tokenAmmount),
-            ),
-          );
-        }
-      }
-    }
-    print(output);
-    return output;
   }
 }

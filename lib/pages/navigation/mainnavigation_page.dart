@@ -1,12 +1,9 @@
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:neo/pages/dashboard/dashboard_page.dart';
 import 'package:neo/pages/stocklist/stocklist_page.dart';
-import 'package:neo/services/portfoliovalue_service.dart';
 import 'package:neo/services/websocket/websocket_service.dart';
-import 'package:neo/utils/chart_conversion.dart';
 
 class MainNavigation extends HookWidget {
   const MainNavigation({Key? key}) : super(key: key);
@@ -14,8 +11,6 @@ class MainNavigation extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final currentPage = useState<int>(0);
-    //TODO: Remove and move to appropiate sub page
-    final demoGraphic = useState<List<FlSpot>>([]);
     useEffect(() {
       WebsocketService.getInstance().init();
       return;
