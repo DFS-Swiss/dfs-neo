@@ -6,28 +6,30 @@ class UserassetDatapoint {
   final double currentValue;
   final DateTime time;
   final double difference;
+  final String id;
   UserassetDatapoint({
     required this.tokenAmmount,
     required this.symbol,
     required this.currentValue,
     required this.time,
     required this.difference,
+    required this.id,
   });
 
-  UserassetDatapoint copyWith({
-    double? tokenAmmount,
-    String? symbol,
-    double? currentValue,
-    DateTime? time,
-    double? difference,
-  }) {
+  UserassetDatapoint copyWith(
+      {double? tokenAmmount,
+      String? symbol,
+      double? currentValue,
+      DateTime? time,
+      double? difference,
+      String? id}) {
     return UserassetDatapoint(
-      tokenAmmount: tokenAmmount ?? this.tokenAmmount,
-      symbol: symbol ?? this.symbol,
-      currentValue: currentValue ?? this.currentValue,
-      time: time ?? this.time,
-      difference: difference ?? this.difference,
-    );
+        tokenAmmount: tokenAmmount ?? this.tokenAmmount,
+        symbol: symbol ?? this.symbol,
+        currentValue: currentValue ?? this.currentValue,
+        time: time ?? this.time,
+        difference: difference ?? this.difference,
+        id: id ?? this.id);
   }
 
   Map<String, dynamic> toMap() {
@@ -47,6 +49,7 @@ class UserassetDatapoint {
       currentValue: map['currentValue']?.toDouble() ?? 0.0,
       time: DateTime.parse(map['time']),
       difference: map['difference']?.toDouble() ?? 0.0,
+      id: map['_id'],
     );
   }
 

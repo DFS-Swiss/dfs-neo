@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:neo/models/stockdata_datapoint.dart';
 import 'package:neo/services/rest_service.dart';
 import 'package:neo/types/api/stockdata_bulk_fetch_request.dart';
@@ -5,7 +6,7 @@ import 'package:neo/types/stockdata_interval_enum.dart';
 import 'package:neo/types/stockdata_storage_container.dart';
 import 'package:rxdart/rxdart.dart';
 
-class StockdataService {
+class StockdataService extends ChangeNotifier {
   static StockdataService? _instance;
   static StockdataService getInstance() {
     return _instance ??= StockdataService._();
@@ -98,14 +99,15 @@ class StockdataService {
             .value[singleDatapoint.symbol]![StockdataInterval.twentyFourHours]!
             .getSorted();
       }
-
-      tempMap[singleDatapoint.symbol] = {
-        StockdataInterval.twentyFourHours: existingData.isEmpty
-            ? [singleDatapoint]
-            : [...existingData, singleDatapoint]
-      };
+      if (existingData.isNotEmpty) {
+        tempMap[singleDatapoint.symbol] = {
+          StockdataInterval.twentyFourHours: [...existingData, singleDatapoint]
+        };
+      }
     }
-    updateData(tempMap);
+    if (tempMap.isNotEmpty) {
+      updateData(tempMap);
+    }
   }
 
   updateData(
@@ -150,6 +152,7 @@ class StockdataService {
       }
     }
     _dataStore.add(tempStore);
+    notifyListeners();
   }
 
   propagateError(

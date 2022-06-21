@@ -29,8 +29,8 @@ class RESTService extends ChangeNotifier {
     DataService.getInstance().registerUserDataHandler("user", [getUserData]);
     DataService.getInstance().registerUserDataHandler(
         "investments", [getUserAssets, getUserAssetsHistory]);
-    DataService.getInstance()
-        .registerUserDataHandler("balances", [getUserBalanceHistory]);
+    DataService.getInstance().registerUserDataHandler(
+        "balances", [getUserBalanceHistory, getBalance]);
   }
 
   static RESTService getInstance() {
@@ -271,6 +271,32 @@ class RESTService extends ChangeNotifier {
       DataService.getInstance()
           .dataUpdateStream
           .addError({"key": "balance/history", "value": e});
+      rethrow;
+    }
+  }
+
+  Future<UserBalanceDatapoint> getBalance() async {
+    try {
+      final response = await dio.get("/user/balance");
+      if (response.statusCode.toString().startsWith("2")) {
+        UserBalanceDatapoint data;
+
+        try {
+          data = UserBalanceDatapoint.fromMap(response.data["body"]["item"]);
+        } catch (e) {
+          throw "Parsing error: ${e.toString()}";
+        }
+        DataService.getInstance().dataUpdateStream.add(
+          {"key": "balance", "value": data},
+        );
+        return data;
+      } else {
+        throw "Unknown case: ${response.toString()}";
+      }
+    } catch (e) {
+      DataService.getInstance()
+          .dataUpdateStream
+          .addError({"key": "balance", "value": e});
       rethrow;
     }
   }

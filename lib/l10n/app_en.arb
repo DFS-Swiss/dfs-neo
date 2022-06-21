@@ -145,5 +145,7 @@
     "error_generic": "An error occured",
     "bottomnav_home": "Home",
     "bottomnav_port": "Portfolio",
-    "bottomnav_trade": "Trade"
+    "bottomnav_trade": "Trade",
+    "order_coming_soon": "Orders coming soon...",
+    "no_investments": "No investments"
 }

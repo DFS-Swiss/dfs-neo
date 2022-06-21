@@ -78,7 +78,9 @@ class PortfolioBalanceCard extends HookWidget {
                               width: 5,
                             ),
                             SmallDevelopmentIndicator(
-                              positive: true,
+                              positive:
+                                  balanceHistory.data!.inAssets.first.price >
+                                      balanceHistory.data!.inAssets.last.price,
                               changePercentage: balanceHistory
                                       .data!.hasNoInvestments
                                   ? 0

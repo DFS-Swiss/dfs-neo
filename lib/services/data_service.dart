@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:neo/models/stockdatadocument.dart';
 import 'package:neo/models/user_model.dart';
 import 'package:neo/models/userasset_datapoint.dart';
@@ -7,7 +8,7 @@ import 'package:rxdart/subjects.dart';
 
 import '../models/user_balance_datapoint.dart';
 
-class DataService {
+class DataService extends ChangeNotifier {
   DataService._();
   static DataService? _instance;
   static DataService getInstance() {
@@ -23,6 +24,7 @@ class DataService {
   }
 
   handleUserDataUpdate(String message) {
+    print(message);
     final Map<String, dynamic> json = JsonDecoder().convert(message);
     final entity = json["entity"];
     if (_userDataHandlerRegister[entity] != null) {
@@ -32,6 +34,7 @@ class DataService {
     } else {
       print("Unhandled enity update $entity");
     }
+    notifyListeners();
   }
 
   Stream<UserModel> getUserData() async* {
@@ -83,6 +86,15 @@ class DataService {
     yield await RESTService.getInstance().getUserBalanceHistory();
     yield* dataUpdateStream
         .where((event) => event["key"] == "balance/history")
+        .map((event) {
+      return event["value"];
+    });
+  }
+
+  Stream<UserBalanceDatapoint> getUserBalance() async* {
+    yield await RESTService.getInstance().getBalance();
+    yield* dataUpdateStream
+        .where((event) => event["key"] == "balance")
         .map((event) {
       return event["value"];
     });
