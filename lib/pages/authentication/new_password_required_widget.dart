@@ -7,6 +7,8 @@ import 'package:neo/widgets/branded_button.dart';
 import 'package:neo/widgets/branded_textfield.dart';
 import 'package:neo/widgets/password_validation_indicator.dart';
 
+import '../../service_locator.dart';
+
 class NewPasswordRequired extends HookWidget {
   const NewPasswordRequired({Key? key}) : super(key: key);
 
@@ -22,7 +24,7 @@ class NewPasswordRequired extends HookWidget {
           PasswordValidator.isPasswordValid(password.value!)) {
         loading.value = true;
         try {
-          await AuthenticationService.getInstance()
+          await locator<AuthenticationService>()
               .completeForceChangePassword(password.value!);
         } catch (e) {
           print(e);
@@ -67,7 +69,8 @@ class NewPasswordRequired extends HookWidget {
           Expanded(
             child: BrandedButton(
               onPressed: handleSubmit,
-              child: Text(AppLocalizations.of(context)!.force_change_password_submit),
+              child: Text(
+                  AppLocalizations.of(context)!.force_change_password_submit),
             ),
           )
         ],

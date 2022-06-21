@@ -11,10 +11,14 @@ import 'package:neo/types/api/stockdata_bulk_fetch_request.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
 
 import '../models/user_balance_datapoint.dart';
+import '../service_locator.dart';
 
 const restApiBaseUrl = "https://rest.dfs-api.ch/v1";
 
 class RESTService extends ChangeNotifier {
+  final AuthenticationService _authenticationService =
+      locator<AuthenticationService>();
+
   static RESTService? _instance;
   late Dio dio;
   RESTService._() {
@@ -38,7 +42,7 @@ class RESTService extends ChangeNotifier {
   }
 
   Future<String> _getCurrentApiKey() async {
-    return AuthenticationService.getInstance().getCurrentApiKey();
+    return _authenticationService.getCurrentApiKey();
   }
 
   Future<dynamic> listSymbols() async {

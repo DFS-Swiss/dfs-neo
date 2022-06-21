@@ -6,7 +6,12 @@ import 'package:neo/services/stockdata_service.dart';
 import 'package:neo/services/websocket/websocket_controler.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../service_locator.dart';
+
 class WebsocketService {
+  final AuthenticationService _authenticationService =
+      locator<AuthenticationService>();
+
   WebsocketService._();
   static WebsocketService? _instance;
   static WebsocketService getInstance() {
@@ -25,7 +30,7 @@ class WebsocketService {
     _stockDataControler = WebsocketControler("ws://stockdata.dfs-api.ch:8080");
     _userDataControler = WebsocketControler(
       "wss://websockets.dfs-api.ch",
-      getApiKey: () => AuthenticationService.getInstance().getCurrentApiKey(),
+      getApiKey: () => _authenticationService.getCurrentApiKey(),
     );
     _stockDataControler!.connectionStateStream
         .pipe(stockDataConnectionStateStream);

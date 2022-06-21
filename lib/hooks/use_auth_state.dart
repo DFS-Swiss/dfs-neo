@@ -2,16 +2,20 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:neo/enums/auth_state.dart';
 import 'package:neo/services/authentication_service.dart';
 
+import '../service_locator.dart';
+
 AuthState useAuthState() {
-  final state = useState(AuthenticationService.getInstance().authState);
+  final AuthenticationService authenticationService =
+      locator<AuthenticationService>();
+  final state = useState(authenticationService.authState);
   useEffect(() {
     listen() {
-      state.value = AuthenticationService.getInstance().authState;
+      state.value = authenticationService.authState;
     }
 
-    AuthenticationService.getInstance().addListener(listen);
+    authenticationService.addListener(listen);
     return () {
-      AuthenticationService.getInstance().removeListener(listen);
+      authenticationService.removeListener(listen);
     };
   }, ["_"]);
   return state.value;
