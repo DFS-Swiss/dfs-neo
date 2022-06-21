@@ -5,46 +5,30 @@ import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:neo/enums/auth_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../service_locator.dart';
+import 'cognito_service.dart';
+
 class AuthenticationService extends ChangeNotifier {
-  static final _userPool = CognitoUserPool(
-    'eu-central-1_I3SXMv01c',
-    '45pmj4rj6amqlvh337p9dsafh4',
-  );
-
-  static AuthenticationService? _instance;
-  AuthenticationService._();
-
-  static AuthenticationService getInstance() {
-    return _instance ??= AuthenticationService._();
-  }
-
+  // Inject dependencies
+  final CognitoService _cognitoService = locator<CognitoService>();
   AuthState authState = AuthState.signedOut;
-  CognitoUserSession? session;
-  CognitoUser? cognitoUser;
 
   Future<String> getCurrentApiKey() async {
-    if (session == null) {
+    if (!_cognitoService.isSessionPresent()) {
       throw "User not authenticated";
     }
-    if (session!.idToken.getExpiration() <
-        DateTime.now().microsecondsSinceEpoch) {
+    if (_cognitoService.isIdTokenExpired()) {
       if (!await tryRefreshingSession()) {
         throw "Session is expired and could not be restored";
       }
     }
-    log(session!.getIdToken().jwtToken!);
-    return session!.getIdToken().jwtToken!;
+    log(_cognitoService.getIdJwtToken()!);
+    return _cognitoService.getIdJwtToken()!;
   }
 
   login(String userName, String password) async {
-    cognitoUser = CognitoUser(userName, _userPool);
-    final authDetails = AuthenticationDetails(
-      username: userName,
-      password: password,
-    );
-
     try {
-      session = await cognitoUser!.authenticateUser(authDetails);
+      await _cognitoService.createAndAuthenticateUser(userName, password);
     } on CognitoUserNewPasswordRequiredException catch (e) {
       print(e);
       authState = AuthState.newPasswordRequired;
@@ -93,15 +77,15 @@ class AuthenticationService extends ChangeNotifier {
     notifyListeners();
     // TODO: Use secure storage
     final prefs = await SharedPreferences.getInstance();
-    prefs.setString("refresh_token", session!.refreshToken!.getToken()!);
+    prefs.setString("refresh_token", _cognitoService.getRefreshToken()!);
     prefs.setString("user_name", userName);
-    print(session!.getAccessToken().getJwtToken());
-    log(session!.getAccessToken().getJwtToken() ?? "Error");
-    log(session!.getIdToken().getJwtToken() ?? "Error");
+    print(_cognitoService.getAccesTokenJwtToken());
+    log(_cognitoService.getAccesTokenJwtToken() ?? "Error");
+    log(_cognitoService.getIdJwtToken() ?? "Error");
   }
 
   logOut() async {
-    await (await _userPool.getCurrentUser())!.signOut();
+    await _cognitoService.logoutCurrentPoolUser();
     authState = AuthState.signedOut;
     notifyListeners();
   }
@@ -116,9 +100,10 @@ class AuthenticationService extends ChangeNotifier {
   }
 
   Future completeForceChangePassword(String newPassword) async {
-    if (authState == AuthState.newPasswordRequired && cognitoUser != null) {
+    if (authState == AuthState.newPasswordRequired &&
+        _cognitoService.isUserPresent()) {
       try {
-        await cognitoUser!.sendNewPasswordRequiredAnswer(newPassword);
+        await _cognitoService.sendNewPasswordRequired(newPassword);
       } catch (e) {
         rethrow;
       }
@@ -128,23 +113,25 @@ class AuthenticationService extends ChangeNotifier {
   }
 
   Future confirmEmail(String code) async {
-    if (authState == AuthState.verifyAccount && cognitoUser != null) {
-      await cognitoUser!.confirmRegistration(code);
+    if (authState == AuthState.verifyAccount &&
+        _cognitoService.isUserPresent()) {
+      await _cognitoService.confirmRegistration(code);
       authState = AuthState.signedOut;
       notifyListeners();
     }
   }
 
   Future resendConfirmationCode() async {
-    if (authState == AuthState.verifyAccount && cognitoUser != null) {
-      await cognitoUser!.resendConfirmationCode();
+    if (authState == AuthState.verifyAccount &&
+        _cognitoService.isUserPresent()) {
+      await _cognitoService.resendConfirmationCode();
     }
   }
 
   Future<bool> tryRefreshingSession() async {
-    if (session != null && cognitoUser != null) {
+    if (_cognitoService.isSessionPresent() && _cognitoService.isUserPresent()) {
       try {
-        cognitoUser!.refreshSession(session!.refreshToken!);
+        _cognitoService.refreshSession();
         return true;
       } catch (e) {
         print(e);
@@ -160,10 +147,10 @@ class AuthenticationService extends ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     if (prefs.getString("refresh_token") != null &&
         prefs.getString("user_name") != null) {
-      cognitoUser = CognitoUser(prefs.getString("user_name")!, _userPool);
+      // TODO: We need constants for these strings. We should use constants for all strings in general
+      _cognitoService.createCognitoUser(prefs.getString("user_name"));
       try {
-        session = await cognitoUser!.refreshSession(
-            CognitoRefreshToken(prefs.getString("refresh_token")));
+        _cognitoService.setRefreshSession();
         authState = AuthState.signedIn;
         notifyListeners();
         return true;

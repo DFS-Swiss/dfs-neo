@@ -25,11 +25,14 @@ dependencies:
   dio: ^4.0.6
   rxdart: ^0.27.4
   shimmer: ^2.0.0
+  get_it: ^7.2.0
+  mockito: ^5.2.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
+  build_runner: ^2.1.11
 
 flutter_icons:
   android: "launcher_icon"
