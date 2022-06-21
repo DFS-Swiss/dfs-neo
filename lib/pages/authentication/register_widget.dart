@@ -8,6 +8,7 @@ import 'package:neo/widgets/branded_button.dart';
 import 'package:neo/widgets/outlined_branded_button.dart';
 import 'package:neo/widgets/password_validation_indicator.dart';
 
+import '../../service_locator.dart';
 import '../../style/theme.dart';
 import '../../widgets/branded_textfield.dart';
 
@@ -36,7 +37,7 @@ class RegisterWidget extends HookWidget {
         error.value = null;
         loading.value = true;
         try {
-          await AuthenticationService.getInstance()
+          await locator<AuthenticationService>()
               .register(userName.value!, email.value!, password.value!);
           clickedLogin();
         } on CognitoClientException catch (e) {

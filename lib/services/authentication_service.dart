@@ -91,11 +91,7 @@ class AuthenticationService extends ChangeNotifier {
   }
 
   Future register(String userName, String email, String password) async {
-    await _userPool.signUp(userName, password, userAttributes: [
-      AttributeArg(name: "email", value: email),
-    ], validationData: [
-      AttributeArg(name: "email", value: email)
-    ]);
+    _cognitoService.registerUser(userName, email, password);
     await login(userName, password);
   }
 
