@@ -90,6 +90,11 @@ class AuthenticationService extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future register(String userName, String email, String password) async {
+    _cognitoService.registerUser(userName, email, password);
+    await login(userName, password);
+  }
+
   Future completeForceChangePassword(String newPassword) async {
     if (authState == AuthState.newPasswordRequired &&
         _cognitoService.isUserPresent()) {

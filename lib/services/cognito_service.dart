@@ -90,4 +90,12 @@ class CognitoService {
   logoutCurrentPoolUser() async {
     await (await getCurrentPoolUser())!.signOut();
   }
+
+  registerUser(String userName, String email, String password) async {
+    await _userPool.signUp(userName, password, userAttributes: [
+      AttributeArg(name: "email", value: email),
+    ], validationData: [
+      AttributeArg(name: "email", value: email)
+    ]);
+  }
 }
