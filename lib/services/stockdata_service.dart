@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:neo/models/stockdata_datapoint.dart';
 import 'package:neo/services/rest_service.dart';
 import 'package:neo/types/api/stockdata_bulk_fetch_request.dart';
@@ -5,7 +6,7 @@ import 'package:neo/types/stockdata_interval_enum.dart';
 import 'package:neo/types/stockdata_storage_container.dart';
 import 'package:rxdart/rxdart.dart';
 
-class StockdataService {
+class StockdataService extends ChangeNotifier {
   static StockdataService? _instance;
   static StockdataService getInstance() {
     return _instance ??= StockdataService._();
@@ -89,11 +90,24 @@ class StockdataService {
     final Map<String, Map<StockdataInterval, List<StockdataDatapoint>>>
         tempMap = {};
     for (var singleDatapoint in castedData) {
-      tempMap[singleDatapoint.symbol] = {
-        StockdataInterval.twentyFourHours: [singleDatapoint]
-      };
+      var existingData = [];
+      if (_dataStore.value[singleDatapoint.symbol] != null &&
+          _dataStore.value[singleDatapoint.symbol]![
+                  StockdataInterval.twentyFourHours] !=
+              null) {
+        existingData = _dataStore
+            .value[singleDatapoint.symbol]![StockdataInterval.twentyFourHours]!
+            .getSorted();
+      }
+      if (existingData.isNotEmpty) {
+        tempMap[singleDatapoint.symbol] = {
+          StockdataInterval.twentyFourHours: [...existingData, singleDatapoint]
+        };
+      }
     }
-    updateData(tempMap);
+    if (tempMap.isNotEmpty) {
+      updateData(tempMap);
+    }
   }
 
   updateData(
@@ -102,22 +116,31 @@ class StockdataService {
     final tempStore = _dataStore.value;
     for (var singleSymbol in streamValue.entries) {
       if (tempStore[singleSymbol.key] == null) {
-        tempStore[singleSymbol.key] = singleSymbol.value.map(
-          (key, value) => MapEntry(
+        tempStore[singleSymbol.key] = singleSymbol.value.map((key, value) {
+          if (value.length < 2) {
+            print("Error in update detected");
+          }
+          return MapEntry(
             key,
             StockdataStorageContainer(
               key,
               singleSymbol.key,
               value,
             ),
-          ),
-        );
+          );
+        });
       } else {
         for (var singleInterval in singleSymbol.value.entries) {
           if (tempStore[singleSymbol.key]![singleInterval.key] != null) {
+            if (singleInterval.value.length < 2) {
+              print("Single entry detected, could be fine though");
+            }
             tempStore[singleSymbol.key]![singleInterval.key]!
                 .merge(singleInterval.value);
           } else {
+            if (singleInterval.value.length < 2) {
+              print("Error in update detected");
+            }
             tempStore[singleSymbol.key]![singleInterval.key] =
                 StockdataStorageContainer(
               singleInterval.key,
@@ -129,6 +152,7 @@ class StockdataService {
       }
     }
     _dataStore.add(tempStore);
+    notifyListeners();
   }
 
   propagateError(

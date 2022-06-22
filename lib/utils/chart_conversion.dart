@@ -115,3 +115,61 @@ LineChartData preview(List<FlSpot> data, bool isNegative) {
     ],
   );
 }
+
+LineChartData dashboardPortfolio(List<FlSpot> data, bool isNegative) {
+  return LineChartData(
+    gridData: FlGridData(show: false),
+    titlesData: FlTitlesData(
+      show: false,
+      rightTitles: AxisTitles(
+        sideTitles: SideTitles(showTitles: false),
+      ),
+      topTitles: AxisTitles(
+        sideTitles: SideTitles(showTitles: false),
+      ),
+      bottomTitles: AxisTitles(
+        sideTitles: SideTitles(showTitles: false),
+      ),
+      leftTitles: AxisTitles(
+        sideTitles: SideTitles(showTitles: false),
+      ),
+    ),
+    borderData: FlBorderData(
+        show: false,
+        border: Border.all(color: const Color(0xff37434d), width: 1)),
+    lineBarsData: [
+      LineChartBarData(
+        spots: data,
+        isCurved: false,
+        gradient: !isNegative
+            ? LinearGradient(colors: const [
+                Color(0xFF58E9D7),
+                Color(0xFF0EB9C2),
+              ], begin: Alignment.topCenter, end: Alignment.bottomCenter)
+            : LinearGradient(
+                colors: const [Color(0xFFFF7D94), Color(0xFFF33556)],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter),
+        barWidth: 1.7,
+        isStrokeCapRound: true,
+        dotData: FlDotData(show: false),
+        belowBarData: BarAreaData(
+          show: true,
+          gradient: !isNegative
+              ? LinearGradient(colors: [
+                  Color(0xFF0EB9C2).withOpacity(0.2),
+                  Color(0xFF58E9D7).withOpacity(0),
+                ], begin: Alignment.topCenter, end: Alignment.bottomCenter)
+              : LinearGradient(
+                  colors: [
+                    Color(0xFFF33556).withOpacity(0.2),
+                    Color(0xFFFF7D94).withOpacity(0.0),
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+        ),
+      ),
+    ],
+  );
+}
