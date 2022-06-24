@@ -91,7 +91,13 @@ class AuthenticationService extends ChangeNotifier {
   }
 
   Future register(String userName, String email, String password) async {
-    _cognitoService.registerUser(userName, email, password);
+    try{
+      await _cognitoService.registerUser(userName, email, password);
+    }
+    on CognitoClientException catch (e){
+      print(e);
+      rethrow;
+    }
     await login(userName, password);
   }
 
@@ -113,6 +119,7 @@ class AuthenticationService extends ChangeNotifier {
         _cognitoService.isUserPresent()) {
       await _cognitoService.confirmRegistration(code);
       authState = AuthState.signedOut;
+      
       notifyListeners();
     }
   }
