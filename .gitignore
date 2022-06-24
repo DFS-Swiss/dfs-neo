@@ -48,3 +48,4 @@ app.*.map.json
 
 *.lock
 ios/api_key.json
+android/fastlane/google_key.json
