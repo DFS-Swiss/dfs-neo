@@ -4,10 +4,12 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:is_first_run/is_first_run.dart';
 import 'package:neo/enums/auth_state.dart';
 import 'package:neo/hooks/use_auth_state.dart';
 import 'package:neo/pages/authentication/auth_page_wrapper.dart';
 import 'package:neo/pages/navigation/mainnavigation_page.dart';
+import 'package:neo/pages/onboarding/onboarding_page.dart';
 import 'package:neo/service_locator.dart';
 import 'package:neo/services/authentication_service.dart';
 import 'package:neo/style/theme.dart';
@@ -139,15 +141,21 @@ class AuthWrapper extends HookWidget {
   Widget build(BuildContext context) {
     final authState = useAuthState();
     final tryingToReauth = useState(true);
+    final isFirstRun = useState(true);
+    final isWaitingForFirstRun = useState(true);
     useEffect(() {
-      tryingToReauth.value = true;
       locator<AuthenticationService>().tryReauth().then((value) {
         tryingToReauth.value = false;
       });
+      IsFirstRun.isFirstRun().then((value) {
+        isWaitingForFirstRun.value = false;
+        isFirstRun.value = value;  
+      }
+      );
       return;
     }, ["_"]);
 
-    if (tryingToReauth.value) {
+    if (tryingToReauth.value || isWaitingForFirstRun.value) {
       return const Scaffold(
         body: Center(child: CircularProgressIndicator()),
       );
@@ -155,9 +163,12 @@ class AuthWrapper extends HookWidget {
     if (authState == AuthState.signedOut ||
         authState == AuthState.verifyAccount ||
         authState == AuthState.newPasswordRequired) {
+          if(isFirstRun.value){
+            return const Onboarding();
+          }
       return const AuthPageWrapper();
     }
-    //TODO: Handel basic wrapper for multiple pages via bottom nav bar
+    //TODO: Handle basic wrapper for multiple pages via bottom nav bar
     if (authState == AuthState.signedIn) return const MainNavigation();
     // if (authState == AuthState.signedIn) return const MainPage();
     return const Scaffold(
