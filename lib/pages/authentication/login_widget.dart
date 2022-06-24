@@ -48,7 +48,8 @@ class LoginWidget extends HookWidget {
       }
     }
 
-    return Column(
+    return SingleChildScrollView(
+      child:  Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
@@ -136,6 +137,7 @@ class LoginWidget extends HookWidget {
           ],
         )
       ],
-    );
+    )
+    ); 
   }
 }
