@@ -31,8 +31,14 @@ platform :android do
   end
 
   desc "Deploy a new version to the Google Play"
-  lane :deploy do
+  lane :staging do
     gradle(task: "clean assembleRelease")
-    upload_to_play_store
+    upload_to_play_store(
+      track: "Staging", 
+      version_code: flutter_version()["version_code"],
+      skip_upload_screenshots: true,
+      skip_upload_images: true,
+      skip_upload_changelogs: true,
+    )
   end
 end
