@@ -19,6 +19,9 @@ class MoneyTextfield extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    var textController = TextEditingController(text: labelText);
+    textController.selection = TextSelection.fromPosition(TextPosition(offset: textController.text.length));
+    
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -65,6 +68,7 @@ class MoneyTextfield extends HookWidget {
                             onChanged: onChanged,
                             textInputAction: textInputAction,
                             onFieldSubmitted: onContinue,
+                            controller: textController,
                             style: TextStyle(
                               fontSize: 55,
                               fontWeight: FontWeight.bold,
@@ -82,7 +86,6 @@ class MoneyTextfield extends HookWidget {
                                 top: 0,
                                 right: 0,
                               ),
-                              label: Text(labelText),
                               hintText: '',
                               hintStyle: TextStyle(fontSize: 55),
                               floatingLabelBehavior:

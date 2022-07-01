@@ -139,12 +139,14 @@ class AuthWrapper extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    AuthenticationService authenticationService = locator<AuthenticationService>();
     final authState = useAuthState();
     final tryingToReauth = useState(true);
     final isFirstRun = useState(true);
     final isWaitingForFirstRun = useState(true);
+    
     useEffect(() {
-      locator<AuthenticationService>().tryReauth().then((value) {
+      authenticationService.tryReauth().then((value) {
         tryingToReauth.value = false;
       });
       IsFirstRun.isFirstRun().then((value) {

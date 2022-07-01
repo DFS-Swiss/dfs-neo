@@ -153,5 +153,7 @@
     "bottomnav_port": "Portfolio",
     "bottomnav_trade": "Trade",
     "order_coming_soon": "Orders folgen...",
-    "no_investments": "Noch keine Investments"
+    "no_investments": "Noch keine Investments",
+    "deposit_continue_button":"Weiter",
+    "deposit_enter_deposit_amount":"Einzahlungsbetrag eingeben (10 - 50.000$)"
 }
