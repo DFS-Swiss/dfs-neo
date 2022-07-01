@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:neo/widgets/filter/valuefilter_widget.dart';
@@ -36,7 +34,6 @@ class MoneySelectable extends HookWidget {
                   } else {
                     filterValue.value = a;
                     currentState.value = 0;
-                    log('State im MSW: ${currentState.value}');
                   }
                   callback(filterValue.value);
                 }),
@@ -52,7 +49,6 @@ class MoneySelectable extends HookWidget {
                   } else {
                     filterValue.value = a;
                     currentState.value = 1;
-                    log('State im MSW: ${currentState.value}');
                   }
                   callback(filterValue.value);
                 }),
@@ -68,7 +64,6 @@ class MoneySelectable extends HookWidget {
                   } else {
                     filterValue.value = a;
                     currentState.value = 2;
-                    log('State im MSW: ${currentState.value}');
                   }
                   callback(filterValue.value);
                 }),
@@ -84,7 +79,6 @@ class MoneySelectable extends HookWidget {
                   } else {
                     filterValue.value = a;
                     currentState.value = 3;
-                    log('State im MSW: ${currentState.value}');
                   }
                   callback(filterValue.value);
                 }),
