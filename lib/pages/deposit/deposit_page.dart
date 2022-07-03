@@ -23,14 +23,9 @@ class Deposit extends HookWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.port_deposit),
-        leading: Padding(
-          padding: EdgeInsets.fromLTRB(16,0,0,0),
-          child: AppBarActionButton(
-            icon: Icons.arrow_back_outlined,
-            callback: () {
-              Navigator.of(context).pop(null);
-            },
-          ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_outlined, color: Colors.black),
+          onPressed: () => Navigator.of(context).pop(),
         ),
         foregroundColor: Colors.black,
       ),
@@ -51,6 +46,7 @@ class Deposit extends HookWidget {
               MoneySelectable(
                 callback: (String amount) {
                   selectedAmount.value = amount;
+                  typedAmount.value = "";
                 },
               ),
               Expanded(
