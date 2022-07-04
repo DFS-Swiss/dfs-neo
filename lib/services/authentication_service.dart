@@ -153,7 +153,7 @@ class AuthenticationService extends ChangeNotifier {
       // TODO: We need constants for these strings. We should use constants for all strings in general
       _cognitoService.createCognitoUser(prefs.getString("user_name"));
       try {
-        _cognitoService.setRefreshSession();
+        await _cognitoService.setRefreshSession();
         authState = AuthState.signedIn;
         notifyListeners();
         return true;

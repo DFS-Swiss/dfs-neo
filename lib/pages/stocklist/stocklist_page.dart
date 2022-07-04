@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:neo/hooks/use_available_stocks.dart';
 import 'package:neo/hooks/use_userassets.dart';
+import 'package:neo/pages/details/details_page.dart';
 import 'package:neo/pages/stocklist/stockfilter_widget.dart';
 import 'package:neo/pages/stocklist/stocksearchbar_widget.dart';
 import 'package:neo/pages/stocklist/stockswitchrow_widget.dart';
@@ -137,10 +138,20 @@ class StockList extends HookWidget {
                           return false;
                         }
                       })
-                      .map((e) => TradableStockCard(
-                            token: e.symbol,
-                            key: UniqueKey(),
-                          ))
+                      .map(
+                        (e) => GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          DetailsPage(token: e.symbol, key: UniqueKey())));
+                            },
+                            child: TradableStockCard(
+                              token: e.symbol,
+                              key: UniqueKey(),
+                            )),
+                      )
                       .toList(),
                 )
               : Column(
