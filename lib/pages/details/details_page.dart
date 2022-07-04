@@ -1,7 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:neo/pages/details/details_development_chart.dart';
+import 'package:neo/pages/details/details_development_section.dart';
 import '../../hooks/use_stockdata.dart';
 import '../../hooks/use_stockdata_info.dart';
 import '../../types/stockdata_interval_enum.dart';
@@ -12,9 +12,7 @@ class DetailsPage extends HookWidget {
 
   // Fetch Data on this screen, caching will make it faster anyways
 
-  const DetailsPage(
-      {required this.token, Key? key})
-      : super(key: key);
+  const DetailsPage({required this.token, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,18 +21,18 @@ class DetailsPage extends HookWidget {
     final symbolInfo = useSymbolInfo(token);
 
     useEffect(() {
-        if (stockData.loading == false) {
-          chartData.value = stockData.data!
-              .map((e) =>
-                  FlSpot(e.time.millisecondsSinceEpoch.toDouble(), e.price))
-              .toList();
-        }
+      if (stockData.loading == false) {
+        chartData.value = stockData.data!
+            .map((e) =>
+                FlSpot(e.time.millisecondsSinceEpoch.toDouble(), e.price))
+            .toList();
+      }
 
-        return;
-      }, ["_", stockData.loading]);
+      return;
+    }, ["_", stockData.loading]);
 
     var title = "";
-    if(symbolInfo.data != null){
+    if (symbolInfo.data != null) {
       title = symbolInfo.data!.symbol;
     }
 
@@ -57,11 +55,11 @@ class DetailsPage extends HookWidget {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0),
         child: ListView(
-          children: const [
+          children: [
             const SizedBox(
               height: 17,
             ),
-            DetailsDevelopmentChart(),
+            DetailsDevelopmentSection(token: token),
           ],
         ),
       ),

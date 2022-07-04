@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:neo/services/formatting_service.dart';
 
 List<Color> gradientColors = [
   const Color(0xff23b6e6),
@@ -17,6 +18,14 @@ Widget bottomTileWidget(double value, TitleMeta meta) {
     space: 8.0,
     child: Text(
         DateTime.fromMillisecondsSinceEpoch(value.toInt() * 1000).toString()),
+  );
+}
+
+Widget leftTileWidget(double value, TitleMeta meta) {
+  return SideTitleWidget(
+    axisSide: meta.axisSide,
+    space: 8.0,
+    child: Text(FormattingService.roundDouble(value, 0).toString()),
   );
 }
 
@@ -42,11 +51,13 @@ LineChartData details(List<FlSpot> data, bool isNegative) {
       show: true,
       rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
       topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-      bottomTitles: AxisTitles(
+      bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+      leftTitles: AxisTitles(
         sideTitles: SideTitles(
-          showTitles: false,
-          interval: 5000,
-          getTitlesWidget: bottomTileWidget,
+          showTitles: true,
+          interval: 10,
+          reservedSize: 50,
+          getTitlesWidget: leftTileWidget,
         ),
       ),
     ),
@@ -60,7 +71,15 @@ LineChartData details(List<FlSpot> data, bool isNegative) {
       LineChartBarData(
         spots: data,
         isCurved: false,
-        color: isNegative ? Colors.red : Colors.green,
+        gradient: !isNegative
+            ? LinearGradient(colors: const [
+                Color(0xFF58E9D7),
+                Color(0xFF0EB9C2),
+              ], begin: Alignment.topCenter, end: Alignment.bottomCenter)
+            : LinearGradient(
+                colors: const [Color(0xFFFF7D94), Color(0xFFF33556)],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter),
         barWidth: 2,
         isStrokeCapRound: true,
         dotData: FlDotData(show: false),
