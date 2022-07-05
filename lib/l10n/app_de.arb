@@ -153,5 +153,11 @@
     "bottomnav_port": "Portfolio",
     "bottomnav_trade": "Trade",
     "order_coming_soon": "Orders folgen...",
-    "no_investments": "Noch keine Investments"
+    "no_investments": "Noch keine Investments",
+    "details_investments":"Dein Investment",
+    "details_today":"Heute",
+    "details_performance":"Performance",
+    "details_buy_in":"Einkauf",
+    "details_quantity":"Anzahl",
+    "details_value":"Wert"
 }

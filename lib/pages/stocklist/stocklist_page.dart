@@ -10,7 +10,7 @@ import 'package:neo/pages/stocklist/stockswitchrow_widget.dart';
 import 'package:neo/widgets/appbaractionbutton_widget.dart';
 import 'package:neo/widgets/featuredstockcard_widget.dart';
 import 'package:neo/widgets/genericheadline_widget.dart';
-import 'package:neo/widgets/tradablestockcard_widget.dart';
+import 'package:neo/widgets/cards/tradablestockcard_widget.dart';
 import 'package:shimmer/shimmer.dart';
 
 class StockList extends HookWidget {

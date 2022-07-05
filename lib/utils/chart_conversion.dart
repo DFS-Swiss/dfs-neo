@@ -34,6 +34,7 @@ LineChartData details(List<FlSpot> data, bool isNegative) {
     gridData: FlGridData(
       show: true,
       drawVerticalLine: false,
+      drawHorizontalLine: false,
       getDrawingHorizontalLine: (value) {
         return FlLine(
           color: const Color(0xff37434d).withOpacity(0.5),

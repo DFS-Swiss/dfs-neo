@@ -4,14 +4,14 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:neo/widgets/development_indicator/small_change_indicator.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../hooks/use_stockdata.dart';
-import '../hooks/use_stockdata_info.dart';
-import '../hooks/use_userassets.dart';
-import '../models/userasset_datapoint.dart';
-import '../services/formatting_service.dart';
-import '../style/theme.dart';
-import '../types/stockdata_interval_enum.dart';
-import '../utils/chart_conversion.dart';
+import '../../hooks/use_stockdata.dart';
+import '../../hooks/use_stockdata_info.dart';
+import '../../hooks/use_userassets.dart';
+import '../../models/userasset_datapoint.dart';
+import '../../services/formatting_service.dart';
+import '../../style/theme.dart';
+import '../../types/stockdata_interval_enum.dart';
+import '../../utils/chart_conversion.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class InvestmentCard extends HookWidget {
