@@ -55,9 +55,6 @@ class DetailsPage extends HookWidget {
       ),
       body: ListView(
         children: [
-          const SizedBox(
-            height: 17,
-          ),
           DetailsDevelopmentSection(token: token),
           DetailsInvestmentsSection(token: token)
         ],
