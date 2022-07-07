@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:neo/pages/buy_sell/buy_page.dart';
 import 'package:neo/widgets/branded_button.dart';
 import 'package:neo/widgets/development_indicator/detailed_development_indicator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -35,7 +36,7 @@ class DetailsDevelopmentSection extends HookWidget {
 
     return !symbolInfo.loading && !stockData.loading
         ? Padding(
-            padding: EdgeInsets.fromLTRB(12,0,12,0),
+            padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
             child: Container(
               alignment: Alignment.centerLeft,
               child: Column(
@@ -189,7 +190,16 @@ class DetailsDevelopmentSection extends HookWidget {
                           child: Container(),
                         ),
                         BrandedButton(
-                            onPressed: () => {},
+                            onPressed: () => {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => BuyPage(
+                                        symbol: token,
+                                      ),
+                                    ),
+                                  )
+                                },
                             child:
                                 Text(AppLocalizations.of(context)!.detail_buy)),
                       ],

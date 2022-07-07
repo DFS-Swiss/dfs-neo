@@ -159,5 +159,11 @@
     "details_performance":"Performance",
     "details_buy_in":"Einkauf",
     "details_quantity":"Anzahl",
-    "details_value":"Wert"
+    "details_value":"Wert",
+    "share_sell": "Verkaufen",
+    "share_buy": "Kaufen",
+    "new_order_price": "Preis",
+    "new_order_amount": "Anteile",
+    "new_order_advanced": "Erweiterte Optionen",
+    "new_order_price_per_share": "Preis für einen Anteil"
 }
