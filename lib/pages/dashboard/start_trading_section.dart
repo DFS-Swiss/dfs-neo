@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:neo/pages/deposit/deposit_page.dart';
 import 'package:neo/widgets/branded_button.dart';
 
 import '../../hooks/use_balance.dart';
@@ -12,7 +13,7 @@ class StartTradingSection extends HookWidget {
   Widget build(BuildContext context) {
     final balance = useBalance();
 
-    if (balance.loading || balance.data!.newBalance != 0) {
+    if (balance.loading) {
       return Container();
     } else {
       return Padding(
@@ -21,8 +22,12 @@ class StartTradingSection extends HookWidget {
           children: [
             Expanded(
                 child: BrandedButton(
-                    onPressed: () {},
-                    child: Text(AppLocalizations.of(context)!.dash_deposit)))
+                    onPressed: () { Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const Deposit()),
+                    );
+                  },
+                child: Text(AppLocalizations.of(context)!.dash_deposit)))
           ],
         ),
       );
