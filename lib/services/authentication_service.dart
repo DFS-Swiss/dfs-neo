@@ -91,10 +91,9 @@ class AuthenticationService extends ChangeNotifier {
   }
 
   Future register(String userName, String email, String password) async {
-    try{
+    try {
       await _cognitoService.registerUser(userName, email, password);
-    }
-    on CognitoClientException catch (e){
+    } on CognitoClientException catch (e) {
       print(e);
       rethrow;
     }
@@ -119,7 +118,7 @@ class AuthenticationService extends ChangeNotifier {
         _cognitoService.isUserPresent()) {
       await _cognitoService.confirmRegistration(code);
       authState = AuthState.signedOut;
-      
+
       notifyListeners();
     }
   }
@@ -153,7 +152,7 @@ class AuthenticationService extends ChangeNotifier {
       // TODO: We need constants for these strings. We should use constants for all strings in general
       _cognitoService.createCognitoUser(prefs.getString("user_name"));
       try {
-        _cognitoService.setRefreshSession();
+        await _cognitoService.setRefreshSession();
         authState = AuthState.signedIn;
         notifyListeners();
         return true;
