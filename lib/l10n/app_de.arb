@@ -165,5 +165,7 @@
     "new_order_price": "Preis",
     "new_order_amount": "Anteile",
     "new_order_advanced": "Erweiterte Optionen",
-    "new_order_price_per_share": "Preis für einen Anteil"
+    "new_order_price_per_share": "Preis für einen Anteil",
+    "new_order_shares": "Anteile",
+    "new_order_create": "Auftrag erstellen"
 }

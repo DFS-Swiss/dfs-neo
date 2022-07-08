@@ -43,9 +43,9 @@ class StockdataService extends ChangeNotifier {
         .map((event) => event[symbol]![interval]!.getSorted());
   }
 
-  Stream<double> getLatestPrice(String symbol) async* {
+  Stream<StockdataDatapoint> getLatestPrice(String symbol) async* {
     yield* getStockdata(symbol, StockdataInterval.twentyFourHours).map(
-      (event) => event.first.price,
+      (event) => event.first,
     );
   }
 

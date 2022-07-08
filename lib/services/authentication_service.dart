@@ -132,7 +132,7 @@ class AuthenticationService extends ChangeNotifier {
   Future<bool> tryRefreshingSession() async {
     if (_cognitoService.isSessionPresent() && _cognitoService.isUserPresent()) {
       try {
-        _cognitoService.refreshSession();
+        await _cognitoService.refreshSession();
         return true;
       } catch (e) {
         print(e);

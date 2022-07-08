@@ -165,5 +165,8 @@
     "new_order_price": "Price",
     "new_order_amount": "Amount of Shares",
     "new_order_advanced": "Advanced settings",
-    "new_order_price_per_share": "Price 1 Share"
+    "new_order_price_per_share": "Price 1 Share",
+    "new_order_shares": "Shares",
+    "new_order_create": "Create order"
+
 }
