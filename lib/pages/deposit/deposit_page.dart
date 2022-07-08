@@ -19,12 +19,8 @@ class Deposit extends HookWidget {
     var depositAmount =
         typedAmount.value.isEmpty ? selectedAmount.value : typedAmount.value;
 
-    useEffect(() {
-      if (typedAmount.value.isNotEmpty) {
-        selectedAmount.value = "";
-      } else {}
-      return;
-    }, [typedAmount.value]);
+    // Focus node 
+    // Padding beneath button
 
     handleDeposit() async {
       try {
@@ -87,9 +83,7 @@ class Deposit extends HookWidget {
         ),
         foregroundColor: Colors.black,
       ),
-      body: Stack(
-        children: [
-          Column(
+      body: Column(
             children: [
               MoneyTextfield(
                 ValueKey("\$"),
@@ -132,8 +126,6 @@ class Deposit extends HookWidget {
               ),
             ],
           ),
-        ],
-      ),
     );
   }
 }

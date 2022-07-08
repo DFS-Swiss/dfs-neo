@@ -20,8 +20,9 @@ class MoneyTextfield extends HookWidget {
   @override
   Widget build(BuildContext context) {
     var textController = TextEditingController(text: labelText);
-    textController.selection = TextSelection.fromPosition(TextPosition(offset: textController.text.length));
-    
+    textController.selection = TextSelection.fromPosition(
+        TextPosition(offset: textController.text.length));
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -29,78 +30,68 @@ class MoneyTextfield extends HookWidget {
       ),
       margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       height: 140,
-      child: Flexible(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Flexible(
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
-                child: Text(
-                  hintText,
-                  style: TextStyle(color: Colors.grey, fontSize: 14),
-                ),
-              ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Padding(
+            padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
+            child: Text(
+              hintText,
+              style: TextStyle(color: Colors.grey, fontSize: 14),
             ),
-            Expanded(
-              child: Center(
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "\$",
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 55,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      ConstrainedBox(
-                        constraints: BoxConstraints(minWidth: 48),
-                        child: IntrinsicWidth(
-                          child: TextFormField(
-                            keyboardType: TextInputType.number,
-                            textAlign: TextAlign.center,
-                            onChanged: onChanged,
-                            textInputAction: textInputAction,
-                            onFieldSubmitted: onContinue,
-                            controller: textController,
-                            style: TextStyle(
-                              fontSize: 55,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            cursorColor: Theme.of(context).primaryColor,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              errorBorder: InputBorder.none,
-                              disabledBorder: InputBorder.none,
-                              contentPadding: EdgeInsets.only(
-                                left: 5,
-                                bottom: 2,
-                                top: 0,
-                                right: 0,
-                              ),
-                              hintText: '',
-                              hintStyle: TextStyle(fontSize: 55),
-                              floatingLabelBehavior:
-                                  FloatingLabelBehavior.always,
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
+          ),
+          Expanded(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "\$",
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 55,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-              ),
+                ConstrainedBox(
+                  constraints: BoxConstraints(minWidth: 51),
+                  child: IntrinsicWidth(
+                    child: TextFormField(
+                      keyboardType: TextInputType.number,
+                      textAlign: TextAlign.center,
+                      onChanged: onChanged,
+                      textInputAction: textInputAction,
+                      onFieldSubmitted: onContinue,
+                      controller: textController,
+                      style: TextStyle(
+                        fontSize: 55,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      cursorColor: Theme.of(context).primaryColor,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        errorBorder: InputBorder.none,
+                        disabledBorder: InputBorder.none,
+                        contentPadding: EdgeInsets.only(
+                          left: 5,
+                          bottom: 2,
+                          top: 0,
+                          right: 0,
+                        ),
+                        hintText: '',
+                        hintStyle: TextStyle(fontSize: 55),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                      ),
+                    ),
+                  ),
+                )
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

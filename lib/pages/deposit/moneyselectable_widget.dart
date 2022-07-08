@@ -9,7 +9,6 @@ class MoneySelectable extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final filterValue = useState<String>("");
     return Padding(
       padding: const EdgeInsets.only(
         top: 26,
@@ -27,48 +26,28 @@ class MoneySelectable extends HookWidget {
                 text: "\$100",
                 value: "100",
                 callback: (String a) {
-                  if (filterValue.value == (a)) {
-                    filterValue.value = "";
-                  } else {
-                    filterValue.value = a;
-                  }
-                  callback(filterValue.value);
+                  callback(a);
                 }),
             ValueFilter(
                 currentValue: currentValue,
                 text: "\$200",
                 value: "200",
                 callback: (String a) {
-                  if (filterValue.value == (a)) {
-                    filterValue.value = "";
-                  } else {
-                    filterValue.value = a;
-                  }
-                  callback(filterValue.value);
+                  callback(a);
                 }),
             ValueFilter(
                 currentValue: currentValue,
                 text: "\$500",
                 value: "500",
                 callback: (String a) {
-                  if (filterValue.value == (a)) {
-                    filterValue.value = "";
-                  } else {
-                    filterValue.value = a;
-                  }
-                  callback(filterValue.value);
+                  callback(a);
                 }),
             ValueFilter(
                 currentValue: currentValue,
                 text: "\$1000",
                 value: "1000",
                 callback: (String a) {
-                  if (filterValue.value == (a)) {
-                    filterValue.value = "";
-                  } else {
-                    filterValue.value = a;
-                  }
-                  callback(filterValue.value);
+                  callback(a);
                 }),
           ],
         ),
