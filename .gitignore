@@ -48,3 +48,6 @@ app.*.map.json
 
 *.lock
 android/fastlane/google_key.json
+ios/Runner.xcodeproj
+ios/Runner.xcworkspace
+.zprofile

@@ -53,7 +53,7 @@ class CurrentInvestmentsSection extends HookWidget {
                 : assests.data!.isEmpty
                     ? Center(
                         child:
-                            Text(AppLocalizations.of(context)!.no_investments),
+                            Text(AppLocalizations.of(context)!.dashboard_no_investments),
                       )
                     : ListView.separated(
                         scrollDirection: Axis.horizontal,

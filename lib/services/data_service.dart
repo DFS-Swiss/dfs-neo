@@ -99,4 +99,8 @@ class DataService extends ChangeNotifier {
       return event["value"];
     });
   }
+
+  Future<bool> addUserBalance(String amount) async {
+    return await RESTService.getInstance().addBalance(amount);
+  }
 }

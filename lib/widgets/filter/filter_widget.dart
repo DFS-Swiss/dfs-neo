@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:neo/style/theme.dart';
 
-class SingleStockFilter extends HookWidget {
+class Filter extends HookWidget {
   final bool initChecked;
   final String text;
   final int id;
   final Function callback;
-  const SingleStockFilter(
+  const Filter(
       {required this.initChecked,
       required this.id,
       required this.text,
