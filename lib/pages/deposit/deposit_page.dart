@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:neo/pages/deposit/moneyselectable_widget.dart';
 import 'package:neo/widgets/textfield/money_textfield.dart';
 
-import '../../widgets/appbaractionbutton_widget.dart';
+import '../../services/data_service.dart';
 import '../../widgets/branded_button.dart';
 
 class Deposit extends HookWidget {
@@ -18,7 +19,64 @@ class Deposit extends HookWidget {
     var depositAmount =
         typedAmount.value.isEmpty ? selectedAmount.value : typedAmount.value;
 
-    handleNext() {}
+    useEffect(() {
+      if (typedAmount.value.isNotEmpty) {
+        selectedAmount.value = "";
+      } else {}
+      return;
+    }, [typedAmount.value]);
+
+    handleDeposit() async {
+      try {
+        if (await DataService.getInstance().addUserBalance(depositAmount)) {
+          // Show alert, pop page
+          await showDialog<String>(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+              title: Text(AppLocalizations.of(context)!.alert_amount_deposited),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context, 'OK');
+                    Navigator.pop(context, 'OK');
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            ),
+          );
+        }
+      } catch (response) {
+        if ((response as dynamic).response.statusCode == 401) {
+          // Show alert, pop page
+          await showDialog<String>(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+              title: Text(AppLocalizations.of(context)!.alert_amount_limit),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'OK'),
+                  child: const Text('OK'),
+                ),
+              ],
+            ),
+          );
+        } else if((response as dynamic).response.statusCode == 400){
+           await showDialog<String>(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+              title: Text(AppLocalizations.of(context)!.alert_deposit_limit),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'OK'),
+                  child: const Text('OK'),
+                ),
+              ],
+            ),
+          );
+        }
+      }
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -48,6 +106,7 @@ class Deposit extends HookWidget {
                   selectedAmount.value = amount;
                   typedAmount.value = "";
                 },
+                currentValue: selectedAmount.value,
               ),
               Expanded(
                 child: SizedBox(),
@@ -58,19 +117,18 @@ class Deposit extends HookWidget {
                     width: 20,
                   ),
                   Expanded(
-                    child: BrandedButton(
-                      onPressed: handleNext,
-                      child: Text(AppLocalizations.of(context)!
-                          .deposit_continue_button),
+                    child: SafeArea(
+                      child: BrandedButton(
+                        onPressed: handleDeposit,
+                        child: Text(AppLocalizations.of(context)!
+                            .port_deposit),
+                      ),
                     ),
                   ),
                   const SizedBox(
                     width: 20,
                   ),
                 ],
-              ),
-              const SizedBox(
-                height: 20,
               ),
             ],
           ),

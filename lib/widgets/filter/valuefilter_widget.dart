@@ -6,12 +6,10 @@ import 'package:neo/style/theme.dart';
 class ValueFilter extends HookWidget {
   final String text;
   final String value;
-  final int id;
-  final int currentState;
+  final String currentValue;
   final Function callback;
   const ValueFilter(
-      {required this.currentState,
-      required this.id,
+      {required this.currentValue,
       required this.text,
       required this.value,
       required this.callback,
@@ -20,7 +18,7 @@ class ValueFilter extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final selected = useState<bool>(false);
-    if(currentState != id){
+    if(currentValue != value){
       selected.value = false;
     }
     return Padding(
@@ -34,7 +32,7 @@ class ValueFilter extends HookWidget {
           alignment: Alignment.center,
           height: 32,
           width: 84,
-          decoration: selected.value && currentState == id
+          decoration: selected.value && currentValue == value
               ? BoxDecoration(
                   gradient: NeoTheme.of(context)!.primaryGradient,
                   borderRadius: BorderRadius.circular(12))
@@ -47,7 +45,7 @@ class ValueFilter extends HookWidget {
             text,
             style: TextStyle(
                 color:
-                    selected.value && currentState == id ? Colors.white : Colors.black,
+                    selected.value && currentValue == value ? Colors.white : Colors.black,
                 fontWeight: FontWeight.w600,
                 fontSize: 14),
           ),

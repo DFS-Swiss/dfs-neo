@@ -155,5 +155,8 @@
     "order_coming_soon": "Orders folgen...",
     "no_investments": "Noch keine Investments",
     "deposit_continue_button":"Weiter",
-    "deposit_enter_deposit_amount":"Einzahlungsbetrag eingeben (10 - 50.000$)"
+    "deposit_enter_deposit_amount":"Einzahlungsbetrag eingeben (10 - 50.000$)",
+    "alert_amount_deposited":"Betrag wurde eingezahlt",
+    "alert_amount_limit":"Es können nicht mehr als 100000$ eingezahlt werden",
+    "alert_deposit_limit":"Es können nicht mehr als 10000$ auf einmal eingezahlt werden"
 }

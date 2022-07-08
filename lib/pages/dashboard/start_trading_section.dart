@@ -13,7 +13,7 @@ class StartTradingSection extends HookWidget {
   Widget build(BuildContext context) {
     final balance = useBalance();
 
-    if (balance.loading || balance.data!.newBalance != 0) {
+    if (balance.loading) {
       return Container();
     } else {
       return Padding(
