@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:neo/pages/stocklist/singlestockfilter_widget.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:neo/pages/portfolio/timeperiod_widget.dart';
+
 
 class TimeFilter extends HookWidget {
   final Function callback;
@@ -9,16 +10,10 @@ class TimeFilter extends HookWidget {
   const TimeFilter({required this.init, required this.callback, Key? key})
       : super(key: key);
 
- 
-
   @override
   Widget build(BuildContext context) {
     final filterOptions = useState<int>(init);
-     bool checkInit(int id) {
-    if (filterOptions.value == id) return true;
-    return false;
-  }
-    
+
     return Padding(
       padding: const EdgeInsets.only(
         top: 26,
@@ -31,26 +26,45 @@ class TimeFilter extends HookWidget {
             SizedBox(
               width: 24,
             ),
-            SingleStockFilter(
-                initChecked: checkInit(0),
+            TimePeriod(
+              currentlySelected: filterOptions.value,
                 id: 0,
-                text: AppLocalizations.of(context)!.list_toggle_stocks,
+                text: AppLocalizations.of(context)!.port_time_today,
                 callback: (int a) {
                   filterOptions.value = a;
+                  callback(a);
                 }),
-            SingleStockFilter(
-                initChecked: checkInit(1),
+            TimePeriod(
+              currentlySelected: filterOptions.value,
                 id: 1,
-                text: AppLocalizations.of(context)!.list_toggle_etc,
+                text: AppLocalizations.of(context)!.port_time_week,
                 callback: (int a) {
                   filterOptions.value = a;
+                  callback(a);
                 }),
-            SingleStockFilter(
-                initChecked: checkInit(2),
+            TimePeriod(
+              currentlySelected: filterOptions.value,
                 id: 2,
-                text: AppLocalizations.of(context)!.list_toggle_etf,
+                text: AppLocalizations.of(context)!.port_time_month,
                 callback: (int a) {
-                 filterOptions.value = a;
+                  filterOptions.value = a;
+                  callback(a);
+                }),
+            TimePeriod(
+              currentlySelected: filterOptions.value,
+                id: 3,
+                text: AppLocalizations.of(context)!.port_time_year,
+                callback: (int a) {
+                  filterOptions.value = a;
+                  callback(a);
+                }),
+            TimePeriod(
+              currentlySelected: filterOptions.value,
+                id: 4,
+                text: AppLocalizations.of(context)!.port_time_lifetime,
+                callback: (int a) {
+                  filterOptions.value = a;
+                  callback(a);
                 }),
           ],
         ),

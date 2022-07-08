@@ -12,11 +12,12 @@ import 'package:shimmer/shimmer.dart';
 import 'package:neo/services/formatting_service.dart';
 
 class PortfolioBalanceCard extends HookWidget {
-  const PortfolioBalanceCard({Key? key}) : super(key: key);
+  final StockdataInterval? interval;
+  const PortfolioBalanceCard( {Key? key, this.interval,}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final balanceHistory = useBalanceHistory(StockdataInterval.twentyFourHours);
+    final balanceHistory = useBalanceHistory(interval ?? StockdataInterval.twentyFourHours);
     return !balanceHistory.loading
         ? Container(
             height: 270,
