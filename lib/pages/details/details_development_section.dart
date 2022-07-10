@@ -1,7 +1,10 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:neo/widgets/branded_button.dart';
+import 'package:neo/pages/details/details_selectable_widget.dart';
+import 'package:neo/widgets/buttons/branded_button.dart';
+import 'package:neo/widgets/buttons/branded_outline_button.dart';
+import 'package:neo/widgets/buttons/round_outline_button.dart';
 import 'package:neo/widgets/development_indicator/detailed_development_indicator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shimmer/shimmer.dart';
@@ -18,24 +21,19 @@ class DetailsDevelopmentSection extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final chartData = useState<List<FlSpot>>([]);
-    final stockData = useStockdata(token, StockdataInterval.ytd);
+    final interval = useState(StockdataInterval.ytd);
+    final stockData = useStockdata(token, interval.value);
     final symbolInfo = useSymbolInfo(token);
 
-    useEffect(() {
-      if (stockData.loading == false) {
-        chartData.value = stockData.data!
-            .map((e) =>
-                FlSpot(e.time.millisecondsSinceEpoch.toDouble(), e.price))
-            .toList();
-      }
-
-      return;
-    }, ["_", stockData.loading]);
+    List<FlSpot> plotData() {
+      return stockData.data!
+          .map((e) => FlSpot(e.time.millisecondsSinceEpoch.toDouble(), e.price))
+          .toList();
+    }
 
     return !symbolInfo.loading && !stockData.loading
         ? Padding(
-            padding: EdgeInsets.fromLTRB(12,0,12,0),
+            padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
             child: Container(
               alignment: Alignment.centerLeft,
               child: Column(
@@ -110,24 +108,20 @@ class DetailsDevelopmentSection extends HookWidget {
                               SizedBox(
                                 height: 3,
                               ),
-                              // TODO: This needs to be dependent on the selection of the chart
                               DetailedDevelopmentIndicator(
-                                positive: chartData.value.first.y >
-                                    chartData.value.last.y,
+                                positive:
+                                    plotData().first.y > plotData().last.y,
                                 changePercentage:
                                     FormattingService.calculatepercent(
-                                        chartData.value.first.y,
-                                        chartData.value.last.y),
+                                        plotData().first.y, plotData().last.y),
                                 changeValue: FormattingService.roundDouble(
-                                    chartData.value.first.y -
-                                        chartData.value.last.y,
-                                    2),
+                                    plotData().first.y - plotData().last.y, 2),
                               ),
                               SizedBox(
                                 height: 10,
                               ),
                               Text(
-                                "YTD",
+                                interval.value.toString(),
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
@@ -144,6 +138,12 @@ class DetailsDevelopmentSection extends HookWidget {
                     ],
                   ),
                   // Filter
+                  DetailsSelectable(
+                    callback: (Object selectedInterval) {
+                      interval.value = selectedInterval as StockdataInterval;
+                    },
+                    currentValue: interval.value,
+                  ),
                   // Chart
                   SizedBox(
                     height: 40,
@@ -161,8 +161,8 @@ class DetailsDevelopmentSection extends HookWidget {
                             )
                           : LineChart(
                               details(
-                                chartData.value,
-                                chartData.value.first.y < chartData.value.last.y
+                                plotData(),
+                                plotData().first.y < plotData().last.y
                                     ? true
                                     : false,
                               ),
@@ -173,25 +173,36 @@ class DetailsDevelopmentSection extends HookWidget {
                     padding: EdgeInsets.all(12.0),
                     child: Row(
                       children: [
-                        BrandedButton(
+                        Expanded(
+                          flex: 13,
+                          child: BrandedOutlineButton(
                             onPressed: () => {},
                             child: Text(
-                                AppLocalizations.of(context)!.detail_sell)),
+                              AppLocalizations.of(context)!.detail_sell,
+                              style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        RoundOutlineButton(
+                            onPressed: () => {},
+                            child: Icon(Icons.swap_horiz, color: Theme.of(context).primaryColor, size: 30,)),
+                        SizedBox(
+                          width: 20,
+                        ),
                         Expanded(
                           flex: 13,
-                          child: Container(),
-                        ),
-                        BrandedButton(
+                          child: BrandedButton(
                             onPressed: () => {},
-                            child: Icon(Icons.swap_horiz, color: Colors.white)),
-                        Expanded(
-                          flex: 13,
-                          child: Container(),
+                            child: Text(
+                              AppLocalizations.of(context)!.detail_buy,
+                            ),
+                          ),
                         ),
-                        BrandedButton(
-                            onPressed: () => {},
-                            child:
-                                Text(AppLocalizations.of(context)!.detail_buy)),
                       ],
                     ),
                   ),

@@ -5,8 +5,8 @@ import 'package:neo/style/theme.dart';
 
 class ValueFilter extends HookWidget {
   final String text;
-  final String value;
-  final String currentValue;
+  final Object value;
+  final Object currentValue;
   final Function callback;
   const ValueFilter(
       {required this.currentValue,
@@ -18,9 +18,8 @@ class ValueFilter extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final selected = useState<bool>(false);
-    if(currentValue != value){
-      selected.value = false;
-    }
+    selected.value = currentValue == value;
+    
     return Padding(
       padding: const EdgeInsets.only(right: 8),
       child: GestureDetector(

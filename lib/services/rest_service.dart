@@ -168,7 +168,7 @@ class RESTService extends ChangeNotifier {
       final response = await dio.get("/debug/addBalance?amount=$amount");
       if (response.statusCode.toString().startsWith("2")) {
         return true;
-      } else if(response.statusCode.toString() == "401") {
+      } else if (response.statusCode.toString() == "401") {
         throw response;
       } else {
         return false;
@@ -316,6 +316,28 @@ class RESTService extends ChangeNotifier {
       DataService.getInstance()
           .dataUpdateStream
           .addError({"key": "balance", "value": e});
+      rethrow;
+    }
+  }
+
+  Future<List<UserassetDatapoint>> getAssetForSymbol(String symbol) async {
+    try {
+      final response = await dio.get("/user/assets/$symbol");
+      if (response.statusCode.toString().startsWith("2")) {
+        List<UserassetDatapoint> data;
+
+        try {
+          data = (response.data["body"]["items"] as List<dynamic>)
+              .map((e) => UserassetDatapoint.fromMap(e))
+              .toList();
+        } catch (e) {
+          throw "Parsing error: ${e.toString()}";
+        }
+        return data;
+      } else {
+        throw "Unknown case: ${response.toString()}";
+      }
+    } catch (e) {
       rethrow;
     }
   }

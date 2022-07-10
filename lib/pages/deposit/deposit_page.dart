@@ -6,7 +6,7 @@ import 'package:neo/pages/deposit/moneyselectable_widget.dart';
 import 'package:neo/widgets/textfield/money_textfield.dart';
 
 import '../../services/data_service.dart';
-import '../../widgets/branded_button.dart';
+import '../../widgets/buttons/branded_button.dart';
 
 class Deposit extends HookWidget {
   const Deposit({Key? key}) : super(key: key);

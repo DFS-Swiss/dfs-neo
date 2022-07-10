@@ -5,7 +5,7 @@ import 'package:neo/pages/tutorial/backgroundgraphic_widget.dart';
 import 'package:neo/pages/tutorial/customprogressindicator_widget.dart';
 import 'package:neo/pages/tutorial/tutorialcontent_widget.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:neo/widgets/branded_button.dart';
+import 'package:neo/widgets/buttons/branded_button.dart';
 
 class TutorialWrapper extends HookWidget {
   TutorialWrapper({Key? key}) : super(key: key);

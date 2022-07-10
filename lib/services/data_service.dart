@@ -103,4 +103,8 @@ class DataService extends ChangeNotifier {
   Future<bool> addUserBalance(String amount) async {
     return await RESTService.getInstance().addBalance(amount);
   }
+
+  Stream<List<UserassetDatapoint>> getUserAssetsForSymbol(String symbol) async* {
+    yield await RESTService.getInstance().getAssetForSymbol(symbol);
+  }
 }

@@ -2,46 +2,45 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:neo/models/stockdata_datapoint.dart';
 import 'package:neo/widgets/cards/asset_development_card.dart';
-import 'package:neo/widgets/development_indicator/detailed_development_indicator.dart';
 
 import '../../hooks/use_stockdata.dart';
-import '../../services/formatting_service.dart';
+import '../../hooks/use_user_asset_data.dart';
 import '../../types/stockdata_interval_enum.dart';
 import '../../widgets/genericheadline_widget.dart';
 
 class DetailsInvestmentsSection extends HookWidget {
   final String token;
-  const DetailsInvestmentsSection({required this.token, Key? key})
+  final String symbol;
+  const DetailsInvestmentsSection(
+      {required this.token, required this.symbol, Key? key})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final chartDataToday = useState<List<FlSpot>>([]);
     final stockDataToday =
         useStockdata(token, StockdataInterval.twentyFourHours);
-    // TODO: We need ALL Stock data here
-    final chartDataAllTime = useState<List<FlSpot>>([]);
     final stockDataAllTime = useStockdata(token, StockdataInterval.oneYear);
+    final userAssetData = useUserAssetData(symbol);
 
+    double buyIn = 0;
+    double quantity = 0;
+    double value = 0;
     useEffect(() {
-      if (stockDataToday.loading == false) {
-        chartDataToday.value = stockDataToday.data!
-            .map((e) =>
-                FlSpot(e.time.millisecondsSinceEpoch.toDouble(), e.price))
-            .toList();
-      }
-
-      if (stockDataAllTime.loading == false) {
-        chartDataAllTime.value = stockDataAllTime.data!
-            .map((e) =>
-                FlSpot(e.time.millisecondsSinceEpoch.toDouble(), e.price))
-            .toList();
-      }
-
+      userAssetData.data?.forEach((element) {
+        quantity += element.tokenAmmount;
+        value += element.currentValue;
+        
+       });
       return;
-    }, ["_", stockDataToday.loading, stockDataAllTime.loading]);
+    }, ["_", userAssetData.loading]);
+
+    List<FlSpot> plotData(List<StockdataDatapoint> stockData) {
+      return stockData
+          .map((e) => FlSpot(e.time.millisecondsSinceEpoch.toDouble(), e.price))
+          .toList();
+    }
 
     return !stockDataToday.loading && !stockDataAllTime.loading
         ? Column(
@@ -58,11 +57,11 @@ class DetailsInvestmentsSection extends HookWidget {
                   children: [
                     AssetDevelopmentCard(
                       name: AppLocalizations.of(context)!.details_today,
-                      chartData: chartDataToday.value,
+                      chartData: plotData(stockDataToday.data!),
                     ),
                     AssetDevelopmentCard(
                       name: AppLocalizations.of(context)!.details_performance,
-                      chartData: chartDataAllTime.value,
+                      chartData: plotData(stockDataAllTime.data!),
                     ),
                   ],
                 ),
@@ -119,7 +118,7 @@ class DetailsInvestmentsSection extends HookWidget {
                           height: 10,
                         ),
                         Text(
-                          AppLocalizations.of(context)!.details_value,
+                          quantity.toString(),
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: 14,
@@ -151,7 +150,7 @@ class DetailsInvestmentsSection extends HookWidget {
                           height: 10,
                         ),
                         Text(
-                          AppLocalizations.of(context)!.details_value,
+                          value.toString(),
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: 14,

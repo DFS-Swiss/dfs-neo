@@ -16,6 +16,6 @@ DataContainer<List<StockdataDatapoint>> useStockdata(
       state.value = DataContainer(data: event);
     });
     return sub.cancel;
-  }, ["_"]);
+  }, [interval]);
   return state.value;
 }

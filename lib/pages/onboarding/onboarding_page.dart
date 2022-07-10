@@ -4,7 +4,7 @@ import 'package:neo/pages/tutorial/backgroundgraphic_widget.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:neo/pages/tutorial/tutorialwrapper_page.dart';
 import 'package:neo/style/theme.dart';
-import 'package:neo/widgets/branded_button.dart';
+import 'package:neo/widgets/buttons/branded_button.dart';
 
 class Onboarding extends HookWidget {
   const Onboarding({Key? key}) : super(key: key);

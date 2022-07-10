@@ -158,11 +158,14 @@
     "details_performance":"Performance",
     "details_buy_in":"Buy in",
     "details_quantity":"Quantity",
-    "details_value":"Value"
+    "details_value":"Value",
     "dashboard_no_investments": "No investments",
     "deposit_continue_button":"Continue",
     "deposit_enter_deposit_amount":"Enter deposit amount (10 - 50.000$)",
     "alert_amount_deposited":"Amount deposited",
     "alert_amount_limit":"You cannot add more than 100000$ via debug",
-    "alert_deposit_limit":"You cannot add more than 10000$ at once"
+    "alert_deposit_limit":"You cannot add more than 10000$ at once",
+    "details_about":"About this dAsset",
+    "details_public_sentiment":"New Index Public Sentiment",
+    "details_last_week_sentiment":"Last week"
 }
