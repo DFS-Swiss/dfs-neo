@@ -3,7 +3,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:neo/hooks/use_available_stocks.dart';
 import 'package:neo/hooks/use_userassets.dart';
-import 'package:neo/pages/buy_sell/buy_page.dart';
 import 'package:neo/pages/details/details_page.dart';
 import 'package:neo/pages/stocklist/stockfilter_widget.dart';
 import 'package:neo/pages/stocklist/stocksearchbar_widget.dart';

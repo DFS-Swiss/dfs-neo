@@ -2,12 +2,8 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:neo/widgets/cards/asset_development_card.dart';
-import 'package:neo/widgets/development_indicator/detailed_development_indicator.dart';
-
 import '../../hooks/use_stockdata.dart';
-import '../../services/formatting_service.dart';
 import '../../types/stockdata_interval_enum.dart';
 import '../../widgets/genericheadline_widget.dart';
 
