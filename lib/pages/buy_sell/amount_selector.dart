@@ -7,17 +7,6 @@ import 'package:neo/hooks/use_stockdata_info.dart';
 import 'package:neo/hooks/use_stockdata_latest_price.dart';
 import 'package:shimmer/shimmer.dart';
 
-String? numberValidator(String? value) {
-  if (value == null) {
-    return null;
-  }
-  final n = num.tryParse(value);
-  if (n == null) {
-    return '"$value" is not a valid number';
-  }
-  return null;
-}
-
 class AmountSelector extends HookWidget {
   final dollarControler = TextEditingController();
   final assetControler = TextEditingController();
@@ -311,7 +300,6 @@ class TradeAssetInputFieldDollar extends HookWidget {
                                         TextInputType.numberWithOptions(
                                       decimal: true,
                                     ),
-                                    validator: numberValidator,
                                     inputFormatters: [
                                       FilteringTextInputFormatter.allow(
                                           (RegExp("[.0-9]"))),
