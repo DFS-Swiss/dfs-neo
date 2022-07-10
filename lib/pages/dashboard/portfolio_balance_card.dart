@@ -7,7 +7,7 @@ import 'package:neo/pages/dashboard/portfolio_development_chart.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
 import 'package:neo/widgets/hideable_text.dart';
 import 'package:neo/widgets/hidebalance_button.dart';
-import 'package:neo/widgets/small_change_indicator.dart';
+import 'package:neo/widgets/development_indicator/small_change_indicator.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:neo/services/formatting_service.dart';
 
@@ -31,24 +31,27 @@ class PortfolioBalanceCard extends HookWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          AppLocalizations.of(context)!.dash_balance,
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        HideableText(
-                          "${FormattingService.roundDouble(balanceHistory.data!.portfolioIsEmpty ? 0 : balanceHistory.data!.total.first.price, 2)} USD",
-                          style: GoogleFonts.urbanist(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            AppLocalizations.of(context)!.dash_balance,
+                            style: Theme.of(context).textTheme.bodySmall,
                           ),
-                        )
-                      ],
+                          SizedBox(
+                            height: 5,
+                          ),
+                          HideableText(
+                            "${FormattingService.roundDouble(balanceHistory.data!.portfolioIsEmpty ? 0 : balanceHistory.data!.total.first.price, 2)} USD",
+                            maxLines: 1,
+                            style: GoogleFonts.urbanist(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                     Column(
                       children: [

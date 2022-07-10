@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:neo/style/theme.dart';
-import 'package:neo/widgets/open_order_card.dart';
+import 'package:neo/widgets/cards/open_order_card.dart';
 
 class OpenOrdersSection extends HookWidget {
   const OpenOrdersSection({Key? key}) : super(key: key);

@@ -22,7 +22,6 @@ class AuthenticationService extends ChangeNotifier {
         throw "Session is expired and could not be restored";
       }
     }
-    log(_cognitoService.getIdJwtToken()!);
     return _cognitoService.getIdJwtToken()!;
   }
 
@@ -91,10 +90,9 @@ class AuthenticationService extends ChangeNotifier {
   }
 
   Future register(String userName, String email, String password) async {
-    try{
+    try {
       await _cognitoService.registerUser(userName, email, password);
-    }
-    on CognitoClientException catch (e){
+    } on CognitoClientException catch (e) {
       print(e);
       rethrow;
     }
@@ -119,7 +117,7 @@ class AuthenticationService extends ChangeNotifier {
         _cognitoService.isUserPresent()) {
       await _cognitoService.confirmRegistration(code);
       authState = AuthState.signedOut;
-      
+
       notifyListeners();
     }
   }
@@ -134,7 +132,7 @@ class AuthenticationService extends ChangeNotifier {
   Future<bool> tryRefreshingSession() async {
     if (_cognitoService.isSessionPresent() && _cognitoService.isUserPresent()) {
       try {
-        _cognitoService.refreshSession();
+        await _cognitoService.refreshSession();
         return true;
       } catch (e) {
         print(e);

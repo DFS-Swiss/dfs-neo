@@ -215,7 +215,8 @@ class RESTService extends ChangeNotifier {
         try {
           data = (response.data["body"]["items"] as List<dynamic>)
               .map((e) => UserassetDatapoint.fromMap(e))
-              .toList();
+              .toList()
+            ..sort((a, b) => b.tokenAmmount.compareTo(a.tokenAmmount));
         } catch (e) {
           throw "Parsing error: ${e.toString()}";
         }
@@ -316,6 +317,22 @@ class RESTService extends ChangeNotifier {
       DataService.getInstance()
           .dataUpdateStream
           .addError({"key": "balance", "value": e});
+      rethrow;
+    }
+  }
+
+  Future<bool> buyAsset(String symbol, double amountInDollar) async {
+    try {
+      final response = await dio.post("/assets/buy",
+          data: {"symbol": symbol, "amountToSpend": amountInDollar});
+      if (response.statusCode.toString().startsWith("2")) {
+        return true;
+      }
+      if (response.statusCode == 400) {
+        throw "Insuficient funds";
+      }
+      return false;
+    } catch (e) {
       rethrow;
     }
   }

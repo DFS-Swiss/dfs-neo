@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:neo/widgets/small_change_indicator.dart';
+import 'package:neo/widgets/development_indicator/small_change_indicator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class OpenOrderCard extends StatelessWidget {

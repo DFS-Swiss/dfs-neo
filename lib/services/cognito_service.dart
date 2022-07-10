@@ -13,7 +13,8 @@ class CognitoService {
   // Token
 
   bool isIdTokenExpired() {
-    return _getIdTokenExpiration() < DateTime.now().microsecondsSinceEpoch;
+    return _getIdTokenExpiration() <
+        (DateTime.now().microsecondsSinceEpoch / 1000000);
   }
 
   int _getIdTokenExpiration() {
@@ -48,8 +49,8 @@ class CognitoService {
         .refreshSession(CognitoRefreshToken(prefs.getString("refresh_token")));
   }
 
-  refreshSession() {
-    _cognitoUser!.refreshSession(_session!.refreshToken!);
+  refreshSession() async {
+    _session = await _cognitoUser!.refreshSession(_session!.refreshToken!);
   }
 
   // User

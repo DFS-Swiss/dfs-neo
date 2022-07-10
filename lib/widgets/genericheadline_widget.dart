@@ -20,7 +20,7 @@ class GenericHeadline extends HookWidget {
         children: [
           Text(
             title,
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+            style: Theme.of(context).textTheme.headlineMedium,
           ),
           linktext != null && callback != null
               ? GestureDetector(
