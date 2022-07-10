@@ -167,6 +167,11 @@
     "new_order_advanced": "Advanced settings",
     "new_order_price_per_share": "Price 1 Share",
     "new_order_shares": "Shares",
-    "new_order_create": "Create order"
+    "new_order_create": "Create order",
+    "new_order_buy_success_error": "A problem occured",
+    "new_order_buy_success_title": "Success",
+    "new_order_buy_success": "has been bought successfully",
+    "new_order_buy_success_error_ins_funds": "Your account has insuficient funds"
+
 
 }

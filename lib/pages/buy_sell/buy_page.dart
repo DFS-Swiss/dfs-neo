@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -22,8 +23,46 @@ class BuyPage extends HookWidget {
         try {
           await DataService.getInstance()
               .buyAsset(symbol, amountInDollar.value);
-          Navigator.pop(context);
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text(
+                  AppLocalizations.of(context)!.new_order_buy_success_title),
+              content: Text(
+                "$symbol ${AppLocalizations.of(context)!.new_order_buy_success}",
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  },
+                  child: Text("OK"),
+                )
+              ],
+            ),
+          );
         } catch (e) {
+          if (e is DioError &&
+              e.response!.data["message"] == "Insuficient funds") {
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Text(
+                    AppLocalizations.of(context)!.new_order_buy_success_error),
+                content: Text(AppLocalizations.of(context)!
+                    .new_order_buy_success_error_ins_funds),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text("OK"),
+                  )
+                ],
+              ),
+            );
+          }
           print(e);
         }
         loading.value = false;

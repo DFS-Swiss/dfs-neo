@@ -167,5 +167,10 @@
     "new_order_advanced": "Erweiterte Optionen",
     "new_order_price_per_share": "Preis für einen Anteil",
     "new_order_shares": "Anteile",
-    "new_order_create": "Auftrag erstellen"
+    "new_order_create": "Auftrag erstellen",
+    "new_order_buy_success_error": "Es ist ein Problem aufgetreten",
+    "new_order_buy_success_error_ins_funds": "Es befindet sich nicht ausreichen Guthaben in ihrem Account.",
+    "new_order_buy_success_title": "Erfolgreich",
+    "new_order_buy_success": "wurde erfolgreich gekauft"
+
 }

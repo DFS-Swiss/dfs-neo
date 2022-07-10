@@ -5,11 +5,9 @@ import 'package:neo/hooks/use_balance_hidden.dart';
 class HideableText extends HookWidget {
   final String text;
   final TextStyle? style;
-  const HideableText(
-    this.text, {
-    Key? key,
-    this.style,
-  }) : super(key: key);
+  final int? maxLines;
+  const HideableText(this.text, {Key? key, this.style, this.maxLines})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +23,8 @@ class HideableText extends HookWidget {
 
     return Text(
       hideBalance ? makeHiddenText() : text,
+      overflow: TextOverflow.ellipsis,
+      maxLines: maxLines,
       style: style,
     );
   }

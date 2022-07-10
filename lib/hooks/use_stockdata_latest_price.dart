@@ -3,7 +3,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import '../models/stockdata_datapoint.dart';
 import '../services/stockdata_service.dart';
 import '../types/data_container.dart';
-import '../types/stockdata_interval_enum.dart';
 
 DataContainer<StockdataDatapoint> useLatestPrice(String symbol) {
   final state =
