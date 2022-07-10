@@ -172,6 +172,10 @@
     "new_order_buy_success_title": "Success",
     "new_order_buy_success": "has been bought successfully",
     "new_order_buy_success_error_ins_funds": "Your account has insuficient funds"
-
-
+    "dashboard_no_investments": "No investments",
+    "deposit_continue_button":"Continue",
+    "deposit_enter_deposit_amount":"Enter deposit amount (10 - 50.000$)",
+    "alert_amount_deposited":"Amount deposited",
+    "alert_amount_limit":"You cannot add more than 100000$ via debug",
+    "alert_deposit_limit":"You cannot add more than 10000$ at once"
 }

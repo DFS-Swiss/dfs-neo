@@ -163,6 +163,21 @@ class RESTService extends ChangeNotifier {
     }
   }
 
+  Future<bool> addBalance(String amount) async {
+    try {
+      final response = await dio.get("/debug/addBalance?amount=$amount");
+      if (response.statusCode.toString().startsWith("2")) {
+        return true;
+      } else if(response.statusCode.toString() == "401") {
+        throw response;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<List<StockdataDocument>> getAvailiableStocks() async {
     try {
       final response = await dio.get("/stockdata/");
