@@ -153,7 +153,6 @@
     "bottomnav_port": "Portfolio",
     "bottomnav_trade": "Trade",
     "order_coming_soon": "Orders coming soon...",
-    "no_investments": "No investments",
     "details_investments":"Your investment",
     "details_today":"Today",
     "details_performance":"Performance",
@@ -171,7 +170,7 @@
     "new_order_buy_success_error": "A problem occured",
     "new_order_buy_success_title": "Success",
     "new_order_buy_success": "has been bought successfully",
-    "new_order_buy_success_error_ins_funds": "Your account has insuficient funds"
+    "new_order_buy_success_error_ins_funds": "Your account has insuficient funds",
     "dashboard_no_investments": "No investments",
     "deposit_continue_button":"Continue",
     "deposit_enter_deposit_amount":"Enter deposit amount (10 - 50.000$)",
