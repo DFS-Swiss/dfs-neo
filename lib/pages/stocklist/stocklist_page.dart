@@ -142,10 +142,16 @@ class StockList extends HookWidget {
                         (e) => GestureDetector(
                             onTap: () {
                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          DetailsPage(token: e.symbol, key: UniqueKey())));
+                                context,
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      //TODO: Change back to details page
+                                      DetailsPage(
+                                    token: e.symbol,
+                                    key: UniqueKey(),
+                                  ),
+                                ),
+                              );
                             },
                             child: TradableStockCard(
                               token: e.symbol,

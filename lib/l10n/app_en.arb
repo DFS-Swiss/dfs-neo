@@ -159,6 +159,18 @@
     "details_buy_in":"Buy in",
     "details_quantity":"Quantity",
     "details_value":"Value",
+    "share_sell": "Sell",
+    "share_buy": "Buy",
+    "new_order_price": "Price",
+    "new_order_amount": "Amount of Shares",
+    "new_order_advanced": "Advanced settings",
+    "new_order_price_per_share": "Price 1 Share",
+    "new_order_shares": "Shares",
+    "new_order_create": "Create order",
+    "new_order_buy_success_error": "A problem occured",
+    "new_order_buy_success_title": "Success",
+    "new_order_buy_success": "has been bought successfully",
+    "new_order_buy_success_error_ins_funds": "Your account has insuficient funds",
     "dashboard_no_investments": "No investments",
     "deposit_continue_button":"Continue",
     "deposit_enter_deposit_amount":"Enter deposit amount (10 - 50.000$)",
@@ -167,5 +179,6 @@
     "alert_deposit_limit":"You cannot add more than 10000$ at once",
     "details_about":"About this dAsset",
     "details_public_sentiment":"New Index Public Sentiment",
-    "details_last_week_sentiment":"Last week"
+    "details_last_week_sentiment":"Last week",
+    "alert_deposit_limit":"You cannot add more than 10000$ at once"
 }

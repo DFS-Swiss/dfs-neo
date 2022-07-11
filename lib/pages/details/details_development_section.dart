@@ -14,6 +14,7 @@ import '../../hooks/use_stockdata_info.dart';
 import '../../services/formatting_service.dart';
 import '../../types/stockdata_interval_enum.dart';
 import '../../utils/chart_conversion.dart';
+import '../buy_sell/buy_page.dart';
 
 class DetailsDevelopmentSection extends HookWidget {
   final String token;
@@ -201,7 +202,16 @@ class DetailsDevelopmentSection extends HookWidget {
                       Expanded(
                         flex: 13,
                         child: BrandedButton(
-                          onPressed: () => {},
+                          onPressed: () => {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BuyPage(
+                                  symbol: token,
+                                ),
+                              ),
+                            )
+                          },
                           child: Text(
                             AppLocalizations.of(context)!.detail_buy,
                             style: TextStyle(

@@ -213,7 +213,8 @@ class PortfolioValueUtil {
   }
 
   Future<double> _queryCurrentStockData(String symbol) async {
-    return await StockdataService.getInstance().getLatestPrice(symbol).first;
+    return (await StockdataService.getInstance().getLatestPrice(symbol).first)
+        .price;
   }
 
   Future<List<StockdataDatapoint>> _queryHistoricStockData(

@@ -58,6 +58,7 @@ class CurrentInvestmentsSection extends HookWidget {
                     : ListView.separated(
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) => InvestmentCard(
+                          key: ValueKey(assests.data![index].symbol),
                           token: assests.data![index].symbol,
                         ),
                         separatorBuilder: (context, index) =>

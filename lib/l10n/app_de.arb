@@ -159,6 +159,18 @@
     "details_buy_in":"Einkauf",
     "details_quantity":"Anzahl",
     "details_value":"Wert",
+    "share_sell": "Verkaufen",
+    "share_buy": "Kaufen",
+    "new_order_price": "Preis",
+    "new_order_amount": "Anteile",
+    "new_order_advanced": "Erweiterte Optionen",
+    "new_order_price_per_share": "Preis für einen Anteil",
+    "new_order_shares": "Anteile",
+    "new_order_create": "Auftrag erstellen",
+    "new_order_buy_success_error": "Es ist ein Problem aufgetreten",
+    "new_order_buy_success_error_ins_funds": "Es befindet sich nicht ausreichen Guthaben in ihrem Account.",
+    "new_order_buy_success_title": "Erfolgreich",
+    "new_order_buy_success": "wurde erfolgreich gekauft",
     "dashboard_no_investments": "Noch keine Investments",
     "deposit_continue_button":"Weiter",
     "deposit_enter_deposit_amount":"Einzahlungsbetrag eingeben (10 - 50.000$)",
@@ -167,5 +179,6 @@
     "alert_deposit_limit":"Es können nicht mehr als 10000$ auf einmal eingezahlt werden",
     "details_about":"Über dieses dAsset",
     "details_public_sentiment":"New Index Public Sentiment",
-    "details_last_week_sentiment":"Letzte Woche"
+    "details_last_week_sentiment":"Letzte Woche",
+    "alert_deposit_limit":"Es können nicht mehr als 10000$ auf einmal eingezahlt werden"
 }
