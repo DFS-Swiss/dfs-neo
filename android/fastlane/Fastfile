@@ -35,7 +35,6 @@ platform :android do
     gradle(
       tasks: ["clean", "bundle"],
       print_command: false,
-      gradle_path: "android/",
       properties: {
         "android.injected.signing.store.file" => "keystore.jks",
         "android.injected.signing.store.password" => ENV['ANDROID_STORE_PASSWORD'],
