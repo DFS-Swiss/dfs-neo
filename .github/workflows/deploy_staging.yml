@@ -30,6 +30,7 @@ jobs:
           java-version: 17
           distribution: 'adopt'
           cache: gradle
+      - run: ls
       - name: Validate gradle
         run: ./android/gradlew -v
       - uses: maierj/fastlane-action@v2.2.0
