@@ -40,7 +40,7 @@ platform :android do
         "android.injected.signing.store.file" => "keystore.jks",
         "android.injected.signing.store.password" => ENV['ANDROID_STORE_PASSWORD'],
         "android.injected.signing.key.alias" => ENV['ANDROID_KEY_ALIAS'],
-        "android.injected.signing.key.password" => ENV['ANDROID_KEY_PASSWORD'],
+        "android.injected.signing.key.password" => ENV['ANDROID_KEY_PASSWORD']
       }
     )
     upload_to_play_store(
