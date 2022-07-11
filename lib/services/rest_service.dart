@@ -10,6 +10,7 @@ import 'package:neo/services/stockdata_service.dart';
 import 'package:neo/types/api/stockdata_bulk_fetch_request.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
 
+import '../models/user_balance_datapoint.dart';
 import '../service_locator.dart';
 
 const restApiBaseUrl = "https://rest.dfs-api.ch/v1";
@@ -29,9 +30,11 @@ class RESTService extends ChangeNotifier {
         handler.next(options);
       },
     ));
-    DataService.getInstance().registerUserDataHandler("user", getUserData);
-    DataService.getInstance()
-        .registerUserDataHandler("investments", getUserAssets);
+    DataService.getInstance().registerUserDataHandler("user", [getUserData]);
+    DataService.getInstance().registerUserDataHandler(
+        "investments", [getUserAssets, getUserAssetsHistory]);
+    DataService.getInstance().registerUserDataHandler(
+        "balances", [getUserBalanceHistory, getBalance]);
   }
 
   static RESTService getInstance() {
@@ -89,10 +92,15 @@ class RESTService extends ChangeNotifier {
         out[symbol.key] = {};
       }
       for (var interval in data[symbol.key]!.entries) {
+        final mappedList = (data[symbol.key]![interval.key]! as List<dynamic>)
+            .map((e) => StockdataDatapoint.fromMap(e))
+            .toList();
+        if (mappedList.length < 2) {
+          print("Error detected");
+        }
+        print(mappedList.length);
         out[symbol.key]![StockdataInterval.fromString(interval.key)] =
-            (data[symbol.key]![interval.key]! as List<dynamic>)
-                .map((e) => StockdataDatapoint.fromMap(e))
-                .toList();
+            mappedList;
       }
     }
     //} catch (e) {
@@ -155,6 +163,21 @@ class RESTService extends ChangeNotifier {
     }
   }
 
+  Future<bool> addBalance(String amount) async {
+    try {
+      final response = await dio.get("/debug/addBalance?amount=$amount");
+      if (response.statusCode.toString().startsWith("2")) {
+        return true;
+      } else if(response.statusCode.toString() == "401") {
+        throw response;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<List<StockdataDocument>> getAvailiableStocks() async {
     try {
       final response = await dio.get("/stockdata/");
@@ -192,7 +215,8 @@ class RESTService extends ChangeNotifier {
         try {
           data = (response.data["body"]["items"] as List<dynamic>)
               .map((e) => UserassetDatapoint.fromMap(e))
-              .toList();
+              .toList()
+            ..sort((a, b) => b.tokenAmmount.compareTo(a.tokenAmmount));
         } catch (e) {
           throw "Parsing error: ${e.toString()}";
         }
@@ -207,6 +231,108 @@ class RESTService extends ChangeNotifier {
       DataService.getInstance()
           .dataUpdateStream
           .addError({"key": "investments", "value": e});
+      rethrow;
+    }
+  }
+
+  Future<List<UserassetDatapoint>> getUserAssetsHistory(
+      {StockdataInterval? interval}) async {
+    try {
+      final response =
+          await dio.get("/user/assets/history?interval=${interval ?? "all"}");
+      if (response.statusCode.toString().startsWith("2")) {
+        List<UserassetDatapoint> data;
+
+        try {
+          data = (response.data["body"]["items"] as List<dynamic>)
+              .map((e) => UserassetDatapoint.fromMap(e))
+              .toList();
+        } catch (e) {
+          throw "Parsing error: ${e.toString()}";
+        }
+        DataService.getInstance().dataUpdateStream.add(
+          {"key": "investments/history", "value": data},
+        );
+        return data;
+      } else {
+        throw "Unknown case: ${response.toString()}";
+      }
+    } catch (e) {
+      DataService.getInstance()
+          .dataUpdateStream
+          .addError({"key": "investments/history", "value": e});
+      rethrow;
+    }
+  }
+
+  Future<List<UserBalanceDatapoint>> getUserBalanceHistory(
+      {StockdataInterval? interval}) async {
+    try {
+      final response =
+          await dio.get("/user/balance/history?interval=${interval ?? "all"}");
+      if (response.statusCode.toString().startsWith("2")) {
+        List<UserBalanceDatapoint> data;
+
+        try {
+          data = (response.data["body"]["items"] as List<dynamic>)
+              .map((e) => UserBalanceDatapoint.fromMap(e))
+              .toList();
+        } catch (e) {
+          throw "Parsing error: ${e.toString()}";
+        }
+        DataService.getInstance().dataUpdateStream.add(
+          {"key": "balance/history", "value": data},
+        );
+        return data;
+      } else {
+        throw "Unknown case: ${response.toString()}";
+      }
+    } catch (e) {
+      DataService.getInstance()
+          .dataUpdateStream
+          .addError({"key": "balance/history", "value": e});
+      rethrow;
+    }
+  }
+
+  Future<UserBalanceDatapoint> getBalance() async {
+    try {
+      final response = await dio.get("/user/balance");
+      if (response.statusCode.toString().startsWith("2")) {
+        UserBalanceDatapoint data;
+
+        try {
+          data = UserBalanceDatapoint.fromMap(response.data["body"]["item"]);
+        } catch (e) {
+          throw "Parsing error: ${e.toString()}";
+        }
+        DataService.getInstance().dataUpdateStream.add(
+          {"key": "balance", "value": data},
+        );
+        return data;
+      } else {
+        throw "Unknown case: ${response.toString()}";
+      }
+    } catch (e) {
+      DataService.getInstance()
+          .dataUpdateStream
+          .addError({"key": "balance", "value": e});
+      rethrow;
+    }
+  }
+
+  Future<bool> buyAsset(String symbol, double amountInDollar) async {
+    try {
+      final response = await dio.post("/assets/buy",
+          data: {"symbol": symbol, "amountToSpend": amountInDollar});
+      if (response.statusCode.toString().startsWith("2")) {
+        return true;
+      }
+      if (response.statusCode == 400) {
+        throw "Insuficient funds";
+      }
+      return false;
+    } catch (e) {
       rethrow;
     }
   }

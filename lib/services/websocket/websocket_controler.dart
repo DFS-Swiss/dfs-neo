@@ -25,7 +25,8 @@ class WebsocketControler {
     print("conecting...");
     connectionStateStream.add(SocketConnectionState.connecting);
     channel = await connectWs();
-    print("socket connection initializied");
+    print(
+        "${DateTime.now().toIso8601String()}: socket connection to $wsUrl initializied");
     connectionStateStream.add(SocketConnectionState.connected);
     channel!.done.then((_) => _onDisconnected());
     broadcastNotifications();
@@ -35,7 +36,7 @@ class WebsocketControler {
     channel!.listen((streamData) {
       streamController.add(streamData);
     }, onDone: () {
-      print("conecting aborted");
+      print("${DateTime.now().toIso8601String()}: conecting to $wsUrl aborted");
       initWebSocketConnection();
     }, onError: (e) {
       print('Server error: $e');

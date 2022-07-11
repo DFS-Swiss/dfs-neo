@@ -22,7 +22,6 @@ class AuthenticationService extends ChangeNotifier {
         throw "Session is expired and could not be restored";
       }
     }
-    log(_cognitoService.getIdJwtToken()!);
     return _cognitoService.getIdJwtToken()!;
   }
 
@@ -91,7 +90,12 @@ class AuthenticationService extends ChangeNotifier {
   }
 
   Future register(String userName, String email, String password) async {
-    _cognitoService.registerUser(userName, email, password);
+    try {
+      await _cognitoService.registerUser(userName, email, password);
+    } on CognitoClientException catch (e) {
+      print(e);
+      rethrow;
+    }
     await login(userName, password);
   }
 
@@ -113,6 +117,7 @@ class AuthenticationService extends ChangeNotifier {
         _cognitoService.isUserPresent()) {
       await _cognitoService.confirmRegistration(code);
       authState = AuthState.signedOut;
+
       notifyListeners();
     }
   }
@@ -127,7 +132,7 @@ class AuthenticationService extends ChangeNotifier {
   Future<bool> tryRefreshingSession() async {
     if (_cognitoService.isSessionPresent() && _cognitoService.isUserPresent()) {
       try {
-        _cognitoService.refreshSession();
+        await _cognitoService.refreshSession();
         return true;
       } catch (e) {
         print(e);
@@ -146,7 +151,7 @@ class AuthenticationService extends ChangeNotifier {
       // TODO: We need constants for these strings. We should use constants for all strings in general
       _cognitoService.createCognitoUser(prefs.getString("user_name"));
       try {
-        _cognitoService.setRefreshSession();
+        await _cognitoService.setRefreshSession();
         authState = AuthState.signedIn;
         notifyListeners();
         return true;

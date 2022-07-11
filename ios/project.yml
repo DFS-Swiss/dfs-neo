@@ -1,0 +1,34 @@
+#Doc: https://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md#settings
+name: Runner
+fileGroups:
+  - project.yml
+options: 
+  bundleIdPrefix: com.dfsswiss
+  createIntermediateGroups: true
+  deploymentTarget:
+    iOS: "13.0"
+targets:
+  Runner:
+    configFiles:
+      Debug: Flutter/Debug.xcconfig
+      Release: Flutter/Release.xcconfig
+    settings:
+      base:
+        SWIFT_OBJC_BRIDGING_HEADER:
+          - Runner/Runner-Bridging-Header.h
+    preBuildScripts:
+      - path: phase_scripts/run_scripts.sh
+        name: Run Script
+    postBuildScripts:
+      - path: phase_scripts/thin_binary.sh
+        name: Thin Binary
+    attributes:
+      DevelopmentTeam: WMB5GG7BHD
+    platform: iOS
+    type: application
+    sources: 
+      - Runner/
+      - Flutter/AppFrameworkInfo.plist
+      - Flutter/Generated.xcconfig
+      - Flutter/Debug.xcconfig
+      - Flutter/Release.xcconfig

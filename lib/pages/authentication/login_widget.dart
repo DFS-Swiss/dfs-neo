@@ -18,6 +18,7 @@ class LoginWidget extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    AuthenticationService authenticationService = locator<AuthenticationService>();
     final userName = useState<String?>(null);
     final password = useState<String?>(null);
     final error = useState<String?>(null);
@@ -28,8 +29,7 @@ class LoginWidget extends HookWidget {
         error.value = null;
         loading.value = true;
         try {
-          await locator<AuthenticationService>()
-              .login(userName.value!, password.value!);
+          await authenticationService.login(userName.value!, password.value!);
         } on CognitoClientException catch (e) {
           if (e.code == "UserNotFoundException") {
             error.value = AppLocalizations.of(context)!.error_unknown_user;
@@ -48,7 +48,8 @@ class LoginWidget extends HookWidget {
       }
     }
 
-    return Column(
+    return SingleChildScrollView(
+      child:  Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
@@ -136,6 +137,7 @@ class LoginWidget extends HookWidget {
           ],
         )
       ],
-    );
+    )
+    ); 
   }
 }

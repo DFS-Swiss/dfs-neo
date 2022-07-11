@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:neo/pages/dashboard/dashboard_page.dart';
 import 'package:neo/pages/stocklist/stocklist_page.dart';
 import 'package:neo/services/websocket/websocket_service.dart';
 
@@ -18,9 +19,7 @@ class MainNavigation extends HookWidget {
       //TODO: Link pages when built
       switch (currentPage.value) {
         case 0:
-          return Container(
-            color: Colors.teal,
-          );
+          return DashboardPage();
         case 1:
           return Container(
             color: Colors.orangeAccent,
