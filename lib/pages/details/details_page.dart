@@ -38,10 +38,12 @@ class DetailsPage extends HookWidget {
     var title = "";
     var description = "";
     var image = "";
+    var publicSentimentIndex = 0;
     if (symbolInfo.data != null) {
       title = symbolInfo.data!.symbol;
       description = symbolInfo.data!.description;
       image = symbolInfo.data!.imageUrl;
+      publicSentimentIndex = symbolInfo.data!.publicSentimentIndex;
     }
 
     return Scaffold(
@@ -80,7 +82,7 @@ class DetailsPage extends HookWidget {
           SizedBox(
             height: 12,
           ),
-          DetailsPublicSentiment(symbol: title),
+          DetailsPublicSentiment(sentiment: publicSentimentIndex),
         ],
       ),
     );

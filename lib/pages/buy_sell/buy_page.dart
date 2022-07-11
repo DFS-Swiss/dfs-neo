@@ -4,9 +4,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:neo/pages/buy_sell/amount_selector.dart';
 import 'package:neo/services/data_service.dart';
-import 'package:neo/widgets/branded_button.dart';
 
 import '../../widgets/branded_switch.dart';
+import '../../widgets/buttons/branded_button.dart';
 
 class BuyPage extends HookWidget {
   final String symbol;

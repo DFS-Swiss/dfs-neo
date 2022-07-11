@@ -11,7 +11,7 @@ DataContainer<double> useLatestAssetPrice(
     final sub = StockdataService.getInstance()
         .getLatestPrice(symbol)
         .listen((event) {
-      state.value = DataContainer(data: event);
+      state.value = DataContainer(data: event.price);
     });
     return sub.cancel;
   });

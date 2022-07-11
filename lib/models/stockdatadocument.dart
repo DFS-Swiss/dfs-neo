@@ -6,11 +6,13 @@ class StockdataDocument {
   final String displayName;
   final String imageUrl;
   final String description;
+  final int publicSentimentIndex;
   StockdataDocument({
     required this.symbol,
     required this.displayName,
     required this.imageUrl,
     required this.description,
+    required this.publicSentimentIndex,
   });
   
 
@@ -19,12 +21,14 @@ class StockdataDocument {
     String? displayName,
     String? imageUrl,
     String? description,
+    int? publicSentimentIndex,
   }) {
     return StockdataDocument(
       symbol: symbol ?? this.symbol,
       displayName: displayName ?? this.displayName,
       imageUrl: imageUrl ?? this.imageUrl,
       description: description ?? this.description,
+      publicSentimentIndex: publicSentimentIndex ?? this.publicSentimentIndex,
     );
   }
 
@@ -35,6 +39,7 @@ class StockdataDocument {
     result.addAll({'displayName': displayName});
     result.addAll({'imageUrl': imageUrl});
     result.addAll({'description': description});
+    result.addAll({'publicSentimentIndex': publicSentimentIndex});
   
     return result;
   }
@@ -45,6 +50,7 @@ class StockdataDocument {
       displayName: map['displayName'] ?? '',
       imageUrl: map['imageUrl'] ?? '',
       description: map['description'] ?? '',
+      publicSentimentIndex: map['publicSentimentIndex'] ?? 50,
     );
   }
 
@@ -65,7 +71,8 @@ class StockdataDocument {
       other.symbol == symbol &&
       other.displayName == displayName &&
       other.imageUrl == imageUrl &&
-      other.description == description;
+      other.description == description &&
+      other.publicSentimentIndex == publicSentimentIndex;
   }
 
   @override
@@ -73,6 +80,7 @@ class StockdataDocument {
     return symbol.hashCode ^
       displayName.hashCode ^
       imageUrl.hashCode ^
-      description.hashCode;
+      description.hashCode ^
+      publicSentimentIndex.hashCode;
   }
 }

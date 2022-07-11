@@ -229,7 +229,7 @@ class DetailsDevelopmentSection extends HookWidget {
             baseColor: Color.fromRGBO(238, 238, 238, 0.75),
             highlightColor: Colors.white,
             child: Container(
-              height: 370,
+              height: 528,
               decoration: BoxDecoration(
                 color: Theme.of(context).backgroundColor,
                 borderRadius: BorderRadius.circular(12),

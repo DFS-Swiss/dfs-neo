@@ -1,12 +1,12 @@
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:neo/models/stockdata_datapoint.dart';
 import 'package:neo/widgets/cards/asset_development_card.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../hooks/use_stockdata.dart';
 import '../../hooks/use_user_asset_data.dart';
+import '../../services/formatting_service.dart';
 import '../../types/stockdata_interval_enum.dart';
 import '../../widgets/genericheadline_widget.dart';
 
@@ -24,60 +24,67 @@ class DetailsInvestmentsSection extends HookWidget {
     final stockDataAllTime = useStockdata(token, StockdataInterval.oneYear);
     final investmentData = useInvestmentData(token);
 
-    List<FlSpot> plotData(List<StockdataDatapoint> stockData) {
-      return stockData
-          .map((e) => FlSpot(e.time.millisecondsSinceEpoch.toDouble(), e.price))
-          .toList();
-    }
-
-    return !stockDataToday.loading &&
-            !stockDataAllTime.loading &&
-            !investmentData.loading
-        ? Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              GenericHeadline(
-                title: AppLocalizations.of(context)!.details_investments,
-              ),
-              !investmentData.data!.hasNoInvestments
-                  ? Column(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(24, 0, 24, 12),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Expanded(
-                                child: AssetDevelopmentCard(
-                                  name: AppLocalizations.of(context)!
-                                      .details_today,
-                                  chartData: plotData(stockDataToday.data!),
-                                ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        GenericHeadline(
+          title: AppLocalizations.of(context)!.details_investments,
+        ),
+        investmentData.loading ||
+                stockDataToday.loading ||
+                stockDataAllTime.loading
+            ? Shimmer.fromColors(
+                baseColor: Color.fromRGBO(238, 238, 238, 0.75),
+                highlightColor: Colors.white,
+                child: Container(
+                  height: 139,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+              )
+            : !investmentData.data!.hasNoInvestments
+                ? Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(24, 0, 24, 12),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Expanded(
+                              child: AssetDevelopmentCard(
+                                name:
+                                    AppLocalizations.of(context)!.details_today,
+                                changePercentage: investmentData.data!.todayIncreasePercentage,
+                                changeValue: investmentData.data!.todayIncrease,
                               ),
-                              SizedBox(
-                                width: 20,
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Expanded(
+                              child: AssetDevelopmentCard(
+                                name: AppLocalizations.of(context)!
+                                    .details_performance,
+                                changePercentage: investmentData.data!.performancePercentage,
+                                changeValue: investmentData.data!.performance,
                               ),
-                              Expanded(
-                                child: AssetDevelopmentCard(
-                                  name: AppLocalizations.of(context)!
-                                      .details_performance,
-                                  chartData: plotData(stockDataAllTime.data!),
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(12, 18, 12, 0),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(12, 18, 12, 0),
+                        child: IntrinsicHeight(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Column(
                                 children: [
                                   Text(
-                                    AppLocalizations.of(context)!
-                                        .details_buy_in,
+                                    AppLocalizations.of(context)!.details_buy_in,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       fontSize: 14,
@@ -89,7 +96,7 @@ class DetailsInvestmentsSection extends HookWidget {
                                     height: 10,
                                   ),
                                   Text(
-                                    investmentData.data!.buyIn.toString(),
+                                    "${FormattingService.roundDouble(investmentData.data!.buyIn, 2).toString()} d\$",
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       fontSize: 12,
@@ -100,11 +107,11 @@ class DetailsInvestmentsSection extends HookWidget {
                                 ],
                               ),
                               const VerticalDivider(
-                                width: 5,
-                                thickness: 5,
-                                indent: 20,
+                                width: 1,
+                                thickness: 1,
+                                indent: 0,
                                 endIndent: 0,
-                                color: Color(0xFF909090),
+                                color: Color.fromRGBO(32, 209, 209, 1),
                               ),
                               Column(
                                 children: [
@@ -122,7 +129,9 @@ class DetailsInvestmentsSection extends HookWidget {
                                     height: 10,
                                   ),
                                   Text(
-                                    investmentData.data!.quantity.toString(),
+                                    FormattingService.roundDouble(
+                                            investmentData.data!.quantity, 2)
+                                        .toString(),
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       fontSize: 12,
@@ -133,11 +142,11 @@ class DetailsInvestmentsSection extends HookWidget {
                                 ],
                               ),
                               const VerticalDivider(
-                                width: 5,
-                                thickness: 5,
-                                indent: 20,
+                                width: 1,
+                                thickness: 1,
+                                indent: 0,
                                 endIndent: 0,
-                                color: Color(0xFF909090),
+                                color: Color.fromRGBO(32, 209, 209, 1),
                               ),
                               Column(
                                 children: [
@@ -154,7 +163,7 @@ class DetailsInvestmentsSection extends HookWidget {
                                     height: 10,
                                   ),
                                   Text(
-                                    investmentData.data!.value.toString(),
+                                    "${FormattingService.roundDouble(investmentData.data!.value, 2).toString()} d\$",
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       fontSize: 12,
@@ -167,15 +176,15 @@ class DetailsInvestmentsSection extends HookWidget {
                             ],
                           ),
                         ),
-                      ],
-                    )
-                  : Center(
+                      ),
+                    ],
+                  )
+                : Center(
                     heightFactor: 7,
-                      child: Text(AppLocalizations.of(context)!
-                          .dashboard_no_investments),
-                    )
-            ],
-          )
-        : Container();
+                    child: Text(
+                        AppLocalizations.of(context)!.dashboard_no_investments),
+                  ),
+      ],
+    );
   }
 }

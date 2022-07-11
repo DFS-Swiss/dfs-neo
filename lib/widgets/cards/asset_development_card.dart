@@ -1,4 +1,3 @@
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,11 +7,13 @@ import '../development_indicator/detailed_development_indicator.dart';
 
 class AssetDevelopmentCard extends HookWidget {
   final String name;
-  final List<FlSpot> chartData; 
+  final double changePercentage;
+  final double changeValue; 
   const AssetDevelopmentCard({
     Key? key,
     required this.name,
-    required this.chartData,
+    required this.changePercentage,
+    required this.changeValue,
   }) : super(key: key);
 
   @override
@@ -41,11 +42,11 @@ class AssetDevelopmentCard extends HookWidget {
           ),
           DetailedDevelopmentIndicator(
             positive:
-                chartData.first.y > chartData.last.y,
-            changePercentage: FormattingService.calculatepercent(
-                chartData.first.y, chartData.last.y),
+                !changePercentage.isNegative,
+            changePercentage: FormattingService.roundDouble(
+                changePercentage, 2),
             changeValue: FormattingService.roundDouble(
-                chartData.first.y - chartData.last.y, 2),
+                changeValue, 2),
           )
         ],
       ),
