@@ -1,0 +1,32 @@
+name: Deploy Staging
+
+on:
+  push:
+    branches: [ "staging", "tech/DFS-92-Fastlane" ]
+
+jobs:
+  deploy_android:
+    runs-on: ubuntu-latest
+    env:
+      ANDROID_STORE_PASSWORD: ${{ secrets.ANDROID_STORE_PASSWORD }}
+      ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+      ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+      ANDROID_KEYSTORE_ENCODED: ${{ secrets.ANDROID_KEYSTORE_ENCODED }}
+      PLAY_STORE_UPLOAD_KEY: ${{secrets.PLAY_STORE_UPLOAD_KEY}}
+      PLAY_STORE_API_KEY: ${{secrets.PLAY_STORE_API_KEY}}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
+      - uses: subosito/flutter-action@v2.4.0
+      - name: Install dependencies
+        run: flutter pub get
+      - name: Decoding enviroment variables
+        run: |
+           echo $ANDROID_KEYSTORE_ENCODED | base64 --decode > android/keystore.jks
+           echo $PLAY_STORE_API_KEY | base64 --decode > android/fastlane/google_key.json
+      - uses: maierj/fastlane-action@v2.2.0
+        with:
+          lane: 'staging'
+          subdirectory: "android"
+
+  
