@@ -30,7 +30,8 @@ jobs:
           java-version: 17
           distribution: 'adopt'
           cache: gradle
-      
+      - name: Validate gradle
+        run: ./gradlew
       - uses: maierj/fastlane-action@v2.2.0
         name: Fastlane
         with:
