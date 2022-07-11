@@ -49,7 +49,7 @@ platform :android do
       skip_upload_images: true,
       skip_upload_changelogs: true,
       json_key: "fastlane/google_key.json",
-      aab: "build/app/outputs/bundle/release/app.aab"
+      aab: "../build/app/outputs/bundle/release/app.aab"
     )
   end
 end
