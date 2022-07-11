@@ -5,7 +5,10 @@ import 'package:neo/style/theme.dart';
 
 class DetailsAboutSection extends HookWidget {
   final String symbol;
-  const DetailsAboutSection({required this.symbol, Key? key}) : super(key: key);
+  final String description;
+  const DetailsAboutSection(
+      {required this.symbol, required this.description, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,17 +23,14 @@ class DetailsAboutSection extends HookWidget {
                 AppLocalizations.of(context)!.details_about,
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
-              Text(
-                AppLocalizations.of(context)!.dash_view,
-                style: NeoTheme.of(context)!.linkTextStyle,
-              )
             ],
           ),
           SizedBox(
             height: 16,
           ),
           Text(
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sodales aliquam condimentum. Cras non est lectus. Aliquam leo justo, vestibulum non porta in, consequat aliquam nisi. Mauris pulvinar ex egestas, faucibus lacus non, malesuada leo. Nam fermentum malesuada nibh."),
+            description
+          ),
         ],
       ),
     );

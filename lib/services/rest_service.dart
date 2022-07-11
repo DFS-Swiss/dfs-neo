@@ -334,6 +334,8 @@ class RESTService extends ChangeNotifier {
           throw "Parsing error: ${e.toString()}";
         }
         return data;
+      } else if (response.statusCode.toString() == "404"){
+        throw "404";
       } else {
         throw "Unknown case: ${response.toString()}";
       }

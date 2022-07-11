@@ -113,7 +113,7 @@ class PublicSentiment extends HookWidget {
             children: [
               SizedBox(
                 width:
-                    (MediaQuery.of(context).size.width - 48) * percentage / 100,
+                    (MediaQuery.of(context).size.width - 78) * percentage / 100,
               ),
               Stack(
                 alignment: Alignment.center,

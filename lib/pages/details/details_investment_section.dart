@@ -22,19 +22,7 @@ class DetailsInvestmentsSection extends HookWidget {
     final stockDataToday =
         useStockdata(token, StockdataInterval.twentyFourHours);
     final stockDataAllTime = useStockdata(token, StockdataInterval.oneYear);
-    final userAssetData = useUserAssetData(symbol);
-
-    double buyIn = 0;
-    double quantity = 0;
-    double value = 0;
-    useEffect(() {
-      userAssetData.data?.forEach((element) {
-        quantity += element.tokenAmmount;
-        value += element.currentValue;
-        
-       });
-      return;
-    }, ["_", userAssetData.loading]);
+    final investmentData = useInvestmentData(token);
 
     List<FlSpot> plotData(List<StockdataDatapoint> stockData) {
       return stockData
@@ -42,7 +30,9 @@ class DetailsInvestmentsSection extends HookWidget {
           .toList();
     }
 
-    return !stockDataToday.loading && !stockDataAllTime.loading
+    return !stockDataToday.loading &&
+            !stockDataAllTime.loading &&
+            !investmentData.loading
         ? Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
@@ -50,119 +40,140 @@ class DetailsInvestmentsSection extends HookWidget {
               GenericHeadline(
                 title: AppLocalizations.of(context)!.details_investments,
               ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(12, 0, 12, 12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    AssetDevelopmentCard(
-                      name: AppLocalizations.of(context)!.details_today,
-                      chartData: plotData(stockDataToday.data!),
-                    ),
-                    AssetDevelopmentCard(
-                      name: AppLocalizations.of(context)!.details_performance,
-                      chartData: plotData(stockDataAllTime.data!),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(12, 18, 12, 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Column(
+              !investmentData.data!.hasNoInvestments
+                  ? Column(
                       children: [
-                        Text(
-                          AppLocalizations.of(context)!.details_buy_in,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Color(0xFF909090),
-                            fontWeight: FontWeight.w500,
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(24, 0, 24, 12),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Expanded(
+                                child: AssetDevelopmentCard(
+                                  name: AppLocalizations.of(context)!
+                                      .details_today,
+                                  chartData: plotData(stockDataToday.data!),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Expanded(
+                                child: AssetDevelopmentCard(
+                                  name: AppLocalizations.of(context)!
+                                      .details_performance,
+                                  chartData: plotData(stockDataAllTime.data!),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          AppLocalizations.of(context)!.details_value,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(12, 18, 12, 0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Column(
+                                children: [
+                                  Text(
+                                    AppLocalizations.of(context)!
+                                        .details_buy_in,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Color(0xFF909090),
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    investmentData.data!.buyIn.toString(),
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const VerticalDivider(
+                                width: 5,
+                                thickness: 5,
+                                indent: 20,
+                                endIndent: 0,
+                                color: Color(0xFF909090),
+                              ),
+                              Column(
+                                children: [
+                                  Text(
+                                    AppLocalizations.of(context)!
+                                        .details_quantity,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Color(0xFF909090),
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    investmentData.data!.quantity.toString(),
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const VerticalDivider(
+                                width: 5,
+                                thickness: 5,
+                                indent: 20,
+                                endIndent: 0,
+                                color: Color(0xFF909090),
+                              ),
+                              Column(
+                                children: [
+                                  Text(
+                                    AppLocalizations.of(context)!.details_value,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Color(0xFF909090),
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    investmentData.data!.value.toString(),
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         ),
                       ],
-                    ),
-                    const VerticalDivider(
-                      width: 5,
-                      thickness: 5,
-                      indent: 20,
-                      endIndent: 0,
-                      color: Color(0xFF909090),
-                    ),
-                    Column(
-                      children: [
-                        Text(
-                          AppLocalizations.of(context)!.details_quantity,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Color(0xFF909090),
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          quantity.toString(),
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const VerticalDivider(
-                      width: 5,
-                      thickness: 5,
-                      indent: 20,
-                      endIndent: 0,
-                      color: Color(0xFF909090),
-                    ),
-                    Column(
-                      children: [
-                        Text(
-                          AppLocalizations.of(context)!.details_value,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Color(0xFF909090),
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          value.toString(),
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
+                    )
+                  : Center(
+                    heightFactor: 7,
+                      child: Text(AppLocalizations.of(context)!
+                          .dashboard_no_investments),
+                    )
             ],
           )
         : Container();

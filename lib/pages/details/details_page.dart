@@ -36,8 +36,12 @@ class DetailsPage extends HookWidget {
     }, ["_", stockData.loading]);
 
     var title = "";
+    var description = "";
+    var image = "";
     if (symbolInfo.data != null) {
       title = symbolInfo.data!.symbol;
+      description = symbolInfo.data!.description;
+      image = symbolInfo.data!.imageUrl;
     }
 
     return Scaffold(
@@ -63,8 +67,19 @@ class DetailsPage extends HookWidget {
             token: token,
             symbol: title,
           ),
-          DetailsOpenOrdersSection(),
-          DetailsAboutSection(symbol: title),
+          SizedBox(
+            height: 12,
+          ),
+          DetailsOpenOrdersSection(
+            image: image,
+          ),
+          SizedBox(
+            height: 12,
+          ),
+          DetailsAboutSection(symbol: title, description: description),
+          SizedBox(
+            height: 12,
+          ),
           DetailsPublicSentiment(symbol: title),
         ],
       ),

@@ -7,6 +7,7 @@ class InvestmentData {
   final double buyIn;
   final double quantity;
   final double value;
+  final bool hasNoInvestments;
 
 
   InvestmentData({
@@ -16,6 +17,7 @@ class InvestmentData {
     required this.performancePercentage,
     required this.buyIn,
     required this.quantity,
-    required this.value
+    required this.value,
+    this.hasNoInvestments = false
   });
 }

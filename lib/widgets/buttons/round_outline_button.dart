@@ -14,8 +14,8 @@ class RoundOutlineButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 44.0,
-      width: 44.0,
+      height: 50.0,
+      width: 50.0,
       alignment: Alignment.center,
       decoration: BoxDecoration(
         color: Colors.transparent,

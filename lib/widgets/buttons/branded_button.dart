@@ -15,7 +15,7 @@ class BrandedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 44.0,
+      height: 50.0,
       decoration: BoxDecoration(
         gradient: NeoTheme.of(context)!.primaryGradient,
         borderRadius: NeoTheme.of(context)!.primaryBorderRadius,

@@ -18,8 +18,8 @@ class AssetDevelopmentCard extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 70,
-      padding: EdgeInsets.all(12),
+      height: 63,
+      padding: EdgeInsets.fromLTRB(12,8,12,8),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.75),
         borderRadius: BorderRadius.circular(12),
@@ -32,7 +32,7 @@ class AssetDevelopmentCard extends HookWidget {
           Text(
             name,
             style: GoogleFonts.urbanist(
-              fontSize: 16,
+              fontSize: 14,
               fontWeight: FontWeight.w500,
             ),
           ),

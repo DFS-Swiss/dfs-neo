@@ -5,7 +5,8 @@ import 'package:neo/style/theme.dart';
 import 'package:neo/widgets/cards/open_order_card.dart';
 
 class DetailsOpenOrdersSection extends HookWidget {
-  const DetailsOpenOrdersSection({Key? key}) : super(key: key);
+  final String image;
+  const DetailsOpenOrdersSection({required this.image, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +37,7 @@ class DetailsOpenOrdersSection extends HookWidget {
             child: PageView(
               controller: constroller,
               onPageChanged: (newPage) => page.value = newPage,
-              children: [OpenOrderCard(), OpenOrderCard(), OpenOrderCard()],
+              children: [OpenOrderCard(image: image,), OpenOrderCard(image: image,), OpenOrderCard(image: image,)],
             ),
           ),
           SizedBox(

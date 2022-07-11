@@ -30,7 +30,7 @@ class DetailsPublicSentiment extends HookWidget {
           SizedBox(
             height: 16,
           ),
-          PublicSentiment(percentage: 10)
+          PublicSentiment(percentage: 83)
         ],
       ),
     );

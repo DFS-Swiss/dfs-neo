@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:neo/widgets/filter/valuefilter_widget.dart';
 
 import '../../types/stockdata_interval_enum.dart';
+import '../../widgets/filter/small_value_filter.dart';
 
 class DetailsSelectable extends HookWidget {
   final Function callback;
@@ -15,7 +16,7 @@ class DetailsSelectable extends HookWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
-        top: 26,
+        top: 24,
       ),
       child: SizedBox(
         height: 32,
@@ -25,35 +26,35 @@ class DetailsSelectable extends HookWidget {
             SizedBox(
               width: 24,
             ),
-            ValueFilter(
+            SmallValueFilter(
                 currentValue: currentValue,
                 text: "24h",
                 value: StockdataInterval.twentyFourHours,
                 callback: (Object a) {
                   callback(a);
                 }),
-            ValueFilter(
+            SmallValueFilter(
                 currentValue: currentValue,
                 text: "MTD",
                 value: StockdataInterval.mtd,
                 callback: (Object a) {
                   callback(a);
                 }),
-            ValueFilter(
+            SmallValueFilter(
                 currentValue: currentValue,
                 text: "YTD",
                 value: StockdataInterval.ytd,
                 callback: (Object a) {
                   callback(a);
                 }),
-            ValueFilter(
+            SmallValueFilter(
                 currentValue: currentValue,
                 text: "1Y",
                 value: StockdataInterval.oneYear,
                 callback: (Object a) {
                   callback(a);
                 }),
-            ValueFilter(
+            SmallValueFilter(
                 currentValue: currentValue,
                 text: "2Y",
                 value: StockdataInterval.twoYears,
