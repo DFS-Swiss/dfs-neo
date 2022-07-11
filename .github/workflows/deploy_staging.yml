@@ -16,10 +16,12 @@ jobs:
       PLAY_STORE_API_KEY: ${{secrets.PLAY_STORE_API_KEY}}
     steps:
       - uses: actions/checkout@v3
-      #- uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
-      #- uses: subosito/flutter-action@v2.4.0
-      #- name: Install dependencies
-      #  run: flutter pub get
+      - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
+      - uses: subosito/flutter-action@v2.4.0
+      - name: Install dependencies
+        run: flutter pub get
+      - name: Build
+        run: flutter build appbundle --release 
       - name: Decoding enviroment variables
         run: |
            echo $ANDROID_KEYSTORE_ENCODED | base64 --decode > android/keystore.jks

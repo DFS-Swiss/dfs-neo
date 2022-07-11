@@ -32,23 +32,24 @@ platform :android do
 
   desc "Deploy a new version to the Google Play"
   lane :staging do
-    gradle(
-      tasks: ["clean", "bundle"],
-      print_command: false,
-      properties: {
-        "android.injected.signing.store.file" => "keystore.jks",
-        "android.injected.signing.store.password" => ENV['ANDROID_STORE_PASSWORD'],
-        "android.injected.signing.key.alias" => ENV['ANDROID_KEY_ALIAS'],
-        "android.injected.signing.key.password" => ENV['ANDROID_KEY_PASSWORD']
-      }
-    )
+    #gradle(
+    #  tasks: ["clean", "bundle"],
+    #  print_command: false,
+    #  properties: {
+    #    "android.injected.signing.store.file" => "keystore.jks",
+    #    "android.injected.signing.store.password" => ENV['ANDROID_STORE_PASSWORD'],
+    #    "android.injected.signing.key.alias" => ENV['ANDROID_KEY_ALIAS'],
+    #    "android.injected.signing.key.password" => ENV['ANDROID_KEY_PASSWORD']
+    #  }
+    #)
     upload_to_play_store(
       track: "Staging", 
       version_code: flutter_version()["version_code"],
       skip_upload_screenshots: true,
       skip_upload_images: true,
       skip_upload_changelogs: true,
-      json_key_data: ENV['PLAY_STORE_UPLOAD_KEY']
+      json_key_data: ENV['PLAY_STORE_UPLOAD_KEY'],
+      abb: "build/app/outputs/bundle/release/app.aab"
     )
   end
 end
