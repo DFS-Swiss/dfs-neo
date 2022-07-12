@@ -28,7 +28,7 @@ platform :ios do
       xcodeproj: "Runner.xcodeproj",
       build_number: flutter_version()["version_code"] # Set a specific build number
     )
-    sh("echo", "$GIT_URL")
+    sh("echo", ENV["ACCESS_TOKEN"])
     sync_code_signing(
       git_url: ENV["GIT_URL"],
       git_basic_authorization: ENV["ACCESS_TOKEN"],
