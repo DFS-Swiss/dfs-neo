@@ -36,7 +36,7 @@ jobs:
         name: Fastlane
         env:
           ACCESS_TOKEN: "${{ steps.nodejs.outputs.ACCESS_TOKEN }}"
-          GIT_URL: https://x-access-token:${{steps.get_workflow_token.outputs.token}}@github.com/DFS-Swiss/dfs-neo.git
+          GIT_URL: https://x-access-token:${{steps.get_workflow_token.outputs.token}}@github.com/DFS-Swiss/deploy-certificates.git
         with:
           lane: 'test_flight'
           subdirectory: "ios"
