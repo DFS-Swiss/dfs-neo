@@ -23,7 +23,7 @@ targets:
       - path: phase_scripts/thin_binary.sh
         name: Thin Binary
     attributes:
-      DevelopmentTeam: WMB5GG7BHD
+      DevelopmentTeam: T425MZ6RQ7
     platform: iOS
     type: application
     sources: 
