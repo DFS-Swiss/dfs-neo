@@ -15,7 +15,7 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.dfsswiss.neo
-        CODE_SIGN_IDENTITY: iOS Distribution
+        #CODE_SIGN_IDENTITY: iOS Distribution
         SWIFT_OBJC_BRIDGING_HEADER:
           - Runner/Runner-Bridging-Header.h
     preBuildScripts:
