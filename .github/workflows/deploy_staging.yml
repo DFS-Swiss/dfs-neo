@@ -18,6 +18,10 @@ jobs:
           application_id: ${{ secrets.APPLICATION_ID }}
           application_private_key: ${{ secrets.APPLICATION_PRIVATE_KEY }}
       - uses: actions/checkout@v3
+        env:
+          GITHUB_TOKEN: ${{steps.get_workflow_token.outputs.token}}
+      - name: Make git access token
+        run: echo "::set-output name=ACCESS_TOKEN::$echo -n git:${{steps.get_workflow_token.outputs.token}} | base64"
       - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
       - uses: subosito/flutter-action@v2.4.0
       - name: Install dependencies
@@ -31,7 +35,7 @@ jobs:
       - uses: maierj/fastlane-action@v2.2.0
         name: Fastlane
         env:
-          GITHUB_TOKEN: ${{steps.get_workflow_token.outputs.token}}
+          ACCESS_TOKEN: "${{ steps.nodejs.outputs.ACCESS_TOKEN }}"
         with:
           lane: 'test_flight'
           subdirectory: "ios"
