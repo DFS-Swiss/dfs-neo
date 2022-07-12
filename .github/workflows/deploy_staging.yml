@@ -10,6 +10,7 @@ jobs:
     runs-on: macos-latest
     env:
       IOS_API_KEY: ${{ secrets.IOS_API_KEY }}
+      MATCH_PASSWORD: ${{ secrets.MATCH_PASSPHRASE }}
     steps:
       - name: Get Token
         id: get_workflow_token

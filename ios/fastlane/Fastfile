@@ -31,7 +31,6 @@ platform :ios do
     sh("echo", ENV["ACCESS_TOKEN"])
     sync_code_signing(
       git_url: ENV["GIT_URL"],
-      #git_basic_authorization: ENV["ACCESS_TOKEN"],
       type: "appstore", 
       readonly: true, 
       app_identifier: "com.dfsswiss.neo",
