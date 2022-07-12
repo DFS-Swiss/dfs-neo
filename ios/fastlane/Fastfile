@@ -28,10 +28,11 @@ platform :ios do
       xcodeproj: "Runner.xcodeproj",
       build_number: flutter_version()["version_code"] # Set a specific build number
     )
+    setup_ci
     sync_code_signing(
       git_url: ENV["GIT_URL"],
       type: "appstore", 
-      readonly: true, 
+      readonly: is_ci, 
       app_identifier: "com.dfsswiss.neo",
       storage_mode: "git"
     )
