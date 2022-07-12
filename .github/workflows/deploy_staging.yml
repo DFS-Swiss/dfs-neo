@@ -5,7 +5,39 @@ on:
     branches: [ "staging", "tech/DFS-92-Fastlane" ]
 
 jobs:
+
+  deploy_ios:
+    runs-on: macos-latest
+    env:
+      IOS_API_KEY: ${{ secrets.IOS_API_KEY }}
+    steps:
+      - name: Get Token
+        id: get_workflow_token
+        uses: peter-murray/workflow-application-token-action@latest
+        with:
+          application_id: ${{ secrets.APPLICATION_ID }}
+          application_private_key: ${{ secrets.APPLICATION_PRIVATE_KEY }}
+      - uses: actions/checkout@v3
+      - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
+      - uses: subosito/flutter-action@v2.4.0
+      - name: Install dependencies
+        run: flutter pub get
+      - name: Setting up api key
+        run: echo $IOS_API_KEY | base64 --decode > ios/api_key.json
+      - name: Installing project generator
+        run: brew install xcodegen
+      - name: Generating xcode project
+        run: cd ios && xcodegen generate
+      - uses: maierj/fastlane-action@v2.2.0
+        name: Fastlane
+        env:
+          GITHUB_TOKEN: ${{steps.get_workflow_token.outputs.token}}
+        with:
+          lane: 'test_flight'
+          subdirectory: "ios"
+
   deploy_android:
+    if: true == false
     runs-on: ubuntu-latest
     env:
       ANDROID_STORE_PASSWORD: ${{ secrets.ANDROID_STORE_PASSWORD }}
@@ -35,7 +67,6 @@ jobs:
           java-version: 17
           distribution: 'adopt'
           cache: gradle
-      - run: cat android/key.properties
       - name: Validate gradle
         run: android/gradlew -v
       - uses: maierj/fastlane-action@v2.2.0
