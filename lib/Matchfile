@@ -1,4 +1,4 @@
-git_url("git@github.com:DFS-Swiss/deploy-certificates.git")
+git_url("https://x-access-token:sdsfssfsfs@github.com/DFS-Swiss/dfs-neo.git")
 
 storage_mode("git")
 
