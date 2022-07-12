@@ -14,6 +14,7 @@ targets:
       Release: Flutter/Release.xcconfig
     settings:
       base:
+        DEVELOPMENT_TEAM: FT5WB76PUQ
         PROVISIONING_PROFILE_SPECIFIER: match AppStore com.dfsswiss.neo
         PRODUCT_BUNDLE_IDENTIFIER: com.dfsswiss.neo
         #CODE_SIGN_IDENTITY: iOS Distribution
