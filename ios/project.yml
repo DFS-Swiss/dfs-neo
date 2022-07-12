@@ -14,6 +14,7 @@ targets:
       Release: Flutter/Release.xcconfig
     settings:
       base:
+        PROVISIONING_PROFILE_SPECIFIER: match AppStore com.dfsswiss.neo
         PRODUCT_BUNDLE_IDENTIFIER: com.dfsswiss.neo
         #CODE_SIGN_IDENTITY: iOS Distribution
         SWIFT_OBJC_BRIDGING_HEADER:
