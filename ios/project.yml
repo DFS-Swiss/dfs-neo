@@ -17,7 +17,7 @@ targets:
         DEVELOPMENT_TEAM: FT5WB76PUQ
         PROVISIONING_PROFILE_SPECIFIER: match AppStore com.dfsswiss.neo
         PRODUCT_BUNDLE_IDENTIFIER: com.dfsswiss.neo
-        #CODE_SIGN_IDENTITY: iOS Distribution
+        CODE_SIGN_IDENTITY: iOS Distribution
         SWIFT_OBJC_BRIDGING_HEADER:
           - Runner/Runner-Bridging-Header.h
     preBuildScripts:
