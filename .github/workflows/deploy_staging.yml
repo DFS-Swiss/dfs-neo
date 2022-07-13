@@ -2,7 +2,7 @@ name: Deploy Staging
 
 on:
   push:
-    branches: [ "staging", "tech/DFS-92-Fastlane" ]
+    branches: [ "staging"]
 
 jobs:
 
@@ -45,7 +45,6 @@ jobs:
           subdirectory: "ios"
 
   deploy_android:
-    if: true == false
     runs-on: ubuntu-latest
     env:
       ANDROID_STORE_PASSWORD: ${{ secrets.ANDROID_STORE_PASSWORD }}

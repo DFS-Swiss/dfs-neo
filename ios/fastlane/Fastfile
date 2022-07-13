@@ -47,7 +47,7 @@ platform :ios do
         }
       }
     )
-    upload_to_testflight(api_key_path: "api_key.json")
+    upload_to_testflight(api_key_path: "api_key.json", skip_waiting_for_build_processing: true)
     # add actions here: https://docs.fastlane.tools/actions
   end
 end
