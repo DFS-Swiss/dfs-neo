@@ -39,7 +39,7 @@ platform :ios do
     build_app(
       workspace: "Runner.xcworkspace", 
       scheme: "Runner",
-      codesigning_identity: "iOS Distribution: The CodeCave GmbH",
+      codesigning_identity: "iOS Distribution: FT5WB76PUQ",
       export_method: "app-store",
       export_options: {
         provisioningProfiles: {
