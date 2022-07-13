@@ -39,6 +39,7 @@ platform :ios do
     build_app(
       workspace: "Runner.xcworkspace", 
       scheme: "Runner",
+      codesigning_identity: "iPhone Distribution: The CodeCave GmbH"
       export_options: {
         provisioningProfiles: {
           "com.dfsswiss.neo" => "match AppStore com.dfsswiss.neo"
