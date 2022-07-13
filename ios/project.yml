@@ -14,7 +14,7 @@ targets:
       Release: Flutter/Release.xcconfig
     settings:
       base:
-        #DEVELOPMENT_TEAM: 435DY437AQ
+        DEVELOPMENT_TEAM: UUSNAP5VAR
         PROVISIONING_PROFILE_SPECIFIER: match AppStore com.dfsswiss.neo
         PRODUCT_BUNDLE_IDENTIFIER: com.dfsswiss.neo
         #CODE_SIGN_IDENTITY: iOS Distribution
@@ -27,7 +27,7 @@ targets:
       - path: phase_scripts/thin_binary.sh
         name: Thin Binary
     attributes:
-      DevelopmentTeam: 435DY437AQ
+      DevelopmentTeam: UUSNAP5VAR
     platform: iOS
     type: application
     sources: 
