@@ -16,32 +16,9 @@
 default_platform(:android)
 
 platform :android do
-  desc "Runs all the tests"
-  lane :test do
-    gradle(task: "test")
-  end
-
-  desc "Submit a new Beta Build to Crashlytics Beta"
-  lane :beta do
-    gradle(task: "clean assembleRelease")
-    crashlytics
-  
-    # sh "your_script.sh"
-    # You can also use other beta testing services here
-  end
 
   desc "Deploy a new version to the Google Play"
   lane :staging do
-    #gradle(
-    #  tasks: ["clean", "bundle"],
-    #  print_command: false,
-    #  properties: {
-    #    "android.injected.signing.store.file" => "keystore.jks",
-    #    "android.injected.signing.store.password" => ENV['ANDROID_STORE_PASSWORD'],
-    #    "android.injected.signing.key.alias" => ENV['ANDROID_KEY_ALIAS'],
-    #    "android.injected.signing.key.password" => ENV['ANDROID_KEY_PASSWORD']
-    #  }
-    #)
     upload_to_play_store(
       track: "Staging", 
       version_code: flutter_version()["version_code"],
