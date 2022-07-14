@@ -30,6 +30,7 @@ class StockdataService extends ChangeNotifier {
       }
       return null;
     }
+    return null;
   }
 
   Stream<List<StockdataDatapoint>> getStockdata(
