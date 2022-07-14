@@ -47,6 +47,13 @@ class DataService extends ChangeNotifier {
     notifyListeners();
   }
 
+  T? getDataFromCacheIfAvaliable<T>(String key) {
+    if (_dataStore.value[key] != null && !_dataStore.value[key]!.isStale()) {
+      return _dataStore.value[key]!.data as T;
+    }
+    return null;
+  }
+
   Stream<UserModel> getUserData() async* {
     if (_dataStore.value["user"] != null &&
         !_dataStore.value["user"]!.isStale()) {
