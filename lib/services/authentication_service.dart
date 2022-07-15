@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
-import 'package:is_first_run/is_first_run.dart';
 import 'package:neo/enums/app_state.dart';
 import 'package:neo/services/app_state_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';

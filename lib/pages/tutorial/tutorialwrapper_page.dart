@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:neo/enums/app_state.dart';
-import 'package:neo/pages/authentication/auth_page_wrapper.dart';
 import 'package:neo/pages/tutorial/backgroundgraphic_widget.dart';
 import 'package:neo/pages/tutorial/customprogressindicator_widget.dart';
 import 'package:neo/pages/tutorial/tutorialcontent_widget.dart';

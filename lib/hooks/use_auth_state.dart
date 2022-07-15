@@ -1,7 +1,5 @@
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:neo/enums/app_state.dart';
-import 'package:neo/services/authentication_service.dart';
-
 import '../service_locator.dart';
 import '../services/app_state_service.dart';
 
