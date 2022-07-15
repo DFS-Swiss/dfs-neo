@@ -1,0 +1,85 @@
+name: Deploy Staging
+
+on:
+  push:
+    branches: [ "staging"]
+
+jobs:
+
+  deploy_ios:
+    runs-on: macos-latest
+    env:
+      IOS_API_KEY: ${{ secrets.IOS_API_KEY }}
+      MATCH_PASSWORD: ${{ secrets.MATCH_PASSPHRASE }}
+    steps:
+      - name: Get Token
+        id: get_workflow_token
+        uses: peter-murray/workflow-application-token-action@v1
+        with:
+          application_id: ${{ secrets.APPLICATION_ID }}
+          application_private_key: ${{ secrets.APPLICATION_PRIVATE_KEY }}
+      - uses: actions/checkout@v3
+        env:
+          GITHUB_TOKEN: ${{steps.get_workflow_token.outputs.token}}
+      - name: Make git access token
+        run: echo "::set-output name=ACCESS_TOKEN::$echo -n git:${{steps.get_workflow_token.outputs.token}} | base64"
+      - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
+      - uses: subosito/flutter-action@v2.4.0
+      - name: Install dependencies
+        run: flutter pub get
+      - name: Setting up api key
+        run: echo $IOS_API_KEY | base64 --decode > ios/api_key.json
+      - name: Installing project generator
+        run: brew install xcodegen
+      - name: Generating xcode project
+        run: cd ios && xcodegen generate
+      - name: Pod install
+        run: cd ios && pod install
+      - uses: maierj/fastlane-action@v2.2.0
+        name: Fastlane
+        env:
+          ACCESS_TOKEN: "${{ steps.nodejs.outputs.ACCESS_TOKEN }}"
+          GIT_URL: https://x-access-token:${{steps.get_workflow_token.outputs.token}}@github.com/DFS-Swiss/deploy-certificates.git
+        with:
+          lane: 'test_flight'
+          subdirectory: "ios"
+
+  deploy_android:
+    runs-on: ubuntu-latest
+    env:
+      ANDROID_STORE_PASSWORD: ${{ secrets.ANDROID_STORE_PASSWORD }}
+      ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+      ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+      ANDROID_KEYSTORE_ENCODED: ${{ secrets.ANDROID_KEYSTORE_ENCODED }}
+      PLAY_STORE_UPLOAD_KEY: ${{secrets.PLAY_STORE_UPLOAD_KEY}}
+      PLAY_STORE_API_KEY: ${{secrets.PLAY_STORE_API_KEY}}
+      ANDROID_KEY_PROPERTIES: ${{secrets.ANDROID_KEY_PROPERTIES}}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
+      - name: Decoding enviroment variables
+        run: |
+           echo $ANDROID_KEYSTORE_ENCODED | base64 --decode > android/keystore.jks
+           echo $PLAY_STORE_API_KEY | base64 --decode > android/fastlane/google_key.json
+      - name: Setting up key config
+        run: echo $ANDROID_KEY_PROPERTIES | base64 --decode > android/key.properties
+      - uses: subosito/flutter-action@v2.4.0
+      - name: Install dependencies
+        run: flutter pub get
+      - name: Build
+        run: flutter build appbundle --release 
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: 'adopt'
+          cache: gradle
+      - name: Validate gradle
+        run: android/gradlew -v
+      - uses: maierj/fastlane-action@v2.2.0
+        name: Fastlane
+        with:
+          lane: 'staging'
+          subdirectory: "android"
+
+  
