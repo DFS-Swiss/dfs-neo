@@ -2,7 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
-import 'package:neo/enums/auth_state.dart';
+import 'package:is_first_run/is_first_run.dart';
+import 'package:neo/enums/app_state.dart';
+import 'package:neo/services/app_state_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../service_locator.dart';
@@ -11,7 +13,7 @@ import 'cognito_service.dart';
 class AuthenticationService extends ChangeNotifier {
   // Inject dependencies
   final CognitoService _cognitoService = locator<CognitoService>();
-  AuthState authState = AuthState.signedOut;
+  final AppStateService _appStateService = locator<AppStateService>();
 
   Future<String> getCurrentApiKey() async {
     if (!_cognitoService.isSessionPresent()) {
@@ -30,7 +32,7 @@ class AuthenticationService extends ChangeNotifier {
       await _cognitoService.createAndAuthenticateUser(userName, password);
     } on CognitoUserNewPasswordRequiredException catch (e) {
       print(e);
-      authState = AuthState.newPasswordRequired;
+      _appStateService.state = AppState.newPasswordRequired;
       notifyListeners();
       return;
     } on CognitoUserMfaRequiredException catch (e) {
@@ -60,7 +62,7 @@ class AuthenticationService extends ChangeNotifier {
       // handle CUSTOM_CHALLENGE challenge
     } on CognitoUserConfirmationNecessaryException catch (e) {
       print(e);
-      authState = AuthState.verifyAccount;
+      _appStateService.state = AppState.verifyAccount;
       notifyListeners();
       rethrow;
     } on CognitoClientException catch (e) {
@@ -72,7 +74,7 @@ class AuthenticationService extends ChangeNotifier {
       print(e);
       rethrow;
     }
-    authState = AuthState.signedIn;
+    _appStateService.state = AppState.signedIn;
     notifyListeners();
     // TODO: Use secure storage
     final prefs = await SharedPreferences.getInstance();
@@ -85,7 +87,7 @@ class AuthenticationService extends ChangeNotifier {
 
   logOut() async {
     await _cognitoService.logoutCurrentPoolUser();
-    authState = AuthState.signedOut;
+    _appStateService.state = AppState.signedOut;
     notifyListeners();
   }
 
@@ -100,30 +102,30 @@ class AuthenticationService extends ChangeNotifier {
   }
 
   Future completeForceChangePassword(String newPassword) async {
-    if (authState == AuthState.newPasswordRequired &&
+    if (_appStateService.state == AppState.newPasswordRequired &&
         _cognitoService.isUserPresent()) {
       try {
         await _cognitoService.sendNewPasswordRequired(newPassword);
       } catch (e) {
         rethrow;
       }
-      authState = AuthState.signedOut;
+      _appStateService.state = AppState.signedOut;
       notifyListeners();
     }
   }
 
   Future confirmEmail(String code) async {
-    if (authState == AuthState.verifyAccount &&
+    if (_appStateService.state == AppState.verifyAccount &&
         _cognitoService.isUserPresent()) {
       await _cognitoService.confirmRegistration(code);
-      authState = AuthState.signedOut;
+      _appStateService.state = AppState.signedOut;
 
       notifyListeners();
     }
   }
 
   Future resendConfirmationCode() async {
-    if (authState == AuthState.verifyAccount &&
+    if (_appStateService.state == AppState.verifyAccount &&
         _cognitoService.isUserPresent()) {
       await _cognitoService.resendConfirmationCode();
     }
@@ -136,7 +138,7 @@ class AuthenticationService extends ChangeNotifier {
         return true;
       } catch (e) {
         print(e);
-        authState = AuthState.signedOut;
+        _appStateService.state = AppState.signedOut;
         notifyListeners();
         return false;
       }
@@ -152,7 +154,7 @@ class AuthenticationService extends ChangeNotifier {
       _cognitoService.createCognitoUser(prefs.getString("user_name"));
       try {
         await _cognitoService.setRefreshSession();
-        authState = AuthState.signedIn;
+        _appStateService.state = AppState.signedIn;
         notifyListeners();
         return true;
       } catch (e) {
