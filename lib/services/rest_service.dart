@@ -168,7 +168,7 @@ class RESTService extends ChangeNotifier {
       final response = await dio.get("/debug/addBalance?amount=$amount");
       if (response.statusCode.toString().startsWith("2")) {
         return true;
-      } else if(response.statusCode.toString() == "401") {
+      } else if (response.statusCode.toString() == "401") {
         throw response;
       } else {
         return false;
@@ -330,6 +330,24 @@ class RESTService extends ChangeNotifier {
       }
       if (response.statusCode == 400) {
         throw "Insuficient funds";
+      }
+      return false;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<bool> sellAsset(String symbol, double ammountOfTokensToSell) async {
+    try {
+      final response = await dio.post("/assets/sell", data: {
+        "symbol": symbol,
+        "ammountOfTokensToSell": ammountOfTokensToSell
+      });
+      if (response.statusCode.toString().startsWith("2")) {
+        return true;
+      }
+      if (response.statusCode == 400) {
+        throw "Insuficient token";
       }
       return false;
     } catch (e) {

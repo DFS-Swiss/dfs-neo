@@ -158,6 +158,10 @@ class DataService extends ChangeNotifier {
     return RESTService.getInstance().buyAsset(symbol, amountInDollar);
   }
 
+  Future<bool> sellAsset(String symbol, double ammountOfTokensToSell) async {
+    return RESTService.getInstance().sellAsset(symbol, ammountOfTokensToSell);
+  }
+
   Future<bool> addUserBalance(String amount) async {
     return await RESTService.getInstance().addBalance(amount);
   }

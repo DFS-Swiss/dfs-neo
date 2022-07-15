@@ -11,12 +11,15 @@ class AmountSelector extends HookWidget {
   final dollarControler = TextEditingController();
   final assetControler = TextEditingController();
   final String symbol;
-  final Function(double) callbackDollarAmount;
-  AmountSelector({
-    Key? key,
-    required this.symbol,
-    required this.callbackDollarAmount,
-  }) : super(key: key);
+  final Function(double)? callbackDollarAmount;
+  final Function(double)? callbackTokenAmount;
+
+  AmountSelector(
+      {Key? key,
+      required this.symbol,
+      this.callbackDollarAmount,
+      this.callbackTokenAmount})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +40,12 @@ class AmountSelector extends HookWidget {
             final assets = value / latestPrice.data!.price;
             amountInShares.value = assets;
             assetControler.text = assets.toString();
-            callbackDollarAmount(value);
+            if (callbackDollarAmount != null) {
+              callbackDollarAmount!(value);
+            }
+            if (callbackTokenAmount != null) {
+              callbackTokenAmount!(assets);
+            }
           },
         ),
         SizedBox(
@@ -91,7 +99,12 @@ class AmountSelector extends HookWidget {
             final dollar = value * latestPrice.data!.price;
             amountInDollar.value = dollar;
             dollarControler.text = dollar.toString();
-            callbackDollarAmount(dollar);
+            if (callbackDollarAmount != null) {
+              callbackDollarAmount!(dollar);
+            }
+            if (callbackTokenAmount != null) {
+              callbackTokenAmount!(value);
+            }
           },
         ),
       ],

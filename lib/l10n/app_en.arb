@@ -176,5 +176,10 @@
     "deposit_enter_deposit_amount":"Enter deposit amount (10 - 50.000$)",
     "alert_amount_deposited":"Amount deposited",
     "alert_amount_limit":"You cannot add more than 100000$ via debug",
-    "alert_deposit_limit":"You cannot add more than 10000$ at once"
+    "alert_deposit_limit":"You cannot add more than 10000$ at once",
+    "new_order_sell_success_error": "A problem occured",
+    "new_order_sell_success_title": "Success",
+    "new_order_sell_success": "has been sold successfully",
+    "new_order_buy_error_ins_token": "Your account has insuficient tokens"
+
 }
