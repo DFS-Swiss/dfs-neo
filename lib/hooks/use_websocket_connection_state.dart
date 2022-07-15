@@ -15,7 +15,7 @@ SocketConnectionState useUserDataSocketConnectionState() {
     });
     return sub.cancel;
   });
-  return state.value;
+  return state.value.state;
 }
 
 SocketConnectionState useStockDataSocketConnectionState() {
@@ -30,5 +30,5 @@ SocketConnectionState useStockDataSocketConnectionState() {
     });
     return sub.cancel;
   });
-  return state.value;
+  return state.value.state;
 }

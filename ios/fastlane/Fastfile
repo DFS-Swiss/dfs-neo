@@ -1,0 +1,53 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:ios)
+
+platform :ios do
+  desc "Build and upload the current version to testflight"
+  lane :test_flight do
+
+    increment_version_number(
+      xcodeproj: "Runner.xcodeproj",
+      version_number: flutter_version()["version_name"] # Set a specific version number
+    )
+    # https://docs.fastlane.tools/actions/increment_build_number/
+    increment_build_number(
+      xcodeproj: "Runner.xcodeproj",
+      build_number: flutter_version()["version_code"] # Set a specific build number
+    )
+    setup_ci
+    sync_code_signing(
+      git_url: ENV["GIT_URL"],
+      type: "appstore", 
+      readonly: is_ci, 
+      app_identifier: "com.dfsswiss.neo",
+      storage_mode: "git"
+    )
+    build_app(
+      workspace: "Runner.xcworkspace", 
+      scheme: "Runner",
+      codesigning_identity: "Apple Distribution: The CodeCave GmbH (FT5WB76PUQ)",
+      export_method: "app-store",
+      export_options: {
+        provisioningProfiles: {
+          "com.dfsswiss.neo" => "match AppStore com.dfsswiss.neo"
+        }
+      }
+    )
+    upload_to_testflight(api_key_path: "api_key.json", skip_waiting_for_build_processing: true)
+    # add actions here: https://docs.fastlane.tools/actions
+  end
+end

@@ -3,14 +3,17 @@ import 'dart:io';
 
 import 'package:rxdart/subjects.dart';
 
+import '../../types/websocket_state_container.dart';
+
 enum SocketConnectionState { connected, connecting, waiting, error }
 
 class WebsocketControler {
   StreamController<String> streamController =
       StreamController.broadcast(sync: true);
 
-  BehaviorSubject<SocketConnectionState> connectionStateStream =
-      BehaviorSubject.seeded(SocketConnectionState.waiting);
+  BehaviorSubject<WebsocketStateContainer> connectionStateStream =
+      BehaviorSubject.seeded(
+          WebsocketStateContainer(SocketConnectionState.waiting));
 
   String wsUrl;
   Future<String?> Function()? getApiKey;
@@ -23,11 +26,13 @@ class WebsocketControler {
 
   initWebSocketConnection() async {
     print("conecting...");
-    connectionStateStream.add(SocketConnectionState.connecting);
+    connectionStateStream
+        .add(WebsocketStateContainer(SocketConnectionState.connecting));
     channel = await connectWs();
     print(
         "${DateTime.now().toIso8601String()}: socket connection to $wsUrl initializied");
-    connectionStateStream.add(SocketConnectionState.connected);
+    connectionStateStream
+        .add(WebsocketStateContainer(SocketConnectionState.connected));
     channel!.done.then((_) => _onDisconnected());
     broadcastNotifications();
   }
@@ -57,7 +62,8 @@ class WebsocketControler {
       }
       return await WebSocket.connect(wsUrl);
     } catch (e) {
-      connectionStateStream.add(SocketConnectionState.error);
+      connectionStateStream
+          .add(WebsocketStateContainer(SocketConnectionState.error));
       throw "Error! Can not connect WS connectWs ${e.toString()}";
       //await Future.delayed(Duration(milliseconds: 10000));
       //return await connectWs();
