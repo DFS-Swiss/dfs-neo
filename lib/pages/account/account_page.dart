@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:neo/hooks/use_user_data.dart';
 import 'package:neo/pages/account/bottomtexttile_widget.dart';
+import 'package:neo/pages/account/change_password_page.dart';
 import 'package:neo/pages/account/logout_widget.dart';
 import 'package:neo/pages/account/middletexttile_widget.dart';
 import 'package:neo/pages/account/texttile_widget.dart';
@@ -112,7 +113,12 @@ class AccountPage extends HookWidget {
           TextTile(
             text: AppLocalizations.of(context)!.account_changepass,
             callback: () {
-              //TODO: Implement change passwort
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ChangePasswordPage(),
+                ),
+              );
             },
           ),
           TextTile(

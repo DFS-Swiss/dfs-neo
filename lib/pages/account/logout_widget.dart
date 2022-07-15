@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:neo/pages/authentication/auth_page_wrapper.dart';
+import 'package:neo/service_locator.dart';
 import 'package:neo/services/authentication_service.dart';
 import 'package:neo/services/cognito_service.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -19,6 +20,7 @@ class LogoutTextButton extends HookWidget {
           GestureDetector(
             onTap: () {
               try {
+                locator<AuthenticationService>().logOut();
                 //TODO: Add logout
               } catch (e) {
                 print(e);

@@ -187,5 +187,14 @@
     "account_imprint": "Imprint",
     "account_privacy": "Privacy policy",
     "account_contact": "Contact support via Email",
-    "account_logout": "Logout"
+    "account_logout": "Logout",
+    "change_password_title": "Change password",
+    "change_password_old": "Old password",
+    "change_password_new": "New password",
+    "change_password_new_repeat": "Repeat new password",
+    "change_password_save": "Save",
+    "change_password_error": "Error",
+    "change_password_error_wrong_pw": "Wrong old password"
+
+
 }

@@ -187,5 +187,12 @@
     "account_imprint": "Impressum",
     "account_privacy": "Datenschutzerklärung",
     "account_contact": "Mailsupport erhalten",
-    "account_logout": "Ausloggen"
+    "account_logout": "Ausloggen",
+    "change_password_title": "Passwort ändern",
+    "change_password_old": "Altes Passwort",
+    "change_password_new": "Neues Passwort",
+    "change_password_new_repeat": "Neues Passwort wiederholen",
+    "change_password_save": "Speichern",
+    "change_password_error": "Fehler",
+    "change_password_error_wrong_pw": "Das alte Passwort ist falsch"
 }
