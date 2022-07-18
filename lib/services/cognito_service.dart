@@ -99,4 +99,8 @@ class CognitoService {
       AttributeArg(name: "email", value: email)
     ]);
   }
+
+  changePassword(String oldPassword, String newPassword) async {
+    await _cognitoUser!.changePassword(oldPassword, newPassword);
+  }
 }

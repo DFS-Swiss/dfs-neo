@@ -144,6 +144,18 @@ class AuthenticationService extends ChangeNotifier {
     throw "Could not reresh session; Missing user or session object";
   }
 
+  Future<bool> changePassword(String oldPassword, String newPassword) async {
+    if (_cognitoService.isSessionPresent() && _cognitoService.isUserPresent()) {
+      try {
+        await _cognitoService.changePassword(oldPassword, newPassword);
+        return true;
+      } catch (e) {
+        rethrow;
+      }
+    }
+    throw "Could not change password";
+  }
+
   Future<bool> tryReauth() async {
     final prefs = await SharedPreferences.getInstance();
     if (prefs.getString("refresh_token") != null &&
