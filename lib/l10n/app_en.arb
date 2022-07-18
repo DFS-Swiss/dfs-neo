@@ -177,6 +177,10 @@
     "alert_amount_deposited":"Amount deposited",
     "alert_amount_limit":"You cannot add more than 100000$ via debug",
     "alert_deposit_limit":"You cannot add more than 10000$ at once",
+    "new_order_sell_success_error": "A problem occured",
+    "new_order_sell_success_title": "Success",
+    "new_order_sell_success": "has been sold successfully",
+    "new_order_buy_error_ins_token": "Your account has insuficient tokens",
     "account_title": "My Account",
     "account_user": "Username",
     "account_mail": "E-Mail",
@@ -195,6 +199,4 @@
     "change_password_save": "Save",
     "change_password_error": "Error",
     "change_password_error_wrong_pw": "Wrong old password"
-
-
 }
