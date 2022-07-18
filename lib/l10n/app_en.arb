@@ -180,6 +180,23 @@
     "new_order_sell_success_error": "A problem occured",
     "new_order_sell_success_title": "Success",
     "new_order_sell_success": "has been sold successfully",
-    "new_order_buy_error_ins_token": "Your account has insuficient tokens"
-
+    "new_order_buy_error_ins_token": "Your account has insuficient tokens",
+    "account_title": "My Account",
+    "account_user": "Username",
+    "account_mail": "E-Mail",
+    "account_changepass": "Change Password",
+    "account_delacc": "Delete Account",
+    "account_links": "Links",
+    "account_open": "Open source projects",
+    "account_imprint": "Imprint",
+    "account_privacy": "Privacy policy",
+    "account_contact": "Contact support via Email",
+    "account_logout": "Logout",
+    "change_password_title": "Change password",
+    "change_password_old": "Old password",
+    "change_password_new": "New password",
+    "change_password_new_repeat": "Repeat new password",
+    "change_password_save": "Save",
+    "change_password_error": "Error",
+    "change_password_error_wrong_pw": "Wrong old password"
 }

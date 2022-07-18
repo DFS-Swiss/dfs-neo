@@ -180,6 +180,23 @@
     "new_order_sell_success_error": "Es ist ein Problem aufgetreten",
     "new_order_sell_success_title": "Erfolgreich",
     "new_order_sell_success": "wurde erfolgreich verkauft",
-    "new_order_buy_error_ins_token": "Es befindet sich nicht ausreichend Token in ihrem Account."
-
+    "new_order_buy_error_ins_token": "Es befindet sich nicht ausreichend Token in ihrem Account.",
+    "account_title": "Mein Account",
+    "account_user": "Nutzername",
+    "account_mail": "E-Mail",
+    "account_changepass": "Passwort ändern",
+    "account_delacc": "Account löschen",
+    "account_links": "Links",
+    "account_open": "Open source projekte",
+    "account_imprint": "Impressum",
+    "account_privacy": "Datenschutzerklärung",
+    "account_contact": "Mailsupport erhalten",
+    "account_logout": "Ausloggen",
+    "change_password_title": "Passwort ändern",
+    "change_password_old": "Altes Passwort",
+    "change_password_new": "Neues Passwort",
+    "change_password_new_repeat": "Neues Passwort wiederholen",
+    "change_password_save": "Speichern",
+    "change_password_error": "Fehler",
+    "change_password_error_wrong_pw": "Das alte Passwort ist falsch"
 }
