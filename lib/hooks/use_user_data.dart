@@ -4,7 +4,11 @@ import 'package:neo/services/data_service.dart';
 import 'package:neo/types/data_container.dart';
 
 DataContainer<UserModel> useUserData() {
-  final state = useState<DataContainer<UserModel>>(DataContainer.waiting());
+  final cached =
+      DataService.getInstance().getDataFromCacheIfAvaliable<UserModel>("user");
+
+  final state = useState<DataContainer<UserModel>>(
+      cached != null ? DataContainer(data: cached) : DataContainer.waiting());
   useEffect(() {
     final sub = DataService.getInstance().getUserData().listen((event) {
       state.value = DataContainer(data: event);

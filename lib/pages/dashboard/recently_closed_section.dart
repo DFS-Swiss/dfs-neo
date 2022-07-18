@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../style/theme.dart';
-import '../../widgets/recently_closed_order_card.dart';
+import '../../widgets/cards/recently_closed_order_card.dart';
 
 class RecentlyClosedSection extends StatelessWidget {
   const RecentlyClosedSection({Key? key}) : super(key: key);

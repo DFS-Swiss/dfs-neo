@@ -22,7 +22,6 @@ class AuthenticationService extends ChangeNotifier {
         throw "Session is expired and could not be restored";
       }
     }
-    log(_cognitoService.getIdJwtToken()!);
     return _cognitoService.getIdJwtToken()!;
   }
 
@@ -133,7 +132,7 @@ class AuthenticationService extends ChangeNotifier {
   Future<bool> tryRefreshingSession() async {
     if (_cognitoService.isSessionPresent() && _cognitoService.isUserPresent()) {
       try {
-        _cognitoService.refreshSession();
+        await _cognitoService.refreshSession();
         return true;
       } catch (e) {
         print(e);
@@ -143,6 +142,18 @@ class AuthenticationService extends ChangeNotifier {
       }
     }
     throw "Could not reresh session; Missing user or session object";
+  }
+
+  Future<bool> changePassword(String oldPassword, String newPassword) async {
+    if (_cognitoService.isSessionPresent() && _cognitoService.isUserPresent()) {
+      try {
+        await _cognitoService.changePassword(oldPassword, newPassword);
+        return true;
+      } catch (e) {
+        rethrow;
+      }
+    }
+    throw "Could not change password";
   }
 
   Future<bool> tryReauth() async {

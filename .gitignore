@@ -47,6 +47,7 @@ app.*.map.json
 /android/app/release
 
 *.lock
+ios/api_key.json
 android/fastlane/google_key.json
 ios/Runner.xcodeproj
 ios/Runner.xcworkspace

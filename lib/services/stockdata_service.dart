@@ -21,6 +21,18 @@ class StockdataService extends ChangeNotifier {
   final Map<String, List<StockdataInterval>> _bulkFetchCache = {};
   Future<void>? _bulkFetchTimer;
 
+  List<StockdataDatapoint>? getDataFromCacheIfAvaliable(
+      String symbol, StockdataInterval interval) {
+    if (_dataStore.value[symbol] != null) {
+      if (_dataStore.value[symbol]![interval] != null &&
+          !_dataStore.value[symbol]![interval]!.isStale()) {
+        return _dataStore.value[symbol]![interval]!.getSorted();
+      }
+      return null;
+    }
+    return null;
+  }
+
   Stream<List<StockdataDatapoint>> getStockdata(
       String symbol, StockdataInterval interval) async* {
     if (_dataStore.value[symbol] != null) {
@@ -43,9 +55,9 @@ class StockdataService extends ChangeNotifier {
         .map((event) => event[symbol]![interval]!.getSorted());
   }
 
-  Stream<double> getLatestPrice(String symbol) async* {
+  Stream<StockdataDatapoint> getLatestPrice(String symbol) async* {
     yield* getStockdata(symbol, StockdataInterval.twentyFourHours).map(
-      (event) => event.first.price,
+      (event) => event.first,
     );
   }
 

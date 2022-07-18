@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:neo/pages/account/account_page.dart';
 import 'package:neo/pages/dashboard/dashboard_page.dart';
 import 'package:neo/pages/portfolio/portfolio_page.dart';
 import 'package:neo/pages/stocklist/stocklist_page.dart';
@@ -26,9 +27,7 @@ class MainNavigation extends HookWidget {
         case 2:
           return StockList();
         case 3:
-          return Container(
-            color: Colors.indigoAccent,
-          );
+          return AccountPage();
         default:
           return Container(
             color: Colors.teal,

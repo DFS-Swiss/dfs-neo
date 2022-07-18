@@ -4,7 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:neo/hooks/use_userassets.dart';
 
 import '../../style/theme.dart';
-import '../../widgets/investment_card.dart';
+import '../../widgets/cards/investment_card.dart';
 
 class CurrentInvestmentsSection extends HookWidget {
   const CurrentInvestmentsSection({Key? key}) : super(key: key);
@@ -58,6 +58,7 @@ class CurrentInvestmentsSection extends HookWidget {
                     : ListView.separated(
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) => InvestmentCard(
+                          key: ValueKey(assests.data![index].symbol),
                           token: assests.data![index].symbol,
                         ),
                         separatorBuilder: (context, index) =>
