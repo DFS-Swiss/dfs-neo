@@ -62,6 +62,10 @@ class MockCognitoService extends _i1.Mock implements _i2.CognitoService {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockAppStateService extends _i1.Mock implements _i5.AppStateService {
+  MockAppStateService() {
+    _i1.throwOnMissingStub(this);
+  }
+
   @override
   _i6.AppState get state => (super.noSuchMethod(Invocation.getter(#state),
       returnValue: _i6.AppState.signedOut) as _i6.AppState);
