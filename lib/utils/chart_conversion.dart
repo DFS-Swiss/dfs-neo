@@ -81,12 +81,24 @@ LineChartData details(List<FlSpot> data, bool isNegative) {
                 colors: const [Color(0xFFFF7D94), Color(0xFFF33556)],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter),
-        barWidth: 2,
+        barWidth: 1.7,
         isStrokeCapRound: true,
         dotData: FlDotData(show: false),
         belowBarData: BarAreaData(
-          show: false,
-          gradient: LinearGradient(colors: gradientColors),
+          show: true,
+          gradient: !isNegative
+              ? LinearGradient(colors: [
+                  Color(0xFF0EB9C2).withOpacity(0.2),
+                  Color(0xFF58E9D7).withOpacity(0),
+                ], begin: Alignment.topCenter, end: Alignment.bottomCenter)
+              : LinearGradient(
+                  colors: [
+                    Color(0xFFF33556).withOpacity(0.2),
+                    Color(0xFFFF7D94).withOpacity(0.0),
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
         ),
       ),
     ],

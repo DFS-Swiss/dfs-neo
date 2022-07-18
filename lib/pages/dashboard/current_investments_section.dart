@@ -57,9 +57,12 @@ class CurrentInvestmentsSection extends HookWidget {
                       )
                     : ListView.separated(
                         scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) => InvestmentCard(
-                          key: ValueKey(assests.data![index].symbol),
-                          token: assests.data![index].symbol,
+                        itemBuilder: (context, index) => GestureDetector(
+                          onTap: ,
+                          child: InvestmentCard(
+                            key: ValueKey(assests.data![index].symbol),
+                            token: assests.data![index].symbol,
+                          ),
                         ),
                         separatorBuilder: (context, index) =>
                             SizedBox(width: 16),
