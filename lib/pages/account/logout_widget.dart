@@ -19,7 +19,6 @@ class LogoutTextButton extends HookWidget {
             onTap: () {
               try {
                 locator<AuthenticationService>().logOut();
-                //TODO: Add logout
               } catch (e) {
                 print(e);
               }

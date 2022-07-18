@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:neo/constants/links.dart';
 import 'package:neo/hooks/use_user_data.dart';
 import 'package:neo/pages/account/bottomtexttile_widget.dart';
 import 'package:neo/pages/account/change_password_page.dart';
@@ -135,7 +136,7 @@ class AccountPage extends HookWidget {
             ),
           ),
           TopTextTile(AppLocalizations.of(context)!.account_open, () {
-            //TODO: Implement callback
+            launchUrl(Uri.parse(OPENSOURCE_PROJECTS));
           }),
           Divider(
             color: Color(0xFFEFEFEF),
@@ -145,7 +146,7 @@ class AccountPage extends HookWidget {
             endIndent: 20,
           ),
           MiddleTextTile(AppLocalizations.of(context)!.account_imprint, () {
-            //TODO: Implement callback
+            launchUrl(Uri.parse(IMPRINT));
           }),
           Divider(
             color: Color(0xFFEFEFEF),
@@ -155,7 +156,7 @@ class AccountPage extends HookWidget {
             endIndent: 20,
           ),
           MiddleTextTile(AppLocalizations.of(context)!.account_privacy, () {
-            //TODO: Implement callback
+            launchUrl(Uri.parse(ACCOUNT_PRIVACY));
           }),
           Divider(
             color: Color(0xFFEFEFEF),
