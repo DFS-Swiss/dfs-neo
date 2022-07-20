@@ -122,8 +122,9 @@ class DistributionWidget extends HookWidget {
                 child: Container(
                   height: 74,
                   decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12)),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
               ),
       ),

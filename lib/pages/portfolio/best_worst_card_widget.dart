@@ -4,12 +4,14 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:neo/hooks/use_userassets.dart';
 import 'package:neo/style/theme.dart';
+import 'package:neo/types/data_container.dart';
 import 'package:neo/widgets/development_indicator/small_change_indicator.dart';
 
 import '../../hooks/use_balance_history.dart';
 import '../../hooks/use_investment_developments.dart';
 import '../../types/asset_performance_container.dart';
 import '../../types/stockdata_interval_enum.dart';
+import 'best_worst_card_element.dart';
 
 class BestWorstCard extends HookWidget {
   final StockdataInterval interval;
@@ -50,67 +52,11 @@ class BestWorstCard extends HookWidget {
                       SizedBox(
                         height: 7,
                       ),
-                      Container(
-                        height: 90,
-                        padding: EdgeInsets.all(12),
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).backgroundColor,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              assetDevelopment.loading
-                                  ? "..."
-                                  : getBest().symbol,
-                              style: Theme.of(context).textTheme.labelMedium,
-                            ),
-                            SizedBox(
-                              height: 4,
-                            ),
-                            Text(
-                              assetDevelopment.loading
-                                  ? "..."
-                                  : "NVDA Coorporation",
-                              style: Theme.of(context).textTheme.labelSmall,
-                            ),
-                            SizedBox(
-                              height: 8,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  assetDevelopment.loading
-                                      ? "..."
-                                      : NumberFormat.currency(symbol: "dUSD ")
-                                          .format(getBest().earnedMoney),
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: assetDevelopment.loading
-                                        ? NeoTheme.of(context)!.positiveColor
-                                        : getBest().earnedMoney > 0
-                                            ? NeoTheme.of(context)!
-                                                .positiveColor
-                                            : NeoTheme.of(context)!
-                                                .negativeColor,
-                                  ),
-                                ),
-                                SmallDevelopmentIndicator(
-                                  positive: assetDevelopment.loading
-                                      ? true
-                                      : getBest().earnedMoney > 0,
-                                  changePercentage: assetDevelopment.loading
-                                      ? 0
-                                      : getBest().differenceInPercent,
-                                )
-                              ],
+                      assetDevelopment.loading
+                          ? BestWorstCardElementPlaceHolder()
+                          : BestWorstCardElement(
+                              assetDevelopment: getBest(),
                             )
-                          ],
-                        ),
-                      )
                     ],
                   ),
                 ),
@@ -128,67 +74,11 @@ class BestWorstCard extends HookWidget {
                       SizedBox(
                         height: 7,
                       ),
-                      Container(
-                        height: 90,
-                        padding: EdgeInsets.all(12),
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).backgroundColor,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              assetDevelopment.loading
-                                  ? "..."
-                                  : getWorst().symbol,
-                              style: Theme.of(context).textTheme.labelMedium,
-                            ),
-                            SizedBox(
-                              height: 4,
-                            ),
-                            Text(
-                              assetDevelopment.loading
-                                  ? "..."
-                                  : "NVDA Coorporation",
-                              style: Theme.of(context).textTheme.labelSmall,
-                            ),
-                            SizedBox(
-                              height: 8,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  assetDevelopment.loading
-                                      ? "..."
-                                      : NumberFormat.currency(symbol: "dUSD ")
-                                          .format(getWorst().earnedMoney),
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: assetDevelopment.loading
-                                        ? NeoTheme.of(context)!.positiveColor
-                                        : getWorst().earnedMoney > 0
-                                            ? NeoTheme.of(context)!
-                                                .positiveColor
-                                            : NeoTheme.of(context)!
-                                                .negativeColor,
-                                  ),
-                                ),
-                                SmallDevelopmentIndicator(
-                                  positive: assetDevelopment.loading
-                                      ? true
-                                      : getWorst().earnedMoney > 0,
-                                  changePercentage: assetDevelopment.loading
-                                      ? 0
-                                      : getWorst().differenceInPercent,
-                                )
-                              ],
+                      assetDevelopment.loading
+                          ? BestWorstCardElementPlaceHolder()
+                          : BestWorstCardElement(
+                              assetDevelopment: getWorst(),
                             )
-                          ],
-                        ),
-                      )
                     ],
                   ),
                 )
