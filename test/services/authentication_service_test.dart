@@ -1,8 +1,9 @@
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:neo/enums/auth_state.dart';
+import 'package:neo/enums/app_state.dart';
 import 'package:neo/service_locator.dart';
+import 'package:neo/services/app_state_service.dart';
 import 'package:neo/services/authentication_service.dart';
 import 'package:neo/services/cognito_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -59,45 +60,56 @@ void main() {
     test('login_newPasswordRequired_correctStateSet', () async {
       // arrange
       var authServiceInstance = AuthenticationService();
+      var appStateService = locator<AppStateService>();
       var cognitoService = locator<CognitoService>();
       when(cognitoService.createAndAuthenticateUser("", ""))
           .thenThrow(CognitoUserNewPasswordRequiredException());
+      when(appStateService.state)
+          .thenReturn(AppState.newPasswordRequired);
 
       // act
       await authServiceInstance.login("", "");
 
       // assert
-      expect(authServiceInstance.authState, AuthState.newPasswordRequired);
+      expect(appStateService.state, AppState.newPasswordRequired);
     });
 
     test('login_confirmationNecessary_correctStateSet', () async {
       // arrange
       var authServiceInstance = AuthenticationService();
       var cognitoService = locator<CognitoService>();
+      var appStateService = locator<AppStateService>();
+
       when(cognitoService.createAndAuthenticateUser("", ""))
           .thenThrow(CognitoUserConfirmationNecessaryException());
+      when(appStateService.state)
+          .thenReturn(AppState.verifyAccount);
 
       // act
       expect(
           () async => await authServiceInstance.login("", ""), throwsException);
 
       // assert
-      expect(authServiceInstance.authState, AuthState.verifyAccount);
+      expect(appStateService.state, AppState.verifyAccount);
     });
 
     test('login_noExceptionThrown_loginSuccessful', () async {
       // arrange
       var authServiceInstance = AuthenticationService();
       var cognitoService = locator<CognitoService>();
+      var appStateService = locator<AppStateService>();
+
       SharedPreferences.setMockInitialValues({}); //set values here
       when(cognitoService.createAndAuthenticateUser("", "")).thenReturn(null);
       when(cognitoService.getRefreshToken()).thenReturn("refreshTokenTest");
+      when(appStateService.state)
+          .thenReturn(AppState.signedIn);
 
       // act
       await authServiceInstance.login("testUser", "");
 
       // assert
-      expect(authServiceInstance.authState, AuthState.signedIn);
+      expect(appStateService.state, AppState.signedIn);
       final prefs = await SharedPreferences.getInstance();
       expect(prefs.getString("refresh_token"), "refreshTokenTest");
       expect(prefs.getString("user_name"), "testUser");
@@ -107,13 +119,17 @@ void main() {
       // arrange
       var authServiceInstance = AuthenticationService();
       var cognitoService = locator<CognitoService>();
+      var appStateService = locator<AppStateService>();
+
       when(cognitoService.logoutCurrentPoolUser()).thenReturn(null);
+      when(appStateService.state)
+          .thenReturn(AppState.signedOut);
 
       // act
       await authServiceInstance.logOut();
 
       // assert
-      expect(authServiceInstance.authState, AuthState.signedOut);
+      expect(appStateService.state, AppState.signedOut);
       verify(await cognitoService.logoutCurrentPoolUser()).called(1);
     });
 
@@ -123,7 +139,10 @@ void main() {
       // arrange
       var authServiceInstance = AuthenticationService();
       var cognitoService = locator<CognitoService>();
-      authServiceInstance.authState = AuthState.signedIn;
+      var appStateService = locator<AppStateService>();
+      when(appStateService.state)
+          .thenReturn(AppState.signedOut);
+
 
       // act
       await authServiceInstance.completeForceChangePassword("test");
@@ -137,15 +156,16 @@ void main() {
       // arrange
       var authServiceInstance = AuthenticationService();
       var cognitoService = locator<CognitoService>();
-      authServiceInstance.authState = AuthState.newPasswordRequired;
+      var appStateService = locator<AppStateService>();
       when(cognitoService.isUserPresent()).thenReturn(true);
+      when(appStateService.state)
+          .thenReturn(AppState.newPasswordRequired);
 
       // act
       await authServiceInstance.completeForceChangePassword("test");
 
       // assert
       verify(await cognitoService.sendNewPasswordRequired("test")).called(1);
-      expect(authServiceInstance.authState, AuthState.signedOut);
     });
   });
 }

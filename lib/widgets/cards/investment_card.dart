@@ -61,31 +61,35 @@ class InvestmentCard extends HookWidget {
                             width: 4,
                           ),
                           //Ticker and Companyname
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: 3,
-                              ),
-                              Text(
-                                stockData.data!.first.symbol,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: 3,
                                 ),
-                              ),
-                              Text(
-                                "${FormattingService.roundDouble(relevantInvestment(assests.data!).tokenAmmount, 2)} ${AppLocalizations.of(context)!.dash_currinv_amount_multiple}",
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  color: Color(0xFF909090),
-                                  fontWeight: FontWeight.w500,
+                                Text(
+                                  stockData.data!.first.symbol,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
-                              ),
-                              SizedBox(
-                                height: 3,
-                              ),
-                            ],
+                                Text(
+                                  "${FormattingService.roundDouble(relevantInvestment(assests.data!).tokenAmmount, 2)} ${AppLocalizations.of(context)!.dash_currinv_amount_multiple}",
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    color: Color(0xFF909090),
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 3,
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),

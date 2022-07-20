@@ -5,7 +5,10 @@ import 'package:neo/pages/account/account_page.dart';
 import 'package:neo/pages/dashboard/dashboard_page.dart';
 import 'package:neo/pages/portfolio/portfolio_page.dart';
 import 'package:neo/pages/stocklist/stocklist_page.dart';
+import 'package:neo/services/prefetching_service.dart';
 import 'package:neo/services/websocket/websocket_service.dart';
+
+import '../../widgets/prefetching_loader.dart';
 
 class MainNavigation extends HookWidget {
   const MainNavigation({Key? key}) : super(key: key);
@@ -13,8 +16,12 @@ class MainNavigation extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final currentPage = useState<int>(0);
+    final prefetching = useState(true);
     useEffect(() {
       WebsocketService.getInstance().init();
+      PrefetchingService()
+          .prepareApp()
+          .then((value) => prefetching.value = false);
       return;
     }, ["_"]);
     getBody() {
@@ -35,36 +42,40 @@ class MainNavigation extends HookWidget {
       }
     }
 
-    return Scaffold(
-      body: getBody(),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        onTap: (i) {
-          currentPage.value = i;
-        },
-        currentIndex: currentPage.value,
-        items: [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.dashboard_outlined),
-              label: AppLocalizations.of(context)!.bottomnav_home),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.data_saver_off,
+    return prefetching.value
+        ? Scaffold(
+            body: PrefetchingLoader(),
+          )
+        : Scaffold(
+            body: getBody(),
+            bottomNavigationBar: BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
+              onTap: (i) {
+                currentPage.value = i;
+              },
+              currentIndex: currentPage.value,
+              items: [
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.dashboard_outlined),
+                    label: AppLocalizations.of(context)!.bottomnav_home),
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.data_saver_off,
+                  ),
+                  label: AppLocalizations.of(context)!.bottomnav_port,
+                ),
+                BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.line_axis_outlined,
+                    ),
+                    label: AppLocalizations.of(context)!.bottomnav_trade),
+                BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.person_outline,
+                    ),
+                    label: AppLocalizations.of(context)!.nav_acc),
+              ],
             ),
-            label: AppLocalizations.of(context)!.bottomnav_port,
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.line_axis_outlined,
-              ),
-              label: AppLocalizations.of(context)!.bottomnav_trade),
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.person_outline,
-              ),
-              label: AppLocalizations.of(context)!.nav_acc),
-        ],
-      ),
-    );
+          );
   }
 }
