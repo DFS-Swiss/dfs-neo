@@ -123,7 +123,9 @@ class Portfolio extends HookWidget {
             linktext: AppLocalizations.of(context)!.port_view_all_link,
             callback: () {},
           ),
-          CurrentInvestmentsWidget(),
+          CurrentInvestmentsWidget(
+            interval: interval.value,
+          ),
           GenericHeadline(
             title: AppLocalizations.of(context)!.port_orders_title,
             linktext: AppLocalizations.of(context)!.port_view_all_link,

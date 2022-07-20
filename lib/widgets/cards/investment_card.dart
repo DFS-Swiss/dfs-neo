@@ -18,15 +18,17 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class InvestmentCard extends HookWidget {
   final String token;
   final bool expandHorizontal;
-  const InvestmentCard({
-    Key? key,
-    required this.token,
-    this.expandHorizontal = false,
-  }) : super(key: key);
+  final StockdataInterval interval;
+  const InvestmentCard(
+      {Key? key,
+      required this.token,
+      this.expandHorizontal = false,
+      this.interval = StockdataInterval.twentyFourHours})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final stockData = useStockdata(token, StockdataInterval.twentyFourHours);
+    final stockData = useStockdata(token, interval);
     final symbolInfo = useSymbolInfo(token);
     final assests = useUserassets();
 
