@@ -11,6 +11,8 @@ import 'package:neo/widgets/buttons/branded_button.dart';
 import 'package:neo/widgets/buttons/outline_button.dart';
 import 'package:neo/widgets/genericheadline_widget.dart';
 
+import 'distribution_widget.dart';
+
 class Portfolio extends HookWidget {
   const Portfolio({Key? key}) : super(key: key);
 
@@ -102,6 +104,10 @@ class Portfolio extends HookWidget {
             height: 28,
           ),
           BestWorstCard(interval: interval.value),
+          GenericHeadline(
+            title: AppLocalizations.of(context)!.port_allocation_title,
+          ),
+          DistributionWidget(),
           SizedBox(
             height: 40,
           )
