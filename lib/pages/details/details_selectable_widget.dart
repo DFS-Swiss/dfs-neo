@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:neo/widgets/filter/valuefilter_widget.dart';
 
 import '../../types/stockdata_interval_enum.dart';
 import '../../widgets/filter/small_value_filter.dart';

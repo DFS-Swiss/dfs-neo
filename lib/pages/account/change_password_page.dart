@@ -7,7 +7,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:neo/service_locator.dart';
 import 'package:neo/services/authentication_service.dart';
 import 'package:neo/utils/password_validator.dart';
-import 'package:neo/widgets/branded_button.dart';
+import 'package:neo/widgets/buttons/branded_button.dart';
 import 'package:neo/widgets/branded_textfield.dart';
 import 'package:neo/widgets/password_validation_indicator.dart';
 
