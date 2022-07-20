@@ -5,6 +5,7 @@ import 'package:neo/hooks/use_userassets.dart';
 
 import '../../style/theme.dart';
 import '../../widgets/cards/investment_card.dart';
+import '../details/details_page.dart';
 
 class CurrentInvestmentsSection extends HookWidget {
   const CurrentInvestmentsSection({Key? key}) : super(key: key);
@@ -52,13 +53,23 @@ class CurrentInvestmentsSection extends HookWidget {
                   )
                 : assests.data!.isEmpty
                     ? Center(
-                        child:
-                            Text(AppLocalizations.of(context)!.dashboard_no_investments),
+                        child: Text(AppLocalizations.of(context)!
+                            .dashboard_no_investments),
                       )
                     : ListView.separated(
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) => GestureDetector(
-                          onTap: ,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (BuildContext context) => DetailsPage(
+                                  token: assests.data![index].symbol,
+                                  key: UniqueKey(),
+                                ),
+                              ),
+                            );
+                          },
                           child: InvestmentCard(
                             key: ValueKey(assests.data![index].symbol),
                             token: assests.data![index].symbol,

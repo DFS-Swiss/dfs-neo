@@ -145,7 +145,6 @@ class StockList extends HookWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (BuildContext context) =>
-                                      //TODO: Change back to details page
                                       DetailsPage(
                                     token: e.symbol,
                                     key: UniqueKey(),
