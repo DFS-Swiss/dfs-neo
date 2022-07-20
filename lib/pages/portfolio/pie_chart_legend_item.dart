@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:neo/types/user_asset_datapoint_with_value.dart';
 
+import '../../widgets/hideable_text.dart';
+
 class PieChartLegendItem extends StatelessWidget {
   final UserAssetDataWithValue data;
   final Color displayColor;
@@ -29,7 +31,7 @@ class PieChartLegendItem extends StatelessWidget {
             data.symbol,
             style: Theme.of(context).textTheme.labelSmall,
           )),
-          Text(
+          HideableText(
             NumberFormat.currency(symbol: "dUSD ").format(data.totalValue),
             style: TextStyle(
               fontWeight: FontWeight.w600,

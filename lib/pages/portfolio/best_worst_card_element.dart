@@ -7,6 +7,7 @@ import 'package:neo/types/asset_performance_container.dart';
 
 import '../../style/theme.dart';
 import '../../widgets/development_indicator/small_change_indicator.dart';
+import '../../widgets/hideable_text.dart';
 
 class BestWorstCardElement extends HookWidget {
   const BestWorstCardElement({Key? key, required this.assetDevelopment})
@@ -52,7 +53,7 @@ class BestWorstCardElement extends HookWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
+                HideableText(
                   NumberFormat.currency(symbol: "dUSD ")
                       .format(assetDevelopment.earnedMoney),
                   style: TextStyle(

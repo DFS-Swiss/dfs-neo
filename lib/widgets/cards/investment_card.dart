@@ -15,6 +15,8 @@ import '../../types/stockdata_interval_enum.dart';
 import '../../utils/chart_conversion.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../hideable_text.dart';
+
 class InvestmentCard extends HookWidget {
   final String token;
   final bool expandHorizontal;
@@ -89,7 +91,7 @@ class InvestmentCard extends HookWidget {
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
-                                  Text(
+                                  HideableText(
                                     "${FormattingService.roundDouble(relevantInvestment(assests.data!).tokenAmmount, 2)} ${AppLocalizations.of(context)!.dash_currinv_amount_multiple}",
                                     style: TextStyle(
                                       fontSize: 10,
@@ -139,7 +141,7 @@ class InvestmentCard extends HookWidget {
                           SizedBox(
                             height: 3,
                           ),
-                          Text(
+                          HideableText(
                             "\$${FormattingService.roundDouble(stockData.data!.first.price * relevantInvestment(assests.data!).tokenAmmount, 2).toString()}",
                             style: TextStyle(
                               fontSize: 14,

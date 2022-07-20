@@ -9,6 +9,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../hooks/use_user_assets_with_values.dart';
 import '../../types/user_asset_datapoint_with_value.dart';
+import '../../widgets/hideable_text.dart';
 
 class DistributionWidget extends HookWidget {
   const DistributionWidget({Key? key}) : super(key: key);
@@ -92,7 +93,7 @@ class DistributionWidget extends HookWidget {
                           ),
                         ),
                         Center(
-                          child: Text(
+                          child: HideableText(
                             NumberFormat.currency(symbol: "dUSD ").format(
                                 investments.data!.fold<double>(
                                     0,

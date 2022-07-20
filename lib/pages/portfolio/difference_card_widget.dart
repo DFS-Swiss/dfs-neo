@@ -3,6 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:intl/intl.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
+import 'package:neo/widgets/hideable_text.dart';
 
 import '../../hooks/use_balance_history.dart';
 
@@ -48,7 +49,7 @@ class DifferenceCard extends HookWidget {
                   SizedBox(
                     height: 12,
                   ),
-                  Text(
+                  HideableText(
                     balanceHistory.loading
                         ? "..."
                         : NumberFormat.currency(symbol: "dUSD ").format(
@@ -77,7 +78,7 @@ class DifferenceCard extends HookWidget {
                     SizedBox(
                       height: 12,
                     ),
-                    Text(
+                    HideableText(
                       balanceHistory.loading
                           ? "..."
                           : NumberFormat.currency(symbol: " dUSD ").format(
