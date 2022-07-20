@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:neo/pages/dashboard/portfolio_balance_card.dart';
+import 'package:neo/pages/portfolio/best_worst_card_widget.dart';
+import 'package:neo/pages/portfolio/difference_card_widget.dart';
 import 'package:neo/pages/portfolio/timefilter_widget.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
 import 'package:neo/widgets/appbaractionbutton_widget.dart';
@@ -93,8 +95,16 @@ class Portfolio extends HookWidget {
             ),
           ),
           GenericHeadline(
-              title: AppLocalizations.of(context)!.port_overview_title),
-          
+            title: AppLocalizations.of(context)!.port_overview_title,
+          ),
+          DifferenceCard(interval: interval.value),
+          SizedBox(
+            height: 28,
+          ),
+          BestWorstCard(interval: interval.value),
+          SizedBox(
+            height: 40,
+          )
         ],
       ),
     );

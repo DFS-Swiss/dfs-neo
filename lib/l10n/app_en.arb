@@ -124,6 +124,7 @@
     "port_overview_difytd": "Difference this year",
     "port_overview_difyear": "Difference to last year",
     "port_overview_diflife": "Overall difference",
+    "port_overview_difbuy": "Difference to buy",
     "port_overview_best": "Best performing",
     "port_overview_worst": "Worst performing",
     "port_allocation_title": "Current allocation",
