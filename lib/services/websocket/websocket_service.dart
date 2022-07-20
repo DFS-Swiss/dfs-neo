@@ -7,6 +7,7 @@ import 'package:neo/services/websocket/websocket_controler.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../service_locator.dart';
+import '../../types/websocket_state_container.dart';
 
 class WebsocketService {
   final AuthenticationService _authenticationService =
@@ -20,11 +21,13 @@ class WebsocketService {
 
   WebsocketControler? _userDataControler;
   WebsocketControler? _stockDataControler;
-  BehaviorSubject<SocketConnectionState> stockDataConnectionStateStream =
-      BehaviorSubject.seeded(SocketConnectionState.waiting);
+  BehaviorSubject<WebsocketStateContainer> stockDataConnectionStateStream =
+      BehaviorSubject.seeded(
+          WebsocketStateContainer(SocketConnectionState.waiting));
 
-  BehaviorSubject<SocketConnectionState> userDataConnectionStateStream =
-      BehaviorSubject.seeded(SocketConnectionState.waiting);
+  BehaviorSubject<WebsocketStateContainer> userDataConnectionStateStream =
+      BehaviorSubject.seeded(
+          WebsocketStateContainer(SocketConnectionState.waiting));
 
   Future init() async {
     _stockDataControler = WebsocketControler("ws://stockdata.dfs-api.ch:8080");

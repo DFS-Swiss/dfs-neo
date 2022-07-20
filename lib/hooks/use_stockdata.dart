@@ -7,8 +7,11 @@ import '../types/data_container.dart';
 
 DataContainer<List<StockdataDatapoint>> useStockdata(
     String symbol, StockdataInterval interval) {
+  final cached = StockdataService.getInstance()
+      .getDataFromCacheIfAvaliable(symbol, interval);
+
   final state = useState<DataContainer<List<StockdataDatapoint>>>(
-      DataContainer.waiting());
+      cached != null ? DataContainer(data: cached) : DataContainer.waiting());
   useEffect(() {
     final sub = StockdataService.getInstance()
         .getStockdata(symbol, interval)
