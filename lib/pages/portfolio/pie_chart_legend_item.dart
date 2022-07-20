@@ -4,7 +4,10 @@ import 'package:neo/types/user_asset_datapoint_with_value.dart';
 
 class PieChartLegendItem extends StatelessWidget {
   final UserAssetDataWithValue data;
-  const PieChartLegendItem({Key? key, required this.data}) : super(key: key);
+  final Color displayColor;
+  const PieChartLegendItem(
+      {Key? key, required this.data, required this.displayColor})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +19,7 @@ class PieChartLegendItem extends StatelessWidget {
             width: 16,
             height: 16,
             decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-                borderRadius: BorderRadius.circular(4)),
+                color: displayColor, borderRadius: BorderRadius.circular(4)),
           ),
           SizedBox(
             width: 8,

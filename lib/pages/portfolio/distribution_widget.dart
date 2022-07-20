@@ -2,6 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:intl/intl.dart';
+import 'package:neo/hooks/use_available_stocks.dart';
 import 'package:neo/pages/portfolio/pie_chart_legend_item.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -15,6 +16,7 @@ class DistributionWidget extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final investments = useUserAssetsWithValues();
+    final stockInfo = useAvailableStocks();
 
     List<UserAssetDataWithValue> prepareList() {
       if (investments.data!.length < 6) {
@@ -28,22 +30,32 @@ class DistributionWidget extends HookWidget {
           0, (previousValue, element) => previousValue + element.tokenAmmount);
       out.add(
         UserAssetDataWithValue(
-            tokenAmmount: restAmount,
-            symbol: "other",
-            currentValue: 0,
-            time: DateTime.now(),
-            difference: 0,
-            totalValue: restValue,
-            id: "other"),
+          tokenAmmount: restAmount,
+          symbol: "Other",
+          currentValue: 0,
+          time: DateTime.now(),
+          difference: 0,
+          totalValue: restValue,
+          id: "other",
+        ),
       );
       return out;
+    }
+
+    Color mapSymbolToColor(String symbol) {
+      if (symbol == "Other") {
+        return Colors.grey;
+      }
+      return stockInfo.data!
+          .firstWhere((element) => element.symbol == symbol)
+          .displayColor;
     }
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: SizedBox(
         height: 170,
-        child: !investments.loading
+        child: !investments.loading && !stockInfo.loading
             ? Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -68,11 +80,11 @@ class DistributionWidget extends HookWidget {
                                 sections: prepareList()
                                     .map(
                                       (e) => PieChartSectionData(
-                                        value: e.totalValue,
-                                        badgeWidget: Container(),
-                                        showTitle: false,
-                                        radius: 8,
-                                      ),
+                                          value: e.totalValue,
+                                          badgeWidget: Container(),
+                                          showTitle: false,
+                                          radius: 8,
+                                          color: mapSymbolToColor(e.symbol)),
                                     )
                                     .toList(),
                               ),
@@ -103,7 +115,10 @@ class DistributionWidget extends HookWidget {
                         ? Column(
                             mainAxisSize: MainAxisSize.min,
                             children: prepareList()
-                                .map((e) => PieChartLegendItem(data: e))
+                                .map((e) => PieChartLegendItem(
+                                      data: e,
+                                      displayColor: mapSymbolToColor(e.symbol),
+                                    ))
                                 .toList(),
                           )
                         : Center(
