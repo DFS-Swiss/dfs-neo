@@ -163,6 +163,36 @@ class RESTService extends ChangeNotifier {
     }
   }
 
+  Future<List<StockdataDocument>> getStockInfoBulk(List<String> symbols) async {
+    try {
+      final response = await dio.get("/stockdata/info?symbols=$symbols");
+      if (response.statusCode.toString().startsWith("2")) {
+        List<StockdataDocument> data;
+        try {
+          data = (response.data["body"]["items"] as List<dynamic>)
+              .map((e) => StockdataDocument.fromMap(e))
+              .toList();
+        } catch (e) {
+          throw "Parsing error: ${e.toString()}";
+        }
+        for (var stockInfo in data) {
+          DataService.getInstance().dataUpdateStream.add(
+            {"key": "symbol/${stockInfo.symbol}", "value": stockInfo},
+          );
+        }
+
+        return data;
+      } else {
+        throw "Unknown case: ${response.toString()}";
+      }
+    } catch (e) {
+      DataService.getInstance()
+          .dataUpdateStream
+          .addError({"key": "symbols", "value": e});
+      rethrow;
+    }
+  }
+
   Future<bool> addBalance(String amount) async {
     try {
       final response = await dio.get("/debug/addBalance?amount=$amount");
@@ -194,6 +224,11 @@ class RESTService extends ChangeNotifier {
         DataService.getInstance().dataUpdateStream.add(
           {"key": "symbols", "value": data},
         );
+        for (var stockInfo in data) {
+          DataService.getInstance().dataUpdateStream.add(
+            {"key": "symbol/${stockInfo.symbol}", "value": stockInfo},
+          );
+        }
         return data;
       } else {
         throw "Unknown case: ${response.toString()}";
