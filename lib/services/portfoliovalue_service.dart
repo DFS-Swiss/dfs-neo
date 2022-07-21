@@ -249,7 +249,7 @@ class PortfolioValueUtil {
                   element.time.millisecondsSinceEpoch <
                   historicDataObj.time.millisecondsSinceEpoch,
             )
-            .last
+            .first
             .tokenAmmount;
       } catch (e) {
         stockAmmountForThatPoint = 0;
