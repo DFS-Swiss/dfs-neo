@@ -5,7 +5,7 @@ import 'package:neo/widgets/cards/asset_development_card.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../hooks/use_stockdata.dart';
-import '../../hooks/use_user_asset_data.dart';
+import '../../hooks/use_user_assets_for_symbol.dart';
 import '../../services/formatting_service.dart';
 import '../../types/stockdata_interval_enum.dart';
 import '../../widgets/genericheadline_widget.dart';
@@ -22,7 +22,7 @@ class DetailsInvestmentsSection extends HookWidget {
     final stockDataToday =
         useStockdata(token, StockdataInterval.twentyFourHours);
     final stockDataAllTime = useStockdata(token, StockdataInterval.oneYear);
-    final investmentData = useInvestmentData(token);
+    final investmentData = useUserAssetsForSymbol(token);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

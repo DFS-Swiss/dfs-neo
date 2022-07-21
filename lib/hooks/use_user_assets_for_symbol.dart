@@ -6,7 +6,7 @@ import 'package:neo/types/investment/investment_data.dart';
 
 import '../services/stockdata_service.dart';
 
-DataContainer<InvestmentData> useInvestmentData(String symbol) {
+DataContainer<InvestmentData> useUserAssetsForSymbol(String symbol) {
  final state =
       useState<DataContainer<InvestmentData>>(DataContainer.waiting());
   useEffect(() {
