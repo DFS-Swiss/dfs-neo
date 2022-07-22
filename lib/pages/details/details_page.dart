@@ -1,4 +1,3 @@
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:neo/pages/details/details_about.dart';
@@ -6,9 +5,7 @@ import 'package:neo/pages/details/details_development_section.dart';
 import 'package:neo/pages/details/details_investment_section.dart';
 import 'package:neo/pages/details/details_open_orders_section.dart';
 import 'package:neo/pages/details/details_public_sentiment.dart';
-import '../../hooks/use_stockdata.dart';
 import '../../hooks/use_stockdata_info.dart';
-import '../../types/stockdata_interval_enum.dart';
 import '../../widgets/appbaractionbutton_widget.dart';
 
 class DetailsPage extends HookWidget {
@@ -20,25 +17,14 @@ class DetailsPage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final chartData = useState<List<FlSpot>>([]);
-    final stockData = useStockdata(token, StockdataInterval.twentyFourHours);
     final symbolInfo = useSymbolInfo(token);
 
-    useEffect(() {
-      if (stockData.loading == false) {
-        chartData.value = stockData.data!
-            .map((e) =>
-                FlSpot(e.time.millisecondsSinceEpoch.toDouble(), e.price))
-            .toList();
-      }
-
-      return;
-    }, ["_", stockData.loading]);
 
     var title = "";
     var description = "";
     var image = "";
     var publicSentimentIndex = 0;
+
     if (symbolInfo.data != null) {
       title = symbolInfo.data!.symbol;
       description = symbolInfo.data!.description;

@@ -24,7 +24,7 @@ class DetailsDevelopmentSection extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final interval = useState(StockdataInterval.ytd);
+    final interval = useState(StockdataInterval.twentyFourHours);
     final stockData = useStockdata(token, interval.value);
     final symbolInfo = useSymbolInfo(token);
     final latestPrice = useLatestAssetPrice(token);
