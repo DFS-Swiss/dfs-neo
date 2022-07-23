@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:neo/style/theme.dart';
 
 class SmallDevelopmentIndicator extends StatelessWidget {
@@ -25,7 +26,7 @@ class SmallDevelopmentIndicator extends StatelessWidget {
               : NeoTheme.of(context)!.negativeColor,
         ),
         Text(
-          "$changePercentage%",
+          "${NumberFormat.compact().format(changePercentage)}%",
           style: TextStyle(
             fontSize: 14,
             color: positive

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:neo/services/authentication_service.dart';
 import 'package:neo/style/theme.dart';
-import 'package:neo/widgets/branded_button.dart';
+import 'package:neo/widgets/buttons/branded_button.dart';
 
 import '../../service_locator.dart';
 import '../../widgets/branded_textfield.dart';

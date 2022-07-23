@@ -5,7 +5,7 @@ import 'package:neo/services/authentication_service.dart';
 import 'package:neo/style/theme.dart';
 
 import '../../service_locator.dart';
-import '../../widgets/branded_button.dart';
+import '../../widgets/buttons/branded_button.dart';
 import '../../widgets/branded_textfield.dart';
 
 class VerifyAccountWidget extends HookWidget {

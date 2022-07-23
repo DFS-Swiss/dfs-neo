@@ -4,7 +4,7 @@ import 'package:neo/pages/tutorial/backgroundgraphic_widget.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:neo/pages/tutorial/tutorialwrapper_page.dart';
 import 'package:neo/style/theme.dart';
-import 'package:neo/widgets/branded_button.dart';
+import 'package:neo/widgets/buttons/branded_button.dart';
 
 import '../../enums/app_state.dart';
 import '../../service_locator.dart';
@@ -30,7 +30,7 @@ class Onboarding extends HookWidget {
                       padding: EdgeInsets.symmetric(
                           horizontal: 100,
                           vertical: MediaQuery.of(context).size.height * 0.1),
-                      child: Image.asset("assets/dfsicon.png"),
+                      child: Image.asset("assets/dfsicon_full.png"),
                     ),
                     Text(
                       AppLocalizations.of(context)!.onboard_welcome,
