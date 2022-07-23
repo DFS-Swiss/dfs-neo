@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:neo/enums/app_state.dart';
 import 'package:neo/services/app_state_service.dart';
+import 'package:neo/services/data_service.dart';
+import 'package:neo/services/stockdata_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../service_locator.dart';
@@ -87,6 +89,11 @@ class AuthenticationService extends ChangeNotifier {
   logOut() async {
     await _cognitoService.logoutCurrentPoolUser();
     _appStateService.state = AppState.signedOut;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove("user_name");
+    await prefs.remove("refresh_token");
+    DataService.getInstance().clearCache();
+    StockdataService.getInstance().clearCache();
     notifyListeners();
   }
 

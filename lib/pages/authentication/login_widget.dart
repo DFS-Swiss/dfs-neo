@@ -1,6 +1,8 @@
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:neo/enums/app_state.dart';
+import 'package:neo/services/app_state_service.dart';
 import 'package:neo/services/authentication_service.dart';
 import 'package:neo/style/theme.dart';
 import 'package:neo/widgets/branded_button.dart';
@@ -18,7 +20,8 @@ class LoginWidget extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    AuthenticationService authenticationService = locator<AuthenticationService>();
+    AuthenticationService authenticationService =
+        locator<AuthenticationService>();
     final userName = useState<String?>(null);
     final password = useState<String?>(null);
     final error = useState<String?>(null);
@@ -49,7 +52,7 @@ class LoginWidget extends HookWidget {
     }
 
     return SingleChildScrollView(
-      child:  Column(
+        child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
@@ -85,9 +88,14 @@ class LoginWidget extends HookWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Text(
-              AppLocalizations.of(context)!.signin_forgot_passwort,
-              style: NeoTheme.of(context)!.linkTextStyle,
+            GestureDetector(
+              onTap: () {
+                locator<AppStateService>().state = AppState.forgotPassword;
+              },
+              child: Text(
+                AppLocalizations.of(context)!.signin_forgot_passwort,
+                style: NeoTheme.of(context)!.linkTextStyle,
+              ),
             )
           ],
         ),
@@ -137,7 +145,6 @@ class LoginWidget extends HookWidget {
           ],
         )
       ],
-    )
-    ); 
+    ));
   }
 }

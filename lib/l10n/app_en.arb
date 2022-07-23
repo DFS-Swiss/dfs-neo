@@ -198,5 +198,6 @@
     "change_password_new_repeat": "Repeat new password",
     "change_password_save": "Save",
     "change_password_error": "Error",
-    "change_password_error_wrong_pw": "Wrong old password"
+    "change_password_error_wrong_pw": "Wrong old password",
+    "forgot_password_continue": "Reset password"
 }

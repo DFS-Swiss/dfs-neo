@@ -12,6 +12,7 @@ import 'package:neo/services/app_state_service.dart';
 import 'package:neo/style/theme.dart';
 
 import '../../constants/ui.dart';
+import 'forgot_password_widget.dart';
 
 enum AuthPageState {
   login,
@@ -36,6 +37,8 @@ class AuthPageWrapper extends HookWidget {
         contentHeight = AUTH_LOGIN_CONTAINTER_HEIGHT;
       } else if (authState == AppState.register) {
         contentHeight = AUTH_REGISTER_CONTAINTER_HEIGHT;
+      } else if (authState == AppState.forgotPassword) {
+        contentHeight = 250;
       } else {
         contentHeight = 0;
       }
@@ -82,17 +85,19 @@ class AuthPageWrapper extends HookWidget {
                 top: false,
                 child: authState == AppState.verifyAccount
                     ? VerifyAccountWidget()
-                    : authState == AppState.newPasswordRequired
-                        ? NewPasswordRequired()
-                        : authState == AppState.signedOut
-                            ? LoginWidget(
-                                clickedRegister: () =>
-                                    appStateService.state = AppState.register,
-                              )
-                            : RegisterWidget(
-                                clickedLogin: () =>
-                                    appStateService.state = AppState.signedOut,
-                              ),
+                    : authState == AppState.forgotPassword
+                        ? ForgotPassword()
+                        : authState == AppState.newPasswordRequired
+                            ? NewPasswordRequired()
+                            : authState == AppState.signedOut
+                                ? LoginWidget(
+                                    clickedRegister: () => appStateService
+                                        .state = AppState.register,
+                                  )
+                                : RegisterWidget(
+                                    clickedLogin: () => appStateService.state =
+                                        AppState.signedOut,
+                                  ),
               ),
             ),
           )

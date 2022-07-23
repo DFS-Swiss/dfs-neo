@@ -198,5 +198,6 @@
     "change_password_new_repeat": "Neues Passwort wiederholen",
     "change_password_save": "Speichern",
     "change_password_error": "Fehler",
-    "change_password_error_wrong_pw": "Das alte Passwort ist falsch"
+    "change_password_error_wrong_pw": "Das alte Passwort ist falsch",
+    "forgot_password_continue": "Zurücksetzen"
 }
