@@ -19,7 +19,7 @@ class Deposit extends HookWidget {
     var depositAmount =
         typedAmount.value.isEmpty ? selectedAmount.value : typedAmount.value;
 
-    // Focus node 
+    // Focus node
     // Padding beneath button
 
     handleDeposit() async {
@@ -57,8 +57,8 @@ class Deposit extends HookWidget {
               ],
             ),
           );
-        } else if((response as dynamic).response.statusCode == 400){
-           await showDialog<String>(
+        } else if ((response as dynamic).response.statusCode == 400) {
+          await showDialog<String>(
             context: context,
             builder: (BuildContext context) => AlertDialog(
               title: Text(AppLocalizations.of(context)!.alert_deposit_limit),
@@ -84,48 +84,50 @@ class Deposit extends HookWidget {
         foregroundColor: Colors.black,
       ),
       body: Column(
+        children: [
+          MoneyTextfield(
+            ValueKey("\$"),
+            hintText:
+                AppLocalizations.of(context)!.deposit_enter_deposit_amount,
+            labelText: depositAmount,
+            onChanged: (String value) {
+              selectedAmount.value = "";
+              typedAmount.value = value;
+            },
+          ),
+          MoneySelectable(
+            callback: (String amount) {
+              selectedAmount.value = amount;
+              typedAmount.value = "";
+            },
+            currentValue: selectedAmount.value,
+          ),
+          Expanded(
+            child: SizedBox(),
+          ),
+          Row(
             children: [
-              MoneyTextfield(
-                ValueKey("\$"),
-                hintText:
-                    AppLocalizations.of(context)!.deposit_enter_deposit_amount,
-                labelText: depositAmount,
-                onChanged: (String value) {
-                  selectedAmount.value = "";
-                  typedAmount.value = value;
-                },
-              ),
-              MoneySelectable(
-                callback: (String amount) {
-                  selectedAmount.value = amount;
-                  typedAmount.value = "";
-                },
-                currentValue: selectedAmount.value,
+              const SizedBox(
+                width: 20,
               ),
               Expanded(
-                child: SizedBox(),
+                child: SafeArea(
+                  child: BrandedButton(
+                    onPressed: handleDeposit,
+                    child: Text(AppLocalizations.of(context)!.port_deposit),
+                  ),
+                ),
               ),
-              Row(
-                children: [
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  Expanded(
-                    child: SafeArea(
-                      child: BrandedButton(
-                        onPressed: handleDeposit,
-                        child: Text(AppLocalizations.of(context)!
-                            .port_deposit),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                ],
+              const SizedBox(
+                width: 20,
               ),
             ],
           ),
+          SizedBox(
+            height: 10,
+          ),
+        ],
+      ),
     );
   }
 }
