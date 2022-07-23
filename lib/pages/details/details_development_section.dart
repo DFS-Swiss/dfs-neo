@@ -2,6 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:neo/pages/details/details_selectable_widget.dart';
+import 'package:neo/types/data_container.dart';
 import 'package:neo/widgets/buttons/branded_button.dart';
 import 'package:neo/widgets/buttons/branded_outline_button.dart';
 import 'package:neo/widgets/buttons/round_outline_button.dart';
@@ -28,7 +29,8 @@ class DetailsDevelopmentSection extends HookWidget {
     final interval = useState(StockdataInterval.twentyFourHours);
     final stockData = useStockdata(token, interval.value);
     final symbolInfo = useSymbolInfo(token);
-    final latestPrice = useLatestAssetPrice(token);
+    final latestPrice =
+        DataContainer(data: 155.0); //useLatestAssetPrice(token);
 
     List<FlSpot> plotData() {
       return stockData.data!
@@ -171,6 +173,9 @@ class DetailsDevelopmentSection extends HookWidget {
                           ),
                   ),
                 ),
+                SizedBox(
+                  height: 20,
+                ),
                 Padding(
                   padding: EdgeInsets.fromLTRB(24, 12, 24, 12),
                   child: Row(
@@ -236,14 +241,17 @@ class DetailsDevelopmentSection extends HookWidget {
               ],
             ),
           )
-        : Shimmer.fromColors(
-            baseColor: Color.fromRGBO(238, 238, 238, 0.75),
-            highlightColor: Colors.white,
-            child: Container(
-              height: 528,
-              decoration: BoxDecoration(
-                color: Theme.of(context).backgroundColor,
-                borderRadius: BorderRadius.circular(12),
+        : Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Shimmer.fromColors(
+              baseColor: Color.fromRGBO(238, 238, 238, 0.75),
+              highlightColor: Colors.white,
+              child: Container(
+                height: 528,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).backgroundColor,
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
             ),
           );

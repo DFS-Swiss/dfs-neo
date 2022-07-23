@@ -28,7 +28,7 @@ class AssetDevelopmentCard extends HookWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
             name,
@@ -36,9 +36,6 @@ class AssetDevelopmentCard extends HookWidget {
               fontSize: 14,
               fontWeight: FontWeight.w500,
             ),
-          ),
-          Expanded(
-            child: Container(),
           ),
           DetailedDevelopmentIndicator(
             positive:

@@ -19,7 +19,6 @@ class DetailsPage extends HookWidget {
   Widget build(BuildContext context) {
     final symbolInfo = useSymbolInfo(token);
 
-
     var title = "";
     var description = "";
     var image = "";

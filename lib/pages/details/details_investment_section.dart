@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:neo/hooks/use_userassets.dart';
 import 'package:neo/widgets/cards/asset_development_card.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -23,30 +24,33 @@ class DetailsInvestmentsSection extends HookWidget {
         useStockdata(token, StockdataInterval.twentyFourHours);
     final stockDataAllTime = useStockdata(token, StockdataInterval.oneYear);
     final investmentData = useUserAssetsForSymbol(token);
+    final userInvestments = useUserassets();
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        GenericHeadline(
-          title: AppLocalizations.of(context)!.details_investments,
-        ),
-        investmentData.loading ||
-                stockDataToday.loading ||
-                stockDataAllTime.loading
-            ? Shimmer.fromColors(
-                baseColor: Color.fromRGBO(238, 238, 238, 0.75),
-                highlightColor: Colors.white,
-                child: Container(
-                  height: 139,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
+    bool showData() {
+      return userInvestments.data!
+              .where((element) => element.symbol == symbol)
+              .isNotEmpty &&
+          !investmentData.loading &&
+          !stockDataToday.loading &&
+          !stockDataAllTime.loading;
+    }
+
+    bool showNothing() {
+      return userInvestments.data!
+          .where((element) => element.symbol == symbol)
+          .isEmpty;
+    }
+
+    return !userInvestments.loading
+        ? showData()
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  GenericHeadline(
+                    title: AppLocalizations.of(context)!.details_investments,
                   ),
-                ),
-              )
-            : !investmentData.data!.hasNoInvestments
-                ? Column(
+                  Column(
                     children: [
                       Padding(
                         padding: EdgeInsets.fromLTRB(24, 0, 24, 12),
@@ -57,7 +61,8 @@ class DetailsInvestmentsSection extends HookWidget {
                               child: AssetDevelopmentCard(
                                 name:
                                     AppLocalizations.of(context)!.details_today,
-                                changePercentage: investmentData.data!.todayIncreasePercentage,
+                                changePercentage: investmentData
+                                    .data!.todayIncreasePercentage,
                                 changeValue: investmentData.data!.todayIncrease,
                               ),
                             ),
@@ -68,7 +73,8 @@ class DetailsInvestmentsSection extends HookWidget {
                               child: AssetDevelopmentCard(
                                 name: AppLocalizations.of(context)!
                                     .details_performance,
-                                changePercentage: investmentData.data!.performancePercentage,
+                                changePercentage:
+                                    investmentData.data!.performancePercentage,
                                 changeValue: investmentData.data!.performance,
                               ),
                             ),
@@ -84,7 +90,8 @@ class DetailsInvestmentsSection extends HookWidget {
                               Column(
                                 children: [
                                   Text(
-                                    AppLocalizations.of(context)!.details_buy_in,
+                                    AppLocalizations.of(context)!
+                                        .details_buy_in,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       fontSize: 14,
@@ -179,12 +186,24 @@ class DetailsInvestmentsSection extends HookWidget {
                       ),
                     ],
                   )
-                : Center(
-                    heightFactor: 7,
-                    child: Text(
-                        AppLocalizations.of(context)!.dashboard_no_investments),
-                  ),
-      ],
-    );
+                ],
+              )
+            : showNothing()
+                ? Container()
+                : Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Shimmer.fromColors(
+                      baseColor: Color.fromRGBO(238, 238, 238, 0.75),
+                      highlightColor: Colors.white,
+                      child: Container(
+                        height: 528,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).backgroundColor,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                )
+        : Container();
   }
 }

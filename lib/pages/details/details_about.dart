@@ -28,7 +28,8 @@ class DetailsAboutSection extends HookWidget {
             height: 16,
           ),
           Text(
-            description
+            description,
+            textAlign: TextAlign.justify,
           ),
         ],
       ),

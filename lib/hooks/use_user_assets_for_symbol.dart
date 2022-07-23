@@ -24,7 +24,6 @@ DataContainer<InvestmentData> useUserAssetsForSymbol(String symbol) {
     return () {
       DataService.getInstance().removeListener(handleFetch);
       StockdataService.getInstance().removeListener(handleFetch);
-      //future?.ignore();
     };
   }, [symbol]);
   return state.value;

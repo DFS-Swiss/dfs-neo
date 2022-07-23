@@ -25,7 +25,7 @@ Widget leftTileWidget(double value, TitleMeta meta) {
   return SideTitleWidget(
     axisSide: meta.axisSide,
     space: 8.0,
-    child: Text(FormattingService.roundDouble(value, 0).toString()),
+    child: Text(FormattingService.roundDouble(value, 0).round().toString()),
   );
 }
 
@@ -56,7 +56,7 @@ LineChartData details(List<FlSpot> data, bool isNegative) {
       leftTitles: AxisTitles(
         sideTitles: SideTitles(
           showTitles: true,
-          interval: 10,
+          interval: findInterval(data),
           reservedSize: 50,
           getTitlesWidget: leftTileWidget,
         ),
@@ -103,6 +103,33 @@ LineChartData details(List<FlSpot> data, bool isNegative) {
       ),
     ],
   );
+}
+
+double findInterval(List<FlSpot> data) {
+  var min = getMin(data);
+  var max = getMax(data);
+
+  return (max-min)/7;
+}
+
+double getMax(List<FlSpot> data) {
+  double max = 0;
+  for (var element in data) {
+    if(element.y > max){
+      max = element.y;
+    }
+  }
+  return max;
+}
+
+double getMin(List<FlSpot> data) {
+  double min = double.maxFinite;
+  for (var element in data) {
+    if(element.y < min){
+      min = element.y;
+    }
+  }
+  return min;
 }
 
 LineChartData preview(List<FlSpot> data, bool isNegative) {
