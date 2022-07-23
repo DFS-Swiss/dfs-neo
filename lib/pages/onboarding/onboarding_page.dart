@@ -30,7 +30,7 @@ class Onboarding extends HookWidget {
                       padding: EdgeInsets.symmetric(
                           horizontal: 100,
                           vertical: MediaQuery.of(context).size.height * 0.1),
-                      child: Image.asset("assets/dfsicon.png"),
+                      child: Image.asset("assets/dfsicon_full.png"),
                     ),
                     Text(
                       AppLocalizations.of(context)!.onboard_welcome,

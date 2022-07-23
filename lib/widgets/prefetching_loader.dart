@@ -15,7 +15,7 @@ class PrefetchingLoader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Image.asset(
-                "assets/dfsicon.png",
+                "assets/dfsicon_full.png",
                 width: 200,
               ),
               SizedBox(
