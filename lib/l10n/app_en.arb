@@ -203,5 +203,9 @@
     "change_password_save": "Save",
     "change_password_error": "Error",
     "change_password_error_wrong_pw": "Wrong old password",
-    "forgot_password_continue": "Reset password"
+    "forgot_password_continue": "Reset password",
+    "forgot_password_user_not_found": "User not found",
+    "forgot_password_phase_2_desc": "Please enter the code you received via email and a new password",
+    "forgot_password_code": "Code",
+    "forgot_password_code_desc": "Enter your email code"
 }

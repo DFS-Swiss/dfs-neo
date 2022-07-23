@@ -164,6 +164,17 @@ class AuthenticationService extends ChangeNotifier {
     throw "Could not change password";
   }
 
+  initForgotPassword(String username) async {
+    await _cognitoService.initForgotPassword(username);
+  }
+
+  completeForgotPassword(String code, String newPassword) async {
+    if (!_cognitoService.isUserPresent()) {
+      await _cognitoService.completeForgotPassword(code, newPassword);
+    }
+    throw "No active user object";
+  }
+
   Future<bool> tryReauth() async {
     final prefs = await SharedPreferences.getInstance();
     if (prefs.getString("refresh_token") != null &&

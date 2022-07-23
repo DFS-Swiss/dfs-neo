@@ -26,7 +26,6 @@ class AuthPageWrapper extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final authState = useAppState();
-
     double getCurrentContainerHeight(BuildContext context) {
       double contentHeight;
       if (authState == AppState.newPasswordRequired) {
@@ -38,7 +37,7 @@ class AuthPageWrapper extends HookWidget {
       } else if (authState == AppState.register) {
         contentHeight = AUTH_REGISTER_CONTAINTER_HEIGHT;
       } else if (authState == AppState.forgotPassword) {
-        contentHeight = 250;
+        contentHeight = 480;
       } else {
         contentHeight = 0;
       }
