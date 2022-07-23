@@ -10,7 +10,6 @@ import '../types/balance_history_container.dart';
 import '../types/price_development_datapoint.dart';
 import '../utils/get_stockvalue_at_time.dart';
 import '../utils/interval_to_time.dart';
-import '../utils/lists.dart';
 
 /*investments = [
       //Der Nutzer kauft zum aller ersten Mal 2 Apple Aktien

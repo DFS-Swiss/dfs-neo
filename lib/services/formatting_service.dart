@@ -3,7 +3,6 @@ import 'dart:math';
 class FormattingService {
   static double roundDouble(double value, int places) {
     num mod = pow(10.0, places);
-    if (value == null) return 0;
     return ((value * mod).round().toDouble() / mod);
   }
 

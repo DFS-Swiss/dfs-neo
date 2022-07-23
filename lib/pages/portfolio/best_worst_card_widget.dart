@@ -1,13 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:intl/intl.dart';
 import 'package:neo/hooks/use_userassets.dart';
-import 'package:neo/style/theme.dart';
-import 'package:neo/types/data_container.dart';
-import 'package:neo/widgets/development_indicator/small_change_indicator.dart';
-
-import '../../hooks/use_balance_history.dart';
 import '../../hooks/use_investment_developments.dart';
 import '../../types/asset_performance_container.dart';
 import '../../types/stockdata_interval_enum.dart';

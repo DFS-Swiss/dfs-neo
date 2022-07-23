@@ -4,7 +4,6 @@ import 'package:neo/types/asset_performance_container.dart';
 import '../services/data_service.dart';
 import '../services/portfoliovalue_service.dart';
 import '../services/stockdata_service.dart';
-import '../types/balance_history_container.dart';
 import '../types/data_container.dart';
 import '../types/stockdata_interval_enum.dart';
 
