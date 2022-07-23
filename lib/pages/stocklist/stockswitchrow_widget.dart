@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:neo/widgets/branded_button.dart';
+import 'package:neo/widgets/buttons/branded_button.dart';
 
 class StockSwitchRow extends HookWidget {
   final Function callback;

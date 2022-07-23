@@ -2,7 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:neo/pages/buy_sell/buy_page.dart';
-import 'package:neo/widgets/branded_button.dart';
+import 'package:neo/widgets/buttons/branded_button.dart';
 import 'package:neo/widgets/development_indicator/detailed_development_indicator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shimmer/shimmer.dart';
