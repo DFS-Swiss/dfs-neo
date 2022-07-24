@@ -163,12 +163,42 @@ class RESTService extends ChangeNotifier {
     }
   }
 
+  Future<List<StockdataDocument>> getStockInfoBulk(List<String> symbols) async {
+    try {
+      final response = await dio.get("/stockdata/info?symbols=$symbols");
+      if (response.statusCode.toString().startsWith("2")) {
+        List<StockdataDocument> data;
+        try {
+          data = (response.data["body"]["items"] as List<dynamic>)
+              .map((e) => StockdataDocument.fromMap(e))
+              .toList();
+        } catch (e) {
+          throw "Parsing error: ${e.toString()}";
+        }
+        for (var stockInfo in data) {
+          DataService.getInstance().dataUpdateStream.add(
+            {"key": "symbol/${stockInfo.symbol}", "value": stockInfo},
+          );
+        }
+
+        return data;
+      } else {
+        throw "Unknown case: ${response.toString()}";
+      }
+    } catch (e) {
+      DataService.getInstance()
+          .dataUpdateStream
+          .addError({"key": "symbols", "value": e});
+      rethrow;
+    }
+  }
+
   Future<bool> addBalance(String amount) async {
     try {
       final response = await dio.get("/debug/addBalance?amount=$amount");
       if (response.statusCode.toString().startsWith("2")) {
         return true;
-      } else if(response.statusCode.toString() == "401") {
+      } else if (response.statusCode.toString() == "401") {
         throw response;
       } else {
         return false;
@@ -194,6 +224,11 @@ class RESTService extends ChangeNotifier {
         DataService.getInstance().dataUpdateStream.add(
           {"key": "symbols", "value": data},
         );
+        for (var stockInfo in data) {
+          DataService.getInstance().dataUpdateStream.add(
+            {"key": "symbol/${stockInfo.symbol}", "value": stockInfo},
+          );
+        }
         return data;
       } else {
         throw "Unknown case: ${response.toString()}";
@@ -321,6 +356,30 @@ class RESTService extends ChangeNotifier {
     }
   }
 
+  Future<List<UserassetDatapoint>> getAssetForSymbol(String symbol) async {
+    try {
+      final response = await dio.get("/user/assets/$symbol");
+      if (response.statusCode.toString().startsWith("2")) {
+        List<UserassetDatapoint> data;
+
+        try {
+          data = (response.data["body"]["items"] as List<dynamic>)
+              .map((e) => UserassetDatapoint.fromMap(e))
+              .toList();
+        } catch (e) {
+          throw "Parsing error: ${e.toString()}";
+        }
+        return data;
+      } else if (response.statusCode.toString() == "404") {
+        throw "404";
+      } else {
+        throw "Unknown case: ${response.toString()}";
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<bool> buyAsset(String symbol, double amountInDollar) async {
     try {
       final response = await dio.post("/assets/buy",
@@ -330,6 +389,24 @@ class RESTService extends ChangeNotifier {
       }
       if (response.statusCode == 400) {
         throw "Insuficient funds";
+      }
+      return false;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<bool> sellAsset(String symbol, double ammountOfTokensToSell) async {
+    try {
+      final response = await dio.post("/assets/sell", data: {
+        "symbol": symbol,
+        "ammountOfTokensToSell": ammountOfTokensToSell
+      });
+      if (response.statusCode.toString().startsWith("2")) {
+        return true;
+      }
+      if (response.statusCode == 400) {
+        throw "Insuficient token";
       }
       return false;
     } catch (e) {

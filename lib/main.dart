@@ -4,15 +4,16 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:is_first_run/is_first_run.dart';
-import 'package:neo/enums/auth_state.dart';
+import 'package:neo/enums/app_state.dart';
 import 'package:neo/hooks/use_auth_state.dart';
 import 'package:neo/pages/authentication/auth_page_wrapper.dart';
 import 'package:neo/pages/navigation/mainnavigation_page.dart';
 import 'package:neo/pages/onboarding/onboarding_page.dart';
 import 'package:neo/service_locator.dart';
+import 'package:neo/services/app_state_service.dart';
 import 'package:neo/services/authentication_service.dart';
 import 'package:neo/style/theme.dart';
+import 'package:neo/widgets/prefetching_loader.dart';
 
 void main() {
   setupLocator();
@@ -139,40 +140,40 @@ class AuthWrapper extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    AuthenticationService authenticationService = locator<AuthenticationService>();
-    final authState = useAuthState();
+    AuthenticationService authenticationService =
+        locator<AuthenticationService>();
+    AppStateService appStateService = locator<AppStateService>();
+    final authState = useAppState();
     final tryingToReauth = useState(true);
-    final isFirstRun = useState(true);
     final isWaitingForFirstRun = useState(true);
-    
+
     useEffect(() {
       authenticationService.tryReauth().then((value) {
         tryingToReauth.value = false;
+        appStateService.init().then((value) {
+          isWaitingForFirstRun.value = false;
+        });
       });
-      IsFirstRun.isFirstRun().then((value) {
-        isWaitingForFirstRun.value = false;
-        isFirstRun.value = value;  
-      }
-      );
       return;
     }, ["_"]);
 
     if (tryingToReauth.value || isWaitingForFirstRun.value) {
       return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
+        body: PrefetchingLoader(),
       );
     }
-    if (authState == AuthState.signedOut ||
-        authState == AuthState.verifyAccount ||
-        authState == AuthState.newPasswordRequired) {
-          if(isFirstRun.value){
-            return const Onboarding();
-          }
-      return const AuthPageWrapper();
+    if (authState == AppState.onboarding) {
+      return const Onboarding();
+    }
+    if (authState == AppState.signedOut ||
+        authState == AppState.verifyAccount ||
+        authState == AppState.newPasswordRequired ||
+        authState == AppState.register) {
+      return AuthPageWrapper();
     }
     //TODO: Handle basic wrapper for multiple pages via bottom nav bar
-    if (authState == AuthState.signedIn) return const MainNavigation();
-    // if (authState == AuthState.signedIn) return const MainPage();
+    if (authState == AppState.signedIn) return const MainNavigation();
+    // if (authState == AppState.signedIn) return const MainPage();
     return const Scaffold(
       body: Center(child: Text("Unknown state")),
     );

@@ -4,8 +4,11 @@ import 'package:neo/services/data_service.dart';
 import 'package:neo/types/data_container.dart';
 
 DataContainer<UserBalanceDatapoint> useBalance() {
-  final state =
-      useState<DataContainer<UserBalanceDatapoint>>(DataContainer.waiting());
+  final cached = DataService.getInstance()
+      .getDataFromCacheIfAvaliable<UserBalanceDatapoint>("balance");
+
+  final state = useState<DataContainer<UserBalanceDatapoint>>(
+      cached != null ? DataContainer(data: cached) : DataContainer.waiting());
   useEffect(() {
     final sub = DataService.getInstance().getUserBalance().listen(
       (value) {

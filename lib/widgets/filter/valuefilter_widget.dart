@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:neo/style/theme.dart';
 
-class ValueFilter extends HookWidget {
+class ValueFilter<T> extends HookWidget {
   final String text;
-  final String value;
-  final String currentValue;
+  final T value;
+  final T currentValue;
   final Function callback;
   const ValueFilter(
       {required this.currentValue,
@@ -18,9 +18,8 @@ class ValueFilter extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final selected = useState<bool>(false);
-    if(currentValue != value){
-      selected.value = false;
-    }
+    selected.value = currentValue == value;
+
     return Padding(
       padding: const EdgeInsets.only(right: 8),
       child: GestureDetector(
@@ -31,7 +30,7 @@ class ValueFilter extends HookWidget {
         child: Container(
           alignment: Alignment.center,
           height: 32,
-          width: 84,
+          width: 82,
           decoration: selected.value && currentValue == value
               ? BoxDecoration(
                   gradient: NeoTheme.of(context)!.primaryGradient,
@@ -44,8 +43,9 @@ class ValueFilter extends HookWidget {
           child: Text(
             text,
             style: TextStyle(
-                color:
-                    selected.value && currentValue == value ? Colors.white : Colors.black,
+                color: selected.value && currentValue == value
+                    ? Colors.white
+                    : Colors.black,
                 fontWeight: FontWeight.w600,
                 fontSize: 14),
           ),

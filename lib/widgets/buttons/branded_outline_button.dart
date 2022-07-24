@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:neo/style/theme.dart';
 
-class BrandedButton extends StatelessWidget {
+class BrandedOutlineButton extends StatelessWidget {
   final Widget child;
   final VoidCallback? onPressed;
   final bool loading;
-  const BrandedButton({
+  const BrandedOutlineButton({
     Key? key,
     required this.onPressed,
     this.loading = false,
@@ -15,15 +15,15 @@ class BrandedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 44.0,
+      height: 50.0,
       decoration: BoxDecoration(
-        gradient: NeoTheme.of(context)!.primaryGradient,
+        color: Colors.transparent,
         borderRadius: NeoTheme.of(context)!.primaryBorderRadius,
+        border: Border.all(color: Theme.of(context).primaryColor),
       ),
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          
           primary: Colors.transparent,
           shadowColor: Colors.transparent,
         ),

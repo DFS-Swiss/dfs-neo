@@ -5,8 +5,11 @@ import 'package:neo/services/stockdata_service.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
 
 import '../models/user_balance_datapoint.dart';
+import '../types/asset_performance_container.dart';
 import '../types/balance_history_container.dart';
 import '../types/price_development_datapoint.dart';
+import '../utils/get_stockvalue_at_time.dart';
+import '../utils/interval_to_time.dart';
 
 /*investments = [
       //Der Nutzer kauft zum aller ersten Mal 2 Apple Aktien
@@ -33,6 +36,71 @@ import '../types/price_development_datapoint.dart';
 
 class PortfolioValueUtil {
   PortfolioValueUtil();
+
+  Future<List<AssetPerformanceContainer>> getDevelopmentForSymbols(
+      StockdataInterval interval) async {
+    final out = <AssetPerformanceContainer>[];
+    final investments = await _queryCurrentInvestments();
+    for (var element in investments) {
+      out.add(await getAssetDevelopment(interval, element.symbol));
+    }
+    return out;
+  }
+
+  Future<AssetPerformanceContainer> getAssetDevelopment(
+      StockdataInterval interval, String symbol) async {
+    var investments = await _queryHistoricInvestmentData();
+    investments = investments
+        .where((element) => element.symbol == symbol)
+        .toList()
+      ..sort((a, b) => a.time.compareTo(b.time));
+
+    final startOfInterval = getStartOfInterval(interval);
+
+    final investmentBeforeStartOfInterval = investments
+        .where((element) =>
+            element.time.millisecondsSinceEpoch <
+            startOfInterval.millisecondsSinceEpoch)
+        .last;
+
+    final stockData = await _queryHistoricStockData(symbol, interval);
+    final assetValueAtStartOfInterval =
+        investmentBeforeStartOfInterval.tokenAmmount * stockData.first.price;
+
+    final investmentsDuringInterval = investments.where((element) =>
+        element.time.millisecondsSinceEpoch >
+        startOfInterval.millisecondsSinceEpoch);
+
+    final investedValueDuringInterval =
+        investmentsDuringInterval.fold<double>(0, (previousValue, element) {
+      if (element.difference > 0) {
+        return previousValue +
+            (getStockValueAtTime(stockData, element.time).price *
+                element.difference);
+      } else {
+        return previousValue -
+            (getStockValueAtTime(stockData, element.time).price *
+                (element.difference * (-1)));
+      }
+    });
+
+    final currentValue = investments.last.tokenAmmount * stockData.last.price;
+    final earnedMoney =
+        (assetValueAtStartOfInterval + investedValueDuringInterval) -
+            currentValue;
+    final differenceInPercent = (((currentValue /
+                    (assetValueAtStartOfInterval +
+                        investedValueDuringInterval)) -
+                1) *
+            (-1)) *
+        100;
+    return AssetPerformanceContainer(
+      symbol: symbol,
+      interval: interval,
+      differenceInPercent: differenceInPercent,
+      earnedMoney: earnedMoney,
+    );
+  }
 
   Future<BalanceHistoryContainer> getPortfolioValueHistory(
       StockdataInterval interval) async {
@@ -180,7 +248,7 @@ class PortfolioValueUtil {
                   element.time.millisecondsSinceEpoch <
                   historicDataObj.time.millisecondsSinceEpoch,
             )
-            .last
+            .first
             .tokenAmmount;
       } catch (e) {
         stockAmmountForThatPoint = 0;
@@ -229,6 +297,10 @@ class PortfolioValueUtil {
     List<UserassetDatapoint> historicData =
         await DataService.getInstance().getUserAssetsHistory().first;
     return historicData;
+  }
+
+  Future<List<UserassetDatapoint>> _queryCurrentInvestments() async {
+    return DataService.getInstance().getUserAssets().first;
   }
 
   Future<List<UserBalanceDatapoint>> _queryHistoricBalanceData() async {
