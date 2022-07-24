@@ -13,17 +13,18 @@ class RoundOutlineButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 50.0,
-      width: 50.0,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Theme.of(context).primaryColor),
-      ),
-      child: InkWell(
-        onTap: onPressed,
+    return InkWell(
+      onTap: onPressed,
+      borderRadius: BorderRadius.circular(50),
+      child: Container(
+        height: 50.0,
+        width: 50.0,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: Colors.transparent,
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(color: Theme.of(context).primaryColor),
+        ),
         child: Container(
           child: loading
               ? SizedBox(

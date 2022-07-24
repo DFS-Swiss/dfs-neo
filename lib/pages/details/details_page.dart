@@ -50,6 +50,9 @@ class DetailsPage extends HookWidget {
       body: ListView(
         children: [
           DetailsDevelopmentSection(token: token),
+          SizedBox(
+            height: 12,
+          ),
           DetailsInvestmentsSection(
             token: token,
             symbol: title,
@@ -68,6 +71,9 @@ class DetailsPage extends HookWidget {
             height: 12,
           ),
           DetailsPublicSentiment(sentiment: publicSentimentIndex),
+          SizedBox(
+            width: 25,
+          ),
         ],
       ),
     );

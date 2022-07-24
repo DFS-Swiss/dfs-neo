@@ -83,7 +83,9 @@ class InvestmentCard extends HookWidget {
                                     height: 3,
                                   ),
                                   Text(
-                                    stockData.data!.first.symbol,
+                                    !stockData.loading && stockData.data != null
+                                        ? stockData.data!.first.symbol
+                                        : "...",
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(

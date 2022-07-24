@@ -29,6 +29,11 @@ class DetailsAboutSection extends HookWidget {
           ),
           Text(
             description,
+            style: TextStyle(
+              color: Color(0xFF353C4F),
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+            ),
             textAlign: TextAlign.justify,
           ),
         ],

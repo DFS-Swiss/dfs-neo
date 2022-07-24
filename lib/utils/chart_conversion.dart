@@ -1,6 +1,10 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:neo/service_locator.dart';
+import 'package:neo/services/chart_scrubbing_manager.dart';
 import 'package:neo/services/formatting_service.dart';
+import 'package:neo/types/chart_scrubbing_state.dart';
+import 'package:neo/utils/custom_dot_painter.dart';
 
 List<Color> gradientColors = [
   const Color(0xff23b6e6),
@@ -31,43 +35,44 @@ Widget leftTileWidget(double value, TitleMeta meta) {
 
 LineChartData details(List<FlSpot> data, bool isNegative) {
   return LineChartData(
+    lineTouchData: LineTouchData(touchTooltipData:
+        LineTouchTooltipData(getTooltipItems: (touchedBarSpots) {
+      return touchedBarSpots.map((barSpot) {
+        return null;
+      }).toList();
+    }), touchCallback: (event, res) {
+      if (event is FlTapUpEvent ||
+          event is FlLongPressEnd ||
+          event is FlPanEndEvent) {
+        locator<ChartSrubbingManager>()
+            .setState(ChartScrubbingState(false, 0, 0));
+        return;
+      }
+      if (res != null) {
+        locator<ChartSrubbingManager>().setState(ChartScrubbingState(
+            true, res.lineBarSpots![0].x, res.lineBarSpots![0].y));
+      }
+    }, getTouchedSpotIndicator: (line, indizes) {
+      return indizes
+          .map(
+            (e) => TouchedSpotIndicatorData(
+              FlLine(color: Colors.transparent),
+              FlDotData(
+                getDotPainter: (p0, p1, p2, p3) => CustomDotPainter(),
+              ),
+            ),
+          )
+          .toList();
+    }),
     gridData: FlGridData(
-      show: true,
-      drawVerticalLine: false,
-      drawHorizontalLine: false,
-      getDrawingHorizontalLine: (value) {
-        return FlLine(
-          color: const Color(0xff37434d).withOpacity(0.5),
-          strokeWidth: 1,
-        );
-      },
-      getDrawingVerticalLine: (value) {
-        return FlLine(
-          color: const Color(0xff37434d),
-          strokeWidth: 1,
-        );
-      },
+      show: false,
     ),
     titlesData: FlTitlesData(
-      show: true,
-      rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-      topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-      bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-      leftTitles: AxisTitles(
-        sideTitles: SideTitles(
-          showTitles: true,
-          interval: findInterval(data),
-          reservedSize: 50,
-          getTitlesWidget: leftTileWidget,
-        ),
-      ),
+      show: false,
     ),
     borderData: FlBorderData(
-        show: false,
-        border: Border.all(color: const Color(0xff37434d), width: 1)),
-    //minX: 0,
-    //maxX: 11,
-    //maxY: 6,
+      show: false,
+    ),
     lineBarsData: [
       LineChartBarData(
         spots: data,
@@ -109,13 +114,13 @@ double findInterval(List<FlSpot> data) {
   var min = getMin(data);
   var max = getMax(data);
 
-  return (max-min)/7;
+  return (max - min) / 7;
 }
 
 double getMax(List<FlSpot> data) {
   double max = 0;
   for (var element in data) {
-    if(element.y > max){
+    if (element.y > max) {
       max = element.y;
     }
   }
@@ -125,7 +130,7 @@ double getMax(List<FlSpot> data) {
 double getMin(List<FlSpot> data) {
   double min = double.maxFinite;
   for (var element in data) {
-    if(element.y < min){
+    if (element.y < min) {
       min = element.y;
     }
   }

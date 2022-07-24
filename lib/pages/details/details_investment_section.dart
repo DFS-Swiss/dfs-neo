@@ -191,8 +191,8 @@ class DetailsInvestmentsSection extends HookWidget {
             : showNothing()
                 ? Container()
                 : Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Shimmer.fromColors(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Shimmer.fromColors(
                       baseColor: Color.fromRGBO(238, 238, 238, 0.75),
                       highlightColor: Colors.white,
                       child: Container(
@@ -203,7 +203,7 @@ class DetailsInvestmentsSection extends HookWidget {
                         ),
                       ),
                     ),
-                )
+                  )
         : Container();
   }
 }

@@ -14,52 +14,56 @@ class DetailsSelectable extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(
-        top: 24,
-      ),
+      padding: const EdgeInsets.only(top: 24, left: 20),
       child: SizedBox(
         height: 32,
-        child: ListView(
-          scrollDirection: Axis.horizontal,
+        child: Row(
           children: [
-            SizedBox(
-              width: 24,
+            Expanded(
+              child: SmallValueFilter(
+                  currentValue: currentValue,
+                  text: "24h",
+                  value: StockdataInterval.twentyFourHours,
+                  callback: (Object a) {
+                    callback(a);
+                  }),
             ),
-            SmallValueFilter(
-                currentValue: currentValue,
-                text: "24h",
-                value: StockdataInterval.twentyFourHours,
-                callback: (Object a) {
-                  callback(a);
-                }),
-            SmallValueFilter(
-                currentValue: currentValue,
-                text: "MTD",
-                value: StockdataInterval.mtd,
-                callback: (Object a) {
-                  callback(a);
-                }),
-            SmallValueFilter(
-                currentValue: currentValue,
-                text: "YTD",
-                value: StockdataInterval.ytd,
-                callback: (Object a) {
-                  callback(a);
-                }),
-            SmallValueFilter(
-                currentValue: currentValue,
-                text: "1Y",
-                value: StockdataInterval.oneYear,
-                callback: (Object a) {
-                  callback(a);
-                }),
-            SmallValueFilter(
-                currentValue: currentValue,
-                text: "2Y",
-                value: StockdataInterval.twoYears,
-                callback: (Object a) {
-                  callback(a);
-                }),
+            Expanded(
+              child: SmallValueFilter(
+                  currentValue: currentValue,
+                  text: "MTD",
+                  value: StockdataInterval.mtd,
+                  callback: (Object a) {
+                    callback(a);
+                  }),
+            ),
+            Expanded(
+              child: SmallValueFilter(
+                  currentValue: currentValue,
+                  text: "YTD",
+                  value: StockdataInterval.ytd,
+                  callback: (Object a) {
+                    callback(a);
+                  }),
+            ),
+            Expanded(
+              child: SmallValueFilter(
+                  currentValue: currentValue,
+                  text: "1Y",
+                  value: StockdataInterval.oneYear,
+                  callback: (Object a) {
+                    callback(a);
+                  }),
+            ),
+            Expanded(
+              child: SmallValueFilter(
+                  currentValue: currentValue,
+                  text: "2Y",
+                  value: StockdataInterval.twoYears,
+                  callback: (Object a) {
+                    callback(a);
+                  }),
+            ),
           ],
         ),
       ),

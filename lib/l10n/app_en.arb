@@ -184,7 +184,6 @@
     "details_about":"About this dAsset",
     "details_public_sentiment":"New Index Public Sentiment",
     "details_last_week_sentiment":"Last week",
-    "alert_deposit_limit":"You cannot add more than 10000$ at once",
     "new_order_sell_success_error": "A problem occured",
     "new_order_sell_success_title": "Success",
     "new_order_sell_success": "has been sold successfully",

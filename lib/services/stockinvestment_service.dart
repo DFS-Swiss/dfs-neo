@@ -1,6 +1,7 @@
 import 'package:neo/models/stockdata_datapoint.dart';
 import 'package:neo/models/userasset_datapoint.dart';
 import 'package:neo/services/data_service.dart';
+import 'package:neo/services/portfoliovalue_service.dart';
 import 'package:neo/services/stockdata_service.dart';
 import 'package:neo/types/investment/investment_data.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
@@ -56,13 +57,22 @@ class StockInvestmentUtil {
         totalTokenAmount += element.tokenAmmount;
       }
 
-      final performancePercentage = await _calculateAverageProfitLossForAllInvestments(investments);
-      final todayIncreasPercentage = await _calculateAverageProfitLossForAllInvestments(investments.where((element) => element.time.isAfter(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day))).toList());
+      final performancePercentage =
+          await _calculateAverageProfitLossForAllInvestments(investments);
+      final todayIncreasPercentage = (await PortfolioValueUtil()
+              .getAssetDevelopment(StockdataInterval.twentyFourHours, symbol))
+          .differenceInPercent;
+      /*await _calculateAverageProfitLossForAllInvestments(investments
+              .where((element) => element.time.isAfter(DateTime(
+                  DateTime.now().year,
+                  DateTime.now().month,
+                  DateTime.now().day)))
+              .toList());*/
 
       return InvestmentData(
-          todayIncrease: todayIncreasPercentage/100*totalValue,
+          todayIncrease: todayIncreasPercentage / 100 * totalValue,
           todayIncreasePercentage: todayIncreasPercentage,
-          performance: performancePercentage/100*totalValue,
+          performance: performancePercentage / 100 * totalValue,
           performancePercentage: performancePercentage,
           buyIn: totalValue / totalTokenAmount,
           quantity: totalTokenAmount,
@@ -82,6 +92,7 @@ class StockInvestmentUtil {
 
   Future<double> _calculateAverageProfitLossForAllInvestments(
       List<UserassetDatapoint> investments) async {
+    if (investments.isEmpty) return 0;
     Map<String, bool> distinctSymbols = {};
     for (var investment in investments) {
       distinctSymbols[investment.symbol] = true;

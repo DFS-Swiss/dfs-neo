@@ -1,8 +1,8 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:intl/intl.dart';
 import 'package:neo/pages/details/details_selectable_widget.dart';
-import 'package:neo/types/data_container.dart';
 import 'package:neo/widgets/buttons/branded_button.dart';
 import 'package:neo/widgets/buttons/branded_outline_button.dart';
 import 'package:neo/widgets/buttons/round_outline_button.dart';
@@ -10,6 +10,7 @@ import 'package:neo/pages/buy_sell/buy_page.dart';
 import 'package:neo/widgets/development_indicator/detailed_development_indicator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shimmer/shimmer.dart';
+import '../../hooks/use_chart_scrubbing_state.dart';
 import '../../hooks/use_latest_asset_price.dart';
 import '../../hooks/use_stockdata.dart';
 import '../../hooks/use_stockdata_info.dart';
@@ -29,8 +30,8 @@ class DetailsDevelopmentSection extends HookWidget {
     final interval = useState(StockdataInterval.twentyFourHours);
     final stockData = useStockdata(token, interval.value);
     final symbolInfo = useSymbolInfo(token);
-    final latestPrice =
-        DataContainer(data: 155.0); //useLatestAssetPrice(token);
+    final latestPrice = useLatestAssetPrice(token);
+    final scrubbingData = useChartScrubbingState();
 
     List<FlSpot> plotData() {
       return stockData.data!
@@ -85,7 +86,11 @@ class DetailsDevelopmentSection extends HookWidget {
                             constraints:
                                 BoxConstraints(maxWidth: 150, minWidth: 70),
                             child: Text(
-                              "${FormattingService.roundDouble(latestPrice.data!, 2).toString()} dUSD",
+                              scrubbingData.hasTouch
+                                  ? "${FormattingService.roundDouble(scrubbingData.value, 2).toString()} dUSD"
+                                  : latestPrice.loading
+                                      ? "..."
+                                      : "${FormattingService.roundDouble(latestPrice.data!, 2).toString()} dUSD",
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w500,
@@ -125,7 +130,16 @@ class DetailsDevelopmentSection extends HookWidget {
                               height: 10,
                             ),
                             Text(
-                              interval.value.toString().toUpperCase(),
+                              scrubbingData.hasTouch
+                                  ? interval.value ==
+                                          StockdataInterval.twentyFourHours
+                                      ? DateFormat("hh:mm").format(
+                                          DateTime.fromMillisecondsSinceEpoch(
+                                              scrubbingData.time.round()))
+                                      : DateFormat("dd.MM.yyyy").format(
+                                          DateTime.fromMillisecondsSinceEpoch(
+                                              scrubbingData.time.round()))
+                                  : interval.value.toString().toUpperCase(),
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
@@ -150,19 +164,17 @@ class DetailsDevelopmentSection extends HookWidget {
                 ),
                 // Chart
                 SizedBox(
-                  height: 40,
+                  height: 10,
                 ),
                 Padding(
                   padding: EdgeInsets.fromLTRB(24, 24, 24, 24),
                   child: SizedBox(
                     height: 226,
-                    child: stockData.loading
+                    child: stockData.refetching
                         ? Center(
-                            child: Text(
-                              "No data avaliable yet...",
-                              style: Theme.of(context).textTheme.labelSmall,
-                            ),
-                          )
+                            child: CircularProgressIndicator(
+                            color: Theme.of(context).primaryColor,
+                          ))
                         : LineChart(
                             details(
                               plotData(),
@@ -174,10 +186,10 @@ class DetailsDevelopmentSection extends HookWidget {
                   ),
                 ),
                 SizedBox(
-                  height: 20,
+                  height: 10,
                 ),
                 Padding(
-                  padding: EdgeInsets.fromLTRB(24, 12, 24, 12),
+                  padding: EdgeInsets.fromLTRB(24, 12, 24, 0),
                   child: Row(
                     children: [
                       Expanded(
