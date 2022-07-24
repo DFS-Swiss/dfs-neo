@@ -29,7 +29,7 @@ class DetailedDevelopmentIndicator extends StatelessWidget {
         Text(
           "$changeValue d\$ ($changePercentage %)",
           style: TextStyle(
-            fontSize: 14,
+            fontSize: 12,
             color: positive
                 ? NeoTheme.of(context)!.positiveColor
                 : NeoTheme.of(context)!.negativeColor,

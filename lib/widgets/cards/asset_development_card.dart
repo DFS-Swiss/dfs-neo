@@ -1,4 +1,3 @@
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,18 +7,20 @@ import '../development_indicator/detailed_development_indicator.dart';
 
 class AssetDevelopmentCard extends HookWidget {
   final String name;
-  final List<FlSpot> chartData; 
+  final double changePercentage;
+  final double changeValue; 
   const AssetDevelopmentCard({
     Key? key,
     required this.name,
-    required this.chartData,
+    required this.changePercentage,
+    required this.changeValue,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 70,
-      padding: EdgeInsets.all(12),
+      height: 63,
+      padding: EdgeInsets.fromLTRB(12,8,12,8),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.75),
         borderRadius: BorderRadius.circular(12),
@@ -27,25 +28,22 @@ class AssetDevelopmentCard extends HookWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
             name,
             style: GoogleFonts.urbanist(
-              fontSize: 16,
+              fontSize: 14,
               fontWeight: FontWeight.w500,
             ),
           ),
-          Expanded(
-            child: Container(),
-          ),
           DetailedDevelopmentIndicator(
             positive:
-                chartData.first.y > chartData.last.y,
-            changePercentage: FormattingService.calculatepercent(
-                chartData.first.y, chartData.last.y),
+                !changePercentage.isNegative,
+            changePercentage: FormattingService.roundDouble(
+                changePercentage, 2),
             changeValue: FormattingService.roundDouble(
-                chartData.first.y - chartData.last.y, 2),
+                changeValue, 2),
           )
         ],
       ),

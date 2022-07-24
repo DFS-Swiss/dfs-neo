@@ -5,7 +5,8 @@ import 'package:neo/widgets/development_indicator/small_change_indicator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class OpenOrderCard extends StatelessWidget {
-  const OpenOrderCard({Key? key}) : super(key: key);
+  final String? image;
+  const OpenOrderCard({this.image, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,8 @@ class OpenOrderCard extends StatelessWidget {
                       height: 38,
                       child: CircleAvatar(
                         backgroundImage: NetworkImage(
-                          "https://prod-dfs-swiss-dfssymboliconbucketd59bac7b-la02u10dfrul.s3.eu-central-1.amazonaws.com/AMZN.png",
+                          image ??
+                              "https://prod-dfs-swiss-dfssymboliconbucketd59bac7b-la02u10dfrul.s3.eu-central-1.amazonaws.com/AMZN.png",
                         ),
                         backgroundColor: Colors.white,
                       ),

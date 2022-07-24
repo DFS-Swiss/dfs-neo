@@ -42,12 +42,12 @@ class PortfolioValueUtil {
     final out = <AssetPerformanceContainer>[];
     final investments = await _queryCurrentInvestments();
     for (var element in investments) {
-      out.add(await _getAssetDevelopment(interval, element.symbol));
+      out.add(await getAssetDevelopment(interval, element.symbol));
     }
     return out;
   }
 
-  Future<AssetPerformanceContainer> _getAssetDevelopment(
+  Future<AssetPerformanceContainer> getAssetDevelopment(
       StockdataInterval interval, String symbol) async {
     var investments = await _queryHistoricInvestmentData();
     investments = investments

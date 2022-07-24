@@ -356,6 +356,30 @@ class RESTService extends ChangeNotifier {
     }
   }
 
+  Future<List<UserassetDatapoint>> getAssetForSymbol(String symbol) async {
+    try {
+      final response = await dio.get("/user/assets/$symbol");
+      if (response.statusCode.toString().startsWith("2")) {
+        List<UserassetDatapoint> data;
+
+        try {
+          data = (response.data["body"]["items"] as List<dynamic>)
+              .map((e) => UserassetDatapoint.fromMap(e))
+              .toList();
+        } catch (e) {
+          throw "Parsing error: ${e.toString()}";
+        }
+        return data;
+      } else if (response.statusCode.toString() == "404") {
+        throw "404";
+      } else {
+        throw "Unknown case: ${response.toString()}";
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<bool> buyAsset(String symbol, double amountInDollar) async {
     try {
       final response = await dio.post("/assets/buy",
