@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.dfsswiss.neo">
+    <uses-permission android:name="android.permission.INTERNET" />
    <application
         android:label="DFSneo"
         android:name="${applicationName}"
