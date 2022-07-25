@@ -7,11 +7,14 @@ import 'package:neo/types/investment/investment_data.dart';
 import '../services/stockdata_service.dart';
 
 DataContainer<InvestmentData> useUserAssetsForSymbol(String symbol) {
- final state =
+  final state =
       useState<DataContainer<InvestmentData>>(DataContainer.waiting());
   useEffect(() {
     handleFetch() {
-      StockInvestmentUtil().getInvestmentDataForSymbol(symbol).then(
+      StockInvestmentUtil()
+          .getInvestmentDataForSymbol(
+              symbol, state.value.data == null ? false : true)
+          .then(
         (value) {
           state.value = DataContainer(data: value);
         },

@@ -20,14 +20,14 @@ class DistributionWidget extends HookWidget {
     final stockInfo = useAvailableStocks();
 
     List<UserAssetDataWithValue> prepareList() {
-      if (investments.data!.length < 6) {
+      if (investments.data!.length < 5) {
         return investments.data!;
       }
-      final out = investments.data!.take(6).toList();
+      final out = investments.data!.take(5).toList();
 
-      final restValue = investments.data!.sublist(5).fold<double>(
+      final restValue = investments.data!.sublist(4).fold<double>(
           0, (previousValue, element) => previousValue + element.totalValue);
-      final restAmount = investments.data!.sublist(5).fold<double>(
+      final restAmount = investments.data!.sublist(4).fold<double>(
           0, (previousValue, element) => previousValue + element.tokenAmmount);
       out.add(
         UserAssetDataWithValue(

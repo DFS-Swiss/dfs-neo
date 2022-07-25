@@ -13,11 +13,18 @@ DataContainer<List<AssetPerformanceContainer>> useInvestmentDevelopments(
       DataContainer.waiting());
   useEffect(() {
     handleFetch() {
-      PortfolioValueUtil().getDevelopmentForSymbols(interval).then(
+      PortfolioValueUtil()
+          .getDevelopmentForSymbols(
+        interval,
+        state.value.data == null ? false : true,
+      )
+          .then(
         (value) {
           state.value = DataContainer(data: value);
         },
-      );
+      ).catchError((e) {
+        print(e);
+      });
     }
 
     StockdataService.getInstance().addListener(handleFetch);

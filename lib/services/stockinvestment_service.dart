@@ -32,7 +32,8 @@ import 'package:neo/types/stockdata_interval_enum.dart';
 class StockInvestmentUtil {
   StockInvestmentUtil();
 
-  Future<InvestmentData> getInvestmentDataForSymbol(String symbol) async {
+  Future<InvestmentData> getInvestmentDataForSymbol(
+      String symbol, bool refetch) async {
     final stockData = await StockdataService.getInstance()
         .getStockdata(symbol, StockdataInterval.oneYear)
         .first;
@@ -60,7 +61,8 @@ class StockInvestmentUtil {
       final performancePercentage =
           await _calculateAverageProfitLossForAllInvestments(investments);
       final todayIncreasPercentage = (await PortfolioValueUtil()
-              .getAssetDevelopment(StockdataInterval.twentyFourHours, symbol))
+              .getAssetDevelopment(
+                  StockdataInterval.twentyFourHours, symbol, refetch))
           .differenceInPercent;
       /*await _calculateAverageProfitLossForAllInvestments(investments
               .where((element) => element.time.isAfter(DateTime(

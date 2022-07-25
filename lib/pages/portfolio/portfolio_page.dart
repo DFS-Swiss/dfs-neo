@@ -10,9 +10,9 @@ import 'package:neo/pages/portfolio/timefilter_widget.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
 import 'package:neo/widgets/appbaractionbutton_widget.dart';
 import 'package:neo/widgets/buttons/branded_button.dart';
-import 'package:neo/widgets/buttons/outline_button.dart';
 import 'package:neo/widgets/genericheadline_widget.dart';
 
+import '../../widgets/buttons/branded_outline_button.dart';
 import 'current_investments_widget.dart';
 import 'distribution_widget.dart';
 
@@ -76,7 +76,7 @@ class Portfolio extends HookWidget {
             child: Row(
               children: [
                 Expanded(
-                  child: OutlineBrandedButton(
+                  child: BrandedOutlineButton(
                       onPressed: () {},
                       child: Text(
                         AppLocalizations.of(context)!.port_withdraw,
