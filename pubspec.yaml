@@ -35,6 +35,7 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   build_runner: ^2.1.11
 
+#flutter pub run flutter_launcher_icons:main
 flutter_icons:
   android: "launcher_icon"
   adaptive_icon_background: "#FFFFFF"

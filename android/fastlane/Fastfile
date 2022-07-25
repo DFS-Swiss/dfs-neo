@@ -22,7 +22,7 @@ platform :android do
     upload_to_play_store(
       track: "Staging", 
       version_code: flutter_version()["version_code"],
-      version_name: flutter_version()["version_name"]
+      version_name: flutter_version()["version_name"],
       skip_upload_screenshots: true,
       skip_upload_images: true,
       skip_upload_changelogs: true,
