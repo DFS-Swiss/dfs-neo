@@ -29,6 +29,10 @@ class DataService extends ChangeNotifier {
   final BehaviorSubject<Map<String, RestdataStorageContainer>> _dataStore =
       BehaviorSubject.seeded({});
 
+  clearCache() {
+    _dataStore.add({});
+  }
+
   registerUserDataHandler(String entity, List<Function()> handler) {
     _userDataHandlerRegister[entity] = handler;
   }

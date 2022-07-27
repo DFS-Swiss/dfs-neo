@@ -103,4 +103,14 @@ class CognitoService {
   changePassword(String oldPassword, String newPassword) async {
     await _cognitoUser!.changePassword(oldPassword, newPassword);
   }
+
+  initForgotPassword(String username) async {
+    createCognitoUser(username);
+    await _cognitoUser!.forgotPassword();
+  }
+
+  completeForgotPassword(String code, String newPassword) async {
+    if (_cognitoUser == null) throw "No user";
+    await _cognitoUser!.confirmPassword(code, newPassword);
+  }
 }
