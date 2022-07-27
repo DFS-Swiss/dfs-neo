@@ -14,13 +14,11 @@ import 'package:neo/widgets/cards/tradablestockcard_widget.dart';
 import 'package:shimmer/shimmer.dart';
 
 class StockList extends HookWidget {
-  final int position;
-  final bool pushedPage;
-  const StockList({Key? key, required this.position, this.pushedPage = false}) : super(key: key);
+  const StockList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final switchPosition = useState<int>(position);
+    final switchPosition = useState<int>(0);
     final selectedFilters = useState<List<int>>([]);
     final availableStocks = useAvailableStocks();
     final searchPattern = useState<String?>(null);
@@ -46,10 +44,10 @@ class StockList extends HookWidget {
             },
           ),
         ],
-        leading: pushedPage ? IconButton(
+        leading: IconButton(
           icon: Icon(Icons.arrow_back_outlined, color: Colors.black),
           onPressed: () => Navigator.of(context).pop(),
-        ) : Container()
+        ),
       ),
       body: ListView(
         addAutomaticKeepAlives: true,
