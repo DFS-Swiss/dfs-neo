@@ -18,7 +18,7 @@ class StockList extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final switchPosition = useState(0);
+    final switchPosition = useState<int>(0);
     final selectedFilters = useState<List<int>>([]);
     final availableStocks = useAvailableStocks();
     final searchPattern = useState<String?>(null);
@@ -44,6 +44,10 @@ class StockList extends HookWidget {
             },
           ),
         ],
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_outlined, color: Colors.black),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
       ),
       body: ListView(
         addAutomaticKeepAlives: true,

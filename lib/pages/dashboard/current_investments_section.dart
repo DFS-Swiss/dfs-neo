@@ -5,6 +5,7 @@ import 'package:neo/hooks/use_userassets.dart';
 
 import '../../style/theme.dart';
 import '../../widgets/cards/investment_card.dart';
+import '../current_investments/current_investment_page.dart';
 import '../details/details_page.dart';
 
 class CurrentInvestmentsSection extends HookWidget {
@@ -25,10 +26,17 @@ class CurrentInvestmentsSection extends HookWidget {
                 AppLocalizations.of(context)!.dash_currinv_title,
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
-              Text(
-                AppLocalizations.of(context)!.dash_view,
-                style: NeoTheme.of(context)!.linkTextStyle,
-              )
+              !assests.loading && assests.data!.isNotEmpty ? GestureDetector(
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => CurrentInvestmentPage()),
+                ),
+                child: Text(
+                  AppLocalizations.of(context)!.dash_view,
+                  style: NeoTheme.of(context)!.linkTextStyle,
+                ),
+              ): Container()
             ],
           ),
           SizedBox(
