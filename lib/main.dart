@@ -168,7 +168,6 @@ class AuthWrapper extends HookWidget {
     if (authState == AppState.signedOut ||
         authState == AppState.verifyAccount ||
         authState == AppState.newPasswordRequired ||
-        authState == AppState.forgotPassword ||
         authState == AppState.register) {
       return AuthPageWrapper();
     }

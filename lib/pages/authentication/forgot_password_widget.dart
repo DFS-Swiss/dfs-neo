@@ -23,8 +23,7 @@ class ForgotPassword extends HookWidget {
             phaseComplete: () => phase.value = 2,
           )
         : _ForgotPasswordPhase2(
-            phaseComplete: () =>
-                locator<AppStateService>().state = AppState.signedOut,
+            phaseComplete: () => Navigator.pop(context),
           );
   }
 }
@@ -63,67 +62,77 @@ class _ForgotPasswordPhase2 extends HookWidget {
               AppLocalizations.of(context)!.forgot_password_user_not_found;
         }
         print(e);
+      } catch (e) {
+        print(e);
       } finally {
         loading.value = false;
       }
     }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          AppLocalizations.of(context)!.force_change_password_title,
-          style: Theme.of(context).textTheme.headlineMedium,
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_outlined, color: Colors.black),
+          onPressed: () => Navigator.of(context).pop(),
         ),
-        const SizedBox(
-          height: 20,
-        ),
-        Text(
-          AppLocalizations.of(context)!.forgot_password_phase_2_desc,
-          style: Theme.of(context).textTheme.bodySmall,
-        ),
-        SizedBox(
-          height: 20,
-        ),
-        BrandedTextfield(
-          onChanged: (v) => code.value = v,
-          labelText: AppLocalizations.of(context)!.forgot_password_code,
-          hintText: AppLocalizations.of(context)!.forgot_password_code_desc,
-          type: TextInputType.number,
-          textInputAction: TextInputAction.next,
-        ),
-        SizedBox(
-          height: 20,
-        ),
-        BrandedTextfield(
-          onChanged: (v) => newPassword.value = v,
-          labelText: AppLocalizations.of(context)!.change_password_new,
-          hintText: AppLocalizations.of(context)!.signup_password_desc,
-          canHide: true,
-          type: TextInputType.visiblePassword,
-          textInputAction: TextInputAction.done,
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        PasswordValidationIndicator(password: newPassword.value),
-        SizedBox(
-          height: 25,
-        ),
-        Row(
+        title: Text(AppLocalizations.of(context)!.forgot_password_title),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              child: BrandedButton(
-                loading: loading.value,
-                onPressed: handleSubmit,
-                child: Text(
-                  AppLocalizations.of(context)!.forgot_password_continue,
-                ),
-              ),
+            const SizedBox(
+              height: 40,
+            ),
+            Text(
+              AppLocalizations.of(context)!.forgot_password_phase_2_desc,
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            BrandedTextfield(
+              onChanged: (v) => code.value = v,
+              labelText: AppLocalizations.of(context)!.forgot_password_code,
+              hintText: AppLocalizations.of(context)!.forgot_password_code_desc,
+              type: TextInputType.number,
+              textInputAction: TextInputAction.next,
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            BrandedTextfield(
+              onChanged: (v) => newPassword.value = v,
+              labelText: AppLocalizations.of(context)!.change_password_new,
+              hintText: AppLocalizations.of(context)!.signup_password_desc,
+              canHide: true,
+              type: TextInputType.visiblePassword,
+              textInputAction: TextInputAction.done,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            PasswordValidationIndicator(password: newPassword.value),
+            SizedBox(
+              height: 25,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: BrandedButton(
+                    loading: loading.value,
+                    onPressed: handleSubmit,
+                    child: Text(
+                      AppLocalizations.of(context)!.forgot_password_continue,
+                    ),
+                  ),
+                )
+              ],
             )
           ],
-        )
-      ],
+        ),
+      ),
     );
   }
 }
@@ -143,7 +152,6 @@ class _ForgotPasswordPhase1 extends HookWidget {
 
     handleSubmit() async {
       phaseComplete();
-      return;
       if (userName.value == null || userName.value == "") {
         return;
       }
@@ -163,59 +171,67 @@ class _ForgotPasswordPhase1 extends HookWidget {
       loading.value = false;
     }
 
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Text(
-        AppLocalizations.of(context)!.force_change_password_title,
-        style: Theme.of(context).textTheme.headlineMedium,
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_outlined, color: Colors.black),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: Text(AppLocalizations.of(context)!.forgot_password_title),
       ),
-      const SizedBox(
-        height: 20,
-      ),
-      Text(
-        AppLocalizations.of(context)!.force_change_password_desc,
-        style: Theme.of(context).textTheme.bodySmall,
-      ),
-      SizedBox(
-        height: 20,
-      ),
-      BrandedTextfield(
-        onChanged: (v) => userName.value = v,
-        labelText: AppLocalizations.of(context)!.signin_username,
-        hintText: AppLocalizations.of(context)!.signin_username_desc,
-        type: TextInputType.emailAddress,
-        errorText: error.value,
-        textInputAction: TextInputAction.done,
-        onContinue: (v) => handleSubmit(),
-      ),
-      SizedBox(
-        height: 25,
-      ),
-      Row(
-        children: [
-          Expanded(
-            child: OutlineBrandedButton(
-              onPressed: () =>
-                  locator<AppStateService>().state = AppState.signedOut,
-              child: Text(
-                AppLocalizations.of(context)!.signup_back,
-                style: TextStyle(color: Theme.of(context).primaryColor),
-              ),
-            ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          const SizedBox(
+            height: 40,
+          ),
+          Text(
+            AppLocalizations.of(context)!.force_change_password_desc,
+            style: Theme.of(context).textTheme.bodySmall,
           ),
           SizedBox(
-            width: 15,
+            height: 20,
           ),
-          Expanded(
-            child: BrandedButton(
-              loading: loading.value,
-              onPressed: handleSubmit,
-              child: Text(
-                AppLocalizations.of(context)!.forgot_password_continue,
+          BrandedTextfield(
+            onChanged: (v) => userName.value = v,
+            labelText: AppLocalizations.of(context)!.signin_username,
+            hintText: AppLocalizations.of(context)!.signin_username_desc,
+            type: TextInputType.emailAddress,
+            errorText: error.value,
+            textInputAction: TextInputAction.done,
+            onContinue: (v) => handleSubmit(),
+          ),
+          SizedBox(
+            height: 25,
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: OutlineBrandedButton(
+                  onPressed: () =>
+                      locator<AppStateService>().state = AppState.signedOut,
+                  child: Text(
+                    AppLocalizations.of(context)!.signup_back,
+                    style: TextStyle(color: Theme.of(context).primaryColor),
+                  ),
+                ),
               ),
-            ),
+              SizedBox(
+                width: 15,
+              ),
+              Expanded(
+                child: BrandedButton(
+                  loading: loading.value,
+                  onPressed: handleSubmit,
+                  child: Text(
+                    AppLocalizations.of(context)!.forgot_password_continue,
+                  ),
+                ),
+              )
+            ],
           )
-        ],
-      )
-    ]);
+        ]),
+      ),
+    );
   }
 }

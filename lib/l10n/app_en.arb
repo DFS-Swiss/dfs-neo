@@ -207,5 +207,6 @@
     "forgot_password_user_not_found": "User not found",
     "forgot_password_phase_2_desc": "Please enter the code you received via email and a new password",
     "forgot_password_code": "Code",
-    "forgot_password_code_desc": "Enter your email code"
+    "forgot_password_code_desc": "Enter your email code",
+    "forgot_password_title": "Reset password"
 }

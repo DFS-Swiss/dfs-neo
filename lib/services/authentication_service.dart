@@ -169,10 +169,7 @@ class AuthenticationService extends ChangeNotifier {
   }
 
   completeForgotPassword(String code, String newPassword) async {
-    if (!_cognitoService.isUserPresent()) {
-      await _cognitoService.completeForgotPassword(code, newPassword);
-    }
-    throw "No active user object";
+    await _cognitoService.completeForgotPassword(code, newPassword);
   }
 
   Future<bool> tryReauth() async {

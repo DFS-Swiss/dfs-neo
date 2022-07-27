@@ -4,6 +4,5 @@ enum AppState {
   verifyAccount,
   newPasswordRequired,
   register,
-  onboarding,
-  forgotPassword
+  onboarding
 }

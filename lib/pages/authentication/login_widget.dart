@@ -2,6 +2,7 @@ import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:neo/enums/app_state.dart';
+import 'package:neo/pages/authentication/forgot_password_widget.dart';
 import 'package:neo/services/app_state_service.dart';
 import 'package:neo/services/authentication_service.dart';
 import 'package:neo/style/theme.dart';
@@ -90,7 +91,11 @@ class LoginWidget extends HookWidget {
           children: [
             GestureDetector(
               onTap: () {
-                locator<AppStateService>().state = AppState.forgotPassword;
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ForgotPassword()),
+                );
               },
               child: Text(
                 AppLocalizations.of(context)!.signin_forgot_passwort,
