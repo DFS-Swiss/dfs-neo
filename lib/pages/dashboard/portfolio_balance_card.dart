@@ -13,11 +13,15 @@ import 'package:neo/services/formatting_service.dart';
 
 class PortfolioBalanceCard extends HookWidget {
   final StockdataInterval? interval;
-  const PortfolioBalanceCard( {Key? key, this.interval,}) : super(key: key);
+  const PortfolioBalanceCard({
+    Key? key,
+    this.interval,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final balanceHistory = useBalanceHistory(interval ?? StockdataInterval.twentyFourHours);
+    final balanceHistory =
+        useBalanceHistory(interval ?? StockdataInterval.twentyFourHours);
     return !balanceHistory.loading
         ? Container(
             height: 270,
@@ -75,22 +79,26 @@ class PortfolioBalanceCard extends HookWidget {
                         Row(
                           children: [
                             Text(
-                              AppLocalizations.of(context)!.dash_today,
+                              (interval ?? StockdataInterval.twentyFourHours)
+                                  .toString()
+                                  .toUpperCase(),
                               style: Theme.of(context).textTheme.labelSmall,
                             ),
                             SizedBox(
                               width: 5,
                             ),
                             SmallDevelopmentIndicator(
-                              positive:
-                                  balanceHistory.data!.inAssets.first.price >
-                                      balanceHistory.data!.inAssets.last.price,
+                              positive: balanceHistory.data!.total.first.price >
+                                  balanceHistory.data!.total.last.price,
                               changePercentage: balanceHistory
                                       .data!.hasNoInvestments
                                   ? 0
                                   : FormattingService.calculatepercent(
-                                      balanceHistory.data!.inAssets.first.price,
-                                      balanceHistory.data!.inAssets.last.price,
+                                      balanceHistory.data!.total.first.price,
+                                      balanceHistory.data!.total
+                                          .lastWhere(
+                                              (element) => element.price > 0)
+                                          .price,
                                     ),
                             )
                           ],
@@ -116,14 +124,14 @@ class PortfolioBalanceCard extends HookWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         HideableText(
-                          "${FormattingService.roundDouble(balanceHistory.data!.inCash, 2)} USD",
+                          "${FormattingService.roundDouble(balanceHistory.data!.inCash, 2)} dUSD",
                           style: Theme.of(context).textTheme.labelMedium,
                         ),
                         SizedBox(
                           height: 5,
                         ),
                         HideableText(
-                          "${FormattingService.roundDouble(balanceHistory.data!.inAssets.first.price, 2)} USD",
+                          "${FormattingService.roundDouble(balanceHistory.data!.inAssets.first.price, 2)} dUSD",
                           style: Theme.of(context).textTheme.labelMedium,
                         ),
                       ],
@@ -142,7 +150,7 @@ class PortfolioBalanceCard extends HookWidget {
                           height: 5,
                         ),
                         Text(
-                          AppLocalizations.of(context)!.dash_locked_oo,
+                          AppLocalizations.of(context)!.dash_currently_invested,
                           style: Theme.of(context).textTheme.labelSmall,
                         ),
                       ],

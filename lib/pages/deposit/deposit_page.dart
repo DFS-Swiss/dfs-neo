@@ -15,6 +15,7 @@ class Deposit extends HookWidget {
   Widget build(BuildContext context) {
     final selectedAmount = useState<String>("");
     final typedAmount = useState<String>("");
+    final loading = useState(false);
 
     var depositAmount =
         typedAmount.value.isEmpty ? selectedAmount.value : typedAmount.value;
@@ -23,6 +24,7 @@ class Deposit extends HookWidget {
     // Padding beneath button
 
     handleDeposit() async {
+      loading.value = true;
       try {
         if (await DataService.getInstance().addUserBalance(depositAmount)) {
           // Show alert, pop page
@@ -72,6 +74,7 @@ class Deposit extends HookWidget {
           );
         }
       }
+      loading.value = false;
     }
 
     return Scaffold(
@@ -113,6 +116,7 @@ class Deposit extends HookWidget {
               Expanded(
                 child: SafeArea(
                   child: BrandedButton(
+                    loading: loading.value,
                     onPressed: handleDeposit,
                     child: Text(AppLocalizations.of(context)!.port_deposit),
                   ),

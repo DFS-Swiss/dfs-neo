@@ -8,14 +8,13 @@ import '../../types/stockdata_interval_enum.dart';
 import 'best_worst_card_element.dart';
 
 class BestWorstCard extends HookWidget {
-  final StockdataInterval interval;
-
-  const BestWorstCard({Key? key, required this.interval}) : super(key: key);
+  const BestWorstCard({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final investments = useUserassets();
-    final assetDevelopment = useInvestmentDevelopments(interval);
+    final assetDevelopment =
+        useInvestmentDevelopments(StockdataInterval.twentyFourHours);
 
     AssetPerformanceContainer getBest() {
       assetDevelopment.data!

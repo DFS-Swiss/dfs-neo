@@ -1,3 +1,4 @@
+import 'package:neo/enums/data_source.dart';
 import 'package:neo/models/stockdata_datapoint.dart';
 import 'package:neo/models/userasset_datapoint.dart';
 import 'package:neo/services/data_service.dart';
@@ -8,8 +9,6 @@ import '../models/user_balance_datapoint.dart';
 import '../types/asset_performance_container.dart';
 import '../types/balance_history_container.dart';
 import '../types/price_development_datapoint.dart';
-import '../utils/get_stockvalue_at_time.dart';
-import '../utils/interval_to_time.dart';
 
 /*investments = [
       //Der Nutzer kauft zum aller ersten Mal 2 Apple Aktien
@@ -38,74 +37,44 @@ class PortfolioValueUtil {
   PortfolioValueUtil();
 
   Future<List<AssetPerformanceContainer>> getDevelopmentForSymbols(
-      StockdataInterval interval) async {
+      StockdataInterval interval, bool refetch) async {
     final out = <AssetPerformanceContainer>[];
-    final investments = await _queryCurrentInvestments();
+    final investments = await _queryCurrentInvestments(refetch);
     for (var element in investments) {
-      out.add(await getAssetDevelopment(interval, element.symbol));
+      out.add(await getAssetDevelopment(interval, element.symbol, refetch));
     }
     return out;
   }
 
   Future<AssetPerformanceContainer> getAssetDevelopment(
-      StockdataInterval interval, String symbol) async {
-    var investments = await _queryHistoricInvestmentData();
+      StockdataInterval interval, String symbol, bool refetch) async {
+    var investments = await _queryHistoricInvestmentData(refetch);
     investments = investments
         .where((element) => element.symbol == symbol)
         .toList()
       ..sort((a, b) => a.time.compareTo(b.time));
 
-    final startOfInterval = getStartOfInterval(interval);
-
-    final investmentBeforeStartOfInterval = investments
-        .where((element) =>
-            element.time.millisecondsSinceEpoch <
-            startOfInterval.millisecondsSinceEpoch)
-        .last;
-
     final stockData = await _queryHistoricStockData(symbol, interval);
-    final assetValueAtStartOfInterval =
-        investmentBeforeStartOfInterval.tokenAmmount * stockData.first.price;
 
-    final investmentsDuringInterval = investments.where((element) =>
-        element.time.millisecondsSinceEpoch >
-        startOfInterval.millisecondsSinceEpoch);
-
-    final investedValueDuringInterval =
-        investmentsDuringInterval.fold<double>(0, (previousValue, element) {
-      if (element.difference > 0) {
-        return previousValue +
-            (getStockValueAtTime(stockData, element.time).price *
-                element.difference);
-      } else {
-        return previousValue -
-            (getStockValueAtTime(stockData, element.time).price *
-                (element.difference * (-1)));
-      }
-    });
-
-    final currentValue = investments.last.tokenAmmount * stockData.last.price;
-    final earnedMoney =
-        (assetValueAtStartOfInterval + investedValueDuringInterval) -
-            currentValue;
-    final differenceInPercent = (((currentValue /
-                    (assetValueAtStartOfInterval +
-                        investedValueDuringInterval)) -
-                1) *
-            (-1)) *
+    final stockPriceChange = ((stockData.first.price - stockData.last.price) /
+            stockData.last.price) *
         100;
+
+    final investValueChange = investments.last.tokenAmmount * stockPriceChange;
+
     return AssetPerformanceContainer(
       symbol: symbol,
       interval: interval,
-      differenceInPercent: differenceInPercent,
-      earnedMoney: earnedMoney,
+      differenceInPercent: stockPriceChange,
+      earnedMoney: investValueChange,
+      absoluteChange: stockData.first.price - stockData.last.price,
     );
   }
 
   Future<BalanceHistoryContainer> getPortfolioValueHistory(
-      StockdataInterval interval) async {
-    final investments = await _queryHistoricInvestmentData();
-    final balance = await _queryHistoricBalanceData();
+      StockdataInterval interval, bool refetch) async {
+    final investments = await _queryHistoricInvestmentData(refetch);
+    var balance = await _queryHistoricBalanceData(refetch);
 
     if (investments.isEmpty &&
         (balance.isEmpty ||
@@ -173,7 +142,7 @@ class PortfolioValueUtil {
     return BalanceHistoryContainer(
         total: cumilatedList,
         inAssets: assetsOnlyList,
-        inCash: balance.last.newBalance,
+        inCash: balance.first.newBalance,
         averagePL: averagePL);
   }
 
@@ -213,16 +182,27 @@ class PortfolioValueUtil {
       List<UserBalanceDatapoint> balanceHistory,
       List<PriceDevelopmentDatapoint> templateList) {
     List<PriceDevelopmentDatapoint> out = [];
-    balanceHistory.sort((a, b) => a.time.compareTo(b.time));
+    //balanceHistory.sort((a, b) => b.time.compareTo(a.time));
+
     for (var templateObj in templateList) {
-      final balanceForThatPoint = balanceHistory
-          .where(
-            (element) =>
-                element.time.millisecondsSinceEpoch <
-                templateObj.time.millisecondsSinceEpoch,
-          )
-          .last
-          .newBalance;
+      final balancesBeforePoint = [];
+
+      for (var balance in balanceHistory) {
+        if (balance.time.toLocal().isBefore(templateObj.time.toLocal())) {
+          balancesBeforePoint.add(balance);
+        }
+      }
+      double balanceForThatPoint;
+      if (balancesBeforePoint.isNotEmpty) {
+        final elements = balanceHistory.where(
+          (element) =>
+              element.time.toLocal().isBefore(templateObj.time.toLocal()),
+        );
+        balanceForThatPoint = elements.first.newBalance;
+      } else {
+        balanceForThatPoint = 0;
+      }
+
       out.add(PriceDevelopmentDatapoint(
           price: balanceForThatPoint, time: templateObj.time));
     }
@@ -239,14 +219,19 @@ class PortfolioValueUtil {
     for (var historicDataObj in historicData) {
       double stockAmmountForThatPoint;
       try {
-        stockAmmountForThatPoint = investments
+        final investmentsBeforThatPoint = <UserassetDatapoint>[];
+
+        for (var investment in investments) {
+          final localTimeInvestment = investment.time.toLocal();
+          final localTimeStockData = historicDataObj.time.toLocal();
+          if (localTimeInvestment.isBefore(localTimeStockData)) {
+            investmentsBeforThatPoint.add(investment);
+          }
+        }
+
+        stockAmmountForThatPoint = investmentsBeforThatPoint
             .where(
               (element) => element.symbol == symbol,
-            )
-            .where(
-              (element) =>
-                  element.time.millisecondsSinceEpoch <
-                  historicDataObj.time.millisecondsSinceEpoch,
             )
             .first
             .tokenAmmount;
@@ -293,19 +278,28 @@ class PortfolioValueUtil {
     return historicData;
   }
 
-  Future<List<UserassetDatapoint>> _queryHistoricInvestmentData() async {
-    List<UserassetDatapoint> historicData =
-        await DataService.getInstance().getUserAssetsHistory().first;
+  Future<List<UserassetDatapoint>> _queryHistoricInvestmentData(
+      bool refetch) async {
+    List<UserassetDatapoint> historicData = await DataService.getInstance()
+        .getUserAssetsHistory(
+            source: refetch ? DataSource.network : DataSource.cache)
+        .first;
     return historicData;
   }
 
-  Future<List<UserassetDatapoint>> _queryCurrentInvestments() async {
-    return DataService.getInstance().getUserAssets().first;
+  Future<List<UserassetDatapoint>> _queryCurrentInvestments(
+      bool refetch) async {
+    return DataService.getInstance()
+        .getUserAssets(source: refetch ? DataSource.network : DataSource.cache)
+        .first;
   }
 
-  Future<List<UserBalanceDatapoint>> _queryHistoricBalanceData() async {
-    List<UserBalanceDatapoint> historicData =
-        await DataService.getInstance().getUserBalanceHistory().first;
+  Future<List<UserBalanceDatapoint>> _queryHistoricBalanceData(
+      bool refetch) async {
+    List<UserBalanceDatapoint> historicData = await DataService.getInstance()
+        .getUserBalanceHistory(
+            source: refetch ? DataSource.network : DataSource.cache)
+        .first;
     return historicData;
   }
 }

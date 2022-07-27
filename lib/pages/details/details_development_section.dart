@@ -61,51 +61,49 @@ class DetailsDevelopmentSection extends HookWidget {
                       ),
                     ),
                     //Ticker and Companyname
-                    SizedBox(
-                      height: 70,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            symbolInfo.data!.displayName,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Color(0xFF909090),
-                              fontWeight: FontWeight.w500,
+                    Expanded(
+                      child: SizedBox(
+                        height: 70,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: 5,
                             ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Container(
-                            constraints:
-                                BoxConstraints(maxWidth: 150, minWidth: 70),
-                            child: Text(
-                              scrubbingData.hasTouch
-                                  ? "${FormattingService.roundDouble(scrubbingData.value, 2).toString()} dUSD"
-                                  : latestPrice.loading
-                                      ? "..."
-                                      : "${FormattingService.roundDouble(latestPrice.data!, 2).toString()} dUSD",
+                            Text(
+                              symbolInfo.data!.displayName,
+                              overflow: TextOverflow.ellipsis,
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: 16,
+                                color: Color(0xFF909090),
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                        ],
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Container(
+                              constraints:
+                                  BoxConstraints(maxWidth: 150, minWidth: 70),
+                              child: Text(
+                                scrubbingData.hasTouch
+                                    ? "${FormattingService.roundDouble(scrubbingData.value, 2).toString()} dUSD"
+                                    : latestPrice.loading
+                                        ? "..."
+                                        : "${FormattingService.roundDouble(latestPrice.data!, 2).toString()} dUSD",
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      flex: 13,
-                      child: Container(),
                     ),
                     SizedBox(
                       height: 70,
@@ -135,10 +133,14 @@ class DetailsDevelopmentSection extends HookWidget {
                                           StockdataInterval.twentyFourHours
                                       ? DateFormat("hh:mm").format(
                                           DateTime.fromMillisecondsSinceEpoch(
-                                              scrubbingData.time.round()))
+                                          scrubbingData.time.round(),
+                                          isUtc: false,
+                                        ).toLocal())
                                       : DateFormat("dd.MM.yyyy").format(
                                           DateTime.fromMillisecondsSinceEpoch(
-                                              scrubbingData.time.round()))
+                                          scrubbingData.time.round(),
+                                          isUtc: false,
+                                        ).toLocal())
                                   : interval.value.toString().toUpperCase(),
                               style: TextStyle(
                                 fontSize: 16,
