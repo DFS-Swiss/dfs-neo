@@ -6,7 +6,7 @@ import 'package:neo/enums/app_state.dart';
 import 'package:neo/service_locator.dart';
 import 'package:neo/services/app_state_service.dart';
 import 'package:neo/services/authentication_service.dart';
-import 'package:neo/widgets/buttons/outline_button.dart';
+import 'package:neo/widgets/buttons/branded_outline_button.dart';
 import 'package:neo/widgets/password_validation_indicator.dart';
 
 import '../../widgets/branded_textfield.dart';
@@ -207,7 +207,7 @@ class _ForgotPasswordPhase1 extends HookWidget {
           Row(
             children: [
               Expanded(
-                child: OutlineBrandedButton(
+                child: BrandedOutlineButton(
                   onPressed: () =>
                       locator<AppStateService>().state = AppState.signedOut,
                   child: Text(
