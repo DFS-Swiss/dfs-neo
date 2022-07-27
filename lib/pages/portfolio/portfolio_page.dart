@@ -109,11 +109,11 @@ class Portfolio extends HookWidget {
           GenericHeadline(
             title: AppLocalizations.of(context)!.port_overview_title,
           ),
-          DifferenceCard(interval: interval.value),
+          DifferenceCard(),
           SizedBox(
             height: 28,
           ),
-          BestWorstCard(interval: interval.value),
+          BestWorstCard(),
           GenericHeadline(
             title: AppLocalizations.of(context)!.port_allocation_title,
           ),

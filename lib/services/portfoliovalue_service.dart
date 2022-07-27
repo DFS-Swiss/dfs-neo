@@ -56,57 +56,27 @@ class PortfolioValueUtil {
         .toList()
       ..sort((a, b) => a.time.compareTo(b.time));
 
-    final startOfInterval = getStartOfInterval(interval);
-
-    final investmentBeforeStartOfInterval = investments.where((element) =>
-        element.time.millisecondsSinceEpoch <
-        startOfInterval.millisecondsSinceEpoch);
-
     final stockData = await _queryHistoricStockData(symbol, interval);
-    final assetValueAtStartOfInterval = investmentBeforeStartOfInterval.isEmpty
-        ? 0
-        : investmentBeforeStartOfInterval.last.tokenAmmount *
-            stockData.first.price;
 
-    final investmentsDuringInterval = investments.where((element) =>
-        element.time.millisecondsSinceEpoch >
-        startOfInterval.millisecondsSinceEpoch);
-
-    final investedValueDuringInterval =
-        investmentsDuringInterval.fold<double>(0, (previousValue, element) {
-      if (element.difference > 0) {
-        return previousValue +
-            (getStockValueAtTime(stockData, element.time).price *
-                element.difference);
-      } else {
-        return previousValue -
-            (getStockValueAtTime(stockData, element.time).price *
-                (element.difference * (-1)));
-      }
-    });
-
-    final currentValue = investments.last.tokenAmmount * stockData.last.price;
-    final earnedMoney =
-        (assetValueAtStartOfInterval + investedValueDuringInterval) -
-            currentValue;
-    final differenceInPercent = (((currentValue /
-                    (assetValueAtStartOfInterval +
-                        investedValueDuringInterval)) -
-                1) *
-            (-1)) *
+    final stockPriceChange = ((stockData.first.price - stockData.last.price) /
+            stockData.last.price) *
         100;
+
+    final investValueChange = investments.last.tokenAmmount * stockPriceChange;
+
     return AssetPerformanceContainer(
       symbol: symbol,
       interval: interval,
-      differenceInPercent: differenceInPercent,
-      earnedMoney: earnedMoney,
+      differenceInPercent: stockPriceChange,
+      earnedMoney: investValueChange,
+      absoluteChange: stockData.first.price - stockData.last.price,
     );
   }
 
   Future<BalanceHistoryContainer> getPortfolioValueHistory(
       StockdataInterval interval, bool refetch) async {
     final investments = await _queryHistoricInvestmentData(refetch);
-    final balance = await _queryHistoricBalanceData(refetch);
+    var balance = await _queryHistoricBalanceData(refetch);
 
     if (investments.isEmpty &&
         (balance.isEmpty ||
@@ -215,6 +185,7 @@ class PortfolioValueUtil {
       List<PriceDevelopmentDatapoint> templateList) {
     List<PriceDevelopmentDatapoint> out = [];
     //balanceHistory.sort((a, b) => b.time.compareTo(a.time));
+
     for (var templateObj in templateList) {
       final balancesBeforePoint = [];
 
@@ -250,14 +221,19 @@ class PortfolioValueUtil {
     for (var historicDataObj in historicData) {
       double stockAmmountForThatPoint;
       try {
-        stockAmmountForThatPoint = investments
+        final investmentsBeforThatPoint = <UserassetDatapoint>[];
+
+        for (var investment in investments) {
+          final localTimeInvestment = investment.time.toLocal();
+          final localTimeStockData = historicDataObj.time.toLocal();
+          if (localTimeInvestment.isBefore(localTimeStockData)) {
+            investmentsBeforThatPoint.add(investment);
+          }
+        }
+
+        stockAmmountForThatPoint = investmentsBeforThatPoint
             .where(
               (element) => element.symbol == symbol,
-            )
-            .where(
-              (element) =>
-                  element.time.millisecondsSinceEpoch <
-                  historicDataObj.time.millisecondsSinceEpoch,
             )
             .first
             .tokenAmmount;

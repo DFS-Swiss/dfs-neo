@@ -37,33 +37,41 @@ class StockInvestmentUtil {
     final stockData = await StockdataService.getInstance()
         .getStockdata(symbol, StockdataInterval.oneYear)
         .first;
+
+    final latestPrice =
+        await StockdataService.getInstance().getLatestPrice(symbol).first;
     try {
       final investments =
-          await DataService.getInstance().getUserAssetsForSymbol(symbol).first;
+          (await DataService.getInstance().getUserAssetsHistory().first)
+              .where((element) => element.symbol == symbol)
+              .toList();
       if (stockData.isEmpty || investments.isEmpty) {
         return InvestmentData(
-            todayIncrease: 0,
-            todayIncreasePercentage: 0,
-            performance: 0,
-            performancePercentage: 0,
-            buyIn: 0,
-            quantity: 0,
-            value: 0);
+          todayIncrease: 0,
+          todayIncreasePercentage: 0,
+          performance: 0,
+          performancePercentage: 0,
+          buyIn: 0,
+          quantity: 0,
+          value: 0,
+        );
       }
 
       double totalTokenAmount = 0;
       double totalValue = 0;
       for (var element in investments) {
-        totalValue += element.currentValue * element.tokenAmmount;
-        totalTokenAmount += element.tokenAmmount;
+        if (element.difference > 0) {
+          totalValue += element.currentValue * element.difference;
+          totalTokenAmount += element.difference;
+        }
       }
 
-      final performancePercentage =
-          await _calculateAverageProfitLossForAllInvestments(investments);
-      final todayIncreasPercentage = (await PortfolioValueUtil()
-              .getAssetDevelopment(
-                  StockdataInterval.twentyFourHours, symbol, refetch))
-          .differenceInPercent;
+      final performance = _calculateStockPerformance(investments, latestPrice);
+      final todayChange = (await PortfolioValueUtil().getAssetDevelopment(
+        StockdataInterval.twentyFourHours,
+        symbol,
+        refetch,
+      ));
       /*await _calculateAverageProfitLossForAllInvestments(investments
               .where((element) => element.time.isAfter(DateTime(
                   DateTime.now().year,
@@ -71,14 +79,17 @@ class StockInvestmentUtil {
                   DateTime.now().day)))
               .toList());*/
 
-      return InvestmentData(
-          todayIncrease: todayIncreasPercentage / 100 * totalValue,
-          todayIncreasePercentage: todayIncreasPercentage,
-          performance: performancePercentage / 100 * totalValue,
-          performancePercentage: performancePercentage,
-          buyIn: totalValue / totalTokenAmount,
-          quantity: totalTokenAmount,
-          value: totalValue);
+      final out = InvestmentData(
+        todayIncrease:
+            todayChange.absoluteChange * investments.first.tokenAmmount,
+        todayIncreasePercentage: todayChange.differenceInPercent,
+        performance: performance[0],
+        performancePercentage: performance[1],
+        buyIn: totalValue / totalTokenAmount,
+        quantity: investments.first.tokenAmmount,
+        value: latestPrice.price * investments.first.tokenAmmount,
+      );
+      return out;
     } catch (e) {
       return InvestmentData(
           todayIncrease: 0,
@@ -90,6 +101,19 @@ class StockInvestmentUtil {
           hasNoInvestments: true,
           value: 0);
     }
+  }
+
+  List<double> _calculateStockPerformance(
+      List<UserassetDatapoint> investments, StockdataDatapoint lastetPrice) {
+    final totalAmountSpend = investments.fold<double>(
+        0,
+        (previousValue, element) =>
+            previousValue += element.currentValue * element.difference);
+    final currentValue = investments.first.tokenAmmount * lastetPrice.price;
+
+    final absoluteChange = currentValue - totalAmountSpend;
+    final percentChange = absoluteChange / totalAmountSpend;
+    return [absoluteChange, percentChange * 100];
   }
 
   Future<double> _calculateAverageProfitLossForAllInvestments(
