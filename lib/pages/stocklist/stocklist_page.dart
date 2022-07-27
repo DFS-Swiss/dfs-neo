@@ -107,25 +107,6 @@ class StockList extends HookWidget {
                             context,
                             MaterialPageRoute(
                               builder: (BuildContext context) => DetailsPage(
-                                token: "dGME",
-                                key: UniqueKey(),
-                              ),
-                            ),
-                          );
-                        },
-                        child: FeaturedStockCard(
-                          token: "dGME",
-                        ),
-                      ),
-                      SizedBox(
-                        width: 16,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (BuildContext context) => DetailsPage(
                                 token: "dBABA",
                                 key: UniqueKey(),
                               ),
@@ -134,25 +115,6 @@ class StockList extends HookWidget {
                         },
                         child: FeaturedStockCard(
                           token: "dBABA",
-                        ),
-                      ),
-                      SizedBox(
-                        width: 16,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (BuildContext context) => DetailsPage(
-                                token: "dGOOGL",
-                                key: UniqueKey(),
-                              ),
-                            ),
-                          );
-                        },
-                        child: FeaturedStockCard(
-                          token: "dGOOGL",
                         ),
                       ),
                       SizedBox(
