@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:neo/hooks/use_userassets.dart';
+import 'package:neo/pages/stocklist/stocklist_page.dart';
 
 import '../../style/theme.dart';
 import '../../widgets/cards/investment_card.dart';
@@ -25,10 +26,16 @@ class CurrentInvestmentsSection extends HookWidget {
                 AppLocalizations.of(context)!.dash_currinv_title,
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
-              Text(
-                AppLocalizations.of(context)!.dash_view,
-                style: NeoTheme.of(context)!.linkTextStyle,
-              )
+              GestureDetector(
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => StockList(position: 1, pushedPage: true,)),
+                ),
+                child: Text(
+                  AppLocalizations.of(context)!.dash_view,
+                  style: NeoTheme.of(context)!.linkTextStyle,
+                ),
+              ),
             ],
           ),
           SizedBox(

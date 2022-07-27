@@ -32,7 +32,7 @@ class MainNavigation extends HookWidget {
         case 1:
           return Portfolio();
         case 2:
-          return StockList();
+          return StockList(position: 0);
         case 3:
           return AccountPage();
         default:
