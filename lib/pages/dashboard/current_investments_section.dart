@@ -26,7 +26,7 @@ class CurrentInvestmentsSection extends HookWidget {
                 AppLocalizations.of(context)!.dash_currinv_title,
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
-              !assests.loading && assests.data!.isEmpty ? GestureDetector(
+              !assests.loading && assests.data!.isNotEmpty ? GestureDetector(
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(
