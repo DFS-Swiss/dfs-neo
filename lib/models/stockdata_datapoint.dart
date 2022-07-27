@@ -33,7 +33,7 @@ class StockdataDatapoint {
 
   factory StockdataDatapoint.fromMap(Map<String, dynamic> map) {
     return StockdataDatapoint(
-      DateTime.parse(map['time']),
+      DateTime.parse(map['time']).add(DateTime.now().timeZoneOffset),
       map['price']?.toDouble() ?? 0.0,
       map['symbol'] ?? '',
     );

@@ -52,6 +52,7 @@
     "dash_today": "Heute",
     "dash_available": "Verfügbar",
     "dash_locked_oo": "Gesperrt für offene Positionen",
+    "dash_currently_invested": "Investiert",
     "dash_deposit": "Guthaben aufladen und mit dem Handel beginnen",
     "dash_oo": "Offene Positionen",
     "dash_view": "Mehr anzeigen",
@@ -184,7 +185,6 @@
     "details_about":"Über dieses dAsset",
     "details_public_sentiment":"New Index Public Sentiment",
     "details_last_week_sentiment":"Letzte Woche",
-    "alert_deposit_limit":"Es können nicht mehr als 10000$ auf einmal eingezahlt werden",
     "new_order_sell_success_error": "Es ist ein Problem aufgetreten",
     "new_order_sell_success_title": "Erfolgreich",
     "new_order_sell_success": "wurde erfolgreich verkauft",
@@ -206,5 +206,11 @@
     "change_password_new_repeat": "Neues Passwort wiederholen",
     "change_password_save": "Speichern",
     "change_password_error": "Fehler",
-    "change_password_error_wrong_pw": "Das alte Passwort ist falsch"
+    "change_password_error_wrong_pw": "Das alte Passwort ist falsch",
+    "forgot_password_continue": "Zurücksetzen",
+    "forgot_password_user_not_found": "Benutzer nicht gefunden",
+    "forgot_password_phase_2_desc": "Bitte gib den Code den du per Email erhalten hast und ein neues Passwort ein",
+    "forgot_password_code": "Code",
+    "forgot_password_code_desc": "Gib den Code aus der Email ein",
+    "forgot_password_title": "Passwort zurücksetzen"
 }

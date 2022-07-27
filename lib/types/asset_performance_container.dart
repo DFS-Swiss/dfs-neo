@@ -5,10 +5,11 @@ class AssetPerformanceContainer {
   StockdataInterval interval;
   double earnedMoney;
   double differenceInPercent;
-  AssetPerformanceContainer({
-    required this.symbol,
-    required this.interval,
-    required this.earnedMoney,
-    required this.differenceInPercent,
-  });
+  double absoluteChange;
+  AssetPerformanceContainer(
+      {required this.symbol,
+      required this.interval,
+      required this.earnedMoney,
+      required this.differenceInPercent,
+      required this.absoluteChange});
 }

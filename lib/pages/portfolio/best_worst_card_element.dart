@@ -57,7 +57,7 @@ class BestWorstCardElement extends HookWidget {
                   NumberFormat.currency(symbol: "dUSD ")
                       .format(assetDevelopment.earnedMoney),
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 12,
                     color: assetDevelopment.earnedMoney > 0
                         ? NeoTheme.of(context)!.positiveColor
                         : NeoTheme.of(context)!.negativeColor,

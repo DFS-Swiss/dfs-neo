@@ -7,6 +7,7 @@ import 'package:neo/services/rest_service.dart';
 import 'package:neo/types/restdata_storage_container.dart';
 import 'package:rxdart/subjects.dart';
 
+import '../enums/data_source.dart';
 import '../models/user_balance_datapoint.dart';
 
 class DataService extends ChangeNotifier {
@@ -28,6 +29,10 @@ class DataService extends ChangeNotifier {
 
   final BehaviorSubject<Map<String, RestdataStorageContainer>> _dataStore =
       BehaviorSubject.seeded({});
+
+  clearCache() {
+    _dataStore.add({});
+  }
 
   registerUserDataHandler(String entity, List<Function()> handler) {
     _userDataHandlerRegister[entity] = handler;
@@ -54,9 +59,10 @@ class DataService extends ChangeNotifier {
     return null;
   }
 
-  Stream<UserModel> getUserData() async* {
+  Stream<UserModel> getUserData({DataSource source = DataSource.cache}) async* {
     if (_dataStore.value["user"] != null &&
-        !_dataStore.value["user"]!.isStale()) {
+        !_dataStore.value["user"]!.isStale() &&
+        source == DataSource.cache) {
       yield _dataStore.value["user"]!.data as UserModel;
     } else {
       yield await RESTService.getInstance().getUserData();
@@ -68,9 +74,11 @@ class DataService extends ChangeNotifier {
     });
   }
 
-  Stream<StockdataDocument> getStockInfo(String symbol) async* {
+  Stream<StockdataDocument> getStockInfo(String symbol,
+      {DataSource source = DataSource.cache}) async* {
     if (_dataStore.value["symbol/$symbol"] != null &&
-        !_dataStore.value["symbol/$symbol"]!.isStale()) {
+        !_dataStore.value["symbol/$symbol"]!.isStale() &&
+        source == DataSource.cache) {
       yield _dataStore.value["symbol/$symbol"]!.data as StockdataDocument;
     } else {
       yield await RESTService.getInstance().getStockInfo(symbol);
@@ -82,9 +90,11 @@ class DataService extends ChangeNotifier {
     });
   }
 
-  Stream<List<StockdataDocument>> getAvailableStocks() async* {
+  Stream<List<StockdataDocument>> getAvailableStocks(
+      {DataSource source = DataSource.cache}) async* {
     if (_dataStore.value["symbols"] != null &&
-        !_dataStore.value["symbols"]!.isStale()) {
+        !_dataStore.value["symbols"]!.isStale() &&
+        source == DataSource.cache) {
       yield _dataStore.value["symbols"]!.data as List<StockdataDocument>;
     } else {
       yield await RESTService.getInstance().getAvailiableStocks();
@@ -96,9 +106,11 @@ class DataService extends ChangeNotifier {
     });
   }
 
-  Stream<List<UserassetDatapoint>> getUserAssets() async* {
+  Stream<List<UserassetDatapoint>> getUserAssets(
+      {DataSource source = DataSource.cache}) async* {
     if (_dataStore.value["investments"] != null &&
-        !_dataStore.value["investments"]!.isStale()) {
+        !_dataStore.value["investments"]!.isStale() &&
+        source == DataSource.cache) {
       yield _dataStore.value["investments"]!.data as List<UserassetDatapoint>;
     } else {
       yield await RESTService.getInstance().getUserAssets();
@@ -110,9 +122,11 @@ class DataService extends ChangeNotifier {
     });
   }
 
-  Stream<List<UserassetDatapoint>> getUserAssetsHistory() async* {
+  Stream<List<UserassetDatapoint>> getUserAssetsHistory(
+      {DataSource source = DataSource.cache}) async* {
     if (_dataStore.value["investments/history"] != null &&
-        !_dataStore.value["investments/history"]!.isStale()) {
+        !_dataStore.value["investments/history"]!.isStale() &&
+        source == DataSource.cache) {
       yield _dataStore.value["investments/history"]!.data
           as List<UserassetDatapoint>;
     } else {
@@ -125,9 +139,11 @@ class DataService extends ChangeNotifier {
     });
   }
 
-  Stream<List<UserBalanceDatapoint>> getUserBalanceHistory() async* {
+  Stream<List<UserBalanceDatapoint>> getUserBalanceHistory(
+      {DataSource source = DataSource.cache}) async* {
     if (_dataStore.value["balance/history"] != null &&
-        !_dataStore.value["balance/history"]!.isStale()) {
+        !_dataStore.value["balance/history"]!.isStale() &&
+        source == DataSource.cache) {
       yield _dataStore.value["balance/history"]!.data
           as List<UserBalanceDatapoint>;
     } else {
@@ -140,9 +156,11 @@ class DataService extends ChangeNotifier {
     });
   }
 
-  Stream<UserBalanceDatapoint> getUserBalance() async* {
+  Stream<UserBalanceDatapoint> getUserBalance(
+      {DataSource source = DataSource.cache}) async* {
     if (_dataStore.value["balance"] != null &&
-        !_dataStore.value["balance"]!.isStale()) {
+        !_dataStore.value["balance"]!.isStale() &&
+        source == DataSource.cache) {
       yield _dataStore.value["balance"]!.data as UserBalanceDatapoint;
     } else {
       yield await RESTService.getInstance().getBalance();
@@ -166,7 +184,8 @@ class DataService extends ChangeNotifier {
     return await RESTService.getInstance().addBalance(amount);
   }
 
-  Stream<List<UserassetDatapoint>> getUserAssetsForSymbol(String symbol) async* {
+  Stream<List<UserassetDatapoint>> getUserAssetsForSymbol(
+      String symbol) async* {
     yield await RESTService.getInstance().getAssetForSymbol(symbol);
   }
 }

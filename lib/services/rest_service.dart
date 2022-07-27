@@ -216,7 +216,9 @@ class RESTService extends ChangeNotifier {
 
         try {
           data = (response.data["body"]["items"] as List<dynamic>)
-              .map((e) => StockdataDocument.fromMap(e))
+              .map((e) => 
+              StockdataDocument.fromMap(e)
+              )
               .toList();
         } catch (e) {
           throw "Parsing error: ${e.toString()}";

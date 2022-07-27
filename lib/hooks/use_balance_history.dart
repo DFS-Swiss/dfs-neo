@@ -11,15 +11,18 @@ DataContainer<BalanceHistoryContainer> useBalanceHistory(
     StockdataInterval interval) {
   final state =
       useState<DataContainer<BalanceHistoryContainer>>(DataContainer.waiting());
-  useEffect(() {
-    handleFetch() {
-      PortfolioValueUtil().getPortfolioValueHistory(interval).then(
-        (value) {
-          state.value = DataContainer(data: value);
-        },
-      );
-    }
+  handleFetch() {
+    PortfolioValueUtil()
+        .getPortfolioValueHistory(
+            interval, state.value.data == null ? false : true)
+        .then(
+      (value) {
+        state.value = DataContainer(data: value);
+      },
+    );
+  }
 
+  useEffect(() {
     StockdataService.getInstance().addListener(handleFetch);
     DataService.getInstance().addListener(handleFetch);
     handleFetch();

@@ -25,7 +25,6 @@ class AuthPageWrapper extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final authState = useAppState();
-
     double getCurrentContainerHeight(BuildContext context) {
       double contentHeight;
       if (authState == AppState.newPasswordRequired) {

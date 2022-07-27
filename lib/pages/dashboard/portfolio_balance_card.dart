@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:neo/hooks/use_balance_history.dart';
+import 'package:neo/hooks/use_chart_scrubbing_state.dart';
 import 'package:neo/pages/dashboard/portfolio_development_chart.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
 import 'package:neo/widgets/hideable_text.dart';
@@ -13,11 +15,16 @@ import 'package:neo/services/formatting_service.dart';
 
 class PortfolioBalanceCard extends HookWidget {
   final StockdataInterval? interval;
-  const PortfolioBalanceCard( {Key? key, this.interval,}) : super(key: key);
+  const PortfolioBalanceCard({
+    Key? key,
+    this.interval,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final balanceHistory = useBalanceHistory(interval ?? StockdataInterval.twentyFourHours);
+    final balanceHistory =
+        useBalanceHistory(interval ?? StockdataInterval.twentyFourHours);
+    final scrubbingData = useChartScrubbingState();
     return !balanceHistory.loading
         ? Container(
             height: 270,
@@ -44,7 +51,9 @@ class PortfolioBalanceCard extends HookWidget {
                             height: 5,
                           ),
                           HideableText(
-                            "${FormattingService.roundDouble(balanceHistory.data!.portfolioIsEmpty ? 0 : balanceHistory.data!.total.first.price, 2)} USD",
+                            scrubbingData.hasTouch
+                                ? "${FormattingService.roundDouble(scrubbingData.value, 2)} dUSD"
+                                : "${FormattingService.roundDouble(balanceHistory.data!.portfolioIsEmpty ? 0 : balanceHistory.data!.total.first.price, 2)} dUSD",
                             maxLines: 1,
                             style: GoogleFonts.urbanist(
                               fontSize: 20,
@@ -55,6 +64,7 @@ class PortfolioBalanceCard extends HookWidget {
                       ),
                     ),
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Row(
                           children: [
@@ -72,28 +82,53 @@ class PortfolioBalanceCard extends HookWidget {
                             )
                           ],
                         ),
-                        Row(
-                          children: [
-                            Text(
-                              AppLocalizations.of(context)!.dash_today,
-                              style: Theme.of(context).textTheme.labelSmall,
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            SmallDevelopmentIndicator(
-                              positive:
-                                  balanceHistory.data!.inAssets.first.price >
-                                      balanceHistory.data!.inAssets.last.price,
-                              changePercentage: balanceHistory
-                                      .data!.hasNoInvestments
-                                  ? 0
-                                  : FormattingService.calculatepercent(
-                                      balanceHistory.data!.inAssets.first.price,
-                                      balanceHistory.data!.inAssets.last.price,
+                        SizedBox(
+                          height: 25,
+                          child: !scrubbingData.hasTouch
+                              ? Row(
+                                  children: [
+                                    Text(
+                                      (interval ??
+                                              StockdataInterval.twentyFourHours)
+                                          .toString()
+                                          .toUpperCase(),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelSmall,
                                     ),
-                            )
-                          ],
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    SmallDevelopmentIndicator(
+                                      positive: balanceHistory
+                                              .data!.total.first.price >
+                                          balanceHistory.data!.total.last.price,
+                                      changePercentage: balanceHistory
+                                              .data!.hasNoInvestments
+                                          ? 0
+                                          : FormattingService.calculatepercent(
+                                              balanceHistory
+                                                  .data!.total.first.price,
+                                              balanceHistory.data!.total
+                                                  .lastWhere((element) =>
+                                                      element.price > 0)
+                                                  .price,
+                                            ),
+                                    )
+                                  ],
+                                )
+                              : Text(
+                                  DateFormat("hh:mm").format(
+                                      DateTime.fromMillisecondsSinceEpoch(
+                                    scrubbingData.time.round(),
+                                    isUtc: false,
+                                  ).toLocal()),
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xFF909090),
+                                  ),
+                                ),
                         )
                       ],
                     ),
@@ -116,14 +151,14 @@ class PortfolioBalanceCard extends HookWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         HideableText(
-                          "${FormattingService.roundDouble(balanceHistory.data!.inCash, 2)} USD",
+                          "${FormattingService.roundDouble(balanceHistory.data!.inCash, 2)} dUSD",
                           style: Theme.of(context).textTheme.labelMedium,
                         ),
                         SizedBox(
                           height: 5,
                         ),
                         HideableText(
-                          "${FormattingService.roundDouble(balanceHistory.data!.inAssets.first.price, 2)} USD",
+                          "${FormattingService.roundDouble(balanceHistory.data!.inAssets.first.price, 2)} dUSD",
                           style: Theme.of(context).textTheme.labelMedium,
                         ),
                       ],
@@ -142,7 +177,7 @@ class PortfolioBalanceCard extends HookWidget {
                           height: 5,
                         ),
                         Text(
-                          AppLocalizations.of(context)!.dash_locked_oo,
+                          AppLocalizations.of(context)!.dash_currently_invested,
                           style: Theme.of(context).textTheme.labelSmall,
                         ),
                       ],

@@ -22,7 +22,7 @@ class PortfolioDevelopmentChart extends StatelessWidget {
             )
           : LineChart(
               dashboardPortfolio(
-                data.inAssets
+                data.total
                     .map(
                       (e) => FlSpot(
                         e.time.millisecondsSinceEpoch.toDouble(),
@@ -30,7 +30,7 @@ class PortfolioDevelopmentChart extends StatelessWidget {
                       ),
                     )
                     .toList(),
-                data.inAssets.first.price < data.inAssets.last.price
+                data.inAssets.first.price < data.total.last.price
                     ? true
                     : false,
               ),

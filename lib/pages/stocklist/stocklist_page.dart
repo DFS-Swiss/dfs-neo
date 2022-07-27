@@ -18,7 +18,7 @@ class StockList extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final switchPosition = useState(0);
+    final switchPosition = useState<int>(0);
     final selectedFilters = useState<List<int>>([]);
     final availableStocks = useAvailableStocks();
     final searchPattern = useState<String?>(null);
@@ -44,6 +44,10 @@ class StockList extends HookWidget {
             },
           ),
         ],
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_outlined, color: Colors.black),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
       ),
       body: ListView(
         addAutomaticKeepAlives: true,
@@ -78,18 +82,63 @@ class StockList extends HookWidget {
                   child: ListView(
                     addAutomaticKeepAlives: true,
                     scrollDirection: Axis.horizontal,
-                    children: const [
+                    children: [
                       SizedBox(
                         width: 24,
                       ),
-                      FeaturedStockCard(
-                        token: "dAAPL",
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (BuildContext context) => DetailsPage(
+                                token: "dAAPL",
+                                key: UniqueKey(),
+                              ),
+                            ),
+                          );
+                        },
+                        child: FeaturedStockCard(
+                          token: "dAAPL",
+                        ),
                       ),
                       SizedBox(
                         width: 16,
                       ),
-                      FeaturedStockCard(
-                        token: "dGME",
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (BuildContext context) => DetailsPage(
+                                token: "dBABA",
+                                key: UniqueKey(),
+                              ),
+                            ),
+                          );
+                        },
+                        child: FeaturedStockCard(
+                          token: "dBABA",
+                        ),
+                      ),
+                      SizedBox(
+                        width: 16,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (BuildContext context) => DetailsPage(
+                                token: "dPLTR",
+                                key: UniqueKey(),
+                              ),
+                            ),
+                          );
+                        },
+                        child: FeaturedStockCard(
+                          token: "dPLTR",
+                        ),
                       ),
                       SizedBox(
                         width: 16,

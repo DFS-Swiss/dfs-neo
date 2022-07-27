@@ -33,6 +33,10 @@ class StockdataService extends ChangeNotifier {
     return null;
   }
 
+  clearCache() {
+    _dataStore.add({});
+  }
+
   Stream<List<StockdataDatapoint>> getStockdata(
       String symbol, StockdataInterval interval) async* {
     if (_dataStore.value[symbol] != null) {

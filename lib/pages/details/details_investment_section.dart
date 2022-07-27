@@ -22,7 +22,7 @@ class DetailsInvestmentsSection extends HookWidget {
   Widget build(BuildContext context) {
     final stockDataToday =
         useStockdata(token, StockdataInterval.twentyFourHours);
-    final stockDataAllTime = useStockdata(token, StockdataInterval.oneYear);
+    //final stockDataAllTime = useStockdata(token, StockdataInterval.oneYear);
     final investmentData = useUserAssetsForSymbol(token);
     final userInvestments = useUserassets();
 
@@ -31,8 +31,8 @@ class DetailsInvestmentsSection extends HookWidget {
               .where((element) => element.symbol == symbol)
               .isNotEmpty &&
           !investmentData.loading &&
-          !stockDataToday.loading &&
-          !stockDataAllTime.loading;
+          !stockDataToday.loading;
+      //&& !stockDataAllTime.loading;
     }
 
     bool showNothing() {

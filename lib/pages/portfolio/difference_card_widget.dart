@@ -8,33 +8,12 @@ import 'package:neo/widgets/hideable_text.dart';
 import '../../hooks/use_balance_history.dart';
 
 class DifferenceCard extends HookWidget {
-  final StockdataInterval interval;
-  const DifferenceCard({required this.interval, Key? key}) : super(key: key);
+  const DifferenceCard({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final balanceHistory = useBalanceHistory(interval);
+    final balanceHistory = useBalanceHistory(StockdataInterval.twentyFourHours);
 
-    late final String title;
-    switch (interval) {
-      case StockdataInterval.twentyFourHours:
-        title = AppLocalizations.of(context)!.port_overview_difday;
-        break;
-      case StockdataInterval.mtd:
-        title = AppLocalizations.of(context)!.port_overview_difmtd;
-        break;
-      case StockdataInterval.ytd:
-        title = AppLocalizations.of(context)!.port_overview_difytd;
-        break;
-      case StockdataInterval.oneYear:
-        title = AppLocalizations.of(context)!.port_overview_difyear;
-        break;
-      case StockdataInterval.twoYears:
-        title = AppLocalizations.of(context)!.port_overview_diflife;
-        break;
-
-      default:
-    }
     return Padding(
       padding: const EdgeInsets.only(left: 20, right: 20),
       child: IntrinsicHeight(
@@ -45,7 +24,8 @@ class DifferenceCard extends HookWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(title, style: Theme.of(context).textTheme.bodySmall),
+                  Text(AppLocalizations.of(context)!.port_overview_difday,
+                      style: Theme.of(context).textTheme.bodySmall),
                   SizedBox(
                     height: 12,
                   ),
