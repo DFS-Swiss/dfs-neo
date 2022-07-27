@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:neo/hooks/use_balance.dart';
 import 'package:neo/hooks/use_balance_history.dart';
 import 'package:neo/pages/dashboard/portfolio_development_chart.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
@@ -23,7 +22,7 @@ class PortfolioBalanceCard extends HookWidget {
   Widget build(BuildContext context) {
     final balanceHistory =
         useBalanceHistory(interval ?? StockdataInterval.twentyFourHours);
-    return !balanceHistory.loading 
+    return !balanceHistory.loading
         ? Container(
             height: 270,
             decoration: BoxDecoration(

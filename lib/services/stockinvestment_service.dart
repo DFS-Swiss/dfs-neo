@@ -116,44 +116,6 @@ class StockInvestmentUtil {
     return [absoluteChange, percentChange * 100];
   }
 
-  Future<double> _calculateAverageProfitLossForAllInvestments(
-      List<UserassetDatapoint> investments) async {
-    if (investments.isEmpty) return 0;
-    Map<String, bool> distinctSymbols = {};
-    for (var investment in investments) {
-      distinctSymbols[investment.symbol] = true;
-    }
-    double total = 0;
-    for (var distinctSymbol in distinctSymbols.entries) {
-      final price = await _queryCurrentStockData(distinctSymbol.key);
-      total += _calculateAverageProfitLoss(
-        investments
-            .where((element) => element.symbol == distinctSymbol.key)
-            .toList(),
-        price,
-      );
-    }
-    return total / distinctSymbols.length;
-  }
-
-  Future<double> _queryCurrentStockData(String symbol) async {
-    return (await StockdataService.getInstance().getLatestPrice(symbol).first)
-        .price;
-  }
-
-  double _calculateAverageProfitLoss(
-      List<UserassetDatapoint> relevantInvestments, double currentPrice) {
-    List<double> profitLoss = [];
-    for (var investment in relevantInvestments) {
-      profitLoss.add(investment.currentValue - currentPrice);
-    }
-    double total = 0;
-    for (var pl in profitLoss) {
-      total += pl;
-    }
-    return (total / profitLoss.length) / 100;
-  }
-
   double calculateDailyIncrease(List<StockdataDatapoint> stockData,
       List<UserassetDatapoint> investments) {
     double dailyIncrease = 0.0;
