@@ -26,7 +26,7 @@ class CurrentInvestmentsSection extends HookWidget {
                 AppLocalizations.of(context)!.dash_currinv_title,
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
-              GestureDetector(
+              !assests.loading && assests.data!.isEmpty ? GestureDetector(
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -36,7 +36,7 @@ class CurrentInvestmentsSection extends HookWidget {
                   AppLocalizations.of(context)!.dash_view,
                   style: NeoTheme.of(context)!.linkTextStyle,
                 ),
-              ),
+              ): Container()
             ],
           ),
           SizedBox(
