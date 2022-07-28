@@ -13,6 +13,8 @@ import 'package:neo/widgets/genericheadline_widget.dart';
 import 'package:neo/widgets/cards/tradablestockcard_widget.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../information/feature_not_implemented_page.dart';
+
 class StockList extends HookWidget {
   const StockList({Key? key}) : super(key: key);
 
@@ -40,14 +42,14 @@ class StockList extends HookWidget {
           AppBarActionButton(
             icon: Icons.notifications_none,
             callback: () {
-              print("Tapped notifications");
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const FeatureNotImplemented()),
+              );
             },
           ),
         ],
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_outlined, color: Colors.black),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
       ),
       body: ListView(
         addAutomaticKeepAlives: true,

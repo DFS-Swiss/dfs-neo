@@ -3,6 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../style/theme.dart';
 import '../../widgets/cards/recently_closed_order_card.dart';
+import '../information/feature_not_implemented_dialog.dart';
 
 class RecentlyClosedSection extends StatelessWidget {
   const RecentlyClosedSection({Key? key}) : super(key: key);
@@ -20,9 +21,19 @@ class RecentlyClosedSection extends StatelessWidget {
                 AppLocalizations.of(context)!.dash_rec_title,
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
-              Text(
-                AppLocalizations.of(context)!.dash_view,
-                style: NeoTheme.of(context)!.linkTextStyle,
+              GestureDetector(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return FeatureNotImplementedDialog();
+                    },
+                  );
+                },
+                child: Text(
+                  AppLocalizations.of(context)!.dash_view,
+                  style: NeoTheme.of(context)!.linkTextStyle,
+                ),
               )
             ],
           ),

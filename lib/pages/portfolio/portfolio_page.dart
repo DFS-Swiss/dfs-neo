@@ -13,6 +13,7 @@ import 'package:neo/widgets/buttons/branded_button.dart';
 import 'package:neo/widgets/genericheadline_widget.dart';
 
 import '../../widgets/buttons/branded_outline_button.dart';
+import '../information/feature_not_implemented_page.dart';
 import 'current_investments_widget.dart';
 import 'distribution_widget.dart';
 
@@ -22,8 +23,7 @@ class Portfolio extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final timeFilter = useState<int>(0);
-    final interval =
-        useState<StockdataInterval>(StockdataInterval.twentyFourHours);
+    final interval = useState<StockdataInterval>(StockdataInterval.twentyFourHours);
 
     useEffect(() {
       switch (timeFilter.value) {
@@ -53,7 +53,11 @@ class Portfolio extends HookWidget {
           AppBarActionButton(
             icon: Icons.notifications_none,
             callback: () {
-              print("Tapped notifications");
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const FeatureNotImplemented()),
+              );
             },
           ),
         ],
@@ -77,7 +81,14 @@ class Portfolio extends HookWidget {
               children: [
                 Expanded(
                   child: BrandedOutlineButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const FeatureNotImplemented()),
+                        );
+                      },
                       child: Text(
                         AppLocalizations.of(context)!.port_withdraw,
                         style: TextStyle(
