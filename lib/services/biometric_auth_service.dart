@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:local_auth/error_codes.dart' as auth_error;
@@ -7,6 +8,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class BiometricAuth {
   Future ensureAuthed({required String localizedReason}) async {
+    //Switch to disable in debug for convenience
+    if (kDebugMode) {
+      return;
+    }
+
     print("Requested auth");
     final LocalAuthentication auth = LocalAuthentication();
     final prefs = await SharedPreferences.getInstance();
