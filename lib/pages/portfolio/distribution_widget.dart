@@ -47,9 +47,16 @@ class DistributionWidget extends HookWidget {
       if (symbol == "Other") {
         return Colors.grey;
       }
-      return stockInfo.data!
-          .firstWhere((element) => element.symbol == symbol)
-          .displayColor;
+      try {
+        final color = stockInfo.data!
+            .firstWhere(
+              (element) => element.symbol == symbol,
+            )
+            .displayColor;
+        return color;
+      } catch (e) {
+        return Colors.grey;
+      }
     }
 
     return Padding(

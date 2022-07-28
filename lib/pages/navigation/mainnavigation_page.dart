@@ -5,6 +5,7 @@ import 'package:neo/pages/account/account_page.dart';
 import 'package:neo/pages/dashboard/dashboard_page.dart';
 import 'package:neo/pages/portfolio/portfolio_page.dart';
 import 'package:neo/pages/stocklist/stocklist_page.dart';
+import 'package:neo/services/biometric_auth_service.dart';
 import 'package:neo/services/prefetching_service.dart';
 import 'package:neo/services/websocket/websocket_service.dart';
 
@@ -17,15 +18,53 @@ class MainNavigation extends HookWidget {
   Widget build(BuildContext context) {
     final currentPage = useState<int>(0);
     final prefetching = useState(true);
+    final authing = useState(true);
+    final comesFromBackground = useRef(false);
+    final lastAuthRequest = useRef(DateTime(2000));
+
+    final faceIdReason = AppLocalizations.of(context)!.faceID_reason;
+
+    useOnAppLifecycleStateChange(((previous, current) {
+      if (previous == AppLifecycleState.resumed &&
+          (current == AppLifecycleState.inactive ||
+              current == AppLifecycleState.paused)) {
+        lastAuthRequest.value = DateTime.now();
+        comesFromBackground.value = true;
+        return;
+      }
+
+      if (!authing.value &&
+          comesFromBackground.value &&
+          lastAuthRequest.value
+              .isBefore(DateTime.now().subtract(Duration(minutes: 1)))) {
+        comesFromBackground.value = false;
+        lastAuthRequest.value = DateTime.now();
+        authing.value = true;
+
+        BiometricAuth()
+            .ensureAuthed(
+              localizedReason: faceIdReason,
+            )
+            .then((value) => authing.value = false);
+      }
+    }));
+
     useEffect(() {
       WebsocketService.getInstance().init();
+      BiometricAuth()
+          .ensureAuthed(
+        localizedReason: faceIdReason,
+      )
+          .then((value) {
+        authing.value = false;
+        lastAuthRequest.value = DateTime.now();
+      });
       PrefetchingService()
           .prepareApp()
           .then((value) => prefetching.value = false);
       return;
     }, ["_"]);
     getBody() {
-      //TODO: Link pages when built
       switch (currentPage.value) {
         case 0:
           return DashboardPage();
@@ -42,7 +81,7 @@ class MainNavigation extends HookWidget {
       }
     }
 
-    return prefetching.value
+    return prefetching.value || authing.value
         ? Scaffold(
             body: PrefetchingLoader(),
           )

@@ -10,7 +10,7 @@ class BrandedSwitch extends StatelessWidget {
   Widget build(BuildContext context) {
     return Switch(
       value: value,
-      onChanged: null, // onChanged,
+      onChanged: onChanged, // onChanged,
       activeTrackColor: Theme.of(context).primaryColor.withOpacity(0.5),
       activeColor: Theme.of(context).primaryColor,
     );
