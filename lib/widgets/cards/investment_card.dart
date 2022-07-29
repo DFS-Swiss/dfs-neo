@@ -38,7 +38,7 @@ class InvestmentCard extends HookWidget {
       return list.firstWhere((element) => element.symbol == token);
     }
 
-    return !stockData.loading && !symbolInfo.loading && !assests.loading
+    return !stockData.loading && !symbolInfo.loading && !assests.loading && !stockData.refetching
         ? GestureDetector(
             onTap: () => Navigator.push(
               context,
@@ -113,7 +113,7 @@ class InvestmentCard extends HookWidget {
                           height: 16,
                         ),
                         Expanded(
-                          child: LineChart(
+                          child: stockData.data != null ? LineChart(
                             preview(
                               stockData.data!
                                   .map((e) => FlSpot(
@@ -125,7 +125,7 @@ class InvestmentCard extends HookWidget {
                                   ? true
                                   : false,
                             ),
-                          ),
+                          ) : Container()
                         ),
                       ],
                     ),
@@ -133,7 +133,7 @@ class InvestmentCard extends HookWidget {
                   SizedBox(
                     width: 22,
                   ),
-                  Column(
+                  stockData.data != null ? Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Column(
@@ -191,7 +191,7 @@ class InvestmentCard extends HookWidget {
                         ],
                       ),
                     ],
-                  )
+                  ) : Container()
                 ],
               ),
             ),

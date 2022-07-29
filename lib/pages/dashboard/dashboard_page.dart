@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:neo/pages/dashboard/portfolio_balance_card.dart';
 import 'package:neo/pages/dashboard/recently_closed_section.dart';
 import 'package:neo/pages/dashboard/start_trading_section.dart';
+import 'package:neo/pages/information/feature_not_implemented_page.dart';
 import '../../hooks/use_user_data.dart';
 import '../../widgets/appbaractionbutton_widget.dart';
 import 'current_investments_section.dart';
@@ -24,7 +25,10 @@ class DashboardPage extends HookWidget {
           AppBarActionButton(
             icon: Icons.notifications_none,
             callback: () {
-              print("Tapped notifications");
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const FeatureNotImplemented()),
+              );
             },
           )
         ],

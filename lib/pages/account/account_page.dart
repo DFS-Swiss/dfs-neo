@@ -11,6 +11,8 @@ import 'package:neo/pages/account/texttile_widget.dart';
 import 'package:neo/pages/account/toptexttile_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../information/feature_not_implemented_page.dart';
+
 class AccountPage extends HookWidget {
   const AccountPage({Key? key}) : super(key: key);
 
@@ -125,7 +127,11 @@ class AccountPage extends HookWidget {
           TextTile(
             text: AppLocalizations.of(context)!.account_delacc,
             callback: () {
-              //TODO: Implement delete account
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const FeatureNotImplemented()),
+              );
             },
           ),
           Padding(

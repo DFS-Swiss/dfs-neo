@@ -212,5 +212,9 @@
     "forgot_password_phase_2_desc": "Please enter the code you received via email and a new password",
     "forgot_password_code": "Code",
     "forgot_password_code_desc": "Enter your email code",
-    "forgot_password_title": "Reset password"
+    "forgot_password_title": "Reset password",
+    "feature_not_implemented_title": "Implementation in progress",
+    "feature_not_implemented_subtitle": "This feature is not implemented yet. For more information visit us on our website.",
+    "feature_not_implemented_wait_list_info": "If you don't want to wait, join our wait list and win 1.000d$!",
+    "feature_not_implemented_visit_website": "Visit our website"
 }
