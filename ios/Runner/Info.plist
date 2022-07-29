@@ -45,5 +45,7 @@
 		</array>
 		<key>UIViewControllerBasedStatusBarAppearance</key>
 		<false/>
+		<key>NSFaceIDUsageDescription</key>
+		<string>DFSneo can use FaceID to secure your account.</string>
 	</dict>
 </plist>
