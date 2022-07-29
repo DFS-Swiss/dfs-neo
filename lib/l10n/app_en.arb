@@ -215,6 +215,12 @@
     "forgot_password_title": "Reset password",
     "dash_portofolio_change": "Change",
     "dash_development": "Performance",
-    "dash_balance_switch": "Balance"
-
+    "dash_balance_switch": "Balance",
+    "faceID_reason": "Authenticate to log back in",
+    "account_security": "Security",
+    "biometrics_setting": "Lock app on exit?",
+    "feature_not_implemented_title": "Implementation in progress",
+    "feature_not_implemented_subtitle": "This feature is not implemented yet. For more information visit us on our website.",
+    "feature_not_implemented_wait_list_info": "If you don't want to wait, join our wait list and win 1.000d$!",
+    "feature_not_implemented_visit_website": "Visit our website"
 }

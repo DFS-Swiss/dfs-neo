@@ -7,9 +7,13 @@ import 'package:neo/pages/account/bottomtexttile_widget.dart';
 import 'package:neo/pages/account/change_password_page.dart';
 import 'package:neo/pages/account/logout_widget.dart';
 import 'package:neo/pages/account/middletexttile_widget.dart';
+import 'package:neo/pages/account/settingstile_widget.dart';
 import 'package:neo/pages/account/texttile_widget.dart';
 import 'package:neo/pages/account/toptexttile_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../information/feature_not_implemented_page.dart';
 
 class AccountPage extends HookWidget {
   const AccountPage({Key? key}) : super(key: key);
@@ -20,11 +24,20 @@ class AccountPage extends HookWidget {
     final usernamecontroller = useTextEditingController(text: "...");
     final mailcontroller = useTextEditingController(text: "...");
 
+    final lockApp = useState(false);
+
     useEffect(() {
       if (!userData.loading) usernamecontroller.text = userData.data!.id;
       if (!userData.loading) mailcontroller.text = userData.data!.email;
       return;
     }, [userData.loading]);
+
+    useEffect(() {
+      SharedPreferences.getInstance().then((value) {
+        lockApp.value = value.getBool("wants_biometric_auth") ?? true;
+      });
+      return;
+    }, ["_"]);
 
     String? encodeQueryParameters(Map<String, String> params) {
       return params.entries
@@ -125,7 +138,27 @@ class AccountPage extends HookWidget {
           TextTile(
             text: AppLocalizations.of(context)!.account_delacc,
             callback: () {
-              //TODO: Implement delete account
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const FeatureNotImplemented()),
+              );
+            },
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
+            child: Text(
+              AppLocalizations.of(context)!.account_security,
+              style: TextStyle(color: Color(0xFF909090), fontSize: 12),
+            ),
+          ),
+          SettingsTile(
+            text: AppLocalizations.of(context)!.biometrics_setting,
+            value: lockApp.value,
+            callback: (v) async {
+              (await SharedPreferences.getInstance())
+                  .setBool("wants_biometric_auth", v);
+              lockApp.value = v;
             },
           ),
           Padding(

@@ -16,6 +16,7 @@ import 'package:neo/widgets/switchrow_widget.dart';
 
 import '../../enums/portfolio_development_mode.dart';
 import '../../widgets/buttons/branded_outline_button.dart';
+import '../information/feature_not_implemented_page.dart';
 import 'current_investments_widget.dart';
 import 'distribution_widget.dart';
 
@@ -58,7 +59,11 @@ class Portfolio extends HookWidget {
           AppBarActionButton(
             icon: Icons.notifications_none,
             callback: () {
-              print("Tapped notifications");
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const FeatureNotImplemented()),
+              );
             },
           ),
         ],
@@ -114,7 +119,14 @@ class Portfolio extends HookWidget {
               children: [
                 Expanded(
                   child: BrandedOutlineButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const FeatureNotImplemented()),
+                        );
+                      },
                       child: Text(
                         AppLocalizations.of(context)!.port_withdraw,
                         style: TextStyle(

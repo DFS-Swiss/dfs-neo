@@ -215,5 +215,11 @@
     "forgot_password_title": "Passwort zurücksetzen",
     "dash_portofolio_change": "Veränderung",
     "dash_development": "Portfolio Entwicklung"
-
+    "faceID_reason": "Bitte identifiziere dich",
+    "account_security": "Sicherheit",
+    "biometrics_setting": "App beim verlassen sperren?",
+    "feature_not_implemented_title": "Feature in Entwicklung",
+    "feature_not_implemented_subtitle": "Das feature ist noch nicht implementiert. Für weitere Informationen, besuche uns auf unserer Webseite.",
+    "feature_not_implemented_wait_list_info": "Wenn du es nicht abwarten kannst, lass dich auf die Warteliste setzen und gewinne 1000d$!",
+    "feature_not_implemented_visit_website": "Besuche unsere Webseite"
 }
