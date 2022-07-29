@@ -4,6 +4,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:neo/style/theme.dart';
 import 'package:neo/widgets/cards/open_order_card.dart';
 
+import '../information/feature_not_implemented_dialog.dart';
+
 class OpenOrdersSection extends HookWidget {
   const OpenOrdersSection({Key? key}) : super(key: key);
 
@@ -22,9 +24,19 @@ class OpenOrdersSection extends HookWidget {
                 AppLocalizations.of(context)!.dash_oo,
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
-              Text(
-                AppLocalizations.of(context)!.dash_view,
-                style: NeoTheme.of(context)!.linkTextStyle,
+              GestureDetector(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return FeatureNotImplementedDialog();
+                    },
+                  );
+                },
+                child: Text(
+                  AppLocalizations.of(context)!.dash_view,
+                  style: NeoTheme.of(context)!.linkTextStyle,
+                ),
               )
             ],
           ),

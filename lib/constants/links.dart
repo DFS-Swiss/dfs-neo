@@ -3,3 +3,4 @@
 const String IMPRINT = "https://google.de";
 const String OPENSOURCE_PROJECTS = "https://github.com/DFS-Swiss";
 const String ACCOUNT_PRIVACY = "https://google.de";
+const String WEBSITE = "https://dfsneo.com";
