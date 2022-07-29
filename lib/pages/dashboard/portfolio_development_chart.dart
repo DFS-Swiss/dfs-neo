@@ -1,7 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
-import '../../types/balance_history_container.dart';
 import '../../utils/chart_conversion.dart';
 
 class PortfolioDevelopmentChart extends StatelessWidget {

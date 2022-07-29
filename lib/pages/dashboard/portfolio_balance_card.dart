@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:neo/hooks/use_balance_history.dart';
 import 'package:neo/hooks/use_chart_scrubbing_state.dart';
 import 'package:neo/pages/dashboard/portfolio_development_chart.dart';
