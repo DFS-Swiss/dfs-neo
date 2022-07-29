@@ -5,7 +5,12 @@ import 'package:neo/pages/portfolio/timeperiod_widget.dart';
 class TimeFilter extends HookWidget {
   final Function callback;
   final int init;
-  const TimeFilter({required this.init, required this.callback, Key? key})
+  final bool enabled;
+  const TimeFilter(
+      {required this.init,
+      required this.callback,
+      this.enabled = true,
+      Key? key})
       : super(key: key);
 
   @override
@@ -25,6 +30,7 @@ class TimeFilter extends HookWidget {
             ),
             Expanded(
               child: TimePeriod(
+                  enabled: enabled,
                   currentlySelected: filterOptions.value,
                   id: 0,
                   text: "24H",
@@ -36,6 +42,7 @@ class TimeFilter extends HookWidget {
             ),
             Expanded(
               child: TimePeriod(
+                  enabled: enabled,
                   currentlySelected: filterOptions.value,
                   id: 1,
                   text: "MTD",
@@ -47,6 +54,7 @@ class TimeFilter extends HookWidget {
             ),
             Expanded(
               child: TimePeriod(
+                  enabled: enabled,
                   currentlySelected: filterOptions.value,
                   id: 2,
                   text: "YTD",
@@ -58,6 +66,7 @@ class TimeFilter extends HookWidget {
             ),
             Expanded(
               child: TimePeriod(
+                  enabled: enabled,
                   currentlySelected: filterOptions.value,
                   id: 3,
                   text: "1Y",
@@ -69,6 +78,7 @@ class TimeFilter extends HookWidget {
             ),
             Expanded(
               child: TimePeriod(
+                  enabled: enabled,
                   currentlySelected: filterOptions.value,
                   id: 4,
                   text: "2Y",

@@ -1,3 +1,4 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -7,6 +8,7 @@ import 'package:neo/hooks/use_balance_history.dart';
 import 'package:neo/hooks/use_chart_scrubbing_state.dart';
 import 'package:neo/pages/dashboard/portfolio_development_chart.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
+import 'package:neo/utils/print_time_for_interval.dart';
 import 'package:neo/widgets/hideable_text.dart';
 import 'package:neo/widgets/hidebalance_button.dart';
 import 'package:neo/widgets/development_indicator/small_change_indicator.dart';
@@ -14,16 +16,15 @@ import 'package:shimmer/shimmer.dart';
 import 'package:neo/services/formatting_service.dart';
 
 class PortfolioBalanceCard extends HookWidget {
-  final StockdataInterval? interval;
+  final StockdataInterval interval;
   const PortfolioBalanceCard({
     Key? key,
-    this.interval,
+    this.interval = StockdataInterval.twentyFourHours,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final balanceHistory =
-        useBalanceHistory(interval ?? StockdataInterval.twentyFourHours);
+    final balanceHistory = useBalanceHistory(interval);
     final scrubbingData = useChartScrubbingState();
     return !balanceHistory.loading
         ? Container(
@@ -69,16 +70,22 @@ class PortfolioBalanceCard extends HookWidget {
                         Row(
                           children: [
                             Text(
-                              AppLocalizations.of(context)!.dash_pl_lable,
+                              AppLocalizations.of(context)!
+                                  .dash_portofolio_change,
                               style: Theme.of(context).textTheme.labelSmall,
                             ),
                             SizedBox(
                               width: 5,
                             ),
                             SmallDevelopmentIndicator(
-                              positive: balanceHistory.data!.averagePL > 0,
+                              isInPercent: false,
+                              hideable: true,
+                              positive: balanceHistory.data!.total.first.price >
+                                  balanceHistory.data!.total.last.price,
                               changePercentage: FormattingService.roundDouble(
-                                  balanceHistory.data!.averagePL, 2),
+                                  balanceHistory.data!.total.first.price -
+                                      balanceHistory.data!.total.last.price,
+                                  2),
                             )
                           ],
                         ),
@@ -88,10 +95,7 @@ class PortfolioBalanceCard extends HookWidget {
                               ? Row(
                                   children: [
                                     Text(
-                                      (interval ??
-                                              StockdataInterval.twentyFourHours)
-                                          .toString()
-                                          .toUpperCase(),
+                                      (interval).toString().toUpperCase(),
                                       style: Theme.of(context)
                                           .textTheme
                                           .labelSmall,
@@ -118,11 +122,10 @@ class PortfolioBalanceCard extends HookWidget {
                                   ],
                                 )
                               : Text(
-                                  DateFormat("hh:mm").format(
+                                  printTimeForInterval(
                                       DateTime.fromMillisecondsSinceEpoch(
-                                    scrubbingData.time.round(),
-                                    isUtc: false,
-                                  ).toLocal()),
+                                          scrubbingData.time.round()),
+                                      interval),
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500,
@@ -140,7 +143,20 @@ class PortfolioBalanceCard extends HookWidget {
                 ),
                 SizedBox(
                   height: 108,
-                  child: PortfolioDevelopmentChart(data: balanceHistory.data!),
+                  child: PortfolioDevelopmentChart(
+                    data: balanceHistory.data!.total
+                        .map<FlSpot>(
+                          (e) => FlSpot(
+                            e.time.millisecondsSinceEpoch.toDouble(),
+                            e.price,
+                          ),
+                        )
+                        .toList(),
+                    positive: balanceHistory.data!.total.first.price <
+                            balanceHistory.data!.total.last.price
+                        ? true
+                        : false,
+                  ),
                 ),
                 SizedBox(
                   height: 19.5,

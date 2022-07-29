@@ -212,5 +212,8 @@
     "forgot_password_phase_2_desc": "Bitte gib den Code den du per Email erhalten hast und ein neues Passwort ein",
     "forgot_password_code": "Code",
     "forgot_password_code_desc": "Gib den Code aus der Email ein",
-    "forgot_password_title": "Passwort zurücksetzen"
+    "forgot_password_title": "Passwort zurücksetzen",
+    "dash_portofolio_change": "Veränderung",
+    "dash_development": "Portfolio Entwicklung"
+
 }
