@@ -7,11 +7,13 @@ class StockdataDocument {
   final String displayName;
   final String imageUrl;
   final String description;
+  final String assetType; //stock;etf;trust
   final int publicSentimentIndex;
   final Color displayColor;
 
   StockdataDocument(
-      {required this.symbol,
+      {required this.assetType, 
+        required this.symbol,
       required this.displayName,
       required this.imageUrl,
       required this.description,
@@ -24,6 +26,7 @@ class StockdataDocument {
       String? imageUrl,
       String? description,
       int? publicSentimentIndex,
+      String? assetType,
       Color? displayColor}) {
     return StockdataDocument(
         symbol: symbol ?? this.symbol,
@@ -31,13 +34,15 @@ class StockdataDocument {
         imageUrl: imageUrl ?? this.imageUrl,
         description: description ?? this.description,
         publicSentimentIndex: publicSentimentIndex ?? this.publicSentimentIndex,
-        displayColor: displayColor ?? this.displayColor);
+        displayColor: displayColor ?? this.displayColor, 
+        assetType: assetType ?? this.assetType);
   }
 
   Map<String, dynamic> toMap() {
     final result = <String, dynamic>{};
 
     result.addAll({'symbol': symbol});
+    result.addAll({'assetType': assetType});
     result.addAll({'displayName': displayName});
     result.addAll({'imageUrl': imageUrl});
     result.addAll({'description': description});
@@ -55,7 +60,8 @@ class StockdataDocument {
         publicSentimentIndex: map['publicSentimentIndex'] ?? 50,
         displayColor: map['displayColor'] != null
             ? Color(int.parse(map['displayColor']))
-            : Colors.grey);
+            : Colors.grey, 
+            assetType: map['assetType'] ?? '');
   }
 
   String toJson() => json.encode(toMap());
@@ -65,7 +71,7 @@ class StockdataDocument {
 
   @override
   String toString() {
-    return 'StockdataDocument(symbol: $symbol, displayName: $displayName, imageUrl: $imageUrl, description: $description)';
+    return 'StockdataDocument(symbol: $symbol, assetType: $assetType, displayName: $displayName, imageUrl: $imageUrl, description: $description)';
   }
 
   @override
@@ -73,6 +79,7 @@ class StockdataDocument {
     if (identical(this, other)) return true;
 
     return other is StockdataDocument &&
+    other.assetType == assetType &&
         other.symbol == symbol &&
         other.displayName == displayName &&
         other.imageUrl == imageUrl &&
@@ -83,6 +90,7 @@ class StockdataDocument {
   @override
   int get hashCode {
     return symbol.hashCode ^
+    assetType.hashCode ^
         displayName.hashCode ^
         imageUrl.hashCode ^
         description.hashCode ^

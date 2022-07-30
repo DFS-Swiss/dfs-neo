@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:neo/utils/display_popup.dart';
 import 'package:neo/widgets/buttons/branded_button.dart';
 
 class StockSwitchRow extends HookWidget {
   final Function callback;
   final int initPos;
-  const StockSwitchRow({required this.initPos, required this.callback, Key? key}) : super(key: key);
+  const StockSwitchRow(
+      {required this.initPos, required this.callback, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -74,8 +77,9 @@ class StockSwitchRow extends HookWidget {
                       )
                     : TextButton(
                         onPressed: () {
-                          switchPosition.value = 2;
-                          callback(switchPosition.value);
+                          displayPopup(context);
+                          // switchPosition.value = 2;
+                          // callback(switchPosition.value);
                         },
                         child: Text(
                             AppLocalizations.of(context)!.list_switch_fav)),
