@@ -7,6 +7,7 @@ import 'package:neo/pages/details/details_page.dart';
 import 'package:neo/pages/stocklist/stockfilter_widget.dart';
 import 'package:neo/pages/stocklist/stocksearchbar_widget.dart';
 import 'package:neo/pages/stocklist/stockswitchrow_widget.dart';
+import 'package:neo/utils/display_popup.dart';
 import 'package:neo/widgets/appbaractionbutton_widget.dart';
 import 'package:neo/widgets/cards/featuredstockcard_widget.dart';
 import 'package:neo/widgets/genericheadline_widget.dart';
@@ -42,11 +43,7 @@ class StockList extends HookWidget {
           AppBarActionButton(
             icon: Icons.notifications_none,
             callback: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const FeatureNotImplemented()),
-              );
+              displayInfoPage(context);
             },
           ),
         ],

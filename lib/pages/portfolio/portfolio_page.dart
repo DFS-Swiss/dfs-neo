@@ -8,6 +8,7 @@ import 'package:neo/pages/portfolio/difference_card_widget.dart';
 import 'package:neo/pages/portfolio/recently_closed_orders_widget.dart';
 import 'package:neo/pages/portfolio/timefilter_widget.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
+import 'package:neo/utils/display_popup.dart';
 import 'package:neo/widgets/appbaractionbutton_widget.dart';
 import 'package:neo/widgets/buttons/branded_button.dart';
 import 'package:neo/widgets/genericheadline_widget.dart';
@@ -23,7 +24,8 @@ class Portfolio extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final timeFilter = useState<int>(0);
-    final interval = useState<StockdataInterval>(StockdataInterval.twentyFourHours);
+    final interval =
+        useState<StockdataInterval>(StockdataInterval.twentyFourHours);
 
     useEffect(() {
       switch (timeFilter.value) {
@@ -53,11 +55,7 @@ class Portfolio extends HookWidget {
           AppBarActionButton(
             icon: Icons.notifications_none,
             callback: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const FeatureNotImplemented()),
-              );
+              displayInfoPage(context);
             },
           ),
         ],
