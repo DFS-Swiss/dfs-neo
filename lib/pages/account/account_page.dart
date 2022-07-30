@@ -14,7 +14,6 @@ import 'package:neo/utils/display_popup.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../information/feature_not_implemented_page.dart';
 
 class AccountPage extends HookWidget {
   const AccountPage({Key? key}) : super(key: key);

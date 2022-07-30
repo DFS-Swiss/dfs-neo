@@ -14,7 +14,7 @@ import 'package:neo/widgets/genericheadline_widget.dart';
 import 'package:neo/widgets/cards/tradablestockcard_widget.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../information/feature_not_implemented_page.dart';
+
 
 class StockList extends HookWidget {
   const StockList({Key? key}) : super(key: key);
@@ -83,7 +83,7 @@ class StockList extends HookWidget {
                     scrollDirection: Axis.horizontal,
                     children: [
                       SizedBox(
-                        width: 24,
+                        width: 20,
                       ),
                       GestureDetector(
                         onTap: () {
@@ -211,7 +211,7 @@ class StockList extends HookWidget {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(
-                          left: 24, right: 24, bottom: 16),
+                          left: 20, right: 20, bottom: 16),
                       child: Shimmer.fromColors(
                         baseColor: Color.fromRGBO(238, 238, 238, 0.75),
                         highlightColor: Colors.white,
@@ -225,7 +225,7 @@ class StockList extends HookWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(
-                          left: 24, right: 24, bottom: 16),
+                          left: 20, right: 20, bottom: 16),
                       child: Shimmer.fromColors(
                         baseColor: Color.fromRGBO(238, 238, 238, 0.75),
                         highlightColor: Colors.white,
@@ -239,7 +239,7 @@ class StockList extends HookWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(
-                          left: 24, right: 24, bottom: 16),
+                          left: 20, right: 20, bottom: 16),
                       child: Shimmer.fromColors(
                         baseColor: Color.fromRGBO(238, 238, 238, 0.75),
                         highlightColor: Colors.white,

@@ -3,10 +3,11 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:neo/pages/current_investments/current_investment_page.dart';
 import 'package:neo/pages/dashboard/portfolio_balance_card.dart';
+import 'package:neo/pages/dashboard/recently_closed_section.dart';
 import 'package:neo/pages/deposit/deposit_page.dart';
 import 'package:neo/pages/portfolio/best_worst_card_widget.dart';
 import 'package:neo/pages/portfolio/difference_card_widget.dart';
-import 'package:neo/pages/portfolio/recently_closed_orders_widget.dart';
+
 import 'package:neo/pages/portfolio/timefilter_widget.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
 import 'package:neo/utils/display_popup.dart';
@@ -142,14 +143,7 @@ class Portfolio extends HookWidget {
           CurrentInvestmentsWidget(
             interval: interval.value,
           ),
-          GenericHeadline(
-            title: AppLocalizations.of(context)!.port_orders_title,
-            linktext: AppLocalizations.of(context)!.port_view_all_link,
-            callback: () {
-              displayInfoPage(context);
-            },
-          ),
-          RecentlyClosedOrders(),
+          RecentlyClosedSection(),
           SizedBox(
             height: 40,
           )

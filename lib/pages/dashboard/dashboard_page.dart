@@ -5,7 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:neo/pages/dashboard/portfolio_balance_card.dart';
 import 'package:neo/pages/dashboard/recently_closed_section.dart';
 import 'package:neo/pages/dashboard/start_trading_section.dart';
-import 'package:neo/pages/information/feature_not_implemented_page.dart';
 import 'package:neo/utils/display_popup.dart';
 import '../../hooks/use_user_data.dart';
 import '../../widgets/appbaractionbutton_widget.dart';
@@ -49,17 +48,23 @@ class DashboardPage extends HookWidget {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+        padding: const EdgeInsets.symmetric(horizontal: 0.0),
         child: ListView(
           children: const [
             const SizedBox(
               height: 17,
             ),
-            const PortfolioBalanceCard(),
-            StartTradingSection(),
-            OpenOrdersSection(),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: const PortfolioBalanceCard(),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: StartTradingSection(),
+            ),
             CurrentInvestmentsSection(),
             RecentlyClosedSection(),
+            OpenOrdersSection(),
             const SizedBox(
               height: 17,
             ),

@@ -19,25 +19,30 @@ class CurrentInvestmentsSection extends HookWidget {
       padding: const EdgeInsets.only(top: 32),
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                AppLocalizations.of(context)!.dash_currinv_title,
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-              !assests.loading && assests.data!.isNotEmpty ? GestureDetector(
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => CurrentInvestmentPage()),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  AppLocalizations.of(context)!.dash_currinv_title,
+                  style: Theme.of(context).textTheme.headlineMedium,
                 ),
-                child: Text(
-                  AppLocalizations.of(context)!.dash_view,
-                  style: NeoTheme.of(context)!.linkTextStyle,
-                ),
-              ): Container()
-            ],
+                !assests.loading && assests.data!.isNotEmpty
+                    ? GestureDetector(
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CurrentInvestmentPage()),
+                        ),
+                        child: Text(
+                          AppLocalizations.of(context)!.dash_view,
+                          style: NeoTheme.of(context)!.linkTextStyle,
+                        ),
+                      )
+                    : Container()
+              ],
+            ),
           ),
           SizedBox(
             height: 16,
@@ -48,6 +53,9 @@ class CurrentInvestmentsSection extends HookWidget {
                 ? ListView(
                     scrollDirection: Axis.horizontal,
                     children: [
+                      SizedBox(
+                        width: 20,
+                      ),
                       InvestCardPlaceholder(),
                       SizedBox(
                         width: 16,
@@ -78,13 +86,16 @@ class CurrentInvestmentsSection extends HookWidget {
                               ),
                             );
                           },
-                          child: InvestmentCard(
-                            key: ValueKey(assests.data![index].symbol),
-                            token: assests.data![index].symbol,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 20),
+                            child: InvestmentCard(
+                              key: ValueKey(assests.data![index].symbol),
+                              token: assests.data![index].symbol,
+                            ),
                           ),
                         ),
                         separatorBuilder: (context, index) =>
-                            SizedBox(width: 16),
+                            SizedBox(width: 0),
                         itemCount: assests.data!.length,
                       ),
           )
