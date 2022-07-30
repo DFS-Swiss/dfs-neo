@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:neo/types/user_asset_datapoint_with_value.dart';
 
 import '../../widgets/hideable_text.dart';
