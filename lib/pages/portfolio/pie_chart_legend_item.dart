@@ -7,8 +7,12 @@ import '../../widgets/hideable_text.dart';
 class PieChartLegendItem extends StatelessWidget {
   final UserAssetDataWithValue data;
   final Color displayColor;
+  final double totalAmountInvested;
   const PieChartLegendItem(
-      {Key? key, required this.data, required this.displayColor})
+      {Key? key,
+      required this.data,
+      required this.displayColor,
+      required this.totalAmountInvested})
       : super(key: key);
 
   @override
@@ -32,7 +36,8 @@ class PieChartLegendItem extends StatelessWidget {
             style: Theme.of(context).textTheme.labelSmall,
           )),
           HideableText(
-            NumberFormat.currency(symbol: "dUSD ").format(data.totalValue),
+            "${((data.totalValue / totalAmountInvested) * 100).toStringAsFixed(2)} %",
+            //NumberFormat.currency(symbol: "dUSD ").format(data.totalValue),
             style: TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: 12,

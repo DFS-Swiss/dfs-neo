@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:intl/intl.dart';
 import 'package:neo/pages/details/details_selectable_widget.dart';
+import 'package:neo/utils/display_popup.dart';
 import 'package:neo/widgets/buttons/branded_button.dart';
 import 'package:neo/widgets/buttons/branded_outline_button.dart';
 import 'package:neo/widgets/buttons/round_outline_button.dart';
@@ -220,7 +221,9 @@ class DetailsDevelopmentSection extends HookWidget {
                         width: 12,
                       ),
                       RoundOutlineButton(
-                          onPressed: () => {},
+                          onPressed: () => {
+                            displayPopup(context)
+                          },
                           child: Icon(
                             Icons.swap_horiz,
                             color: Theme.of(context).primaryColor,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:neo/pages/current_investments/current_investment_page.dart';
 import 'package:neo/pages/dashboard/portfolio_balance_card.dart';
 import 'package:neo/pages/deposit/deposit_page.dart';
 import 'package:neo/pages/portfolio/best_worst_card_widget.dart';
@@ -130,7 +131,13 @@ class Portfolio extends HookWidget {
           GenericHeadline(
             title: AppLocalizations.of(context)!.port_investments_title,
             linktext: AppLocalizations.of(context)!.port_view_all_link,
-            callback: () {},
+            callback: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => CurrentInvestmentPage()),
+              );
+            },
           ),
           CurrentInvestmentsWidget(
             interval: interval.value,
@@ -138,7 +145,9 @@ class Portfolio extends HookWidget {
           GenericHeadline(
             title: AppLocalizations.of(context)!.port_orders_title,
             linktext: AppLocalizations.of(context)!.port_view_all_link,
-            callback: () {},
+            callback: () {
+              displayInfoPage(context);
+            },
           ),
           RecentlyClosedOrders(),
           SizedBox(

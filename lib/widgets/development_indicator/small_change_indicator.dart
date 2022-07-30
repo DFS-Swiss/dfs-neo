@@ -26,7 +26,7 @@ class SmallDevelopmentIndicator extends StatelessWidget {
               : NeoTheme.of(context)!.negativeColor,
         ),
         Text(
-          "${NumberFormat.compact().format(changePercentage)}%",
+          "${NumberFormat.compact().format(changePercentage)} %",
           style: TextStyle(
             fontSize: 12,
             color: positive

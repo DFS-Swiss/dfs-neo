@@ -124,6 +124,12 @@ class DistributionWidget extends HookWidget {
                             mainAxisSize: MainAxisSize.min,
                             children: prepareList()
                                 .map((e) => PieChartLegendItem(
+                                      totalAmountInvested: investments.data!
+                                          .fold<double>(
+                                              0,
+                                              (previousValue, element) =>
+                                                  previousValue +
+                                                  element.totalValue),
                                       data: e,
                                       displayColor: mapSymbolToColor(e.symbol),
                                     ))

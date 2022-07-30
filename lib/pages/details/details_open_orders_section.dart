@@ -2,32 +2,42 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:neo/style/theme.dart';
+import 'package:neo/utils/display_popup.dart';
 import 'package:neo/widgets/cards/open_order_card.dart';
 
 class DetailsOpenOrdersSection extends HookWidget {
   final String image;
-  const DetailsOpenOrdersSection({required this.image, Key? key}) : super(key: key);
+  const DetailsOpenOrdersSection({required this.image, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final constroller = usePageController(viewportFraction: 1.1);
     final page = useState(0);
     return Padding(
-      padding: const EdgeInsets.only(top: 32, left: 24, right: 24),
+      padding: const EdgeInsets.only(top: 32, left: 0, right: 0),
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                AppLocalizations.of(context)!.dash_oo,
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-              Text(
-                AppLocalizations.of(context)!.dash_view,
-                style: NeoTheme.of(context)!.linkTextStyle,
-              )
-            ],
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  AppLocalizations.of(context)!.dash_oo,
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    displayPopup(context);
+                  },
+                  child: Text(
+                    AppLocalizations.of(context)!.dash_view,
+                    style: NeoTheme.of(context)!.linkTextStyle,
+                  ),
+                )
+              ],
+            ),
           ),
           SizedBox(
             height: 16,
@@ -37,7 +47,17 @@ class DetailsOpenOrdersSection extends HookWidget {
             child: PageView(
               controller: constroller,
               onPageChanged: (newPage) => page.value = newPage,
-              children: [OpenOrderCard(image: image,), OpenOrderCard(image: image,), OpenOrderCard(image: image,)],
+              children: [
+                OpenOrderCard(
+                  image: image,
+                ),
+                OpenOrderCard(
+                  image: image,
+                ),
+                OpenOrderCard(
+                  image: image,
+                )
+              ],
             ),
           ),
           SizedBox(

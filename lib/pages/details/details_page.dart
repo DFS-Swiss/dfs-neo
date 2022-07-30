@@ -5,6 +5,7 @@ import 'package:neo/pages/details/details_development_section.dart';
 import 'package:neo/pages/details/details_investment_section.dart';
 import 'package:neo/pages/details/details_open_orders_section.dart';
 import 'package:neo/pages/details/details_public_sentiment.dart';
+import 'package:neo/utils/display_popup.dart';
 import '../../hooks/use_stockdata_info.dart';
 import '../../widgets/appbaractionbutton_widget.dart';
 
@@ -41,7 +42,7 @@ class DetailsPage extends HookWidget {
           AppBarActionButton(
             icon: Icons.favorite_outline,
             callback: () {
-              print("Tapped favorites");
+              displayPopup(context);
             },
           )
         ],
