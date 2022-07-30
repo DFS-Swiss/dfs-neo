@@ -29,6 +29,8 @@ dependencies:
   is_first_run: ^1.0.0
   url_launcher: ^6.1.4
   local_auth: ^2.1.0
+  amplitude_flutter: ^3.2.1
+  bugsnag_flutter: ^2.1.1
 
 dev_dependencies:
   flutter_test:

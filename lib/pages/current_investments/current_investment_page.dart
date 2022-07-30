@@ -3,6 +3,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../hooks/use_userassets.dart';
+import '../../service_locator.dart';
+import '../../services/analytics_service.dart';
 import '../../widgets/cards/investment_card.dart';
 import '../details/details_page.dart';
 
@@ -12,6 +14,11 @@ class CurrentInvestmentPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final assests = useUserassets();
+
+    useEffect(() {
+      locator<AnalyticsService>().trackEvent("display:current_investments");
+      return;
+    }, ["_"]);
 
     return Scaffold(
       appBar: AppBar(

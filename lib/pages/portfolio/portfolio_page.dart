@@ -12,6 +12,8 @@ import 'package:neo/widgets/appbaractionbutton_widget.dart';
 import 'package:neo/widgets/buttons/branded_button.dart';
 import 'package:neo/widgets/genericheadline_widget.dart';
 
+import '../../service_locator.dart';
+import '../../services/analytics_service.dart';
 import '../../widgets/buttons/branded_outline_button.dart';
 import '../information/feature_not_implemented_page.dart';
 import 'current_investments_widget.dart';
@@ -23,7 +25,13 @@ class Portfolio extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final timeFilter = useState<int>(0);
-    final interval = useState<StockdataInterval>(StockdataInterval.twentyFourHours);
+    final interval =
+        useState<StockdataInterval>(StockdataInterval.twentyFourHours);
+
+    useEffect(() {
+      locator<AnalyticsService>().trackEvent("display:portfolio");
+      return;
+    }, ["_"]);
 
     useEffect(() {
       switch (timeFilter.value) {
