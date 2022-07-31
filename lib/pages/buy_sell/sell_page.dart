@@ -6,6 +6,8 @@ import 'package:neo/pages/buy_sell/amount_selector.dart';
 import 'package:neo/services/data_service.dart';
 import 'package:neo/widgets/buttons/branded_button.dart';
 
+import '../../service_locator.dart';
+import '../../services/analytics_service.dart';
 import '../../widgets/branded_switch.dart';
 
 class SellPage extends HookWidget {
@@ -17,11 +19,28 @@ class SellPage extends HookWidget {
     final amountToken = useRef<double>(0);
     final loading = useState(false);
 
+    useEffect(() {
+      locator<AnalyticsService>().trackEvent(
+        "display:sell_asset",
+        eventProperties: {
+          "asset": symbol,
+        },
+      );
+      return;
+    }, ["_"]);
+
     hanldeSell() async {
       if (amountToken.value > 0) {
         loading.value = true;
         try {
           await DataService.getInstance().sellAsset(symbol, amountToken.value);
+          locator<AnalyticsService>().trackEvent(
+            "action:sell",
+            eventProperties: {
+              "asset": symbol,
+            },
+          );
+
           showDialog(
             context: context,
             builder: (context) => AlertDialog(

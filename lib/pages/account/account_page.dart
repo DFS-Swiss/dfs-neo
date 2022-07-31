@@ -13,6 +13,8 @@ import 'package:neo/pages/account/toptexttile_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../service_locator.dart';
+import '../../services/analytics_service.dart';
 import '../information/feature_not_implemented_page.dart';
 
 class AccountPage extends HookWidget {
@@ -36,6 +38,11 @@ class AccountPage extends HookWidget {
       SharedPreferences.getInstance().then((value) {
         lockApp.value = value.getBool("wants_biometric_auth") ?? true;
       });
+      return;
+    }, ["_"]);
+
+    useEffect(() {
+      locator<AnalyticsService>().trackEvent("display:account");
       return;
     }, ["_"]);
 

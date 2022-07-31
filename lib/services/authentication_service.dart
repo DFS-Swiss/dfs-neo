@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:neo/enums/app_state.dart';
+import 'package:neo/services/analytics_service.dart';
 import 'package:neo/services/app_state_service.dart';
 import 'package:neo/services/data_service.dart';
 import 'package:neo/services/stockdata_service.dart';
@@ -76,6 +77,8 @@ class AuthenticationService extends ChangeNotifier {
       rethrow;
     }
     _appStateService.state = AppState.signedIn;
+    await locator<AnalyticsService>().identifyUser();
+    await locator<AnalyticsService>().trackEvent("auth:login");
     notifyListeners();
     // TODO: Use secure storage
     final prefs = await SharedPreferences.getInstance();
@@ -94,6 +97,7 @@ class AuthenticationService extends ChangeNotifier {
     await prefs.remove("refresh_token");
     DataService.getInstance().clearCache();
     StockdataService.getInstance().clearCache();
+    await locator<AnalyticsService>().trackEvent("logout");
     notifyListeners();
   }
 
@@ -104,6 +108,7 @@ class AuthenticationService extends ChangeNotifier {
       print(e);
       rethrow;
     }
+    await locator<AnalyticsService>().trackEvent("auth:register");
     await login(userName, password);
   }
 
@@ -115,6 +120,8 @@ class AuthenticationService extends ChangeNotifier {
       } catch (e) {
         rethrow;
       }
+      await locator<AnalyticsService>()
+          .trackEvent("auth:complete_force_change_password");
       _appStateService.state = AppState.signedOut;
       notifyListeners();
     }
@@ -125,7 +132,7 @@ class AuthenticationService extends ChangeNotifier {
         _cognitoService.isUserPresent()) {
       await _cognitoService.confirmRegistration(code);
       _appStateService.state = AppState.signedOut;
-
+      await locator<AnalyticsService>().trackEvent("auth:confirm_email");
       notifyListeners();
     }
   }
@@ -134,6 +141,7 @@ class AuthenticationService extends ChangeNotifier {
     if (_appStateService.state == AppState.verifyAccount &&
         _cognitoService.isUserPresent()) {
       await _cognitoService.resendConfirmationCode();
+      await locator<AnalyticsService>().trackEvent("auth:resend_code");
     }
   }
 
@@ -156,6 +164,7 @@ class AuthenticationService extends ChangeNotifier {
     if (_cognitoService.isSessionPresent() && _cognitoService.isUserPresent()) {
       try {
         await _cognitoService.changePassword(oldPassword, newPassword);
+        await locator<AnalyticsService>().trackEvent("auth:change_password");
         return true;
       } catch (e) {
         rethrow;
@@ -166,10 +175,13 @@ class AuthenticationService extends ChangeNotifier {
 
   initForgotPassword(String username) async {
     await _cognitoService.initForgotPassword(username);
+    await locator<AnalyticsService>().trackEvent("auth:fogot_password");
   }
 
   completeForgotPassword(String code, String newPassword) async {
     await _cognitoService.completeForgotPassword(code, newPassword);
+    await locator<AnalyticsService>()
+        .trackEvent("auth:fogot_password:complete");
   }
 
   Future<bool> tryReauth() async {
@@ -181,6 +193,8 @@ class AuthenticationService extends ChangeNotifier {
       try {
         await _cognitoService.setRefreshSession();
         _appStateService.state = AppState.signedIn;
+        await locator<AnalyticsService>().identifyUser();
+        await locator<AnalyticsService>().trackEvent("auth:login:reauth");
         notifyListeners();
         return true;
       } catch (e) {
