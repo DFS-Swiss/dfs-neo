@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:neo/pages/dashboard/portfolio_balance_card.dart';
 import 'package:neo/pages/dashboard/recently_closed_section.dart';
 import 'package:neo/pages/dashboard/start_trading_section.dart';
-import 'package:neo/pages/information/feature_not_implemented_page.dart';
+import 'package:neo/utils/display_popup.dart';
 import '../../hooks/use_user_data.dart';
 import '../../service_locator.dart';
 import '../../services/analytics_service.dart';
@@ -32,11 +32,7 @@ class DashboardPage extends HookWidget {
           AppBarActionButton(
             icon: Icons.notifications_none,
             callback: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const FeatureNotImplemented()),
-              );
+              displayInfoPage(context);
             },
           )
         ],
@@ -59,17 +55,23 @@ class DashboardPage extends HookWidget {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+        padding: const EdgeInsets.symmetric(horizontal: 0.0),
         child: ListView(
           children: const [
             const SizedBox(
               height: 17,
             ),
-            const PortfolioBalanceCard(),
-            StartTradingSection(),
-            OpenOrdersSection(),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: const PortfolioBalanceCard(),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: StartTradingSection(),
+            ),
             CurrentInvestmentsSection(),
             RecentlyClosedSection(),
+            OpenOrdersSection(),
             const SizedBox(
               height: 17,
             ),

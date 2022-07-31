@@ -6,14 +6,16 @@ import 'package:neo/hooks/use_userassets.dart';
 import 'package:neo/pages/details/details_page.dart';
 import 'package:neo/pages/stocklist/stockfilter_widget.dart';
 import 'package:neo/pages/stocklist/stocksearchbar_widget.dart';
+import 'package:neo/utils/display_popup.dart';
 import 'package:neo/widgets/switchrow_widget.dart';
 import 'package:neo/widgets/appbaractionbutton_widget.dart';
+import 'package:neo/widgets/cards/dynamic_shimmer_cards.dart';
 import 'package:neo/widgets/cards/featuredstockcard_widget.dart';
 import 'package:neo/widgets/genericheadline_widget.dart';
 import 'package:neo/widgets/cards/tradablestockcard_widget.dart';
-import 'package:shimmer/shimmer.dart';
 
-import '../information/feature_not_implemented_page.dart';
+
+
 
 class StockList extends HookWidget {
   const StockList({Key? key}) : super(key: key);
@@ -42,11 +44,7 @@ class StockList extends HookWidget {
           AppBarActionButton(
             icon: Icons.notifications_none,
             callback: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const FeatureNotImplemented()),
-              );
+              displayInfoPage(context);
             },
           ),
         ],
@@ -102,7 +100,7 @@ class StockList extends HookWidget {
                     scrollDirection: Axis.horizontal,
                     children: [
                       SizedBox(
-                        width: 24,
+                        width: 20,
                       ),
                       GestureDetector(
                         onTap: () {
@@ -174,10 +172,9 @@ class StockList extends HookWidget {
               ? Column(
                   children: availableStocks.data!
                       .where((element) {
-                        //TODO: Filter tiles depending on their type. This is currently just a workaround
                         if (selectedFilters.value.isEmpty) {
                           return true;
-                        } else if (selectedFilters.value.contains(0)) {
+                        } else if (selectedFilters.value.contains(0) && element.assetType == "stock" || selectedFilters.value.contains(1) && element.assetType == "trust" || selectedFilters.value.contains(2) && element.assetType == "etf") {
                           return true;
                         } else {
                           return false;
@@ -226,52 +223,7 @@ class StockList extends HookWidget {
                       )
                       .toList(),
                 )
-              : Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 24, right: 24, bottom: 16),
-                      child: Shimmer.fromColors(
-                        baseColor: Color.fromRGBO(238, 238, 238, 0.75),
-                        highlightColor: Colors.white,
-                        child: Container(
-                          height: 74,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(12)),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 24, right: 24, bottom: 16),
-                      child: Shimmer.fromColors(
-                        baseColor: Color.fromRGBO(238, 238, 238, 0.75),
-                        highlightColor: Colors.white,
-                        child: Container(
-                          height: 74,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(12)),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 24, right: 24, bottom: 16),
-                      child: Shimmer.fromColors(
-                        baseColor: Color.fromRGBO(238, 238, 238, 0.75),
-                        highlightColor: Colors.white,
-                        child: Container(
-                          height: 74,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(12)),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
+              : DynamicShimmerCards(cardAmount: 3, cardHeight: 74, bottomPadding: 16, sidePadding: 20)
         ],
       ),
     );

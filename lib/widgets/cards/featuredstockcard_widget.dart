@@ -53,35 +53,37 @@ class FeaturedStockCard extends HookWidget {
                           width: 4,
                         ),
                         //Ticker and Companyname
-                        Column(
-                          mainAxisSize: MainAxisSize.max,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              height: 3,
-                            ),
-                            Text(
-                              stockData.data!.first.symbol,
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
+                        Expanded(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: 3,
                               ),
-                            ),
-                            Expanded(child: Container()),
-                            Text(
-                              symbolInfo.data!.displayName,
-                              style: TextStyle(
-                                fontSize: 10,
-                                color: Color(0xFF909090),
-                                fontWeight: FontWeight.w500,
+                              Text(
+                                stockData.data!.first.symbol,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              height: 3,
-                            ),
-                          ],
+                              Expanded(child: Container()),
+                              Text(
+                                symbolInfo.data!.displayName,
+                                maxLines: 1,
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  color: Color(0xFF909090),
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 3,
+                              ),
+                            ],
+                          ),
                         ),
-                        Expanded(child: Container()),
                         //Current Value and growth in %
                         Column(
                           mainAxisSize: MainAxisSize.max,
@@ -91,7 +93,7 @@ class FeaturedStockCard extends HookWidget {
                               height: 3,
                             ),
                             Text(
-                              "\$${FormattingService.roundDouble(stockData.data!.first.price, 2).toString()}",
+                              "d\$${FormattingService.roundDouble(stockData.data!.first.price, 2).toString()}",
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,

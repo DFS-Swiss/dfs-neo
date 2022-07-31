@@ -16,7 +16,7 @@ class StockSearchBar extends HookWidget {
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
       child: Container(
         alignment: Alignment.center,
-        height: 48,
+        //height: 60,
         decoration: BoxDecoration(
             color: Colors.white.withOpacity(0.75),
             borderRadius: BorderRadius.circular(12)),
@@ -28,19 +28,13 @@ class StockSearchBar extends HookWidget {
           cursorColor: Theme.of(context).primaryColor,
           textInputAction: TextInputAction.search,
           decoration: InputDecoration(
-            suffix: Padding(
-              padding: const EdgeInsets.only(top: 0, right: 8),
-              child: GestureDetector(
+            isDense: false,
+            suffixIcon: GestureDetector(
                 onTap: () {
                   callback("");
                   searchController.text = "";
                 },
-                child: Icon(
-                  Icons.cancel,
-                  color: Colors.grey,
-                ),
-              ),
-            ),
+                child: Icon(Icons.cancel)),
             iconColor: Color(0xFF909090),
             focusColor: Color(0xFF909090),
             hintText: AppLocalizations.of(context)!.list_search,
@@ -48,7 +42,10 @@ class StockSearchBar extends HookWidget {
               color: Color(0xFF909090),
               fontSize: 16,
             ),
-            prefixIcon: Icon(Icons.search),
+            prefixIcon: Icon(
+              Icons.search,
+              color: Color(0xFF909090),
+            ),
             border: InputBorder.none,
             enabledBorder: InputBorder.none,
             focusedBorder: InputBorder.none,
