@@ -8,33 +8,70 @@ import 'package:neo/types/stockdata_interval_enum.dart';
 import '../models/user_balance_datapoint.dart';
 import '../types/asset_performance_container.dart';
 import '../types/balance_history_container.dart';
+import '../types/portfolio_performance_container.dart';
 import '../types/price_development_datapoint.dart';
-
-/*investments = [
-      //Der Nutzer kauft zum aller ersten Mal 2 Apple Aktien
-      UserassetDatapoint(
-          tokenAmmount: 2.0,
-          symbol: "dAAPL",
-          currentPrice: 100,
-          time: DateTime(2022, 6, 16, 0, 0),
-          difference: 2.0),
-      UserassetDatapoint(
-          tokenAmmount: 1.0,
-          symbol: "dAAPL",
-          currentPrice: 100,
-          time: DateTime(2022, 6, 16, 6, 0),
-          difference: -1.0),
-      //Der Nutzer kauft einen Tag später noch eine Apple Aktie
-      UserassetDatapoint(
-          tokenAmmount: 3.0,
-          symbol: "dAAPL",
-          currentPrice: 100,
-          time: DateTime(2022, 6, 16, 12, 0),
-          difference: 1.0),
-    ];*/
+import '../utils/interval_to_time.dart';
 
 class PortfolioValueUtil {
   PortfolioValueUtil();
+
+  Future<PortfolioPerformanceContainer> getPortfolioPerformanceHistory(
+      StockdataInterval interval, bool refetch) async {
+    final portfolioValue = await getPortfolioValueHistory(interval, refetch);
+    final balancesChanges = await _queryHistoricBalanceData(refetch);
+    final stockdataTemplate = await _queryHistoricStockData("dAAPL", interval);
+
+    final developmentGraph = <PriceDevelopmentDatapoint>[];
+    for (var element in stockdataTemplate) {
+      final data = _getPortfolioPerformanceForPoint(
+        getStartOfInterval(interval),
+        element.time,
+        balancesChanges,
+        portfolioValue,
+      );
+      developmentGraph
+          .add(PriceDevelopmentDatapoint(price: data[1], time: element.time));
+    }
+    final overall = _getPortfolioPerformanceForPoint(
+      getStartOfInterval(interval),
+      DateTime.now(),
+      balancesChanges,
+      portfolioValue,
+    );
+    return PortfolioPerformanceContainer(
+      absoluteChange: overall[0],
+      perCentChange: overall[1],
+      development: developmentGraph,
+    );
+  }
+
+  List<double> _getPortfolioPerformanceForPoint(
+    DateTime startOfInterval,
+    DateTime endOfInterval,
+    List<UserBalanceDatapoint> balancesChanges,
+    BalanceHistoryContainer portfolioValue,
+  ) {
+    final relevantbalancesChangesInInterval = balancesChanges
+        .where((element) =>
+            element.time.isAfter(startOfInterval) &&
+            element.time.isBefore(endOfInterval))
+        .where((element) =>
+            element.type == "debug_add" ||
+            element.type == "deposit" ||
+            element.type == "withdrawal")
+        .toList();
+    final externalisedFunds = relevantbalancesChangesInInterval.fold<double>(
+      0,
+      (previousValue, element) => previousValue + element.difference,
+    );
+
+    final cleanedBalanceChangeAbs =
+        (portfolioValue.total.first.price - portfolioValue.total.last.price) -
+            externalisedFunds;
+    final changeInPerCent =
+        cleanedBalanceChangeAbs / portfolioValue.total.last.price;
+    return [cleanedBalanceChangeAbs, changeInPerCent * 100];
+  }
 
   Future<List<AssetPerformanceContainer>> getDevelopmentForSymbols(
       StockdataInterval interval, bool refetch) async {
@@ -95,6 +132,7 @@ class PortfolioValueUtil {
       relevantSymbols[investment.symbol] = true;
     }
     List<List<PriceDevelopmentDatapoint>> valueList = [];
+
     for (var relevantSymbol in relevantSymbols.entries) {
       valueList.add(
         await _getValueHistoryForSymbolV2(
@@ -119,6 +157,7 @@ class PortfolioValueUtil {
         hasNoInvestments: true,
       );
     }
+
     final assetsOnlyList = _mergeLists(
       0,
       List.filled(
@@ -139,6 +178,7 @@ class PortfolioValueUtil {
 
     final averagePL =
         await _calculateAverageProfitLossForAllInvestments(investments);
+
     return BalanceHistoryContainer(
         total: cumilatedList,
         inAssets: assetsOnlyList,
@@ -210,12 +250,14 @@ class PortfolioValueUtil {
   }
 
   Future<List<PriceDevelopmentDatapoint>> _getValueHistoryForSymbolV2(
-      String symbol,
-      StockdataInterval interval,
-      List<UserassetDatapoint> investments) async {
+    String symbol,
+    StockdataInterval interval,
+    List<UserassetDatapoint> investments,
+  ) async {
     List<PriceDevelopmentDatapoint> out = [];
     List<StockdataDatapoint> historicData =
         await _queryHistoricStockData(symbol, interval);
+
     for (var historicDataObj in historicData) {
       double stockAmmountForThatPoint;
       try {

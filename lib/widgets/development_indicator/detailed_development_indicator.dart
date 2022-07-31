@@ -7,11 +7,15 @@ class DetailedDevelopmentIndicator extends StatelessWidget {
     required this.positive,
     required this.changePercentage,
     required this.changeValue,
+    this.fontSize = 12,
+    this.iconSize = 25,
   }) : super(key: key);
 
   final bool positive;
   final double changePercentage;
   final double changeValue;
+  final double fontSize;
+  final double iconSize;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +25,7 @@ class DetailedDevelopmentIndicator extends StatelessWidget {
           positive
               ? Icons.arrow_drop_up_outlined
               : Icons.arrow_drop_down_outlined,
-          size: 25,
+          size: iconSize,
           color: positive
               ? NeoTheme.of(context)!.positiveColor
               : NeoTheme.of(context)!.negativeColor,
@@ -29,7 +33,7 @@ class DetailedDevelopmentIndicator extends StatelessWidget {
         Text(
           "$changeValue d\$ ($changePercentage %)",
           style: TextStyle(
-            fontSize: 12,
+            fontSize: fontSize,
             color: positive
                 ? NeoTheme.of(context)!.positiveColor
                 : NeoTheme.of(context)!.negativeColor,
