@@ -185,7 +185,8 @@ class RegisterWidget extends HookWidget {
               style: Theme.of(context).textTheme.bodySmall,
             )
           ],
-        )
+        ),
+
       ],
     );
   }

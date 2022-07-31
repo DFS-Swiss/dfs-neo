@@ -150,7 +150,7 @@ class InvestmentCard extends HookWidget {
                                   height: 3,
                                 ),
                                 HideableText(
-                                  "d\$${FormattingService.roundDouble(stockData.data!.first.price * relevantInvestment(assests.data!).tokenAmmount, 2).toString()}",
+                                  "d\$ ${FormattingService.roundDouble(stockData.data!.first.price * relevantInvestment(assests.data!).tokenAmmount, 2).toString()}",
                                   style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,
@@ -180,7 +180,7 @@ class InvestmentCard extends HookWidget {
                                   height: 3,
                                 ),
                                 Text(
-                                  "d\$${FormattingService.roundDouble(stockData.data!.first.price, 2).toString()}",
+                                  "d\$ ${FormattingService.roundDouble(stockData.data!.first.price, 2).toString()}",
                                   style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,

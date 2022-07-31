@@ -26,7 +26,7 @@ class BestWorstCardElement extends HookWidget {
               builder: (context) =>
                   DetailsPage(token: assetDevelopment.symbol)))),
       child: Container(
-        height: 90,
+        height: 97,
         padding: EdgeInsets.all(12),
         width: double.infinity,
         decoration: BoxDecoration(
@@ -45,6 +45,7 @@ class BestWorstCardElement extends HookWidget {
             ),
             Text(
               symbolInfo.loading ? "..." : symbolInfo.data!.displayName,
+              maxLines: 1,
               style: Theme.of(context).textTheme.labelSmall,
             ),
             SizedBox(
@@ -57,7 +58,7 @@ class BestWorstCardElement extends HookWidget {
                   NumberFormat.currency(symbol: "dUSD ")
                       .format(assetDevelopment.earnedMoney),
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: 13,
                     color: assetDevelopment.earnedMoney > 0
                         ? NeoTheme.of(context)!.positiveColor
                         : NeoTheme.of(context)!.negativeColor,
@@ -82,7 +83,7 @@ class BestWorstCardElementPlaceHolder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 90,
+      height: 97,
       padding: EdgeInsets.all(12),
       width: double.infinity,
       decoration: BoxDecoration(

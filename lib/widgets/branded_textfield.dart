@@ -32,7 +32,7 @@ class BrandedTextfield extends HookWidget {
       onChanged: onChanged,
       textInputAction: textInputAction,
       onFieldSubmitted: onContinue,
-      style: TextStyle(fontSize: 12),
+      style: TextStyle(fontSize: 18),
       cursorColor: Theme.of(context).primaryColor,
       decoration: InputDecoration(
         label: Text(labelText),

@@ -16,7 +16,6 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../service_locator.dart';
 import '../../services/analytics_service.dart';
 
-
 class AccountPage extends HookWidget {
   const AccountPage({Key? key}) : super(key: key);
 

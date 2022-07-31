@@ -14,9 +14,6 @@ import 'package:neo/widgets/cards/featuredstockcard_widget.dart';
 import 'package:neo/widgets/genericheadline_widget.dart';
 import 'package:neo/widgets/cards/tradablestockcard_widget.dart';
 
-
-
-
 class StockList extends HookWidget {
   const StockList({Key? key}) : super(key: key);
 
@@ -75,7 +72,8 @@ class StockList extends HookWidget {
               ),
               SwitchRowItem<int>(
                 selected: switchPosition.value == 2,
-                callback: (v) => switchPosition.value = v,
+                // callback: (v) => switchPosition.value = v,
+                callback: (v) => displayPopup(context),
                 value: 2,
                 text: AppLocalizations.of(context)!.list_switch_fav,
               ),
@@ -174,7 +172,12 @@ class StockList extends HookWidget {
                       .where((element) {
                         if (selectedFilters.value.isEmpty) {
                           return true;
-                        } else if (selectedFilters.value.contains(0) && element.assetType == "stock" || selectedFilters.value.contains(1) && element.assetType == "trust" || selectedFilters.value.contains(2) && element.assetType == "etf") {
+                        } else if (selectedFilters.value.contains(0) &&
+                                element.assetType == "stock" ||
+                            selectedFilters.value.contains(1) &&
+                                element.assetType == "trust" ||
+                            selectedFilters.value.contains(2) &&
+                                element.assetType == "etf") {
                           return true;
                         } else {
                           return false;
@@ -223,7 +226,11 @@ class StockList extends HookWidget {
                       )
                       .toList(),
                 )
-              : DynamicShimmerCards(cardAmount: 3, cardHeight: 74, bottomPadding: 16, sidePadding: 20)
+              : DynamicShimmerCards(
+                  cardAmount: 3,
+                  cardHeight: 74,
+                  bottomPadding: 16,
+                  sidePadding: 20)
         ],
       ),
     );

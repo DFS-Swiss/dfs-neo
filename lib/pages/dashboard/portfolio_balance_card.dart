@@ -27,7 +27,7 @@ class PortfolioBalanceCard extends HookWidget {
     final scrubbingData = useChartScrubbingState();
     return !balanceHistory.loading
         ? Container(
-            height: 270,
+            height: 278,
             decoration: BoxDecoration(
               color: Theme.of(context).backgroundColor,
               borderRadius: BorderRadius.circular(12),
@@ -85,6 +85,7 @@ class PortfolioBalanceCard extends HookWidget {
                                   balanceHistory.data!.total.first.price -
                                       balanceHistory.data!.total.last.price,
                                   2),
+                              prefix: "d\$ ",
                             )
                           ],
                         ),
@@ -103,6 +104,7 @@ class PortfolioBalanceCard extends HookWidget {
                                       width: 5,
                                     ),
                                     SmallDevelopmentIndicator(
+                                      hideable: true,
                                       positive: balanceHistory
                                               .data!.total.first.price >
                                           balanceHistory.data!.total.last.price,

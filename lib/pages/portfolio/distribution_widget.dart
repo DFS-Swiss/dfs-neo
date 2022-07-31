@@ -25,9 +25,9 @@ class DistributionWidget extends HookWidget {
       }
       final out = investments.data!.take(5).toList();
 
-      final restValue = investments.data!.sublist(4).fold<double>(
+      final restValue = investments.data!.sublist(5).fold<double>(
           0, (previousValue, element) => previousValue + element.totalValue);
-      final restAmount = investments.data!.sublist(4).fold<double>(
+      final restAmount = investments.data!.sublist(5).fold<double>(
           0, (previousValue, element) => previousValue + element.tokenAmmount);
       out.add(
         UserAssetDataWithValue(
@@ -62,7 +62,7 @@ class DistributionWidget extends HookWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: SizedBox(
-        height: 170,
+        height: 180,
         child: !investments.loading && !stockInfo.loading
             ? Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
