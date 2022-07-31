@@ -5,6 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:neo/pages/buy_sell/amount_selector.dart';
 import 'package:neo/services/data_service.dart';
 import 'package:neo/widgets/buttons/branded_button.dart';
+import 'package:neo/widgets/dialogs/custom_dialog.dart';
 
 import '../../service_locator.dart';
 import '../../services/analytics_service.dart';
@@ -43,21 +44,14 @@ class SellPage extends HookWidget {
 
           showDialog(
             context: context,
-            builder: (context) => AlertDialog(
-              title: Text(
-                  AppLocalizations.of(context)!.new_order_sell_success_title),
-              content: Text(
-                "$symbol ${AppLocalizations.of(context)!.new_order_sell_success}",
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                  },
-                  child: Text("OK"),
-                )
-              ],
+            builder: (context) => CustomDialog(
+              title: AppLocalizations.of(context)!.new_order_sell_success_title,
+              message:
+                  "$symbol ${AppLocalizations.of(context)!.new_order_sell_success}",
+              callback: () {
+                Navigator.pop(context);
+                Navigator.pop(context);
+              },
             ),
           );
         } catch (e) {
@@ -66,20 +60,14 @@ class SellPage extends HookWidget {
                   "Not enough tokens avaliable in account to satisfy constraints") {
             showDialog(
               context: context,
-              builder: (context) => AlertDialog(
-                title: Text(
-                    AppLocalizations.of(context)!.new_order_sell_success_error),
-                content: Text(
-                  AppLocalizations.of(context)!.new_order_buy_error_ins_token,
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text("OK"),
-                  )
-                ],
+              builder: (context) => CustomDialog(
+                title:
+                    AppLocalizations.of(context)!.new_order_sell_success_error,
+                message:
+                    AppLocalizations.of(context)!.new_order_buy_error_ins_token,
+                callback: () {
+                  Navigator.pop(context);
+                },
               ),
             );
           }

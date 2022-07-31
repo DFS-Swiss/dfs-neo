@@ -9,6 +9,7 @@ import 'package:neo/services/authentication_service.dart';
 import 'package:neo/utils/password_validator.dart';
 import 'package:neo/widgets/buttons/branded_button.dart';
 import 'package:neo/widgets/branded_textfield.dart';
+import 'package:neo/widgets/dialogs/custom_dialog.dart';
 import 'package:neo/widgets/password_validation_indicator.dart';
 
 class ChangePasswordPage extends HookWidget {
@@ -39,17 +40,11 @@ class ChangePasswordPage extends HookWidget {
           if (e.code == "NotAuthorizedException") {
             showDialog(
               context: context,
-              builder: (context) => AlertDialog(
-                title:
-                    Text(AppLocalizations.of(context)!.change_password_error),
-                content: Text(AppLocalizations.of(context)!
-                    .change_password_error_wrong_pw),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: Text("OK"),
-                  )
-                ],
+              builder: (context) => CustomDialog(
+                title: AppLocalizations.of(context)!.change_password_error,
+                message: AppLocalizations.of(context)!
+                    .change_password_error_wrong_pw,
+                callback: () => Navigator.pop(context),
               ),
             );
           }
