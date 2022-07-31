@@ -2,14 +2,16 @@
 // in neo/test/helpers/test_helpers.dart.
 // Do not manually edit this file.
 
-import 'dart:async' as _i3;
-import 'dart:ui' as _i7;
+import 'dart:async' as _i4;
+import 'dart:ui' as _i9;
 
-import 'package:amazon_cognito_identity_dart_2/cognito.dart' as _i4;
+import 'package:amazon_cognito_identity_dart_2/cognito.dart' as _i6;
+import 'package:amplitude_flutter/amplitude.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:neo/enums/app_state.dart' as _i6;
-import 'package:neo/services/app_state_service.dart' as _i5;
-import 'package:neo/services/cognito_service.dart' as _i2;
+import 'package:neo/enums/app_state.dart' as _i8;
+import 'package:neo/services/analytics_service.dart' as _i3;
+import 'package:neo/services/app_state_service.dart' as _i7;
+import 'package:neo/services/cognito_service.dart' as _i5;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -21,10 +23,47 @@ import 'package:neo/services/cognito_service.dart' as _i2;
 // ignore_for_file: unnecessary_parenthesis
 // ignore_for_file: camel_case_types
 
+class _FakeAmplitude_0 extends _i1.Fake implements _i2.Amplitude {}
+
+/// A class which mocks [AnalyticsService].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockAnalyticsService extends _i1.Mock implements _i3.AnalyticsService {
+  MockAnalyticsService() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i2.Amplitude get amplitude =>
+      (super.noSuchMethod(Invocation.getter(#amplitude),
+          returnValue: _FakeAmplitude_0()) as _i2.Amplitude);
+  @override
+  _i4.Future<void> init() => (super.noSuchMethod(Invocation.method(#init, []),
+      returnValue: Future<void>.value(),
+      returnValueForMissingStub: Future<void>.value()) as _i4.Future<void>);
+  @override
+  _i4.Future<void> identifyUser() =>
+      (super.noSuchMethod(Invocation.method(#identifyUser, []),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i4.Future<void>);
+  @override
+  _i4.Future<void> trackEvent(String? eventType,
+          {Map<String, dynamic>? eventProperties, bool? outOfSession}) =>
+      (super.noSuchMethod(
+          Invocation.method(#trackEvent, [eventType],
+              {#eventProperties: eventProperties, #outOfSession: outOfSession}),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i4.Future<void>);
+}
+
 /// A class which mocks [CognitoService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockCognitoService extends _i1.Mock implements _i2.CognitoService {
+class MockCognitoService extends _i1.Mock implements _i5.CognitoService {
+  MockCognitoService() {
+    _i1.throwOnMissingStub(this);
+  }
+
   @override
   bool isIdTokenExpired() =>
       (super.noSuchMethod(Invocation.method(#isIdTokenExpired, []),
@@ -48,29 +87,40 @@ class MockCognitoService extends _i1.Mock implements _i2.CognitoService {
   dynamic sendNewPasswordRequired(String? newPassword) => super
       .noSuchMethod(Invocation.method(#sendNewPasswordRequired, [newPassword]));
   @override
-  _i3.Future<_i4.CognitoUser?> getCurrentPoolUser() =>
+  _i4.Future<_i6.CognitoUser?> getCurrentPoolUser() =>
       (super.noSuchMethod(Invocation.method(#getCurrentPoolUser, []),
-              returnValue: Future<_i4.CognitoUser?>.value())
-          as _i3.Future<_i4.CognitoUser?>);
+              returnValue: Future<_i6.CognitoUser?>.value())
+          as _i4.Future<_i6.CognitoUser?>);
   @override
   dynamic registerUser(String? userName, String? email, String? password) =>
       super.noSuchMethod(
           Invocation.method(#registerUser, [userName, email, password]));
+  @override
+  dynamic changePassword(String? oldPassword, String? newPassword) =>
+      super.noSuchMethod(
+          Invocation.method(#changePassword, [oldPassword, newPassword]));
+  @override
+  dynamic initForgotPassword(String? username) =>
+      super.noSuchMethod(Invocation.method(#initForgotPassword, [username]));
+  @override
+  dynamic completeForgotPassword(String? code, String? newPassword) =>
+      super.noSuchMethod(
+          Invocation.method(#completeForgotPassword, [code, newPassword]));
 }
 
 /// A class which mocks [AppStateService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockAppStateService extends _i1.Mock implements _i5.AppStateService {
+class MockAppStateService extends _i1.Mock implements _i7.AppStateService {
   MockAppStateService() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i6.AppState get state => (super.noSuchMethod(Invocation.getter(#state),
-      returnValue: _i6.AppState.signedOut) as _i6.AppState);
+  _i8.AppState get state => (super.noSuchMethod(Invocation.getter(#state),
+      returnValue: _i8.AppState.signedOut) as _i8.AppState);
   @override
-  set state(_i6.AppState? newState) =>
+  set state(_i8.AppState? newState) =>
       super.noSuchMethod(Invocation.setter(#state, newState),
           returnValueForMissingStub: null);
   @override
@@ -78,11 +128,11 @@ class MockAppStateService extends _i1.Mock implements _i5.AppStateService {
       (super.noSuchMethod(Invocation.getter(#hasListeners), returnValue: false)
           as bool);
   @override
-  void addListener(_i7.VoidCallback? listener) =>
+  void addListener(_i9.VoidCallback? listener) =>
       super.noSuchMethod(Invocation.method(#addListener, [listener]),
           returnValueForMissingStub: null);
   @override
-  void removeListener(_i7.VoidCallback? listener) =>
+  void removeListener(_i9.VoidCallback? listener) =>
       super.noSuchMethod(Invocation.method(#removeListener, [listener]),
           returnValueForMissingStub: null);
   @override
