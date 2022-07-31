@@ -1,6 +1,5 @@
 import 'package:amplitude_flutter/amplitude.dart';
 import 'package:neo/service_locator.dart';
-import 'package:neo/services/authentication_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'cognito_service.dart';
