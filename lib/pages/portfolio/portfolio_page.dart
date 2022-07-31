@@ -77,32 +77,42 @@ class Portfolio extends HookWidget {
       ),
       body: ListView(
         children: [
-          TimeFilter(
-            enabled: false,
-            init: timeFilter.value,
-            callback: (int a) {
-              timeFilter.value = a;
+          //TODO: Remove the display popup as soon as time intervals work
+          GestureDetector(
+            onTap: () {
+              displayPopup(context);
             },
+            child: TimeFilter(
+              enabled: false,
+              init: timeFilter.value,
+              callback: (int a) {
+                timeFilter.value = a;
+              },
+            ),
           ),
           SizedBox(
             height: 25,
           ),
-          SwitchRow(options: [
-            SwitchRowItem<PortfolioDevelopmentMode>(
-              selected:
-                  developmentMode.value == PortfolioDevelopmentMode.balance,
-              callback: (v) => developmentMode.value = v,
-              value: PortfolioDevelopmentMode.balance,
-              text: AppLocalizations.of(context)!.dash_balance_switch,
-            ),
-            SwitchRowItem<PortfolioDevelopmentMode>(
-              selected:
-                  developmentMode.value == PortfolioDevelopmentMode.development,
-              callback: (v) {}, // (v) => developmentMode.value = v,
-              value: PortfolioDevelopmentMode.development,
-              text: AppLocalizations.of(context)!.dash_development,
-            )
-          ]),
+          SwitchRow(
+            options: [
+              SwitchRowItem<PortfolioDevelopmentMode>(
+                selected:
+                    developmentMode.value == PortfolioDevelopmentMode.balance,
+                callback: (v) => developmentMode.value = v,
+                value: PortfolioDevelopmentMode.balance,
+                text: AppLocalizations.of(context)!.dash_balance_switch,
+              ),
+              SwitchRowItem<PortfolioDevelopmentMode>(
+                selected: developmentMode.value ==
+                    PortfolioDevelopmentMode.development,
+                callback: (v) {
+                  displayPopup(context);
+                }, // (v) => developmentMode.value = v,
+                value: PortfolioDevelopmentMode.development,
+                text: AppLocalizations.of(context)!.dash_development,
+              )
+            ],
+          ),
           Padding(
             padding: EdgeInsets.only(
               top: 20,

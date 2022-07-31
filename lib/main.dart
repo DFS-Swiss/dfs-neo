@@ -86,7 +86,7 @@ class MyApp extends StatelessWidget {
               suffixIconColor: Colors.grey,
               hintStyle: TextStyle(
                   color: Colors.grey.withOpacity(0.8),
-                  fontSize: 12,
+                  fontSize: 15,
                   height: 2.2),
               focusedBorder: const UnderlineInputBorder(
                 borderSide: const BorderSide(
@@ -97,21 +97,21 @@ class MyApp extends StatelessWidget {
               TextTheme(
                 titleSmall: TextStyle(
                   color: Color.fromRGBO(187, 187, 187, 1),
-                  fontSize: 12,
+                  fontSize: 15,
                   fontWeight: FontWeight.w500,
                 ),
                 labelSmall: TextStyle(
                   color: Color(0xFF909090),
                   fontWeight: FontWeight.w400,
-                  fontSize: 12,
+                  fontSize: 15,
                 ),
                 labelMedium: TextStyle(
                     color: Color(0xFF202532),
-                    fontSize: 12,
+                    fontSize: 15,
                     fontWeight: FontWeight.w600),
                 bodySmall: TextStyle(
                   color: Color.fromRGBO(144, 144, 144, 1),
-                  fontSize: 12,
+                  fontSize: 15,
                   fontWeight: FontWeight.w500,
                 ),
                 bodyMedium: TextStyle(

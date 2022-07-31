@@ -10,12 +10,14 @@ class SmallDevelopmentIndicator extends StatelessWidget {
     required this.changePercentage,
     this.isInPercent = true,
     this.hideable = false,
+    this.prefix,
   }) : super(key: key);
 
   final bool positive;
   final double changePercentage;
   final bool isInPercent;
   final bool hideable;
+  final String? prefix;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +48,7 @@ class SmallDevelopmentIndicator extends StatelessWidget {
             : HideableText(
                 isInPercent
                     ? "${NumberFormat.compact().format(changePercentage)}%"
-                    : NumberFormat.compact().format(changePercentage),
+                    : " ${prefix ?? ""}${NumberFormat.compact().format(changePercentage)}",
                 style: TextStyle(
                   fontSize: 12,
                   color: positive

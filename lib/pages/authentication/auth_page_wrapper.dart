@@ -35,11 +35,12 @@ class AuthPageWrapper extends HookWidget {
         contentHeight = AUTH_LOGIN_CONTAINTER_HEIGHT;
       } else if (authState == AppState.register) {
         contentHeight = AUTH_REGISTER_CONTAINTER_HEIGHT;
+
       } else {
         contentHeight = 0;
       }
 
-      return contentHeight + MediaQuery.of(context).viewPadding.bottom + 15;
+      return contentHeight + MediaQuery.of(context).viewPadding.bottom + 20;
     }
 
     return Scaffold(

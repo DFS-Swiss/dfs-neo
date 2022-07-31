@@ -13,7 +13,7 @@ class NeoTheme extends InheritedWidget {
   final Color negativeColor = const Color.fromRGBO(255, 125, 148, 1);
   final TextStyle linkTextStyle = GoogleFonts.urbanist(
     color: Color(0xFF05889C),
-    fontSize: 12,
+    fontSize: 15,
     fontWeight: FontWeight.w600,
     decoration: TextDecoration.underline,
   );
