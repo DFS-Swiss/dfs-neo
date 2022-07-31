@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -25,8 +27,7 @@ class MoneyTextfield extends HookWidget {
 
     final FocusNode focusNode = FocusNode();
 
-    return GestureDetector(
-      onTap: () => focusNode.requestFocus(),
+    return GestureDetector(      
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -62,10 +63,11 @@ class MoneyTextfield extends HookWidget {
                     constraints: BoxConstraints(minWidth: 51),
                     child: IntrinsicWidth(
                       child: TextFormField(
+                        autofocus: true,
                         keyboardType: TextInputType.number,
                         textAlign: TextAlign.center,
                         onChanged: onChanged,
-                        focusNode: focusNode,
+                        focusNode: Platform.isAndroid ? null : focusNode,
                         textInputAction: textInputAction,
                         onFieldSubmitted: onContinue,
                         controller: textController,
