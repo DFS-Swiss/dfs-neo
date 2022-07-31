@@ -77,8 +77,8 @@ class RecentlyClosedOrderCard extends HookWidget {
                             children: [
                               Text(
                                 data.difference > 0
-                                    ? data.tokenAmmount.toString()
-                                    : "- ${data.tokenAmmount.toString()}",
+                                    ? data.tokenAmmount.toStringAsFixed(2)
+                                    : "- ${data.tokenAmmount.toStringAsFixed(2)}",
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.w600,
