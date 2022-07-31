@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:neo/style/theme.dart';
+import 'package:neo/widgets/hideable_text.dart';
 
 class SmallDevelopmentIndicator extends StatelessWidget {
   const SmallDevelopmentIndicator({
     Key? key,
     required this.positive,
     required this.changePercentage,
+    this.isInPercent = true,
+    this.hideable = false,
+    this.prefix,
   }) : super(key: key);
 
   final bool positive;
   final double changePercentage;
+  final bool isInPercent;
+  final bool hideable;
+  final String? prefix;
 
   @override
   Widget build(BuildContext context) {
@@ -25,16 +32,31 @@ class SmallDevelopmentIndicator extends StatelessWidget {
               ? NeoTheme.of(context)!.positiveColor
               : NeoTheme.of(context)!.negativeColor,
         ),
-        Text(
-          "${NumberFormat.compact().format(changePercentage)}%",
-          style: TextStyle(
-            fontSize: 12,
-            color: positive
-                ? NeoTheme.of(context)!.positiveColor
-                : NeoTheme.of(context)!.negativeColor,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
+        !hideable
+            ? Text(
+                isInPercent
+                    ? "${NumberFormat.compact().format(changePercentage)}%"
+                    : NumberFormat.compact().format(changePercentage),
+                style: TextStyle(
+                  fontSize: 12,
+                  color: positive
+                      ? NeoTheme.of(context)!.positiveColor
+                      : NeoTheme.of(context)!.negativeColor,
+                  fontWeight: FontWeight.w400,
+                ),
+              )
+            : HideableText(
+                isInPercent
+                    ? "${NumberFormat.compact().format(changePercentage)}%"
+                    : " ${prefix ?? ""}${NumberFormat.compact().format(changePercentage)}",
+                style: TextStyle(
+                  fontSize: 12,
+                  color: positive
+                      ? NeoTheme.of(context)!.positiveColor
+                      : NeoTheme.of(context)!.negativeColor,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
       ],
     );
   }

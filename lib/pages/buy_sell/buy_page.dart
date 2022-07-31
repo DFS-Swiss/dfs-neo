@@ -4,6 +4,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:neo/pages/buy_sell/amount_selector.dart';
 import 'package:neo/services/data_service.dart';
+import 'package:neo/widgets/dialogs/custom_dialog.dart';
+import 'package:neo/utils/display_popup.dart';
+import '../../service_locator.dart';
+import '../../services/analytics_service.dart';
 import '../../widgets/branded_switch.dart';
 import '../../widgets/buttons/branded_button.dart';
 
@@ -15,6 +19,15 @@ class BuyPage extends HookWidget {
   Widget build(BuildContext context) {
     final amountInDollar = useRef<double>(0);
     final loading = useState(false);
+    useEffect(() {
+      locator<AnalyticsService>().trackEvent(
+        "display:buy_asset",
+        eventProperties: {
+          "asset": symbol,
+        },
+      );
+      return;
+    }, ["_"]);
 
     hanldeBuy() async {
       if (amountInDollar.value > 0) {
@@ -22,23 +35,22 @@ class BuyPage extends HookWidget {
         try {
           await DataService.getInstance()
               .buyAsset(symbol, amountInDollar.value);
+          locator<AnalyticsService>().trackEvent(
+            "action:buy",
+            eventProperties: {
+              "asset": symbol,
+            },
+          );
           showDialog(
             context: context,
-            builder: (context) => AlertDialog(
-              title: Text(
-                  AppLocalizations.of(context)!.new_order_buy_success_title),
-              content: Text(
-                "$symbol ${AppLocalizations.of(context)!.new_order_buy_success}",
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                  },
-                  child: Text("OK"),
-                )
-              ],
+            builder: (context) => CustomDialog(
+              title: AppLocalizations.of(context)!.new_order_buy_success_title,
+              message:
+                  "$symbol ${AppLocalizations.of(context)!.new_order_buy_success}",
+              callback: () {
+                Navigator.pop(context);
+                Navigator.pop(context);
+              },
             ),
           );
         } catch (e) {
@@ -46,19 +58,12 @@ class BuyPage extends HookWidget {
               e.response!.data["message"] == "Insuficient funds") {
             showDialog(
               context: context,
-              builder: (context) => AlertDialog(
-                title: Text(
-                    AppLocalizations.of(context)!.new_order_buy_success_error),
-                content: Text(AppLocalizations.of(context)!
-                    .new_order_buy_success_error_ins_funds),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text("OK"),
-                  )
-                ],
+              builder: (context) => CustomDialog(
+                title:
+                    AppLocalizations.of(context)!.new_order_buy_success_error,
+                message: AppLocalizations.of(context)!
+                    .new_order_buy_success_error_ins_funds,
+                callback: () => Navigator.pop(context),
               ),
             );
           }
@@ -106,7 +111,9 @@ class BuyPage extends HookWidget {
                         ),
                         BrandedSwitch(
                           value: false,
-                          onChanged: (v) {},
+                          onChanged: (v) {
+                            displayPopup(context);
+                          },
                         )
                       ],
                     )

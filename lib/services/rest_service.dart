@@ -1,3 +1,4 @@
+import 'package:bugsnag_flutter/bugsnag_flutter.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:neo/models/stockdata_datapoint.dart';
@@ -73,7 +74,8 @@ class RESTService extends ChangeNotifier {
       };
       StockdataService.getInstance().updateData(serviceInput);
       return data;
-    } catch (e) {
+    } catch (e, stack) {
+      await bugsnag.notify(e, stack);
       rethrow;
     }
   }
@@ -96,6 +98,7 @@ class RESTService extends ChangeNotifier {
             .map((e) => StockdataDatapoint.fromMap(e))
             .toList();
         if (mappedList.length < 2) {
+          await bugsnag.notify("Error in bulk fetch result", null);
           print("Error detected");
         }
         print(mappedList.length);
@@ -203,7 +206,8 @@ class RESTService extends ChangeNotifier {
       } else {
         return false;
       }
-    } catch (e) {
+    } catch (e, stack) {
+      await bugsnag.notify(e, stack);
       rethrow;
     }
   }
@@ -216,9 +220,7 @@ class RESTService extends ChangeNotifier {
 
         try {
           data = (response.data["body"]["items"] as List<dynamic>)
-              .map((e) => 
-              StockdataDocument.fromMap(e)
-              )
+              .map((e) => StockdataDocument.fromMap(e))
               .toList();
         } catch (e) {
           throw "Parsing error: ${e.toString()}";
@@ -377,7 +379,8 @@ class RESTService extends ChangeNotifier {
       } else {
         throw "Unknown case: ${response.toString()}";
       }
-    } catch (e) {
+    } catch (e, stack) {
+      await bugsnag.notify(e, stack);
       rethrow;
     }
   }
@@ -393,7 +396,8 @@ class RESTService extends ChangeNotifier {
         throw "Insuficient funds";
       }
       return false;
-    } catch (e) {
+    } catch (e, stack) {
+      await bugsnag.notify(e, stack);
       rethrow;
     }
   }
@@ -411,7 +415,8 @@ class RESTService extends ChangeNotifier {
         throw "Insuficient token";
       }
       return false;
-    } catch (e) {
+    } catch (e, stack) {
+      await bugsnag.notify(e, stack);
       rethrow;
     }
   }

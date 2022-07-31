@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -23,7 +25,7 @@ class TradeAssetInputFieldDollar extends HookWidget {
         ? GestureDetector(
             onTap: () => node.requestFocus(),
             child: Container(
-              height: 79,
+              height: 83,
               padding: EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: Theme.of(context).backgroundColor.withOpacity(0.75),
@@ -68,7 +70,8 @@ class TradeAssetInputFieldDollar extends HookWidget {
                                 child: Transform.translate(
                                   offset: Offset(0, -12),
                                   child: TextFormField(
-                                    focusNode: node,
+                                    autofocus: true,
+                                    focusNode: Platform.isAndroid ? null : node,
                                     cursorColor: Theme.of(context).primaryColor,
                                     controller: controller,
                                     keyboardType:

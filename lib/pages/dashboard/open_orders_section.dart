@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:neo/style/theme.dart';
+import 'package:neo/utils/display_popup.dart';
 import 'package:neo/widgets/cards/open_order_card.dart';
 
 class OpenOrdersSection extends HookWidget {
@@ -15,18 +16,26 @@ class OpenOrdersSection extends HookWidget {
       padding: const EdgeInsets.only(top: 32),
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                AppLocalizations.of(context)!.dash_oo,
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-              Text(
-                AppLocalizations.of(context)!.dash_view,
-                style: NeoTheme.of(context)!.linkTextStyle,
-              )
-            ],
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  AppLocalizations.of(context)!.dash_oo,
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    displayPopup(context);
+                  },
+                  child: Text(
+                    AppLocalizations.of(context)!.dash_view,
+                    style: NeoTheme.of(context)!.linkTextStyle,
+                  ),
+                )
+              ],
+            ),
           ),
           SizedBox(
             height: 16,

@@ -113,4 +113,8 @@ class CognitoService {
     if (_cognitoUser == null) throw "No user";
     await _cognitoUser!.confirmPassword(code, newPassword);
   }
+
+  CognitoUser? getUser() {
+    return _cognitoUser;
+  }
 }

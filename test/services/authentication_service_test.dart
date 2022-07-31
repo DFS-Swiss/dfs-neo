@@ -100,8 +100,10 @@ void main() {
       var appStateService = locator<AppStateService>();
 
       SharedPreferences.setMockInitialValues({}); //set values here
-      when(cognitoService.createAndAuthenticateUser("", "")).thenReturn(null);
+      when(cognitoService.createAndAuthenticateUser("testUser", "")).thenReturn(null);
       when(cognitoService.getRefreshToken()).thenReturn("refreshTokenTest");
+      when(cognitoService.getAccesTokenJwtToken()).thenReturn("accesTokenJwtTokenTest");
+      when(cognitoService.getIdJwtToken()).thenReturn("idJwtTokenTest");
       when(appStateService.state)
           .thenReturn(AppState.signedIn);
 
@@ -158,6 +160,7 @@ void main() {
       var cognitoService = locator<CognitoService>();
       var appStateService = locator<AppStateService>();
       when(cognitoService.isUserPresent()).thenReturn(true);
+      when(cognitoService.sendNewPasswordRequired("test")).thenReturn(true);
       when(appStateService.state)
           .thenReturn(AppState.newPasswordRequired);
 

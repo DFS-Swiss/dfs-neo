@@ -97,6 +97,7 @@ class StockdataService extends ChangeNotifier {
   }
 
   handleWebsocketUpdate(List<dynamic> newData) {
+    print("${DateTime.now().toIso8601String()}: Stock data update received");
     final List<StockdataDatapoint> castedData = [];
 
     for (var element in newData) {

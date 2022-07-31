@@ -38,7 +38,10 @@ class InvestmentCard extends HookWidget {
       return list.firstWhere((element) => element.symbol == token);
     }
 
-    return !stockData.loading && !symbolInfo.loading && !assests.loading
+    return !stockData.loading &&
+            !symbolInfo.loading &&
+            !assests.loading &&
+            !stockData.refetching
         ? GestureDetector(
             onTap: () => Navigator.push(
               context,
@@ -113,85 +116,89 @@ class InvestmentCard extends HookWidget {
                           height: 16,
                         ),
                         Expanded(
-                          child: LineChart(
-                            preview(
-                              stockData.data!
-                                  .map((e) => FlSpot(
-                                      e.time.millisecondsSinceEpoch.toDouble(),
-                                      e.price))
-                                  .toList(),
-                              stockData.data!.first.price <
-                                      stockData.data!.last.price
-                                  ? true
-                                  : false,
-                            ),
-                          ),
-                        ),
+                            child: stockData.data != null
+                                ? LineChart(
+                                    preview(
+                                      stockData.data!
+                                          .map((e) => FlSpot(
+                                              e.time.millisecondsSinceEpoch
+                                                  .toDouble(),
+                                              e.price))
+                                          .toList(),
+                                      stockData.data!.first.price <
+                                              stockData.data!.last.price
+                                          ? true
+                                          : false,
+                                    ),
+                                  )
+                                : Container()),
                       ],
                     ),
                   ),
                   SizedBox(
                     width: 22,
                   ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          SizedBox(
-                            height: 3,
-                          ),
-                          HideableText(
-                            "\$${FormattingService.roundDouble(stockData.data!.first.price * relevantInvestment(assests.data!).tokenAmmount, 2).toString()}",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
+                  stockData.data != null
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                SizedBox(
+                                  height: 3,
+                                ),
+                                HideableText(
+                                  "d\$ ${FormattingService.roundDouble(stockData.data!.first.price * relevantInvestment(assests.data!).tokenAmmount, 2).toString()}",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                Text(
+                                  "${FormattingService.calculatepercent(stockData.data!.first.price, stockData.data!.last.price)} %",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: stockData.data!.first.price >
+                                            stockData.data!.last.price
+                                        ? NeoTheme.of(context)!.positiveColor
+                                        : NeoTheme.of(context)!.negativeColor,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 3,
+                                ),
+                              ],
                             ),
-                          ),
-                          Text(
-                            "${FormattingService.calculatepercent(stockData.data!.first.price, stockData.data!.last.price)}%",
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: stockData.data!.first.price >
-                                      stockData.data!.last.price
-                                  ? NeoTheme.of(context)!.positiveColor
-                                  : NeoTheme.of(context)!.negativeColor,
-                              fontWeight: FontWeight.w400,
+                            Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                SizedBox(
+                                  height: 3,
+                                ),
+                                Text(
+                                  "d\$ ${FormattingService.roundDouble(stockData.data!.first.price, 2).toString()}",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                SmallDevelopmentIndicator(
+                                  positive: stockData.data!.first.price >
+                                      stockData.data!.last.price,
+                                  changePercentage:
+                                      FormattingService.calculatepercent(
+                                          stockData.data!.first.price,
+                                          stockData.data!.last.price),
+                                ),
+                              ],
                             ),
-                          ),
-                          SizedBox(
-                            height: 3,
-                          ),
-                        ],
-                      ),
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          SizedBox(
-                            height: 3,
-                          ),
-                          Text(
-                            "\$${FormattingService.roundDouble(stockData.data!.first.price, 2).toString()}",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          SmallDevelopmentIndicator(
-                            positive: stockData.data!.first.price >
-                                stockData.data!.last.price,
-                            changePercentage:
-                                FormattingService.calculatepercent(
-                                    stockData.data!.first.price,
-                                    stockData.data!.last.price),
-                          ),
-                        ],
-                      ),
-                    ],
-                  )
+                          ],
+                        )
+                      : Container()
                 ],
               ),
             ),
