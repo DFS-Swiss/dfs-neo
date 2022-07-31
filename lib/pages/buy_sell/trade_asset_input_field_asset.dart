@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -56,7 +58,7 @@ class TradeAssetInputFieldAsset extends HookWidget {
                                 child: Transform.translate(
                                   offset: Offset(0, -12),
                                   child: TextFormField(
-                                    focusNode: node,
+                                    focusNode: Platform.isAndroid ? null : node,
                                     cursorColor: Theme.of(context).primaryColor,
                                     controller: controler,
                                     keyboardType:
