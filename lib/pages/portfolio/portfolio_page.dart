@@ -10,10 +10,14 @@ import 'package:neo/pages/portfolio/timefilter_widget.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
 import 'package:neo/widgets/appbaractionbutton_widget.dart';
 import 'package:neo/widgets/buttons/branded_button.dart';
+import 'package:neo/widgets/cards/portfolio_performance_card.dart';
 import 'package:neo/widgets/genericheadline_widget.dart';
+import 'package:neo/widgets/switchrow_widget.dart';
 
 import '../../service_locator.dart';
 import '../../services/analytics_service.dart';
+import '../../enums/portfolio_development_mode.dart';
+
 import '../../widgets/buttons/branded_outline_button.dart';
 import '../information/feature_not_implemented_page.dart';
 import 'current_investments_widget.dart';
@@ -32,6 +36,8 @@ class Portfolio extends HookWidget {
       locator<AnalyticsService>().trackEvent("display:portfolio");
       return;
     }, ["_"]);
+    final developmentMode =
+        useState<PortfolioDevelopmentMode>(PortfolioDevelopmentMode.balance);
 
     useEffect(() {
       switch (timeFilter.value) {
@@ -73,15 +79,47 @@ class Portfolio extends HookWidget {
       body: ListView(
         children: [
           TimeFilter(
-              init: timeFilter.value,
-              callback: (int a) {
-                timeFilter.value = a;
-              }),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: PortfolioBalanceCard(
-              interval: interval.value,
+            enabled: false,
+            init: timeFilter.value,
+            callback: (int a) {
+              timeFilter.value = a;
+            },
+          ),
+          SizedBox(
+            height: 25,
+          ),
+          SwitchRow(options: [
+            SwitchRowItem<PortfolioDevelopmentMode>(
+              selected:
+                  developmentMode.value == PortfolioDevelopmentMode.balance,
+              callback: (v) => developmentMode.value = v,
+              value: PortfolioDevelopmentMode.balance,
+              text: AppLocalizations.of(context)!.dash_balance_switch,
             ),
+            SwitchRowItem<PortfolioDevelopmentMode>(
+              selected:
+                  developmentMode.value == PortfolioDevelopmentMode.development,
+              callback: (v) {}, // (v) => developmentMode.value = v,
+              value: PortfolioDevelopmentMode.development,
+              text: AppLocalizations.of(context)!.dash_development,
+            )
+          ]),
+          Padding(
+            padding: EdgeInsets.only(
+              top: 20,
+              left: 20,
+              right: 20,
+              bottom: developmentMode.value == PortfolioDevelopmentMode.balance
+                  ? 20
+                  : 60,
+            ),
+            child: developmentMode.value == PortfolioDevelopmentMode.balance
+                ? PortfolioBalanceCard(
+                    interval: interval.value,
+                  )
+                : PortfolioPerformanceCard(
+                    interval: interval.value,
+                  ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
