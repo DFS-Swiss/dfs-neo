@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 import 'package:neo/hooks/use_userassets_history.dart';
 import 'package:neo/models/userasset_datapoint.dart';
+import 'package:neo/pages/recently_closed_investments_page/recently_closed_investment_page.dart';
 import 'package:neo/types/data_container.dart';
 
 import 'package:neo/utils/display_popup.dart';
@@ -16,7 +17,6 @@ class RecentlyClosedSection extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final investmenthistory = useUserassetsHistory();
     final tempList = useState<DataContainer<List<UserassetDatapoint>>>(
         DataContainer.waiting());
@@ -44,7 +44,10 @@ class RecentlyClosedSection extends HookWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    displayPopup(context);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => RecentlyClosedInvestments()));
                   },
                   child: Text(
                     AppLocalizations.of(context)!.dash_view,
@@ -63,9 +66,13 @@ class RecentlyClosedSection extends HookWidget {
               children: !tempList.value.loading
                   ? tempList.value.data!
                       .take(3)
-                      .map((e) => RecentlyClosedOrderCard(
-                            data: e,
-                            key: Key(e.symbol+e.time.millisecondsSinceEpoch.toString()),
+                      .map((e) => Padding(
+                            padding: const EdgeInsets.only(bottom: 18),
+                            child: RecentlyClosedOrderCard(
+                              data: e,
+                              key: Key(e.symbol +
+                                  e.time.millisecondsSinceEpoch.toString()),
+                            ),
                           ))
                       .toList()
                   : [

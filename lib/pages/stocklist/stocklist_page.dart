@@ -9,10 +9,11 @@ import 'package:neo/pages/stocklist/stocksearchbar_widget.dart';
 import 'package:neo/pages/stocklist/stockswitchrow_widget.dart';
 import 'package:neo/utils/display_popup.dart';
 import 'package:neo/widgets/appbaractionbutton_widget.dart';
+import 'package:neo/widgets/cards/dynamic_shimmer_cards.dart';
 import 'package:neo/widgets/cards/featuredstockcard_widget.dart';
 import 'package:neo/widgets/genericheadline_widget.dart';
 import 'package:neo/widgets/cards/tradablestockcard_widget.dart';
-import 'package:shimmer/shimmer.dart';
+
 
 
 
@@ -207,52 +208,7 @@ class StockList extends HookWidget {
                       )
                       .toList(),
                 )
-              : Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 20, right: 20, bottom: 16),
-                      child: Shimmer.fromColors(
-                        baseColor: Color.fromRGBO(238, 238, 238, 0.75),
-                        highlightColor: Colors.white,
-                        child: Container(
-                          height: 74,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(12)),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 20, right: 20, bottom: 16),
-                      child: Shimmer.fromColors(
-                        baseColor: Color.fromRGBO(238, 238, 238, 0.75),
-                        highlightColor: Colors.white,
-                        child: Container(
-                          height: 74,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(12)),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 20, right: 20, bottom: 16),
-                      child: Shimmer.fromColors(
-                        baseColor: Color.fromRGBO(238, 238, 238, 0.75),
-                        highlightColor: Colors.white,
-                        child: Container(
-                          height: 74,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(12)),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
+              : DynamicShimmerCards(cardAmount: 3, cardHeight: 74, bottomPadding: 16, sidePadding: 20)
         ],
       ),
     );

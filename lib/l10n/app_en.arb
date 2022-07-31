@@ -68,10 +68,12 @@
     "dash_currinv_amount_multiple": "shares",
     "dash_rec_title": "Recently closed orders",
     "dash_rec_type": "Type",
-    "dash_rec_entry": "Entry price",
+    "dash_rec_entry": "Price",
     "dash_rec_pl": "P/L",
     "dash_rec_type_long": "Long",
     "dash_rec_type_short": "Short",
+    "dash_rec_type_buy": "Buy",
+    "dash_rec_type_sell": "Sell",
     "nav_dash": "Dashboard",
     "nav_port": "Portfolio",
     "nav_trad": "Trade",
@@ -219,5 +221,6 @@
     "feature_not_implemented_title": "Implementation in progress",
     "feature_not_implemented_subtitle": "This feature is not implemented yet. For more information visit us on our website.",
     "feature_not_implemented_wait_list_info": "If you don't want to wait, join our wait list and win 1.000d$!",
-    "feature_not_implemented_visit_website": "Visit our website"
+    "feature_not_implemented_visit_website": "Visit our website",
+    "util_no_data": "No data avaliable yet..."
 }

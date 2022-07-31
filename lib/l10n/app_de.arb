@@ -68,10 +68,12 @@
     "dash_currinv_amount_multiple": "Aktien",
     "dash_rec_title": "Kürzlich durchgeführte Positionen",
     "dash_rec_type": "Typ",
-    "dash_rec_entry": "Kaufpreis",
+    "dash_rec_entry": "Preis",
     "dash_rec_pl": "G/V",
     "dash_rec_type_long": "Long",
     "dash_rec_type_short": "Short",
+    "dash_rec_type_buy": "Kauf",
+    "dash_rec_type_sell": "Verkauf",
     "nav_dash": "Dashboard",
     "nav_port": "Portfolio",
     "nav_trad": "Handel",
@@ -219,5 +221,6 @@
     "feature_not_implemented_title": "Feature in Entwicklung",
     "feature_not_implemented_subtitle": "Das feature ist noch nicht implementiert. Für weitere Informationen, besuche uns auf unserer Webseite.",
     "feature_not_implemented_wait_list_info": "Wenn du es nicht abwarten kannst, lass dich auf die Warteliste setzen und gewinne 1000d$!",
-    "feature_not_implemented_visit_website": "Besuche unsere Webseite"
+    "feature_not_implemented_visit_website": "Besuche unsere Webseite",
+    "util_no_data": "Noch keine Daten verfügbar"
 }

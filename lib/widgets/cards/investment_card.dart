@@ -157,7 +157,7 @@ class InvestmentCard extends HookWidget {
                                   ),
                                 ),
                                 Text(
-                                  "${FormattingService.calculatepercent(stockData.data!.first.price, stockData.data!.last.price)}%",
+                                  "${FormattingService.calculatepercent(stockData.data!.first.price, stockData.data!.last.price)} %",
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: stockData.data!.first.price >

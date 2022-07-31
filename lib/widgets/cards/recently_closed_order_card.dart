@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-
+import 'package:intl/intl.dart';
 import 'package:neo/hooks/use_stockdata_info.dart';
 import 'package:neo/models/userasset_datapoint.dart';
 import 'package:neo/style/theme.dart';
@@ -13,14 +13,15 @@ class RecentlyClosedOrderCard extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-        //TODO: Improve the recently closed orders UI
+    //TODO: Improve the recently closed orders UI
     final assetData = useSymbolInfo(data.symbol);
+    final f = DateFormat('HH:MM dd.MM.yyyy');
     return assetData.loading
         ? Container()
         : Stack(
             children: [
               Padding(
-                padding: const EdgeInsets.only(bottom: 18),
+                padding: const EdgeInsets.only(bottom: 0),
                 child: Container(
                   height: 130,
                   padding: EdgeInsets.all(20),
@@ -71,60 +72,89 @@ class RecentlyClosedOrderCard extends HookWidget {
                             ],
                           ),
                           Expanded(child: Container()),
-                          Text(
-                            "${data.tokenAmmount.toString()} ${AppLocalizations.of(context)!.dash_oo_amount_short}",
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
-                              color: NeoTheme.of(context)!.positiveColor,
-                            ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                data.difference > 0
+                                    ? data.tokenAmmount.toString()
+                                    : "- ${data.tokenAmmount.toString()}",
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600,
+                                  color: data.difference > 0
+                                      ? NeoTheme.of(context)!.positiveColor
+                                      : NeoTheme.of(context)!.negativeColor,
+                                ),
+                              ),
+                              Text(
+                                f.format(data.time),
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xFF909090),
+                                ),
+                              ),
+                            ],
                           )
                         ],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Column(
-                            children: [
-                              Text(
-                                AppLocalizations.of(context)!.dash_rec_type,
-                                style: Theme.of(context).textTheme.labelSmall,
-                              ),
-                              SizedBox(
-                                height: 8,
-                              ),
-                              Text("Long",
-                                  style:
-                                      Theme.of(context).textTheme.labelMedium)
-                            ],
+                          Expanded(
+                            child: Column(
+                              children: [
+                                Text(
+                                  AppLocalizations.of(context)!.dash_rec_type,
+                                  style: Theme.of(context).textTheme.labelSmall,
+                                ),
+                                SizedBox(
+                                  height: 8,
+                                ),
+                                Text(
+                                    data.difference > 0
+                                        ? AppLocalizations.of(context)!
+                                            .dash_rec_type_buy
+                                        : AppLocalizations.of(context)!
+                                            .dash_rec_type_sell,
+                                    style:
+                                        Theme.of(context).textTheme.labelMedium)
+                              ],
+                            ),
                           ),
-                          Column(
-                            children: [
-                              Text(
-                                AppLocalizations.of(context)!.dash_rec_entry,
-                                style: Theme.of(context).textTheme.labelSmall,
-                              ),
-                              SizedBox(
-                                height: 8,
-                              ),
-                              Text("d\$${data.currentValue.toStringAsFixed(2)}",
-                                  style:
-                                      Theme.of(context).textTheme.labelMedium)
-                            ],
+                          Expanded(
+                            child: Column(
+                              children: [
+                                Text(
+                                  AppLocalizations.of(context)!.dash_rec_entry,
+                                  style: Theme.of(context).textTheme.labelSmall,
+                                ),
+                                SizedBox(
+                                  height: 8,
+                                ),
+                                Text(
+                                    "d\$ ${data.currentValue.toStringAsFixed(2)}",
+                                    style:
+                                        Theme.of(context).textTheme.labelMedium)
+                              ],
+                            ),
                           ),
-                          Column(
-                            children: [
-                              Text(
-                                AppLocalizations.of(context)!.dash_rec_pl,
-                                style: Theme.of(context).textTheme.labelSmall,
-                              ),
-                              SizedBox(
-                                height: 8,
-                              ),
-                              Text("d\$0.00",
-                                  style:
-                                      Theme.of(context).textTheme.labelMedium)
-                            ],
+                          Expanded(
+                            child: Column(
+                              children: [
+                                Text(
+                                  AppLocalizations.of(context)!.dash_rec_pl,
+                                  style: Theme.of(context).textTheme.labelSmall,
+                                ),
+                                SizedBox(
+                                  height: 8,
+                                ),
+                                Text("Coming soon",
+                                    style:
+                                        Theme.of(context).textTheme.labelMedium)
+                              ],
+                            ),
                           )
                         ],
                       )
