@@ -5,6 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:neo/pages/buy_sell/amount_selector.dart';
 import 'package:neo/services/data_service.dart';
 import 'package:neo/widgets/dialogs/custom_dialog.dart';
+import 'package:neo/utils/display_popup.dart';
 import '../../service_locator.dart';
 import '../../services/analytics_service.dart';
 import '../../widgets/branded_switch.dart';
@@ -110,7 +111,9 @@ class BuyPage extends HookWidget {
                         ),
                         BrandedSwitch(
                           value: false,
-                          onChanged: (v) {},
+                          onChanged: (v) {
+                            displayPopup(context);
+                          },
                         )
                       ],
                     )

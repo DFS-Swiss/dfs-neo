@@ -132,7 +132,7 @@ class TradableStockCard extends HookWidget {
                               height: 3,
                             ),
                             Text(
-                              "\$${FormattingService.roundDouble(stockData.data!.first.price, 2).toString()}",
+                              "d\$${FormattingService.roundDouble(stockData.data!.first.price, 2).toString()}",
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,

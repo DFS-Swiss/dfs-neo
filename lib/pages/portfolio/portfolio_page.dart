@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:neo/pages/current_investments/current_investment_page.dart';
 import 'package:neo/pages/dashboard/portfolio_balance_card.dart';
+import 'package:neo/pages/dashboard/recently_closed_section.dart';
 import 'package:neo/pages/deposit/deposit_page.dart';
 import 'package:neo/pages/portfolio/best_worst_card_widget.dart';
 import 'package:neo/pages/portfolio/difference_card_widget.dart';
-import 'package:neo/pages/portfolio/recently_closed_orders_widget.dart';
+
 import 'package:neo/pages/portfolio/timefilter_widget.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
+import 'package:neo/utils/display_popup.dart';
 import 'package:neo/widgets/appbaractionbutton_widget.dart';
 import 'package:neo/widgets/buttons/branded_button.dart';
 import 'package:neo/widgets/cards/portfolio_performance_card.dart';
@@ -67,11 +70,7 @@ class Portfolio extends HookWidget {
           AppBarActionButton(
             icon: Icons.notifications_none,
             callback: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const FeatureNotImplemented()),
-              );
+              displayInfoPage(context);
             },
           ),
         ],
@@ -178,17 +177,18 @@ class Portfolio extends HookWidget {
           GenericHeadline(
             title: AppLocalizations.of(context)!.port_investments_title,
             linktext: AppLocalizations.of(context)!.port_view_all_link,
-            callback: () {},
+            callback: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => CurrentInvestmentPage()),
+              );
+            },
           ),
           CurrentInvestmentsWidget(
             interval: interval.value,
           ),
-          GenericHeadline(
-            title: AppLocalizations.of(context)!.port_orders_title,
-            linktext: AppLocalizations.of(context)!.port_view_all_link,
-            callback: () {},
-          ),
-          RecentlyClosedOrders(),
+          RecentlyClosedSection(),
           SizedBox(
             height: 40,
           )

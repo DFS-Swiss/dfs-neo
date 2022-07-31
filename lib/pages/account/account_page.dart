@@ -10,12 +10,12 @@ import 'package:neo/pages/account/middletexttile_widget.dart';
 import 'package:neo/pages/account/settingstile_widget.dart';
 import 'package:neo/pages/account/texttile_widget.dart';
 import 'package:neo/pages/account/toptexttile_widget.dart';
+import 'package:neo/utils/display_popup.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../../service_locator.dart';
 import '../../services/analytics_service.dart';
-import '../information/feature_not_implemented_page.dart';
+
 
 class AccountPage extends HookWidget {
   const AccountPage({Key? key}) : super(key: key);
@@ -145,11 +145,7 @@ class AccountPage extends HookWidget {
           TextTile(
             text: AppLocalizations.of(context)!.account_delacc,
             callback: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const FeatureNotImplemented()),
-              );
+              displayInfoPage(context);
             },
           ),
           Padding(
