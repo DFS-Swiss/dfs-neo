@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-
 import 'package:neo/hooks/use_userassets_history.dart';
 import 'package:neo/models/userasset_datapoint.dart';
 import 'package:neo/pages/recently_closed_investments_page/recently_closed_investment_page.dart';
 import 'package:neo/types/data_container.dart';
-
-import 'package:neo/utils/display_popup.dart';
-
 import '../../style/theme.dart';
 import '../../widgets/cards/recently_closed_order_card.dart';
 
