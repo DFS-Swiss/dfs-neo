@@ -7,6 +7,7 @@ import 'package:neo/style/theme.dart';
 import 'package:neo/widgets/buttons/branded_button.dart';
 
 import '../../service_locator.dart';
+import '../../services/analytics_service.dart';
 import '../../widgets/branded_textfield.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -25,6 +26,11 @@ class LoginWidget extends HookWidget {
     final password = useState<String?>(null);
     final error = useState<String?>(null);
     final loading = useState(false);
+
+    useEffect(() {
+      locator<AnalyticsService>().trackEvent("display:login");
+      return;
+    }, ["_"]);
 
     handleLogin() async {
       if (userName.value != null && password.value != null) {

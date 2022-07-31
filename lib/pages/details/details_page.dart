@@ -7,6 +7,8 @@ import 'package:neo/pages/details/details_open_orders_section.dart';
 import 'package:neo/pages/details/details_public_sentiment.dart';
 import 'package:neo/utils/display_popup.dart';
 import '../../hooks/use_stockdata_info.dart';
+import '../../service_locator.dart';
+import '../../services/analytics_service.dart';
 import '../../widgets/appbaractionbutton_widget.dart';
 
 class DetailsPage extends HookWidget {
@@ -31,6 +33,12 @@ class DetailsPage extends HookWidget {
       image = symbolInfo.data!.imageUrl;
       publicSentimentIndex = symbolInfo.data!.publicSentimentIndex;
     }
+
+    useEffect(() {
+      locator<AnalyticsService>()
+          .trackEvent("display:detail", eventProperties: {"symbol": token});
+      return;
+    }, ["_"]);
 
     return Scaffold(
       appBar: AppBar(

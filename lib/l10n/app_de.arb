@@ -215,6 +215,8 @@
     "forgot_password_code": "Code",
     "forgot_password_code_desc": "Gib den Code aus der Email ein",
     "forgot_password_title": "Passwort zurücksetzen",
+    "dash_portofolio_change": "Veränderung",
+    "dash_development": "Portfolio Entwicklung",
     "faceID_reason": "Bitte identifiziere dich",
     "account_security": "Sicherheit",
     "biometrics_setting": "App beim verlassen sperren?",

@@ -6,8 +6,8 @@ import 'package:neo/hooks/use_userassets.dart';
 import 'package:neo/pages/details/details_page.dart';
 import 'package:neo/pages/stocklist/stockfilter_widget.dart';
 import 'package:neo/pages/stocklist/stocksearchbar_widget.dart';
-import 'package:neo/pages/stocklist/stockswitchrow_widget.dart';
 import 'package:neo/utils/display_popup.dart';
+import 'package:neo/widgets/switchrow_widget.dart';
 import 'package:neo/widgets/appbaractionbutton_widget.dart';
 import 'package:neo/widgets/cards/dynamic_shimmer_cards.dart';
 import 'package:neo/widgets/cards/featuredstockcard_widget.dart';
@@ -59,11 +59,27 @@ class StockList extends HookWidget {
               searchPattern.value = searchinput;
             }
           }),
-          StockSwitchRow(
-            callback: (int i) {
-              switchPosition.value = i;
-            },
-            initPos: switchPosition.value,
+          SwitchRow(
+            options: [
+              SwitchRowItem<int>(
+                selected: switchPosition.value == 0,
+                callback: (v) => switchPosition.value = v,
+                value: 0,
+                text: AppLocalizations.of(context)!.list_switch_all,
+              ),
+              SwitchRowItem<int>(
+                selected: switchPosition.value == 1,
+                callback: (v) => switchPosition.value = v,
+                value: 1,
+                text: AppLocalizations.of(context)!.list_switch_my,
+              ),
+              SwitchRowItem<int>(
+                selected: switchPosition.value == 2,
+                callback: (v) => switchPosition.value = v,
+                value: 2,
+                text: AppLocalizations.of(context)!.list_switch_fav,
+              ),
+            ],
           ),
           StockFilter(
             init: selectedFilters.value,

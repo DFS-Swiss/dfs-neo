@@ -5,11 +5,19 @@ import 'package:neo/constants/links.dart';
 import 'package:neo/widgets/buttons/branded_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../service_locator.dart';
+import '../../services/analytics_service.dart';
+
 class FeatureNotImplemented extends HookWidget {
   const FeatureNotImplemented({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    useEffect(() {
+      locator<AnalyticsService>().trackEvent("display:debug_deposit");
+      return;
+    }, ["_"]);
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -68,7 +76,7 @@ class FeatureNotImplemented extends HookWidget {
                         child: BrandedButton(
                           onPressed: () => launchUrl(Uri.parse(WEBSITE)),
                           child: Text(AppLocalizations.of(context)!
-                        .feature_not_implemented_visit_website),
+                              .feature_not_implemented_visit_website),
                         ),
                       ),
                     ],

@@ -5,6 +5,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:neo/pages/deposit/moneyselectable_widget.dart';
 import 'package:neo/widgets/textfield/money_textfield.dart';
 
+import '../../service_locator.dart';
+import '../../services/analytics_service.dart';
 import '../../services/data_service.dart';
 import '../../widgets/buttons/branded_button.dart';
 
@@ -23,11 +25,22 @@ class Deposit extends HookWidget {
     // Focus node
     // Padding beneath button
 
+    useEffect(() {
+      locator<AnalyticsService>().trackEvent("display:debug_deposit");
+      return;
+    }, ["_"]);
+
     handleDeposit() async {
       loading.value = true;
       try {
         if (await DataService.getInstance().addUserBalance(depositAmount)) {
           // Show alert, pop page
+          locator<AnalyticsService>().trackEvent(
+            "action:debug_deposit",
+            eventProperties: {
+              "amount": depositAmount,
+            },
+          );
           await showDialog<String>(
             context: context,
             builder: (BuildContext context) => AlertDialog(

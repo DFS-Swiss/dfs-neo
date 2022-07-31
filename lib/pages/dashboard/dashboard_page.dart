@@ -7,6 +7,8 @@ import 'package:neo/pages/dashboard/recently_closed_section.dart';
 import 'package:neo/pages/dashboard/start_trading_section.dart';
 import 'package:neo/utils/display_popup.dart';
 import '../../hooks/use_user_data.dart';
+import '../../service_locator.dart';
+import '../../services/analytics_service.dart';
 import '../../widgets/appbaractionbutton_widget.dart';
 import 'current_investments_section.dart';
 import 'open_orders_section.dart';
@@ -17,6 +19,11 @@ class DashboardPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final userData = useUserData();
+
+    useEffect(() {
+      locator<AnalyticsService>().trackEvent("display:dashboard");
+      return;
+    }, ["_"]);
 
     return Scaffold(
       appBar: AppBar(

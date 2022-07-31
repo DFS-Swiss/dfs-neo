@@ -8,11 +8,13 @@ class TimePeriod extends HookWidget {
   final int id;
   final Function callback;
   final int currentlySelected;
+  final bool enabled;
   const TimePeriod(
       {required this.currentlySelected,
       required this.id,
       required this.text,
       required this.callback,
+      required this.enabled,
       Key? key})
       : super(key: key);
   @override
@@ -26,9 +28,11 @@ class TimePeriod extends HookWidget {
     return Padding(
       padding: const EdgeInsets.only(right: 8),
       child: GestureDetector(
-        onTap: () {
-          callback(id);
-        },
+        onTap: enabled
+            ? () {
+                callback(id);
+              }
+            : null,
         child: Container(
           alignment: Alignment.center,
           height: 32,

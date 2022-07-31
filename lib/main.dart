@@ -1,3 +1,4 @@
+import 'package:bugsnag_flutter/bugsnag_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -10,14 +11,20 @@ import 'package:neo/pages/authentication/auth_page_wrapper.dart';
 import 'package:neo/pages/navigation/mainnavigation_page.dart';
 import 'package:neo/pages/onboarding/onboarding_page.dart';
 import 'package:neo/service_locator.dart';
+import 'package:neo/services/analytics_service.dart';
 import 'package:neo/services/app_state_service.dart';
 import 'package:neo/services/authentication_service.dart';
 import 'package:neo/style/theme.dart';
 import 'package:neo/widgets/prefetching_loader.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   setupLocator();
-  runApp(const MyApp());
+
+  bugsnag.start(
+    apiKey: 'cd4315afc1dcc9c6bbeff235758398d3',
+    runApp: () => runApp(const MyApp()),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -148,12 +155,15 @@ class AuthWrapper extends HookWidget {
     final isWaitingForFirstRun = useState(true);
 
     useEffect(() {
-      authenticationService.tryReauth().then((value) {
-        tryingToReauth.value = false;
-        appStateService.init().then((value) {
-          isWaitingForFirstRun.value = false;
+      locator<AnalyticsService>().init().then((value) {
+        authenticationService.tryReauth().then((value) {
+          tryingToReauth.value = false;
+          appStateService.init().then((value) {
+            isWaitingForFirstRun.value = false;
+          });
         });
       });
+
       return;
     }, ["_"]);
 
