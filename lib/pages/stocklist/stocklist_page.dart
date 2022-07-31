@@ -172,7 +172,6 @@ class StockList extends HookWidget {
               ? Column(
                   children: availableStocks.data!
                       .where((element) {
-                        //TODO: Filter tiles depending on their type. This is currently just a workaround
                         if (selectedFilters.value.isEmpty) {
                           return true;
                         } else if (selectedFilters.value.contains(0) && element.assetType == "stock" || selectedFilters.value.contains(1) && element.assetType == "trust" || selectedFilters.value.contains(2) && element.assetType == "etf") {
