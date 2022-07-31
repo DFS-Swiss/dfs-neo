@@ -7,7 +7,7 @@ import 'package:neo/services/cognito_service.dart';
 import 'test_helpers.mocks.dart';
 
 @GenerateMocks([], customMocks: [
-  MockSpec<CognitoService>(returnNullOnMissingStub: true),
+  MockSpec<CognitoService>(),
   MockSpec<AppStateService>(),
 ])
 MockCognitoService getAndRegisterCognitoService() {
