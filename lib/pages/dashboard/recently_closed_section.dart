@@ -65,7 +65,7 @@ class RecentlyClosedSection extends HookWidget {
                       .take(3)
                       .map((e) => RecentlyClosedOrderCard(
                             data: e,
-                            key: Key(e.symbol),
+                            key: Key(e.symbol+e.time.millisecondsSinceEpoch.toString()),
                           ))
                       .toList()
                   : [
