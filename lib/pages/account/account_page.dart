@@ -45,13 +45,6 @@ class AccountPage extends HookWidget {
       return;
     }, ["_"]);
 
-    String? encodeQueryParameters(Map<String, String> params) {
-      return params.entries
-          .map((e) =>
-              '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
-          .join('&');
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.account_title),
