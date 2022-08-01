@@ -11,6 +11,7 @@ import 'package:neo/pages/account/settingstile_widget.dart';
 import 'package:neo/pages/account/texttile_widget.dart';
 import 'package:neo/pages/account/toptexttile_widget.dart';
 import 'package:neo/utils/display_popup.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../service_locator.dart';
@@ -21,11 +22,23 @@ class AccountPage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loading = useState<bool>(true);
+    final usePackageInfo = useState<PackageInfo?>(null);
     final userData = useUserData();
     final usernamecontroller = useTextEditingController(text: "...");
     final mailcontroller = useTextEditingController(text: "...");
 
     final lockApp = useState(false);
+
+    useEffect(() {
+      if (loading.value) {
+        PackageInfo.fromPlatform().then((f) {
+          loading.value = false;
+          usePackageInfo.value = f;
+        });
+      }
+      return;
+    }, [loading.value]);
 
     useEffect(() {
       if (!userData.loading) usernamecontroller.text = userData.data!.id;
@@ -44,13 +57,6 @@ class AccountPage extends HookWidget {
       locator<AnalyticsService>().trackEvent("display:account");
       return;
     }, ["_"]);
-
-    String? encodeQueryParameters(Map<String, String> params) {
-      return params.entries
-          .map((e) =>
-              '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
-          .join('&');
-    }
 
     return Scaffold(
       appBar: AppBar(
@@ -204,10 +210,11 @@ class AccountPage extends HookWidget {
               () async {
             final Uri emailLaunchUri = Uri(
               scheme: 'mailto',
-              path: 'support@dfsneo.com',
-              query: encodeQueryParameters(<String, String>{
-                'subject': 'Example Subject & Symbols are allowed!'
-              }),
+              path: 'nils@dfsneo.com',
+              queryParameters: {
+                'subject':
+                    'Supportrequest from DFSneo App - Version ${usePackageInfo.value!.version}'
+              },
             );
             launchUrl(emailLaunchUri);
             if (await canLaunchUrl(emailLaunchUri)) {
@@ -215,7 +222,22 @@ class AccountPage extends HookWidget {
               throw 'Could not launch $emailLaunchUri';
             }
           }),
-          LogoutTextButton()
+          LogoutTextButton(),
+          SizedBox(
+            height: 24,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Text(!loading.value
+                  ? "App version ${usePackageInfo.value!.version}"
+                  : ""),
+            ],
+          ),
+          SizedBox(
+            height: 24,
+          ),
         ],
       ),
     );

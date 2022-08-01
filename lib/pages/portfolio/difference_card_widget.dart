@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:intl/intl.dart';
+import 'package:neo/services/formatting_service.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
 import 'package:neo/widgets/hideable_text.dart';
 
@@ -61,9 +62,12 @@ class DifferenceCard extends HookWidget {
                     HideableText(
                       balanceHistory.loading
                           ? "..."
-                          : NumberFormat.currency(symbol: " dUSD ").format(
-                              balanceHistory.data!.averagePL *
-                                  balanceHistory.data!.inAssets.last.price),
+                          : "${FormattingService.calculatepercent(
+                              balanceHistory.data!.total.first.price,
+                              balanceHistory.data!.total
+                                  .lastWhere((element) => element.price > 0)
+                                  .price,
+                            )} %",
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   ],

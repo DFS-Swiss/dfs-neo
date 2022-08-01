@@ -36,7 +36,7 @@ class PortfolioBalanceCard extends HookWidget {
             child: Column(
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Expanded(
@@ -67,15 +67,13 @@ class PortfolioBalanceCard extends HookWidget {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.max,
                           children: [
                             Text(
-                              AppLocalizations.of(context)!
-                                  .dash_portofolio_change,
-                              style: Theme.of(context).textTheme.labelSmall,
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
+                                AppLocalizations.of(context)!
+                                    .dash_portofolio_change,
+                                style: Theme.of(context).textTheme.labelSmall),
                             SmallDevelopmentIndicator(
                               isInPercent: false,
                               hideable: true,
@@ -94,15 +92,10 @@ class PortfolioBalanceCard extends HookWidget {
                           child: !scrubbingData.hasTouch
                               ? Row(
                                   children: [
-                                    Text(
-                                      (interval).toString().toUpperCase(),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .labelSmall,
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
+                                    Text((interval).toString().toUpperCase(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelSmall),
                                     SmallDevelopmentIndicator(
                                       hideable: true,
                                       positive: balanceHistory

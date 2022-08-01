@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:intl/intl.dart';
 import 'package:neo/hooks/use_stockdata_info.dart';
 import 'package:neo/models/userasset_datapoint.dart';
+import 'package:neo/services/formatting_service.dart';
 import 'package:neo/style/theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -76,9 +77,9 @@ class RecentlyClosedOrderCard extends HookWidget {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Text(
-                                data.difference > 0
-                                    ? data.tokenAmmount.toStringAsFixed(2)
-                                    : "- ${data.tokenAmmount.toStringAsFixed(2)}",
+                                FormattingService.roundDouble(
+                                        data.difference, 2)
+                                    .toString(),
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.w600,
