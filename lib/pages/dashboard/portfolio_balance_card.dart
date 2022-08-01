@@ -36,45 +36,44 @@ class PortfolioBalanceCard extends HookWidget {
             child: Column(
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          AppLocalizations.of(context)!.dash_balance,
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        HideableText(
-                          scrubbingData.hasTouch
-                              ? "${FormattingService.roundDouble(scrubbingData.value, 2)} dUSD"
-                              : "${FormattingService.roundDouble(balanceHistory.data!.portfolioIsEmpty ? 0 : balanceHistory.data!.total.first.price, 2)} dUSD",
-                          maxLines: 1,
-                          style: GoogleFonts.urbanist(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            AppLocalizations.of(context)!.dash_balance,
+                            style: Theme.of(context).textTheme.bodySmall,
                           ),
-                        )
-                      ],
+                          SizedBox(
+                            height: 5,
+                          ),
+                          HideableText(
+                            scrubbingData.hasTouch
+                                ? "${FormattingService.roundDouble(scrubbingData.value, 2)} dUSD"
+                                : "${FormattingService.roundDouble(balanceHistory.data!.portfolioIsEmpty ? 0 : balanceHistory.data!.total.first.price, 2)} dUSD",
+                            maxLines: 1,
+                            style: GoogleFonts.urbanist(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
-                      
                       children: [
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.max,
                           children: [
                             Text(
-                              AppLocalizations.of(context)!
-                                  .dash_portofolio_change,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelSmall!
-                                  .copyWith(fontSize: 13),
-                            ),
+                                AppLocalizations.of(context)!
+                                    .dash_portofolio_change,
+                                style: Theme.of(context).textTheme.labelSmall),
                             SizedBox(
                               width: 0,
                             ),
@@ -96,13 +95,10 @@ class PortfolioBalanceCard extends HookWidget {
                           child: !scrubbingData.hasTouch
                               ? Row(
                                   children: [
-                                    Text(
-                                      (interval).toString().toUpperCase(),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .labelSmall!
-                                          .copyWith(fontSize: 13),
-                                    ),
+                                    Text((interval).toString().toUpperCase(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelSmall),
                                     SmallDevelopmentIndicator(
                                       hideable: true,
                                       positive: balanceHistory

@@ -204,10 +204,10 @@ class AccountPage extends HookWidget {
               () async {
             final Uri emailLaunchUri = Uri(
               scheme: 'mailto',
-              path: 'support@dfsneo.com',
-              query: encodeQueryParameters(<String, String>{
-                'subject': 'Example Subject & Symbols are allowed!'
-              }),
+              path: 'nils@dfsneo.com',
+              queryParameters: {'subject': 'Supportrequest from DFSneo App'}
+                
+              ,
             );
             launchUrl(emailLaunchUri);
             if (await canLaunchUrl(emailLaunchUri)) {
