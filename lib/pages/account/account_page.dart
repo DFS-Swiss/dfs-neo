@@ -37,6 +37,7 @@ class AccountPage extends HookWidget {
           usePackageInfo.value = f;
         });
       }
+      return;
     }, [loading.value]);
 
     useEffect(() {
