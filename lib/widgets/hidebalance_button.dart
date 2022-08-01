@@ -11,6 +11,7 @@ class HideBalanceButton extends HookWidget {
   Widget build(BuildContext context) {
     final hideBalance = useBalanceHidden();
     return IconButton(
+      padding: EdgeInsets.zero,
       onPressed: () =>
           GlobalSettingsService.getInstance().hideBalance = !hideBalance,
       icon: Icon(hideBalance ? Icons.visibility : Icons.visibility_off),

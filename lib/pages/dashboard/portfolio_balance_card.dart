@@ -39,42 +39,44 @@ class PortfolioBalanceCard extends HookWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            AppLocalizations.of(context)!.dash_balance,
-                            style: Theme.of(context).textTheme.bodySmall,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          AppLocalizations.of(context)!.dash_balance,
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        HideableText(
+                          scrubbingData.hasTouch
+                              ? "${FormattingService.roundDouble(scrubbingData.value, 2)} dUSD"
+                              : "${FormattingService.roundDouble(balanceHistory.data!.portfolioIsEmpty ? 0 : balanceHistory.data!.total.first.price, 2)} dUSD",
+                          maxLines: 1,
+                          style: GoogleFonts.urbanist(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
                           ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          HideableText(
-                            scrubbingData.hasTouch
-                                ? "${FormattingService.roundDouble(scrubbingData.value, 2)} dUSD"
-                                : "${FormattingService.roundDouble(balanceHistory.data!.portfolioIsEmpty ? 0 : balanceHistory.data!.total.first.price, 2)} dUSD",
-                            maxLines: 1,
-                            style: GoogleFonts.urbanist(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          )
-                        ],
-                      ),
+                        )
+                      ],
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
+                      
                       children: [
                         Row(
                           children: [
                             Text(
                               AppLocalizations.of(context)!
                                   .dash_portofolio_change,
-                              style: Theme.of(context).textTheme.labelSmall,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelSmall!
+                                  .copyWith(fontSize: 13),
                             ),
                             SizedBox(
-                              width: 5,
+                              width: 0,
                             ),
                             SmallDevelopmentIndicator(
                               isInPercent: false,
@@ -98,10 +100,8 @@ class PortfolioBalanceCard extends HookWidget {
                                       (interval).toString().toUpperCase(),
                                       style: Theme.of(context)
                                           .textTheme
-                                          .labelSmall,
-                                    ),
-                                    SizedBox(
-                                      width: 5,
+                                          .labelSmall!
+                                          .copyWith(fontSize: 13),
                                     ),
                                     SmallDevelopmentIndicator(
                                       hideable: true,
