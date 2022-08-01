@@ -1,0 +1,1 @@
+enum DataSource { cache, network }
