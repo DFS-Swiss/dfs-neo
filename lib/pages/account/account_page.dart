@@ -205,9 +205,7 @@ class AccountPage extends HookWidget {
             final Uri emailLaunchUri = Uri(
               scheme: 'mailto',
               path: 'nils@dfsneo.com',
-              queryParameters: {'subject': 'Supportrequest from DFSneo App'}
-                
-              ,
+              queryParameters: {'subject': 'Supportrequest from DFSneo App'},
             );
             launchUrl(emailLaunchUri);
             if (await canLaunchUrl(emailLaunchUri)) {
@@ -215,7 +213,10 @@ class AccountPage extends HookWidget {
               throw 'Could not launch $emailLaunchUri';
             }
           }),
-          LogoutTextButton()
+          LogoutTextButton(),
+          SizedBox(
+            height: 24,
+          )
         ],
       ),
     );
