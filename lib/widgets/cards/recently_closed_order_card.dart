@@ -76,9 +76,7 @@ class RecentlyClosedOrderCard extends HookWidget {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Text(
-                                data.difference > 0
-                                    ? data.tokenAmmount.toStringAsFixed(2)
-                                    : "- ${data.tokenAmmount.toStringAsFixed(2)}",
+                                data.difference.toStringAsFixed(2),
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.w600,
