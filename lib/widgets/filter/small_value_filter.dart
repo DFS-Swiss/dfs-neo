@@ -19,9 +19,9 @@ class SmallValueFilter extends HookWidget {
   Widget build(BuildContext context) {
     final selected = useState<bool>(false);
     selected.value = currentValue == value;
-    
+
     return Padding(
-      padding: const EdgeInsets.only(right: 20),
+      padding: const EdgeInsets.only(right: 8),
       child: GestureDetector(
         onTap: () {
           selected.value = !selected.value;
@@ -29,7 +29,7 @@ class SmallValueFilter extends HookWidget {
         },
         child: Container(
           alignment: Alignment.center,
-          height: 27,
+          height: 32,
           width: 44,
           decoration: selected.value && currentValue == value
               ? BoxDecoration(
@@ -43,8 +43,9 @@ class SmallValueFilter extends HookWidget {
           child: Text(
             text,
             style: TextStyle(
-                color:
-                    selected.value && currentValue == value ? Colors.white : Colors.black,
+                color: selected.value && currentValue == value
+                    ? Colors.white
+                    : Colors.black,
                 fontWeight: FontWeight.w600,
                 fontSize: 12),
           ),

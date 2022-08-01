@@ -45,13 +45,6 @@ class AccountPage extends HookWidget {
       return;
     }, ["_"]);
 
-    String? encodeQueryParameters(Map<String, String> params) {
-      return params.entries
-          .map((e) =>
-              '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
-          .join('&');
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.account_title),
@@ -204,10 +197,8 @@ class AccountPage extends HookWidget {
               () async {
             final Uri emailLaunchUri = Uri(
               scheme: 'mailto',
-              path: 'support@dfsneo.com',
-              query: encodeQueryParameters(<String, String>{
-                'subject': 'Example Subject & Symbols are allowed!'
-              }),
+              path: 'nils@dfsneo.com',
+              queryParameters: {'subject': 'Supportrequest from DFSneo App'},
             );
             launchUrl(emailLaunchUri);
             if (await canLaunchUrl(emailLaunchUri)) {
@@ -215,7 +206,10 @@ class AccountPage extends HookWidget {
               throw 'Could not launch $emailLaunchUri';
             }
           }),
-          LogoutTextButton()
+          LogoutTextButton(),
+          SizedBox(
+            height: 24,
+          )
         ],
       ),
     );

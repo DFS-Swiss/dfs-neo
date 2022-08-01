@@ -14,7 +14,7 @@ class DetailsSelectable extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 24, left: 20),
+      padding: const EdgeInsets.only(top: 24, left: 20, right: 12),
       child: SizedBox(
         height: 32,
         child: Row(

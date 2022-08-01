@@ -10,10 +10,12 @@ class HideBalanceButton extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final hideBalance = useBalanceHidden();
-    return IconButton(
-      onPressed: () =>
-          GlobalSettingsService.getInstance().hideBalance = !hideBalance,
-      icon: Icon(hideBalance ? Icons.visibility : Icons.visibility_off),
+    return Padding(
+      padding: const EdgeInsets.only(left: 10),
+      child: GestureDetector(
+          onTap: () =>
+              GlobalSettingsService.getInstance().hideBalance = !hideBalance,
+          child: Icon(hideBalance ? Icons.visibility : Icons.visibility_off)),
     );
   }
 }
