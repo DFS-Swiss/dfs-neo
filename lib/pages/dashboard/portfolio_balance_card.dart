@@ -74,9 +74,6 @@ class PortfolioBalanceCard extends HookWidget {
                                 AppLocalizations.of(context)!
                                     .dash_portofolio_change,
                                 style: Theme.of(context).textTheme.labelSmall),
-                            SizedBox(
-                              width: 0,
-                            ),
                             SmallDevelopmentIndicator(
                               isInPercent: false,
                               hideable: true,
