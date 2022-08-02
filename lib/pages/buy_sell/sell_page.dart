@@ -31,49 +31,53 @@ class SellPage extends HookWidget {
     }, ["_"]);
 
     hanldeSell() async {
-      if (amountToken.value > 0) {
-        loading.value = true;
-        try {
-          await DataService.getInstance().sellAsset(symbol, amountToken.value);
-          locator<AnalyticsService>().trackEvent(
-            "action:sell",
-            eventProperties: {
-              "asset": symbol,
-            },
-          );
-
-          showDialog(
-            context: context,
-            builder: (context) => CustomDialog(
-              title: AppLocalizations.of(context)!.new_order_sell_success_title,
-              message:
-                  "$symbol ${AppLocalizations.of(context)!.new_order_sell_success}",
-              callback: () {
-                Navigator.pop(context);
-                Navigator.pop(context);
+      if (!loading.value) {
+        if (amountToken.value > 0) {
+          loading.value = true;
+          try {
+            await DataService.getInstance()
+                .sellAsset(symbol, amountToken.value);
+            locator<AnalyticsService>().trackEvent(
+              "action:sell",
+              eventProperties: {
+                "asset": symbol,
               },
-            ),
-          );
-        } catch (e) {
-          if (e is DioError &&
-              e.response!.data["message"] ==
-                  "Not enough tokens avaliable in account to satisfy constraints") {
+            );
+
             showDialog(
               context: context,
               builder: (context) => CustomDialog(
                 title:
-                    AppLocalizations.of(context)!.new_order_sell_success_error,
+                    AppLocalizations.of(context)!.new_order_sell_success_title,
                 message:
-                    AppLocalizations.of(context)!.new_order_buy_error_ins_token,
+                    "$symbol ${AppLocalizations.of(context)!.new_order_sell_success}",
                 callback: () {
+                  Navigator.pop(context);
                   Navigator.pop(context);
                 },
               ),
             );
+          } catch (e) {
+            if (e is DioError &&
+                e.response!.data["message"] ==
+                    "Not enough tokens avaliable in account to satisfy constraints") {
+              showDialog(
+                context: context,
+                builder: (context) => CustomDialog(
+                  title: AppLocalizations.of(context)!
+                      .new_order_sell_success_error,
+                  message: AppLocalizations.of(context)!
+                      .new_order_buy_error_ins_token,
+                  callback: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              );
+            }
+            print(e);
           }
-          print(e);
+          loading.value = false;
         }
-        loading.value = false;
       }
     }
 
@@ -83,7 +87,9 @@ class SellPage extends HookWidget {
         leading: Padding(
           padding: const EdgeInsets.only(left: 8.0),
           child: IconButton(
-            icon: Icon(Icons.arrow_back_outlined, color: Colors.black),
+            icon: Icon(
+              Icons.arrow_back_outlined,
+            ),
             onPressed: () => Navigator.of(context).pop(),
           ),
         ),

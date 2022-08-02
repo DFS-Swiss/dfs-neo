@@ -23,7 +23,9 @@ class CurrentInvestmentPage extends HookWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_outlined, color: Colors.black),
+          icon: Icon(
+            Icons.arrow_back_outlined,
+          ),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(AppLocalizations.of(context)!.dash_currinv_title),

@@ -21,8 +21,8 @@ class SettingsTile extends HookWidget {
         height: 50,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
-            color: Colors.white.withOpacity(0.75),
-            border: Border.all(color: Colors.white)),
+            color: Theme.of(context).backgroundColor.withOpacity(0.75),
+            border: Border.all(color: Theme.of(context).backgroundColor)),
         child: Padding(
           padding: const EdgeInsets.only(left: 8.0, right: 8),
           child: Row(

@@ -8,7 +8,8 @@ import 'package:neo/widgets/cards/dynamic_shimmer_cards.dart';
 import 'package:neo/widgets/cards/recently_closed_order_card.dart';
 
 class RecentlyClosedInvestments extends HookWidget {
-  const RecentlyClosedInvestments({Key? key}) : super(key: key);
+  final String? exclusiveSymbol;
+  const RecentlyClosedInvestments( {this.exclusiveSymbol,Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,12 +24,14 @@ class RecentlyClosedInvestments extends HookWidget {
             DataContainer(data: investmenthistory.data, loading: false);
       }
       return;
-    }, [investmenthistory.loading, investmenthistory.data]);
+    }, [investmenthistory.loading, investmenthistory.data, key]);
 
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_outlined, color: Colors.black),
+          icon: Icon(
+            Icons.arrow_back_outlined,
+          ),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(

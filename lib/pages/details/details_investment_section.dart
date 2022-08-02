@@ -3,13 +3,12 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:neo/hooks/use_userassets.dart';
 import 'package:neo/widgets/cards/asset_development_card.dart';
-import 'package:shimmer/shimmer.dart';
-
 import '../../hooks/use_stockdata.dart';
 import '../../hooks/use_user_assets_for_symbol.dart';
 import '../../services/formatting_service.dart';
 import '../../types/stockdata_interval_enum.dart';
 import '../../widgets/genericheadline_widget.dart';
+import '../../widgets/shimmer_loader_card.dart';
 
 class DetailsInvestmentsSection extends HookWidget {
   final String token;
@@ -107,7 +106,10 @@ class DetailsInvestmentsSection extends HookWidget {
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       fontSize: 12,
-                                      color: Colors.black,
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .headlineMedium!
+                                          .color,
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
@@ -142,7 +144,10 @@ class DetailsInvestmentsSection extends HookWidget {
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       fontSize: 12,
-                                      color: Colors.black,
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .headlineMedium!
+                                          .color,
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
@@ -174,7 +179,10 @@ class DetailsInvestmentsSection extends HookWidget {
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       fontSize: 12,
-                                      color: Colors.black,
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .headlineMedium!
+                                          .color,
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
@@ -192,18 +200,7 @@ class DetailsInvestmentsSection extends HookWidget {
                 ? Container()
                 : Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Shimmer.fromColors(
-                      baseColor: Color.fromRGBO(238, 238, 238, 0.75),
-                      highlightColor: Colors.white,
-                      child: Container(
-                        height: 528,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).backgroundColor,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                    ),
-                  )
+                    child: ShimmerLoadingCard(height: 528))
         : Container();
   }
 }

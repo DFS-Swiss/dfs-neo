@@ -7,7 +7,7 @@ import 'package:neo/services/formatting_service.dart';
 import 'package:neo/style/theme.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
 import 'package:neo/utils/chart_conversion.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:neo/widgets/shimmer_loader_card.dart';
 
 class FeaturedStockCard extends HookWidget {
   final String token;
@@ -23,9 +23,8 @@ class FeaturedStockCard extends HookWidget {
             height: 139,
             width: 210,
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.75),
+              color: Theme.of(context).backgroundColor,
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(width: 1, color: Colors.white),
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -45,8 +44,9 @@ class FeaturedStockCard extends HookWidget {
                           height: 38,
                           child: CircleAvatar(
                             backgroundColor: Colors.transparent,
-                            backgroundImage:
-                                NetworkImage(symbolInfo.data!.imageUrl),
+                            backgroundImage: NetworkImage(
+                              symbolInfo.data!.imageUrl,
+                            ),
                           ),
                         ),
                         SizedBox(
@@ -144,14 +144,9 @@ class FeaturedStockCard extends HookWidget {
               ],
             ),
           )
-        : Shimmer.fromColors(
-            baseColor: Color.fromRGBO(238, 238, 238, 0.75),
-            highlightColor: Colors.white,
-            child: Container(
-              width: 210,
-              height: 139,
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(12)),
-            ));
+        : ShimmerLoadingCard(
+            width: 210,
+            height: 139,
+          );
   }
 }

@@ -30,46 +30,48 @@ class BuyPage extends HookWidget {
     }, ["_"]);
 
     hanldeBuy() async {
-      if (amountInDollar.value > 0) {
-        loading.value = true;
-        try {
-          await DataService.getInstance()
-              .buyAsset(symbol, amountInDollar.value);
-          locator<AnalyticsService>().trackEvent(
-            "action:buy",
-            eventProperties: {
-              "asset": symbol,
-            },
-          );
-          showDialog(
-            context: context,
-            builder: (context) => CustomDialog(
-              title: AppLocalizations.of(context)!.new_order_buy_success_title,
-              message:
-                  "$symbol ${AppLocalizations.of(context)!.new_order_buy_success}",
-              callback: () {
-                Navigator.pop(context);
-                Navigator.pop(context);
+      if (!loading.value) {
+        if (amountInDollar.value > 0) {
+          loading.value = true;
+          try {
+            await DataService.getInstance()
+                .buyAsset(symbol, amountInDollar.value);
+            locator<AnalyticsService>().trackEvent(
+              "action:buy",
+              eventProperties: {
+                "asset": symbol,
               },
-            ),
-          );
-        } catch (e) {
-          if (e is DioError &&
-              e.response!.data["message"] == "Insuficient funds") {
+            );
             showDialog(
               context: context,
               builder: (context) => CustomDialog(
                 title:
-                    AppLocalizations.of(context)!.new_order_buy_success_error,
-                message: AppLocalizations.of(context)!
-                    .new_order_buy_success_error_ins_funds,
-                callback: () => Navigator.pop(context),
+                    AppLocalizations.of(context)!.new_order_buy_success_title,
+                message:
+                    "$symbol ${AppLocalizations.of(context)!.new_order_buy_success}",
+                callback: () {
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                },
               ),
             );
+          } catch (e) {
+            if (e is DioError &&
+                e.response!.data["message"] == "Insuficient funds") {
+              showDialog(
+                context: context,
+                builder: (context) => CustomDialog(
+                  title:
+                      AppLocalizations.of(context)!.new_order_buy_success_error,
+                  message: AppLocalizations.of(context)!
+                      .new_order_buy_success_error_ins_funds,
+                  callback: () => Navigator.pop(context),
+                ),
+              );
+            }
           }
-          print(e);
+          loading.value = false;
         }
-        loading.value = false;
       }
     }
 
@@ -79,7 +81,9 @@ class BuyPage extends HookWidget {
         leading: Padding(
           padding: const EdgeInsets.only(left: 8.0),
           child: IconButton(
-            icon: Icon(Icons.arrow_back_outlined, color: Colors.black),
+            icon: Icon(
+              Icons.arrow_back_outlined,
+            ),
             onPressed: () => Navigator.of(context).pop(),
           ),
         ),
@@ -96,6 +100,7 @@ class BuyPage extends HookWidget {
                       height: 15,
                     ),
                     AmountSelector(
+                      key: ValueKey(symbol),
                       symbol: symbol,
                       callbackDollarAmount: (v) => amountInDollar.value = v,
                     ),

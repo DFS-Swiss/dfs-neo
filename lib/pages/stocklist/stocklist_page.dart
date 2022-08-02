@@ -85,12 +85,12 @@ class StockList extends HookWidget {
               selectedFilters.value = [...selectedFilter];
             },
           ),
-          searchPattern.value == null
+          searchPattern.value == null && switchPosition.value == 0
               ? GenericHeadline(
                   title: AppLocalizations.of(context)!.list_featured,
                 )
               : Container(),
-          searchPattern.value == null
+          searchPattern.value == null && switchPosition.value == 0
               ? SizedBox(
                   height: 139,
                   child: ListView(

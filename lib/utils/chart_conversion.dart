@@ -195,9 +195,16 @@ LineChartData dashboardPortfolio(List<FlSpot> data, bool isNegative) {
             .setState(ChartScrubbingState(false, 0, 0));
         return;
       }
-      if (res != null) {
-        locator<ChartSrubbingManager>().setState(ChartScrubbingState(
-            true, res.lineBarSpots![0].x, res.lineBarSpots![0].y));
+      if (res != null &&
+          res.lineBarSpots != null &&
+          res.lineBarSpots!.isNotEmpty) {
+        locator<ChartSrubbingManager>().setState(
+          ChartScrubbingState(
+            true,
+            res.lineBarSpots![0].x,
+            res.lineBarSpots![0].y,
+          ),
+        );
       }
     }, getTouchedSpotIndicator: (line, indizes) {
       return indizes

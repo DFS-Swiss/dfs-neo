@@ -30,7 +30,7 @@ class DetailsAboutSection extends HookWidget {
           Text(
             description,
             style: TextStyle(
-              color: Color(0xFF353C4F),
+              color: Color.fromARGB(255, 68, 76, 100),
               fontSize: 14,
               fontWeight: FontWeight.w400,
             ),

@@ -5,21 +5,28 @@ class BrandedButton extends StatelessWidget {
   final Widget child;
   final VoidCallback? onPressed;
   final bool loading;
+  final bool enabeled;
   const BrandedButton({
     Key? key,
     required this.onPressed,
     this.loading = false,
     required this.child,
+    this.enabeled = true,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 50.0,
-      decoration: BoxDecoration(
-        gradient: NeoTheme.of(context)!.primaryGradient,
-        borderRadius: NeoTheme.of(context)!.primaryBorderRadius,
-      ),
+      decoration: enabeled
+          ? BoxDecoration(
+              gradient: NeoTheme.of(context)!.primaryGradient,
+              borderRadius: NeoTheme.of(context)!.primaryBorderRadius,
+            )
+          : BoxDecoration(
+              color: Colors.grey,
+              borderRadius: NeoTheme.of(context)!.primaryBorderRadius,
+            ),
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
