@@ -32,47 +32,49 @@ class Deposit extends HookWidget {
     }, ["_"]);
 
     handleDeposit() async {
-      loading.value = true;
-      try {
-        if (await DataService.getInstance().addUserBalance(depositAmount)) {
-          // Show alert, pop page
-          locator<AnalyticsService>().trackEvent(
-            "action:debug_deposit",
-            eventProperties: {
-              "amount": depositAmount,
-            },
-          );
-          await showDialog<String>(
+      if (!loading.value) {
+        loading.value = true;
+        try {
+          if (await DataService.getInstance().addUserBalance(depositAmount)) {
+            // Show alert, pop page
+            locator<AnalyticsService>().trackEvent(
+              "action:debug_deposit",
+              eventProperties: {
+                "amount": depositAmount,
+              },
+            );
+            await showDialog<String>(
+                context: context,
+                builder: (BuildContext context) => CustomDialog(
+                    title: AppLocalizations.of(context)!.alert_amount_deposited,
+                    message: "",
+                    callback: () {
+                      Navigator.pop(context, 'OK');
+                      Navigator.pop(context, 'OK');
+                    }));
+          }
+        } catch (response) {
+          if ((response as dynamic).response.statusCode == 401) {
+            // Show alert, pop page
+            await showDialog<String>(
               context: context,
               builder: (BuildContext context) => CustomDialog(
-                  title: AppLocalizations.of(context)!.alert_amount_deposited,
-                  message: "",
-                  callback: () {
-                    Navigator.pop(context, 'OK');
-                    Navigator.pop(context, 'OK');
-                  }));
+                title: AppLocalizations.of(context)!.alert_amount_limit,
+                callback: () => Navigator.pop(context, 'OK'),
+              ),
+            );
+          } else if ((response as dynamic).response.statusCode == 400) {
+            await showDialog<String>(
+              context: context,
+              builder: (BuildContext context) => CustomDialog(
+                title: AppLocalizations.of(context)!.alert_deposit_limit,
+                callback: () => Navigator.pop(context, 'OK'),
+              ),
+            );
+          }
         }
-      } catch (response) {
-        if ((response as dynamic).response.statusCode == 401) {
-          // Show alert, pop page
-          await showDialog<String>(
-            context: context,
-            builder: (BuildContext context) => CustomDialog(
-              title: AppLocalizations.of(context)!.alert_amount_limit,
-              callback: () => Navigator.pop(context, 'OK'),
-            ),
-          );
-        } else if ((response as dynamic).response.statusCode == 400) {
-          await showDialog<String>(
-            context: context,
-            builder: (BuildContext context) => CustomDialog(
-              title: AppLocalizations.of(context)!.alert_deposit_limit,
-              callback: () => Navigator.pop(context, 'OK'),
-            ),
-          );
-        }
+        loading.value = false;
       }
-      loading.value = false;
     }
 
     return Scaffold(
