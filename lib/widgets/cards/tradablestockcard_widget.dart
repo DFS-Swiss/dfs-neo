@@ -8,9 +8,6 @@ import 'package:neo/style/theme.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
 import 'package:neo/utils/chart_conversion.dart';
 import 'package:neo/widgets/development_indicator/small_change_indicator.dart';
-
-import 'package:shimmer/shimmer.dart';
-
 import '../shimmer_loader_card.dart';
 
 class TradableStockCard extends HookWidget {

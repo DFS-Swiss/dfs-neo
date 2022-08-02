@@ -4,8 +4,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:neo/pages/details/details_page.dart';
 import 'package:neo/widgets/development_indicator/small_change_indicator.dart';
 import 'package:neo/widgets/shimmer_loader_card.dart';
-import 'package:shimmer/shimmer.dart';
-
 import '../../hooks/use_stockdata.dart';
 import '../../hooks/use_stockdata_info.dart';
 import '../../hooks/use_userassets.dart';

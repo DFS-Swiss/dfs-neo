@@ -3,8 +3,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:neo/hooks/use_userassets.dart';
 import 'package:neo/widgets/cards/asset_development_card.dart';
-import 'package:shimmer/shimmer.dart';
-
 import '../../hooks/use_stockdata.dart';
 import '../../hooks/use_user_assets_for_symbol.dart';
 import '../../services/formatting_service.dart';

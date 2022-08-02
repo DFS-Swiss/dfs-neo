@@ -8,7 +8,6 @@ import 'package:neo/style/theme.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
 import 'package:neo/utils/chart_conversion.dart';
 import 'package:neo/widgets/shimmer_loader_card.dart';
-import 'package:shimmer/shimmer.dart';
 
 class FeaturedStockCard extends HookWidget {
   final String token;

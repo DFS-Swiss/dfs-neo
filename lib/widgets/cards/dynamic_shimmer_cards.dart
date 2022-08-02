@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:neo/widgets/shimmer_loader_card.dart';
-import 'package:shimmer/shimmer.dart';
 
 class DynamicShimmerCards extends StatelessWidget {
   final int cardAmount;

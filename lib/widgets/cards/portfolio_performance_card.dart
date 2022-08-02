@@ -9,9 +9,7 @@ import 'package:neo/pages/dashboard/portfolio_development_chart.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
 import 'package:neo/widgets/hideable_text.dart';
 import 'package:neo/widgets/hidebalance_button.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:neo/services/formatting_service.dart';
-
 import '../../utils/print_time_for_interval.dart';
 import '../development_indicator/detailed_development_indicator.dart';
 import '../shimmer_loader_card.dart';

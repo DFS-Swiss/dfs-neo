@@ -10,7 +10,6 @@ import 'package:neo/widgets/buttons/round_outline_button.dart';
 import 'package:neo/pages/buy_sell/buy_page.dart';
 import 'package:neo/widgets/development_indicator/detailed_development_indicator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:shimmer/shimmer.dart';
 import '../../hooks/use_chart_scrubbing_state.dart';
 import '../../hooks/use_latest_asset_price.dart';
 import '../../hooks/use_stockdata.dart';

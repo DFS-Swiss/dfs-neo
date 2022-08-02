@@ -5,9 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:neo/hooks/use_available_stocks.dart';
 import 'package:neo/pages/portfolio/pie_chart_legend_item.dart';
 import 'package:neo/widgets/shimmer_loader_card.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 import '../../hooks/use_user_assets_with_values.dart';
 import '../../types/user_asset_datapoint_with_value.dart';
 import '../../widgets/hideable_text.dart';
