@@ -8,8 +8,6 @@ import 'package:neo/pages/buy_sell/trade_asset_input_field_asset.dart';
 import 'package:neo/pages/buy_sell/trade_asset_input_field_dollar.dart';
 
 class AmountSelector extends HookWidget {
-  final dollarControler = TextEditingController();
-  final assetControler = TextEditingController();
   final String symbol;
   final Function(double)? callbackDollarAmount;
   final Function(double)? callbackTokenAmount;
@@ -23,6 +21,8 @@ class AmountSelector extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final dollarControler = useTextEditingController();
+    final assetControler = useTextEditingController();
     final info = useSymbolInfo(symbol);
     final latestPrice = useLatestPrice(symbol);
 

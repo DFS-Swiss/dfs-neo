@@ -67,7 +67,6 @@ class BuyPage extends HookWidget {
               ),
             );
           }
-          print(e);
         }
         loading.value = false;
       }
@@ -96,6 +95,7 @@ class BuyPage extends HookWidget {
                       height: 15,
                     ),
                     AmountSelector(
+                      key: ValueKey(symbol),
                       symbol: symbol,
                       callbackDollarAmount: (v) => amountInDollar.value = v,
                     ),

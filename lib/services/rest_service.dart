@@ -387,8 +387,13 @@ class RESTService extends ChangeNotifier {
 
   Future<bool> buyAsset(String symbol, double amountInDollar) async {
     try {
-      final response = await dio.post("/assets/buy",
-          data: {"symbol": symbol, "amountToSpend": amountInDollar});
+      final response = await dio.post(
+        "/assets/buy",
+        data: {
+          "symbol": symbol,
+          "amountToSpend": amountInDollar,
+        },
+      );
       if (response.statusCode.toString().startsWith("2")) {
         return true;
       }
@@ -397,8 +402,12 @@ class RESTService extends ChangeNotifier {
       }
       return false;
     } catch (e, stack) {
-      await bugsnag.notify(e, stack);
-      rethrow;
+      if (e is DioError && e.response!.statusCode == 400) {
+        rethrow;
+      } else {
+        await bugsnag.notify(e, stack);
+        rethrow;
+      }
     }
   }
 
