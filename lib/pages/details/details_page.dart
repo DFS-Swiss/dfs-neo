@@ -5,6 +5,7 @@ import 'package:neo/pages/details/details_development_section.dart';
 import 'package:neo/pages/details/details_investment_section.dart';
 import 'package:neo/pages/details/details_open_orders_section.dart';
 import 'package:neo/pages/details/details_public_sentiment.dart';
+import 'package:neo/pages/portfolio/exclusive_recently_closed_section.dart';
 import 'package:neo/utils/display_popup.dart';
 import '../../hooks/use_stockdata_info.dart';
 import '../../service_locator.dart';
@@ -59,6 +60,8 @@ class DetailsPage extends HookWidget {
         title: Text(title),
       ),
       body: ListView(
+        addAutomaticKeepAlives: true,
+        cacheExtent: 1000,
         children: [
           DetailsDevelopmentSection(token: token),
           SizedBox(
@@ -66,6 +69,7 @@ class DetailsPage extends HookWidget {
           ),
           DetailsInvestmentsSection(
             token: token,
+            key: UniqueKey(),
             symbol: title,
           ),
           SizedBox(
@@ -76,6 +80,10 @@ class DetailsPage extends HookWidget {
           ),
           SizedBox(
             height: 12,
+          ),
+          ExclusiveRecentlyClosedSection(
+            exclusiveSymbol: token,
+            key: UniqueKey(),
           ),
           DetailsAboutSection(symbol: title, description: description),
           SizedBox(

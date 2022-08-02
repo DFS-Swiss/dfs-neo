@@ -70,7 +70,9 @@ class DashboardPage extends HookWidget {
               child: StartTradingSection(),
             ),
             CurrentInvestmentsSection(),
-            RecentlyClosedSection(),
+            RecentlyClosedSection(
+              key: Key("dashboard"),
+            ),
             OpenOrdersSection(),
             const SizedBox(
               height: 17,

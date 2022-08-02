@@ -30,12 +30,20 @@ class StockSearchBar extends HookWidget {
           textInputAction: TextInputAction.search,
           decoration: InputDecoration(
             isDense: false,
-            suffixIcon: GestureDetector(
-                onTap: () {
-                  callback("");
-                  searchController.text = "";
-                },
-                child: Icon(Icons.cancel)),
+            suffixIcon: searchController.text == ""
+                ? Icon(
+                    Icons.cancel,
+                    color: MediaQuery.of(context).platformBrightness ==
+                            Brightness.light
+                        ? Colors.white
+                        : Colors.black,
+                  )
+                : GestureDetector(
+                    onTap: () {
+                      callback("");
+                      searchController.text = "";
+                    },
+                    child: Icon(Icons.cancel)),
             iconColor: Color(0xFF909090),
             focusColor: Color(0xFF909090),
             hintText: AppLocalizations.of(context)!.list_search,
