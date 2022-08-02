@@ -45,8 +45,9 @@ class FeaturedStockCard extends HookWidget {
                           height: 38,
                           child: CircleAvatar(
                             backgroundColor: Colors.transparent,
-                            backgroundImage:
-                                NetworkImage(symbolInfo.data!.imageUrl),
+                            backgroundImage: NetworkImage(
+                              symbolInfo.data!.imageUrl,
+                            ),
                           ),
                         ),
                         SizedBox(
