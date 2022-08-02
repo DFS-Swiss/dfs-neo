@@ -14,6 +14,7 @@ import 'package:neo/services/formatting_service.dart';
 
 import '../../utils/print_time_for_interval.dart';
 import '../development_indicator/detailed_development_indicator.dart';
+import '../shimmer_loader_card.dart';
 
 class PortfolioPerformanceCard extends HookWidget {
   final StockdataInterval interval;
@@ -120,16 +121,6 @@ class PortfolioPerformanceCard extends HookWidget {
               ],
             ),
           )
-        : Shimmer.fromColors(
-            baseColor: Color.fromRGBO(238, 238, 238, 0.75),
-            highlightColor: Colors.white,
-            child: Container(
-              height: 230,
-              decoration: BoxDecoration(
-                color: Theme.of(context).backgroundColor,
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-          );
+        : ShimmerLoadingCard(height: 230);
   }
 }

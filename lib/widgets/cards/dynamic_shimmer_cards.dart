@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:neo/widgets/shimmer_loader_card.dart';
 import 'package:shimmer/shimmer.dart';
 
 class DynamicShimmerCards extends StatelessWidget {
@@ -19,16 +20,9 @@ class DynamicShimmerCards extends StatelessWidget {
     List<Widget> result = [];
     for (int i = 0; i < cardAmount; i++) {
       result.add(Padding(
-        padding:  EdgeInsets.only(left: sidePadding, right: sidePadding, bottom: bottomPadding),
-        child: Shimmer.fromColors(
-          baseColor: Color.fromRGBO(238, 238, 238, 0.75),
-          highlightColor: Colors.white,
-          child: Container(
-            height: cardHeight,
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(12)),
-          ),
-        ),
+        padding: EdgeInsets.only(
+            left: sidePadding, right: sidePadding, bottom: bottomPadding),
+        child: ShimmerLoadingCard(height: cardHeight),
       ));
     }
     return result;

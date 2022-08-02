@@ -11,6 +11,8 @@ import 'package:neo/widgets/development_indicator/small_change_indicator.dart';
 
 import 'package:shimmer/shimmer.dart';
 
+import '../shimmer_loader_card.dart';
+
 class TradableStockCard extends HookWidget {
   final String token;
 
@@ -39,9 +41,8 @@ class TradableStockCard extends HookWidget {
               child: Container(
                 height: 74,
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.75),
+                  color: Theme.of(context).backgroundColor,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(width: 1, color: Colors.white),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
@@ -55,7 +56,7 @@ class TradableStockCard extends HookWidget {
                         child: CircleAvatar(
                           backgroundImage:
                               NetworkImage(symbolInfo.data!.imageUrl),
-                          backgroundColor: Colors.white,
+                          backgroundColor: Colors.transparent,
                         ),
                       ),
                     ),
@@ -160,16 +161,7 @@ class TradableStockCard extends HookWidget {
             )
           : Padding(
               padding: const EdgeInsets.only(left: 24, right: 24, bottom: 16),
-              child: Shimmer.fromColors(
-                baseColor: Color.fromRGBO(238, 238, 238, 0.75),
-                highlightColor: Colors.white,
-                child: Container(
-                  height: 74,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12)),
-                ),
-              ),
+              child: ShimmerLoadingCard(height: 74),
             );
     } catch (e) {
       return Padding(

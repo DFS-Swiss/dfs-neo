@@ -36,15 +36,22 @@ class Filter extends HookWidget {
                   gradient: NeoTheme.of(context)!.primaryGradient,
                   borderRadius: BorderRadius.circular(12))
               : BoxDecoration(
-                  color: Colors.white.withOpacity(0.75),
+                  color: Theme.of(context).backgroundColor.withOpacity(0.75),
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(width: 1, color: Colors.white),
+                  border: Border.all(
+                    width: 1,
+                    color: Theme.of(context).backgroundColor,
+                  ),
                 ),
           child: Text(
             text,
             style: TextStyle(
-                color:
-                    selected.value || initCheck.value ? Colors.white : Colors.black,
+                color: selected.value ||
+                        initCheck.value ||
+                        MediaQuery.of(context).platformBrightness ==
+                            Brightness.dark
+                    ? Colors.white
+                    : Colors.black,
                 fontWeight: FontWeight.w600,
                 fontSize: 14),
           ),

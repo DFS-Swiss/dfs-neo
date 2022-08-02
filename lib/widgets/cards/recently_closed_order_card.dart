@@ -41,7 +41,8 @@ class RecentlyClosedOrderCard extends HookWidget {
                             child: CircleAvatar(
                               backgroundImage:
                                   NetworkImage(assetData.data!.imageUrl),
-                              backgroundColor: Colors.white,
+                              backgroundColor:
+                                  Theme.of(context).backgroundColor,
                             ),
                           ),
                           SizedBox(

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:neo/pages/details/details_page.dart';
 import 'package:neo/widgets/development_indicator/small_change_indicator.dart';
+import 'package:neo/widgets/shimmer_loader_card.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../hooks/use_stockdata.dart';
@@ -54,9 +55,8 @@ class InvestmentCard extends HookWidget {
               width: !expandHorizontal ? 210 : double.infinity,
               padding: EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.75),
+                color: Theme.of(context).backgroundColor,
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(width: 1, color: Colors.white),
               ),
               child: Row(
                 children: [
@@ -203,17 +203,9 @@ class InvestmentCard extends HookWidget {
               ),
             ),
           )
-        : Shimmer.fromColors(
-            baseColor: Color.fromRGBO(238, 238, 238, 0.75),
-            highlightColor: Colors.white,
-            child: Container(
-              width: 210,
-              height: 139,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
+        : ShimmerLoadingCard(
+            width: 210,
+            height: 139,
           );
   }
 }
@@ -223,17 +215,9 @@ class InvestCardPlaceholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Shimmer.fromColors(
-      baseColor: Color.fromRGBO(238, 238, 238, 0.75),
-      highlightColor: Colors.white,
-      child: Container(
-        width: 210,
-        height: 139,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-        ),
-      ),
+    return ShimmerLoadingCard(
+      width: 210,
+      height: 139,
     );
   }
 }

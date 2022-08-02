@@ -81,7 +81,9 @@ class Deposit extends HookWidget {
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.port_deposit),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_outlined, color: Colors.black),
+          icon: Icon(
+            Icons.arrow_back_outlined,
+          ),
           onPressed: () => Navigator.of(context).pop(),
         ),
         foregroundColor: Colors.black,

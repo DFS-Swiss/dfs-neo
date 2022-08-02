@@ -35,7 +35,6 @@ class AuthPageWrapper extends HookWidget {
         contentHeight = AUTH_LOGIN_CONTAINTER_HEIGHT;
       } else if (authState == AppState.register) {
         contentHeight = AUTH_REGISTER_CONTAINTER_HEIGHT;
-
       } else {
         contentHeight = 0;
       }
@@ -78,22 +77,19 @@ class AuthPageWrapper extends HookWidget {
               height: getCurrentContainerHeight(context),
               padding: const EdgeInsets.all(20),
               //duration: const Duration(milliseconds: 300),
-              child: SafeArea(
-                top: false,
-                child: authState == AppState.verifyAccount
-                    ? VerifyAccountWidget()
-                    : authState == AppState.newPasswordRequired
-                        ? NewPasswordRequired()
-                        : authState == AppState.signedOut
-                            ? LoginWidget(
-                                clickedRegister: () =>
-                                    appStateService.state = AppState.register,
-                              )
-                            : RegisterWidget(
-                                clickedLogin: () =>
-                                    appStateService.state = AppState.signedOut,
-                              ),
-              ),
+              child: authState == AppState.verifyAccount
+                  ? VerifyAccountWidget()
+                  : authState == AppState.newPasswordRequired
+                      ? NewPasswordRequired()
+                      : authState == AppState.signedOut
+                          ? LoginWidget(
+                              clickedRegister: () =>
+                                  appStateService.state = AppState.register,
+                            )
+                          : RegisterWidget(
+                              clickedLogin: () =>
+                                  appStateService.state = AppState.signedOut,
+                            ),
             ),
           )
         ],

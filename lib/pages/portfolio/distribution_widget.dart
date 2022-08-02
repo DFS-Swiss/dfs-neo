@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:intl/intl.dart';
 import 'package:neo/hooks/use_available_stocks.dart';
 import 'package:neo/pages/portfolio/pie_chart_legend_item.dart';
+import 'package:neo/widgets/shimmer_loader_card.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -145,17 +146,7 @@ class DistributionWidget extends HookWidget {
                   )
                 ],
               )
-            : Shimmer.fromColors(
-                baseColor: Color.fromRGBO(238, 238, 238, 0.75),
-                highlightColor: Colors.white,
-                child: Container(
-                  height: 74,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-              ),
+            : ShimmerLoadingCard(height: 74),
       ),
     );
   }

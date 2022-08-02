@@ -35,15 +35,21 @@ class AppBarActionButton extends HookWidget {
           height: 40,
           alignment: Alignment.center,
           decoration: BoxDecoration(
-              border: Border.all(
-                width: 1,
-                color: Colors.white,
-              ),
+            border: Border.all(
+              width: 1,
               color: Colors.white.withOpacity(0.25),
-              borderRadius: BorderRadius.circular(12)),
+            ),
+            color: MediaQuery.of(context).platformBrightness == Brightness.dark
+                ? Theme.of(context).backgroundColor
+                : Theme.of(context).backgroundColor.withOpacity(0.25),
+            borderRadius: BorderRadius.circular(12),
+          ),
           child: Icon(
             icon,
-            color: isTapped.value ? Colors.white : Colors.black,
+            color: isTapped.value ||
+                    MediaQuery.of(context).platformBrightness == Brightness.dark
+                ? Colors.white
+                : Colors.black,
           ),
         ),
       ),

@@ -18,8 +18,9 @@ class StockSearchBar extends HookWidget {
         alignment: Alignment.center,
         //height: 60,
         decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.75),
-            borderRadius: BorderRadius.circular(12)),
+          color: Theme.of(context).backgroundColor.withOpacity(0.75),
+          borderRadius: BorderRadius.circular(12),
+        ),
         child: TextFormField(
           controller: searchController,
           onChanged: (a) {
