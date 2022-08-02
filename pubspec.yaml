@@ -1,7 +1,7 @@
 name: neo
 description: DFS neo - The new are of stock trading
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-version: 0.3.3+7
+version: 0.3.4+8
 #Test2
 
 environment:
