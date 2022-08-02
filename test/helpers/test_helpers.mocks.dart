@@ -7,11 +7,13 @@ import 'dart:ui' as _i9;
 
 import 'package:amazon_cognito_identity_dart_2/cognito.dart' as _i6;
 import 'package:amplitude_flutter/amplitude.dart' as _i2;
+import 'package:bugsnag_flutter/bugsnag_flutter.dart' as _i11;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:neo/enums/app_state.dart' as _i8;
 import 'package:neo/services/analytics_service.dart' as _i3;
 import 'package:neo/services/app_state_service.dart' as _i7;
 import 'package:neo/services/cognito_service.dart' as _i5;
+import 'package:neo/services/crashlytics_service.dart' as _i10;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -42,16 +44,25 @@ class MockAnalyticsService extends _i1.Mock implements _i3.AnalyticsService {
       returnValue: Future<void>.value(),
       returnValueForMissingStub: Future<void>.value()) as _i4.Future<void>);
   @override
-  _i4.Future<void> identifyUser() =>
-      (super.noSuchMethod(Invocation.method(#identifyUser, []),
+  _i4.Future<void> identifyUser({bool? forwardToCrashlytics = true}) =>
+      (super.noSuchMethod(
+          Invocation.method(
+              #identifyUser, [], {#forwardToCrashlytics: forwardToCrashlytics}),
           returnValue: Future<void>.value(),
           returnValueForMissingStub: Future<void>.value()) as _i4.Future<void>);
   @override
   _i4.Future<void> trackEvent(String? eventType,
-          {Map<String, dynamic>? eventProperties, bool? outOfSession}) =>
+          {Map<String, dynamic>? eventProperties,
+          bool? outOfSession,
+          bool? forwardToCrashlytics = true}) =>
       (super.noSuchMethod(
-          Invocation.method(#trackEvent, [eventType],
-              {#eventProperties: eventProperties, #outOfSession: outOfSession}),
+          Invocation.method(#trackEvent, [
+            eventType
+          ], {
+            #eventProperties: eventProperties,
+            #outOfSession: outOfSession,
+            #forwardToCrashlytics: forwardToCrashlytics
+          }),
           returnValue: Future<void>.value(),
           returnValueForMissingStub: Future<void>.value()) as _i4.Future<void>);
 }
@@ -142,4 +153,35 @@ class MockAppStateService extends _i1.Mock implements _i7.AppStateService {
   void notifyListeners() =>
       super.noSuchMethod(Invocation.method(#notifyListeners, []),
           returnValueForMissingStub: null);
+}
+
+/// A class which mocks [CrashlyticsService].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockCrashlyticsService extends _i1.Mock
+    implements _i10.CrashlyticsService {
+  MockCrashlyticsService() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  void start({String? apiKey, _i4.FutureOr<void> Function()? runApp}) =>
+      super.noSuchMethod(
+          Invocation.method(#start, [], {#apiKey: apiKey, #runApp: runApp}),
+          returnValueForMissingStub: null);
+  @override
+  _i4.Future<void> identifyUser() =>
+      (super.noSuchMethod(Invocation.method(#identifyUser, []),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i4.Future<void>);
+  @override
+  _i4.Future<void> leaveBreadcrumb(String? eventType,
+          {Map<String, Object>? eventProperties,
+          _i11.BugsnagBreadcrumbType? type =
+              _i11.BugsnagBreadcrumbType.manual}) =>
+      (super.noSuchMethod(
+          Invocation.method(#leaveBreadcrumb, [eventType],
+              {#eventProperties: eventProperties, #type: type}),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i4.Future<void>);
 }

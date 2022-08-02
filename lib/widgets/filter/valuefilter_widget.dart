@@ -36,14 +36,16 @@ class ValueFilter<T> extends HookWidget {
                   gradient: NeoTheme.of(context)!.primaryGradient,
                   borderRadius: BorderRadius.circular(12))
               : BoxDecoration(
-                  color: Colors.white.withOpacity(0.75),
+                  color: Theme.of(context).backgroundColor.withOpacity(0.75),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(width: 1, color: Colors.white),
                 ),
           child: Text(
             text,
             style: TextStyle(
-                color: selected.value && currentValue == value
+                color: (selected.value && currentValue == value) ||
+                        MediaQuery.of(context).platformBrightness ==
+                            Brightness.dark
                     ? Colors.white
                     : Colors.black,
                 fontWeight: FontWeight.w600,

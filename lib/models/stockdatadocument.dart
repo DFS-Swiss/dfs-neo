@@ -12,8 +12,8 @@ class StockdataDocument {
   final Color displayColor;
 
   StockdataDocument(
-      {required this.assetType, 
-        required this.symbol,
+      {required this.assetType,
+      required this.symbol,
       required this.displayName,
       required this.imageUrl,
       required this.description,
@@ -34,7 +34,7 @@ class StockdataDocument {
         imageUrl: imageUrl ?? this.imageUrl,
         description: description ?? this.description,
         publicSentimentIndex: publicSentimentIndex ?? this.publicSentimentIndex,
-        displayColor: displayColor ?? this.displayColor, 
+        displayColor: displayColor ?? this.displayColor,
         assetType: assetType ?? this.assetType);
   }
 
@@ -59,9 +59,14 @@ class StockdataDocument {
         description: map['description'] ?? '',
         publicSentimentIndex: map['publicSentimentIndex'] ?? 50,
         displayColor: map['displayColor'] != null
-            ? Color(int.parse(map['displayColor']))
-            : Colors.grey, 
-            assetType: map['assetType'] ?? '');
+            ? Color(
+                int.tryParse(
+                      map['displayColor'],
+                    ) ??
+                    0xFF757575,
+              )
+            : Colors.grey,
+        assetType: map['assetType'] ?? '');
   }
 
   String toJson() => json.encode(toMap());
@@ -79,7 +84,7 @@ class StockdataDocument {
     if (identical(this, other)) return true;
 
     return other is StockdataDocument &&
-    other.assetType == assetType &&
+        other.assetType == assetType &&
         other.symbol == symbol &&
         other.displayName == displayName &&
         other.imageUrl == imageUrl &&
@@ -90,7 +95,7 @@ class StockdataDocument {
   @override
   int get hashCode {
     return symbol.hashCode ^
-    assetType.hashCode ^
+        assetType.hashCode ^
         displayName.hashCode ^
         imageUrl.hashCode ^
         description.hashCode ^

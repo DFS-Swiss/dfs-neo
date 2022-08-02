@@ -20,6 +20,8 @@ class WebsocketControler {
 
   WebSocket? channel;
 
+  int retryCount = 0;
+
   WebsocketControler(this.wsUrl, {this.getApiKey}) {
     initWebSocketConnection();
   }
@@ -62,6 +64,11 @@ class WebsocketControler {
       }
       return await WebSocket.connect(wsUrl);
     } catch (e) {
+      if (retryCount < 5) {
+        retryCount++;
+        await Future.delayed(Duration(milliseconds: 100 * (retryCount + 1)));
+        return await connectWs();
+      }
       connectionStateStream
           .add(WebsocketStateContainer(SocketConnectionState.error));
       throw "Error! Can not connect WS connectWs ${e.toString()}";

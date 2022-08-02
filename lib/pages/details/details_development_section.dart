@@ -10,7 +10,6 @@ import 'package:neo/widgets/buttons/round_outline_button.dart';
 import 'package:neo/pages/buy_sell/buy_page.dart';
 import 'package:neo/widgets/development_indicator/detailed_development_indicator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:shimmer/shimmer.dart';
 import '../../hooks/use_chart_scrubbing_state.dart';
 import '../../hooks/use_latest_asset_price.dart';
 import '../../hooks/use_stockdata.dart';
@@ -18,6 +17,7 @@ import '../../hooks/use_stockdata_info.dart';
 import '../../services/formatting_service.dart';
 import '../../types/stockdata_interval_enum.dart';
 import '../../utils/chart_conversion.dart';
+import '../../widgets/shimmer_loader_card.dart';
 import '../buy_sell/buy_page.dart';
 import '../buy_sell/sell_page.dart';
 
@@ -57,7 +57,7 @@ class DetailsDevelopmentSection extends HookWidget {
                         child: CircleAvatar(
                           backgroundImage:
                               NetworkImage(symbolInfo.data!.imageUrl),
-                          backgroundColor: Colors.white,
+                          backgroundColor: Theme.of(context).backgroundColor,
                         ),
                       ),
                     ),
@@ -211,9 +211,10 @@ class DetailsDevelopmentSection extends HookWidget {
                           child: Text(
                             AppLocalizations.of(context)!.detail_sell,
                             style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600),
+                              color: Theme.of(context).primaryColor,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
                       ),
@@ -221,9 +222,7 @@ class DetailsDevelopmentSection extends HookWidget {
                         width: 12,
                       ),
                       RoundOutlineButton(
-                          onPressed: () => {
-                            displayPopup(context)
-                          },
+                          onPressed: () => {displayPopup(context)},
                           child: Icon(
                             Icons.swap_horiz,
                             color: Theme.of(context).primaryColor,
@@ -260,17 +259,7 @@ class DetailsDevelopmentSection extends HookWidget {
           )
         : Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Shimmer.fromColors(
-              baseColor: Color.fromRGBO(238, 238, 238, 0.75),
-              highlightColor: Colors.white,
-              child: Container(
-                height: 528,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).backgroundColor,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-            ),
+            child: ShimmerLoadingCard(height: 528),
           );
   }
 }

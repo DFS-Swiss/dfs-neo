@@ -59,7 +59,9 @@ class ChangePasswordPage extends HookWidget {
         leading: Padding(
           padding: const EdgeInsets.only(left: 8.0),
           child: IconButton(
-            icon: Icon(Icons.arrow_back_outlined, color: Colors.black),
+            icon: Icon(
+              Icons.arrow_back_outlined,
+            ),
             onPressed: () => Navigator.of(context).pop(),
           ),
         ),
