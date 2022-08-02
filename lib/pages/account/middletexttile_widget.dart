@@ -30,8 +30,8 @@ class MiddleTextTile extends HookWidget {
         child: Container(
           height: 50,
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.white),
-            color: Colors.white.withOpacity(0.75),
+            border: Border.all(color: Theme.of(context).backgroundColor),
+            color: Theme.of(context).backgroundColor.withOpacity(0.75),
           ),
           child: Padding(
             padding: const EdgeInsets.only(left: 8.0, right: 8),

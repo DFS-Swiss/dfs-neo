@@ -72,7 +72,9 @@ class _ForgotPasswordPhase2 extends HookWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_outlined, color: Colors.black),
+          icon: Icon(
+            Icons.arrow_back_outlined,
+          ),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(AppLocalizations.of(context)!.forgot_password_title),
@@ -174,7 +176,9 @@ class _ForgotPasswordPhase1 extends HookWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_outlined, color: Colors.black),
+          icon: Icon(
+            Icons.arrow_back_outlined,
+          ),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(AppLocalizations.of(context)!.forgot_password_title),

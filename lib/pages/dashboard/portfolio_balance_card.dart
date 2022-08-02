@@ -11,8 +11,9 @@ import 'package:neo/utils/print_time_for_interval.dart';
 import 'package:neo/widgets/hideable_text.dart';
 import 'package:neo/widgets/hidebalance_button.dart';
 import 'package:neo/widgets/development_indicator/small_change_indicator.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:neo/services/formatting_service.dart';
+
+import '../../widgets/shimmer_loader_card.dart';
 
 class PortfolioBalanceCard extends HookWidget {
   final StockdataInterval interval;
@@ -197,16 +198,6 @@ class PortfolioBalanceCard extends HookWidget {
               ],
             ),
           )
-        : Shimmer.fromColors(
-            baseColor: Color.fromRGBO(238, 238, 238, 0.75),
-            highlightColor: Colors.white,
-            child: Container(
-              height: 270,
-              decoration: BoxDecoration(
-                color: Theme.of(context).backgroundColor,
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-          );
+        : ShimmerLoadingCard(height: 278);
   }
 }

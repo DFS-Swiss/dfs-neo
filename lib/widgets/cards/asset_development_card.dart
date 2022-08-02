@@ -8,7 +8,7 @@ import '../development_indicator/detailed_development_indicator.dart';
 class AssetDevelopmentCard extends HookWidget {
   final String name;
   final double changePercentage;
-  final double changeValue; 
+  final double changeValue;
   const AssetDevelopmentCard({
     Key? key,
     required this.name,
@@ -20,11 +20,10 @@ class AssetDevelopmentCard extends HookWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 63,
-      padding: EdgeInsets.fromLTRB(12,8,12,8),
+      padding: EdgeInsets.fromLTRB(12, 8, 12, 8),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.75),
+        color: Theme.of(context).backgroundColor,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(width: 1, color: Colors.white),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,12 +37,10 @@ class AssetDevelopmentCard extends HookWidget {
             ),
           ),
           DetailedDevelopmentIndicator(
-            positive:
-                !changePercentage.isNegative,
-            changePercentage: FormattingService.roundDouble(
-                changePercentage, 2),
-            changeValue: FormattingService.roundDouble(
-                changeValue, 2),
+            positive: !changePercentage.isNegative,
+            changePercentage:
+                FormattingService.roundDouble(changePercentage, 2),
+            changeValue: FormattingService.roundDouble(changeValue, 2),
           )
         ],
       ),

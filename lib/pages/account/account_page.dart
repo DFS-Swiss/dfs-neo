@@ -69,14 +69,26 @@ class AccountPage extends HookWidget {
             child: Theme(
               data: ThemeData(
                 inputDecorationTheme: InputDecorationTheme(
-                  focusColor: Color(0xFF202532),
-                  floatingLabelStyle: TextStyle(color: Color(0xFF202532)),
+                  focusColor: MediaQuery.of(context).platformBrightness ==
+                          Brightness.dark
+                      ? Colors.grey
+                      : Color(0xFF202532),
+                  floatingLabelStyle: TextStyle(
+                    color: MediaQuery.of(context).platformBrightness ==
+                            Brightness.dark
+                        ? Colors.grey
+                        : Color(0xFF202532),
+                  ),
                   suffixIconColor: Colors.grey,
                 ),
               ),
               child: TextFormField(
                 enabled: false,
                 autofocus: false,
+                style:
+                    MediaQuery.of(context).platformBrightness == Brightness.dark
+                        ? TextStyle(color: Colors.grey[350])
+                        : null,
                 controller: usernamecontroller,
                 decoration: InputDecoration(
                   suffix: userData.loading
@@ -93,7 +105,11 @@ class AccountPage extends HookWidget {
                           size: 20,
                         ),
                   labelText: AppLocalizations.of(context)!.account_user,
-                  labelStyle: TextStyle(color: Color(0xFF202532)),
+                  labelStyle: TextStyle(
+                      color: MediaQuery.of(context).platformBrightness ==
+                              Brightness.dark
+                          ? Colors.grey
+                          : Color(0xFF202532)),
                   isDense: true,
                   contentPadding: EdgeInsets.only(bottom: 8),
                 ),
@@ -105,8 +121,15 @@ class AccountPage extends HookWidget {
             child: Theme(
               data: ThemeData(
                 inputDecorationTheme: InputDecorationTheme(
-                  focusColor: Color(0xFF202532),
-                  floatingLabelStyle: TextStyle(color: Color(0xFF202532)),
+                  focusColor: MediaQuery.of(context).platformBrightness ==
+                          Brightness.dark
+                      ? Colors.grey
+                      : Color(0xFF202532),
+                  floatingLabelStyle: TextStyle(
+                      color: MediaQuery.of(context).platformBrightness ==
+                              Brightness.dark
+                          ? Colors.grey
+                          : Color(0xFF202532)),
                   suffixIconColor: Colors.grey,
                 ),
               ),
@@ -114,6 +137,10 @@ class AccountPage extends HookWidget {
                 enabled: false,
                 autofocus: false,
                 controller: mailcontroller,
+                style:
+                    MediaQuery.of(context).platformBrightness == Brightness.dark
+                        ? TextStyle(color: Colors.grey[350])
+                        : null,
                 decoration: InputDecoration(
                   suffix: userData.loading
                       ? SizedBox(
@@ -129,7 +156,11 @@ class AccountPage extends HookWidget {
                           size: 20,
                         ),
                   labelText: AppLocalizations.of(context)!.account_mail,
-                  labelStyle: TextStyle(color: Color(0xFF202532)),
+                  labelStyle: TextStyle(
+                      color: MediaQuery.of(context).platformBrightness ==
+                              Brightness.dark
+                          ? Colors.grey
+                          : Color(0xFF202532)),
                   isDense: true,
                   contentPadding: EdgeInsets.only(bottom: 8),
                 ),
@@ -180,7 +211,7 @@ class AccountPage extends HookWidget {
             launchUrl(Uri.parse(OPENSOURCE_PROJECTS));
           }),
           Divider(
-            color: Color(0xFFEFEFEF),
+            color: Theme.of(context).backgroundColor,
             height: 0,
             thickness: 1,
             indent: 20,
@@ -190,7 +221,7 @@ class AccountPage extends HookWidget {
             launchUrl(Uri.parse(IMPRINT));
           }),
           Divider(
-            color: Color(0xFFEFEFEF),
+            color: Theme.of(context).backgroundColor,
             height: 0,
             thickness: 1,
             indent: 20,
@@ -200,7 +231,7 @@ class AccountPage extends HookWidget {
             launchUrl(Uri.parse(ACCOUNT_PRIVACY));
           }),
           Divider(
-            color: Color(0xFFEFEFEF),
+            color: Theme.of(context).backgroundColor,
             height: 0,
             thickness: 1,
             indent: 20,

@@ -4,6 +4,7 @@ import 'package:neo/service_locator.dart';
 import 'package:neo/services/analytics_service.dart';
 import 'package:neo/services/app_state_service.dart';
 import 'package:neo/services/cognito_service.dart';
+import 'package:neo/services/crashlytics_service.dart';
 
 import 'test_helpers.mocks.dart';
 
@@ -11,6 +12,7 @@ import 'test_helpers.mocks.dart';
   MockSpec<AnalyticsService>(),
   MockSpec<CognitoService>(),
   MockSpec<AppStateService>(),
+  MockSpec<CrashlyticsService>(),
 ])
 MockCognitoService getAndRegisterCognitoService() {
   _removeRegistrationIfExists<CognitoService>();
@@ -34,7 +36,15 @@ MockAppStateService getAndRegisterAppStateService() {
   return service;
 }
 
+MockCrashlyticsService getAndRegisterCrashlyticsService() {
+  _removeRegistrationIfExists<CrashlyticsService>();
+  final service = MockCrashlyticsService();
+  locator.registerSingleton<CrashlyticsService>(service);
+  return service;
+}
+
 void registerServices() {
+  getAndRegisterCrashlyticsService();
   getAndRegisterAnalyticsService();
   getAndRegisterCognitoService();
   getAndRegisterAppStateService();

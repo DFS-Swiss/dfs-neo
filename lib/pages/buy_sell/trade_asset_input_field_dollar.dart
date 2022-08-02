@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:shimmer/shimmer.dart';
+
+import '../../widgets/shimmer_loader_card.dart';
 
 class TradeAssetInputFieldDollar extends HookWidget {
   final TextEditingController controller;
@@ -57,7 +58,10 @@ class TradeAssetInputFieldDollar extends HookWidget {
                                   ? Text(
                                       "\$",
                                       style: TextStyle(
-                                        color: Color(0xFF202532),
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .labelMedium!
+                                            .color,
                                         fontWeight: FontWeight.w600,
                                         fontSize: 20,
                                       ),
@@ -97,7 +101,10 @@ class TradeAssetInputFieldDollar extends HookWidget {
                                       contentPadding: EdgeInsets.zero,
                                     ),
                                     style: TextStyle(
-                                      color: Color(0xFF202532),
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .labelMedium!
+                                          .color,
                                       fontWeight: FontWeight.w600,
                                       fontSize: 20,
                                     ),
@@ -120,7 +127,10 @@ class TradeAssetInputFieldDollar extends HookWidget {
                     child: Center(
                       child: Icon(
                         Icons.attach_money,
-                        color: Theme.of(context).backgroundColor,
+                        color: MediaQuery.of(context).platformBrightness ==
+                                Brightness.dark
+                            ? Theme.of(context).iconTheme.color
+                            : Colors.white,
                       ),
                     ),
                   ),
@@ -130,7 +140,7 @@ class TradeAssetInputFieldDollar extends HookWidget {
                   Text(
                     "USD",
                     style: TextStyle(
-                      color: Color(0xFF202532),
+                      color: Theme.of(context).textTheme.labelSmall!.color,
                       fontWeight: FontWeight.w600,
                       fontSize: 16,
                     ),
@@ -139,14 +149,6 @@ class TradeAssetInputFieldDollar extends HookWidget {
               ),
             ),
           )
-        : Shimmer.fromColors(
-            baseColor: Color.fromRGBO(238, 238, 238, 0.75),
-            highlightColor: Colors.white,
-            child: Container(
-              height: 79,
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(12)),
-            ),
-          );
+        : ShimmerLoadingCard(height: 79);
   }
 }

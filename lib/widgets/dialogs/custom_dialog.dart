@@ -6,7 +6,11 @@ class CustomDialog extends StatelessWidget {
   final String title;
   final String message;
   final Function callback;
-  const CustomDialog({Key? key, required this.title, this.message = "", required this.callback})
+  const CustomDialog(
+      {Key? key,
+      required this.title,
+      this.message = "",
+      required this.callback})
       : super(key: key);
 
   @override
@@ -16,7 +20,7 @@ class CustomDialog extends StatelessWidget {
         borderRadius: BorderRadius.circular(22),
       ),
       elevation: 0,
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).backgroundColor,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
         child: Column(
@@ -29,14 +33,18 @@ class CustomDialog extends StatelessWidget {
                   .headlineLarge!
                   .copyWith(color: Color(0xFF05889C)),
             ),
-            message.isNotEmpty ? SizedBox(
-              height: 12,
-            ) : Container(),
-            message.isNotEmpty ? Text(
-              message,
-              style: Theme.of(context).textTheme.bodyLarge,
-              textAlign: TextAlign.center,
-            ) : Container(),
+            message.isNotEmpty
+                ? SizedBox(
+                    height: 12,
+                  )
+                : Container(),
+            message.isNotEmpty
+                ? Text(
+                    message,
+                    style: Theme.of(context).textTheme.bodyLarge,
+                    textAlign: TextAlign.center,
+                  )
+                : Container(),
             SizedBox(
               height: 24,
             ),
