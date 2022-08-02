@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -77,6 +78,19 @@ class Deposit extends HookWidget {
       }
     }
 
+    bool vailidateAmount() {
+      try {
+        int? temp = int.tryParse(typedAmount.value);
+        if (temp! >= 10 && temp <= 10000) {
+          return true;
+        }
+      } catch (e) {
+        return false;
+      }
+
+      return false;
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.port_deposit),
@@ -116,6 +130,7 @@ class Deposit extends HookWidget {
               Expanded(
                 child: SafeArea(
                   child: BrandedButton(
+                    enabeled: vailidateAmount(),
                     loading: loading.value,
                     onPressed: handleDeposit,
                     child: Text(AppLocalizations.of(context)!.port_deposit),

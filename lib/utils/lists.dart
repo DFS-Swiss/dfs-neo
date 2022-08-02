@@ -6,3 +6,11 @@ extension Unique<E, Id> on List<E> {
     return list;
   }
 }
+
+extension InlineSort<E> on List<E> {
+  List<E> inlineSort([int Function(E, E)? compare]) {
+    var list = this;
+    list.sort(compare);
+    return list;
+  }
+}

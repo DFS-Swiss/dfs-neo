@@ -27,7 +27,7 @@ class MoneyTextfield extends HookWidget {
 
     final FocusNode focusNode = FocusNode();
 
-    return GestureDetector(      
+    return GestureDetector(
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -64,6 +64,7 @@ class MoneyTextfield extends HookWidget {
                     child: IntrinsicWidth(
                       child: TextFormField(
                         autofocus: true,
+                        maxLength: 5,
                         keyboardType: TextInputType.number,
                         textAlign: TextAlign.center,
                         onChanged: onChanged,
@@ -77,6 +78,7 @@ class MoneyTextfield extends HookWidget {
                         ),
                         cursorColor: Theme.of(context).primaryColor,
                         decoration: InputDecoration(
+                          counterText: "",
                           border: InputBorder.none,
                           focusedBorder: InputBorder.none,
                           enabledBorder: InputBorder.none,
