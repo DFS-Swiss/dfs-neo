@@ -46,13 +46,9 @@ class RESTService extends ChangeNotifier {
     return _authenticationService.getCurrentApiKey();
   }
 
-  Future<dynamic> listSymbols() async {
-    final response = await dio.get("/stockdata/list");
-    return response;
-  }
-
   Future<List<StockdataDatapoint>> getStockdata(
-      String symbol, StockdataInterval interval) async {
+      String symbol, StockdataInterval interval,
+      {int retryCount = 0}) async {
     try {
       final response = await dio.get("/stockdata/$symbol?interval=$interval");
       List<StockdataDatapoint> data;
@@ -75,48 +71,57 @@ class RESTService extends ChangeNotifier {
       StockdataService.getInstance().updateData(serviceInput);
       return data;
     } catch (e, stack) {
+      if (retryCount < 4) {
+        await Future.delayed(Duration(milliseconds: 100 * retryCount));
+        return getStockdata(symbol, interval, retryCount: retryCount + 1);
+      }
       await bugsnag.notify(e, stack);
       rethrow;
     }
   }
 
   Future<Map<String, Map<StockdataInterval, List<StockdataDatapoint>>>>
-      getStockdataBulk(StockdataBulkFetchRequest request) async {
+      getStockdataBulk(StockdataBulkFetchRequest request,
+          {int retryCount = 0}) async {
     print("Performing bulk query");
-    //try {
-    final Map<String, Map<StockdataInterval, List<StockdataDatapoint>>> out =
-        {};
-    final response = await dio.post("/stockdata/bulk", data: request.toMap());
-    //try {
-    final data = (response.data["body"]["symbols"] as Map<String, dynamic>);
-    for (var symbol in data.entries) {
-      if (out[symbol.key] == null) {
-        out[symbol.key] = {};
-      }
-      for (var interval in data[symbol.key]!.entries) {
-        final mappedList = (data[symbol.key]![interval.key]! as List<dynamic>)
-            .map((e) => StockdataDatapoint.fromMap(e))
-            .toList();
-        if (mappedList.length < 2) {
-          await bugsnag.notify("Error in bulk fetch result", null);
-          print("Error detected");
+    try {
+      final Map<String, Map<StockdataInterval, List<StockdataDatapoint>>> out =
+          {};
+      final response = await dio.post("/stockdata/bulk", data: request.toMap());
+      //try {
+      final data = (response.data["body"]["symbols"] as Map<String, dynamic>);
+      for (var symbol in data.entries) {
+        if (out[symbol.key] == null) {
+          out[symbol.key] = {};
         }
-        print(mappedList.length);
-        out[symbol.key]![StockdataInterval.fromString(interval.key)] =
-            mappedList;
+        for (var interval in data[symbol.key]!.entries) {
+          final mappedList = (data[symbol.key]![interval.key]! as List<dynamic>)
+              .map((e) => StockdataDatapoint.fromMap(e))
+              .toList();
+          if (mappedList.length < 2) {
+            await bugsnag.notify("Error in bulk fetch result", null);
+            print("Error detected");
+          }
+          print(mappedList.length);
+          out[symbol.key]![StockdataInterval.fromString(interval.key)] =
+              mappedList;
+        }
       }
+      //} catch (e) {
+      //throw "Parsing error: ${e.toString()}";
+      //}
+      StockdataService.getInstance().updateData(out);
+      return out;
+    } catch (e) {
+      if (retryCount < 4) {
+        await Future.delayed(Duration(milliseconds: 100 * retryCount));
+        return getStockdataBulk(request, retryCount: retryCount + 1);
+      }
+      rethrow;
     }
-    //} catch (e) {
-    //throw "Parsing error: ${e.toString()}";
-    //}
-    StockdataService.getInstance().updateData(out);
-    return out;
-    //} catch (e) {
-    //  rethrow;
-    //}
   }
 
-  Future<UserModel> getUserData() async {
+  Future<UserModel> getUserData({int retryCount = 0}) async {
     try {
       final response = await dio.get("/user");
       if (response.statusCode.toString().startsWith("2")) {
@@ -134,6 +139,10 @@ class RESTService extends ChangeNotifier {
         throw "Unknown case: ${response.toString()}";
       }
     } catch (e) {
+      if (retryCount < 4) {
+        await Future.delayed(Duration(milliseconds: 100 * retryCount));
+        return getUserData(retryCount: retryCount + 1);
+      }
       DataService.getInstance()
           .dataUpdateStream
           .addError({"key": "user", "value": e});
@@ -141,7 +150,8 @@ class RESTService extends ChangeNotifier {
     }
   }
 
-  Future<StockdataDocument> getStockInfo(String symbol) async {
+  Future<StockdataDocument> getStockInfo(String symbol,
+      {int retryCount = 0}) async {
     try {
       final response = await dio.get("/stockdata/$symbol/info");
       if (response.statusCode.toString().startsWith("2")) {
@@ -159,6 +169,10 @@ class RESTService extends ChangeNotifier {
         throw "Unknown case: ${response.toString()}";
       }
     } catch (e) {
+      if (retryCount < 4) {
+        await Future.delayed(Duration(milliseconds: 100 * retryCount));
+        return getStockInfo(symbol, retryCount: retryCount + 1);
+      }
       DataService.getInstance()
           .dataUpdateStream
           .addError({"key": "symbol/$symbol", "value": e});
@@ -166,7 +180,8 @@ class RESTService extends ChangeNotifier {
     }
   }
 
-  Future<List<StockdataDocument>> getStockInfoBulk(List<String> symbols) async {
+  Future<List<StockdataDocument>> getStockInfoBulk(List<String> symbols,
+      {int retryCount = 0}) async {
     try {
       final response = await dio.get("/stockdata/info?symbols=$symbols");
       if (response.statusCode.toString().startsWith("2")) {
@@ -189,6 +204,10 @@ class RESTService extends ChangeNotifier {
         throw "Unknown case: ${response.toString()}";
       }
     } catch (e) {
+      if (retryCount < 4) {
+        await Future.delayed(Duration(milliseconds: 100 * retryCount));
+        return getStockInfoBulk(symbols, retryCount: retryCount + 1);
+      }
       DataService.getInstance()
           .dataUpdateStream
           .addError({"key": "symbols", "value": e});
@@ -212,7 +231,8 @@ class RESTService extends ChangeNotifier {
     }
   }
 
-  Future<List<StockdataDocument>> getAvailiableStocks() async {
+  Future<List<StockdataDocument>> getAvailiableStocks(
+      {int retryCount = 0}) async {
     try {
       final response = await dio.get("/stockdata/");
       if (response.statusCode.toString().startsWith("2")) {
@@ -238,6 +258,10 @@ class RESTService extends ChangeNotifier {
         throw "Unknown case: ${response.toString()}";
       }
     } catch (e) {
+      if (retryCount < 4) {
+        await Future.delayed(Duration(milliseconds: 100 * retryCount));
+        return getAvailiableStocks(retryCount: retryCount + 1);
+      }
       DataService.getInstance()
           .dataUpdateStream
           .addError({"key": "symbols", "value": e});
@@ -245,7 +269,7 @@ class RESTService extends ChangeNotifier {
     }
   }
 
-  Future<List<UserassetDatapoint>> getUserAssets() async {
+  Future<List<UserassetDatapoint>> getUserAssets({int retryCount = 0}) async {
     try {
       final response = await dio.get("/user/assets");
       if (response.statusCode.toString().startsWith("2")) {
@@ -267,6 +291,10 @@ class RESTService extends ChangeNotifier {
         throw "Unknown case: ${response.toString()}";
       }
     } catch (e) {
+      if (retryCount < 4) {
+        await Future.delayed(Duration(milliseconds: 100 * retryCount));
+        return getUserAssets(retryCount: retryCount + 1);
+      }
       DataService.getInstance()
           .dataUpdateStream
           .addError({"key": "investments", "value": e});
@@ -275,7 +303,7 @@ class RESTService extends ChangeNotifier {
   }
 
   Future<List<UserassetDatapoint>> getUserAssetsHistory(
-      {StockdataInterval? interval}) async {
+      {StockdataInterval? interval, int retryCount = 0}) async {
     try {
       final response =
           await dio.get("/user/assets/history?interval=${interval ?? "all"}");
@@ -297,6 +325,10 @@ class RESTService extends ChangeNotifier {
         throw "Unknown case: ${response.toString()}";
       }
     } catch (e) {
+      if (retryCount < 4) {
+        await Future.delayed(Duration(milliseconds: 100 * retryCount));
+        return getUserAssetsHistory(retryCount: retryCount + 1);
+      }
       DataService.getInstance()
           .dataUpdateStream
           .addError({"key": "investments/history", "value": e});
@@ -304,8 +336,10 @@ class RESTService extends ChangeNotifier {
     }
   }
 
-  Future<List<UserBalanceDatapoint>> getUserBalanceHistory(
-      {StockdataInterval? interval}) async {
+  Future<List<UserBalanceDatapoint>> getUserBalanceHistory({
+    StockdataInterval? interval,
+    int retryCount = 0,
+  }) async {
     try {
       final response =
           await dio.get("/user/balance/history?interval=${interval ?? "all"}");
@@ -327,6 +361,10 @@ class RESTService extends ChangeNotifier {
         throw "Unknown case: ${response.toString()}";
       }
     } catch (e) {
+      if (retryCount < 4) {
+        await Future.delayed(Duration(milliseconds: 100 * retryCount));
+        return getUserBalanceHistory(retryCount: retryCount + 1);
+      }
       DataService.getInstance()
           .dataUpdateStream
           .addError({"key": "balance/history", "value": e});
@@ -334,7 +372,7 @@ class RESTService extends ChangeNotifier {
     }
   }
 
-  Future<UserBalanceDatapoint> getBalance() async {
+  Future<UserBalanceDatapoint> getBalance({int retryCount = 0}) async {
     try {
       final response = await dio.get("/user/balance");
       if (response.statusCode.toString().startsWith("2")) {
@@ -353,6 +391,10 @@ class RESTService extends ChangeNotifier {
         throw "Unknown case: ${response.toString()}";
       }
     } catch (e) {
+      if (retryCount < 4) {
+        await Future.delayed(Duration(milliseconds: 100 * retryCount));
+        return getBalance(retryCount: retryCount + 1);
+      }
       DataService.getInstance()
           .dataUpdateStream
           .addError({"key": "balance", "value": e});
@@ -360,7 +402,8 @@ class RESTService extends ChangeNotifier {
     }
   }
 
-  Future<List<UserassetDatapoint>> getAssetForSymbol(String symbol) async {
+  Future<List<UserassetDatapoint>> getAssetForSymbol(String symbol,
+      {int retryCount = 0}) async {
     try {
       final response = await dio.get("/user/assets/$symbol");
       if (response.statusCode.toString().startsWith("2")) {
@@ -380,6 +423,10 @@ class RESTService extends ChangeNotifier {
         throw "Unknown case: ${response.toString()}";
       }
     } catch (e, stack) {
+      if (retryCount < 4) {
+        await Future.delayed(Duration(milliseconds: 100 * retryCount));
+        return getAssetForSymbol(symbol, retryCount: retryCount + 1);
+      }
       await bugsnag.notify(e, stack);
       rethrow;
     }
