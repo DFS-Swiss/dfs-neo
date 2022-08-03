@@ -18,9 +18,9 @@ class CustomDotPainter extends FlDotPainter {
 
     //canvas.drawLine(p1, Offset(offsetInCanvas.dx, this.), linePaint);
 
-    canvas.drawCircle(offsetInCanvas, 9, paint1);
-    canvas.drawCircle(offsetInCanvas, 5, paint2);
-    canvas.drawCircle(offsetInCanvas, 2, paint3);
+    canvas.drawCircle(offsetInCanvas, 12, paint1);
+    canvas.drawCircle(offsetInCanvas, 9, paint2);
+    canvas.drawCircle(offsetInCanvas, 6, paint3);
   }
 
   @override
