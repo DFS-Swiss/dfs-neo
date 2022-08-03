@@ -30,7 +30,7 @@ class MoneyTextfield extends HookWidget {
     return GestureDetector(
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).backgroundColor,
           borderRadius: BorderRadius.all(Radius.circular(20)),
         ),
         margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
