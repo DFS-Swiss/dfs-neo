@@ -8,6 +8,7 @@ import 'package:neo/hooks/use_chart_scrubbing_state.dart';
 import 'package:neo/pages/dashboard/portfolio_development_chart.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
 import 'package:neo/utils/print_time_for_interval.dart';
+import 'package:neo/widgets/autosize_hideable_text.dart';
 import 'package:neo/widgets/hideable_text.dart';
 import 'package:neo/widgets/hidebalance_button.dart';
 import 'package:neo/widgets/development_indicator/small_change_indicator.dart';
@@ -51,7 +52,7 @@ class PortfolioBalanceCard extends HookWidget {
                           SizedBox(
                             height: 5,
                           ),
-                          HideableText(
+                          AutoSizeHideableText(
                             scrubbingData.hasTouch
                                 ? "${FormattingService.roundDouble(scrubbingData.value, 2)} dUSD"
                                 : "${FormattingService.roundDouble(balanceHistory.data!.portfolioIsEmpty ? 0 : balanceHistory.data!.total.first.price, 2)} dUSD",
