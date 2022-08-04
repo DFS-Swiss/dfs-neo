@@ -157,6 +157,7 @@ class RecentlyClosedOrderCard extends HookWidget {
                                 height: 8,
                               ),
                               Text("Coming soon",
+                                  maxLines: 1,
                                   style:
                                       Theme.of(context).textTheme.labelMedium)
                             ],
