@@ -1,4 +1,6 @@
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:neo/service_locator.dart';
+import 'package:neo/services/compute_cache/complex_compute_cache_service.dart';
 import 'package:neo/services/data_service.dart';
 import 'package:neo/services/stockdata_service.dart';
 import 'package:neo/types/data_container.dart';
@@ -11,25 +13,15 @@ DataContainer<BalanceHistoryContainer> useBalanceHistory(
     StockdataInterval interval) {
   final state =
       useState<DataContainer<BalanceHistoryContainer>>(DataContainer.waiting());
-  handleFetch() {
-    PortfolioValueUtil()
-        .getPortfolioValueHistory(
-            interval, state.value.data == null ? false : true)
-        .then(
-      (value) {
-        state.value = DataContainer(data: value);
-      },
-    );
-  }
 
   useEffect(() {
-    StockdataService.getInstance().addListener(handleFetch);
-    DataService.getInstance().addListener(handleFetch);
-    handleFetch();
+    final sub = locator<ComplexComputeCacheService>()
+        .readPortfolioValueHistroyFromCache(interval)
+        .listen((event) {
+      state.value = DataContainer(data: event);
+    });
     return () {
-      DataService.getInstance().removeListener(handleFetch);
-      StockdataService.getInstance().removeListener(handleFetch);
-      //future?.ignore();
+      sub.cancel();
     };
   }, [interval]);
   return state.value;

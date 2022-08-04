@@ -5,7 +5,9 @@ import 'package:neo/pages/account/account_page.dart';
 import 'package:neo/pages/dashboard/dashboard_page.dart';
 import 'package:neo/pages/portfolio/portfolio_page.dart';
 import 'package:neo/pages/stocklist/stocklist_page.dart';
+import 'package:neo/service_locator.dart';
 import 'package:neo/services/biometric_auth_service.dart';
+import 'package:neo/services/compute_cache/complex_compute_cache_service.dart';
 import 'package:neo/services/prefetching_service.dart';
 import 'package:neo/services/websocket/websocket_service.dart';
 
@@ -59,9 +61,10 @@ class MainNavigation extends HookWidget {
         authing.value = false;
         lastAuthRequest.value = DateTime.now();
       });
-      PrefetchingService()
-          .prepareApp()
-          .then((value) => prefetching.value = false);
+      PrefetchingService().prepareApp().then((value) {
+        prefetching.value = false;
+        //locator<ComplexComputeCacheService>().init();
+      });
       return;
     }, ["_"]);
     getBody() {

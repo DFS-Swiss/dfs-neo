@@ -43,6 +43,12 @@ class Portfolio extends HookWidget {
         useState<PortfolioDevelopmentMode>(PortfolioDevelopmentMode.balance);
 
     useEffect(() {
+      String temp = "-";
+      for (var i = 0; i < 5; i++) {
+        print(temp);
+        temp = temp + temp;
+      }
+      print("Timechange detected: " + DateTime.now().toLocal().toString());
       switch (timeFilter.value) {
         case 0:
           interval.value = StockdataInterval.twentyFourHours;
@@ -76,6 +82,8 @@ class Portfolio extends HookWidget {
         ],
       ),
       body: ListView(
+        addAutomaticKeepAlives: true,
+        cacheExtent: 1000,
         children: [
           //TODO: Remove the display popup as soon as time intervals work
           GestureDetector(
@@ -89,6 +97,13 @@ class Portfolio extends HookWidget {
                 timeFilter.value = a;
               },
             ),
+          ),
+          TimeFilter(
+            enabled: true,
+            init: timeFilter.value,
+            callback: (int a) {
+              timeFilter.value = a;
+            },
           ),
           SizedBox(
             height: 25,

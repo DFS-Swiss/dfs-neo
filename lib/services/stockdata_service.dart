@@ -74,7 +74,7 @@ class StockdataService extends ChangeNotifier {
     }
     if (shouldStartTimer) {
       _bulkFetchTimer =
-          Future.delayed(Duration(milliseconds: 100), _handleBulkFetch);
+          Future.delayed(Duration(milliseconds: 300), _handleBulkFetch);
     }
   }
 
