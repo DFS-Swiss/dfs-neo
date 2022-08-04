@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_image/network.dart';
 import 'package:neo/widgets/development_indicator/small_change_indicator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -11,7 +12,7 @@ class OpenOrderCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 18+24, right: 18),
+      padding: const EdgeInsets.only(left: 18 + 24, right: 18),
       child: Stack(
         children: [
           Container(
@@ -28,11 +29,12 @@ class OpenOrderCard extends StatelessWidget {
                       width: 38,
                       height: 38,
                       child: CircleAvatar(
-                        backgroundImage: NetworkImage(
+                        key: ValueKey(image),
+                        backgroundImage: NetworkImageWithRetry(
                           image ??
                               "https://prod-dfs-swiss-dfssymboliconbucketd59bac7b-la02u10dfrul.s3.eu-central-1.amazonaws.com/AMZN.png",
                         ),
-                        backgroundColor: Colors.white,
+                        backgroundColor: Colors.transparent,
                       ),
                     ),
                     SizedBox(
