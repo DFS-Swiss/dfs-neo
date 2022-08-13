@@ -5,7 +5,10 @@ import 'package:neo/types/data_container.dart';
 import 'package:neo/types/portfolio_performance_container.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
 
+import '../service_locator.dart';
 import '../services/portfoliovalue_service.dart';
+
+final DataService dataService = locator<DataService>();
 
 DataContainer<PortfolioPerformanceContainer> usePortfolioDevelopment(
     StockdataInterval interval) {
@@ -28,10 +31,10 @@ DataContainer<PortfolioPerformanceContainer> usePortfolioDevelopment(
 
   useEffect(() {
     StockdataService.getInstance().addListener(handleFetch);
-    DataService.getInstance().addListener(handleFetch);
+    dataService.addListener(handleFetch);
     handleFetch();
     return () {
-      DataService.getInstance().removeListener(handleFetch);
+      dataService.removeListener(handleFetch);
       StockdataService.getInstance().removeListener(handleFetch);
       //future?.ignore();
     };

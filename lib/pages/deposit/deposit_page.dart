@@ -17,6 +17,7 @@ class Deposit extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final DataService dataService = locator<DataService>();
     final selectedAmount = useState<String>("");
     final typedAmount = useState<String>("");
     final loading = useState(false);
@@ -36,7 +37,7 @@ class Deposit extends HookWidget {
       if (!loading.value) {
         loading.value = true;
         try {
-          if (await DataService.getInstance().addUserBalance(depositAmount)) {
+          if (await dataService.addUserBalance(depositAmount)) {
             // Show alert, pop page
             locator<AnalyticsService>().trackEvent(
               "action:debug_deposit",

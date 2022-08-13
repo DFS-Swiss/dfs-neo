@@ -3,47 +3,40 @@ import 'package:flutter/material.dart';
 import 'package:neo/models/stockdatadocument.dart';
 import 'package:neo/models/user_model.dart';
 import 'package:neo/models/userasset_datapoint.dart';
+import 'package:neo/services/authentication_service.dart';
+import 'package:neo/services/data_handler_service.dart';
 import 'package:neo/services/rest_service.dart';
 import 'package:neo/types/restdata_storage_container.dart';
 import 'package:rxdart/subjects.dart';
 
 import '../enums/data_source.dart';
 import '../models/user_balance_datapoint.dart';
+import '../service_locator.dart';
 
 class DataService extends ChangeNotifier {
-  DataService._() {
-    dataUpdateStream.listen((value) {
+
+  final RESTService _restService = locator<RESTService>();
+  final DataHandlerService _dataHandlerService = locator<DataHandlerService>();
+  final AuthenticationService _authenticationService = locator<AuthenticationService>();
+
+  DataService() {
+    _dataHandlerService.getDataUpdateStream().listen((value) {
       final tempStore = _dataStore.value;
       tempStore[value["key"]] = RestdataStorageContainer(value["value"]);
       _dataStore.add(tempStore);
     });
+    _authenticationService.resetDataStore = () => _dataStore.add({});
   }
-  static DataService? _instance;
-  static DataService getInstance() {
-    return _instance ??= DataService._();
-  }
-
-  final Map<String, List<Function()>> _userDataHandlerRegister = {};
-
-  BehaviorSubject<Map<String, dynamic>> dataUpdateStream = BehaviorSubject();
 
   final BehaviorSubject<Map<String, RestdataStorageContainer>> _dataStore =
       BehaviorSubject.seeded({});
-
-  clearCache() {
-    _dataStore.add({});
-  }
-
-  registerUserDataHandler(String entity, List<Function()> handler) {
-    _userDataHandlerRegister[entity] = handler;
-  }
 
   handleUserDataUpdate(String message) {
     print(message);
     final Map<String, dynamic> json = JsonDecoder().convert(message);
     final entity = json["entity"];
-    if (_userDataHandlerRegister[entity] != null) {
-      for (var handler in _userDataHandlerRegister[entity]!) {
+    if (_dataHandlerService.getUserDataHandlerRegister()[entity] != null) {
+      for (var handler in _dataHandlerService.getUserDataHandlerRegister()[entity]!) {
         handler();
       }
     } else {
@@ -65,9 +58,9 @@ class DataService extends ChangeNotifier {
         source == DataSource.cache) {
       yield _dataStore.value["user"]!.data as UserModel;
     } else {
-      yield await RESTService.getInstance().getUserData();
+      yield await _restService.getUserData();
     }
-    yield* dataUpdateStream
+    yield* _dataHandlerService.getDataUpdateStream()
         .where((event) => event["key"] == "user")
         .map((event) {
       return event["value"];
@@ -81,9 +74,9 @@ class DataService extends ChangeNotifier {
         source == DataSource.cache) {
       yield _dataStore.value["symbol/$symbol"]!.data as StockdataDocument;
     } else {
-      yield await RESTService.getInstance().getStockInfo(symbol);
+      yield await _restService.getStockInfo(symbol);
     }
-    yield* dataUpdateStream
+    yield* _dataHandlerService.getDataUpdateStream()
         .where((event) => event["key"] == "symbol/$symbol")
         .map((event) {
       return event["value"];
@@ -97,9 +90,9 @@ class DataService extends ChangeNotifier {
         source == DataSource.cache) {
       yield _dataStore.value["symbols"]!.data as List<StockdataDocument>;
     } else {
-      yield await RESTService.getInstance().getAvailiableStocks();
+      yield await _restService.getAvailiableStocks();
     }
-    yield* dataUpdateStream
+    yield* _dataHandlerService.getDataUpdateStream()
         .where((event) => event["key"] == "symbols")
         .map((event) {
       return event["value"];
@@ -113,9 +106,9 @@ class DataService extends ChangeNotifier {
         source == DataSource.cache) {
       yield _dataStore.value["investments"]!.data as List<UserassetDatapoint>;
     } else {
-      yield await RESTService.getInstance().getUserAssets();
+      yield await _restService.getUserAssets();
     }
-    yield* dataUpdateStream
+    yield* _dataHandlerService.getDataUpdateStream()
         .where((event) => event["key"] == "investments")
         .map((event) {
       return event["value"];
@@ -130,9 +123,9 @@ class DataService extends ChangeNotifier {
       yield _dataStore.value["investments/history"]!.data
           as List<UserassetDatapoint>;
     } else {
-      yield await RESTService.getInstance().getUserAssetsHistory();
+      yield await _restService.getUserAssetsHistory();
     }
-    yield* dataUpdateStream
+    yield* _dataHandlerService.getDataUpdateStream()
         .where((event) => event["key"] == "investments/history")
         .map((event) {
       return event["value"];
@@ -147,9 +140,9 @@ class DataService extends ChangeNotifier {
       yield _dataStore.value["balance/history"]!.data
           as List<UserBalanceDatapoint>;
     } else {
-      yield await RESTService.getInstance().getUserBalanceHistory();
+      yield await _restService.getUserBalanceHistory();
     }
-    yield* dataUpdateStream
+    yield* _dataHandlerService.getDataUpdateStream()
         .where((event) => event["key"] == "balance/history")
         .map((event) {
       return event["value"];
@@ -163,9 +156,9 @@ class DataService extends ChangeNotifier {
         source == DataSource.cache) {
       yield _dataStore.value["balance"]!.data as UserBalanceDatapoint;
     } else {
-      yield await RESTService.getInstance().getBalance();
+      yield await _restService.getBalance();
     }
-    yield* dataUpdateStream
+    yield* _dataHandlerService.getDataUpdateStream()
         .where((event) => event["key"] == "balance")
         .map((event) {
       return event["value"];
@@ -173,19 +166,19 @@ class DataService extends ChangeNotifier {
   }
 
   Future<bool> buyAsset(String symbol, double amountInDollar) async {
-    return RESTService.getInstance().buyAsset(symbol, amountInDollar);
+    return _restService.buyAsset(symbol, amountInDollar);
   }
 
   Future<bool> sellAsset(String symbol, double ammountOfTokensToSell) async {
-    return RESTService.getInstance().sellAsset(symbol, ammountOfTokensToSell);
+    return _restService.sellAsset(symbol, ammountOfTokensToSell);
   }
 
   Future<bool> addUserBalance(String amount) async {
-    return await RESTService.getInstance().addBalance(amount);
+    return await _restService.addBalance(amount);
   }
 
   Stream<List<UserassetDatapoint>> getUserAssetsForSymbol(
       String symbol) async* {
-    yield await RESTService.getInstance().getAssetForSymbol(symbol);
+    yield await _restService.getAssetForSymbol(symbol);
   }
 }

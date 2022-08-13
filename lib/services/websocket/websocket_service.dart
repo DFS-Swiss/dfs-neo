@@ -12,6 +12,8 @@ import '../../types/websocket_state_container.dart';
 class WebsocketService {
   final AuthenticationService _authenticationService =
       locator<AuthenticationService>();
+  final DataService _dataService =
+      locator<DataService>();
 
   WebsocketService._();
   static WebsocketService? _instance;
@@ -40,7 +42,7 @@ class WebsocketService {
     _userDataControler!.connectionStateStream
         .pipe(userDataConnectionStateStream);
     _userDataControler!.streamController.stream.listen((event) {
-      DataService.getInstance().handleUserDataUpdate(event);
+      _dataService.handleUserDataUpdate(event);
     });
     _stockDataControler!.streamController.stream.listen((event) {
       StockdataService.getInstance()

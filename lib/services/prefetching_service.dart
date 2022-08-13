@@ -2,9 +2,12 @@ import 'package:neo/services/data_service.dart';
 import 'package:neo/services/stockdata_service.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
 
+import '../service_locator.dart';
+
 class PrefetchingService {
+  
   Future prepareApp() async {
-    final dataService = DataService.getInstance();
+    final dataService = locator<DataService>();
     final stockService = StockdataService.getInstance();
     final avlbStocks = await dataService.getAvailableStocks().first;
 

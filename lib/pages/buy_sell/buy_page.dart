@@ -14,9 +14,10 @@ import '../../widgets/buttons/branded_button.dart';
 class BuyPage extends HookWidget {
   final String symbol;
   const BuyPage({Key? key, required this.symbol}) : super(key: key);
-
+  
   @override
   Widget build(BuildContext context) {
+    final DataService dataService = locator<DataService>();
     final amountInDollar = useRef<double>(0);
     final loading = useState(false);
     useEffect(() {
@@ -34,8 +35,7 @@ class BuyPage extends HookWidget {
         if (amountInDollar.value > 0) {
           loading.value = true;
           try {
-            await DataService.getInstance()
-                .buyAsset(symbol, amountInDollar.value);
+            await dataService.buyAsset(symbol, amountInDollar.value);
             locator<AnalyticsService>().trackEvent(
               "action:buy",
               eventProperties: {

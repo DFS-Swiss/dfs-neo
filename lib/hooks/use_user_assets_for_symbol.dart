@@ -4,7 +4,10 @@ import 'package:neo/services/stockinvestment_service.dart';
 import 'package:neo/types/data_container.dart';
 import 'package:neo/types/investment/investment_data.dart';
 
+import '../service_locator.dart';
 import '../services/stockdata_service.dart';
+
+final DataService dataService = locator<DataService>();
 
 DataContainer<InvestmentData> useUserAssetsForSymbol(String symbol) {
   final state =
@@ -22,10 +25,10 @@ DataContainer<InvestmentData> useUserAssetsForSymbol(String symbol) {
     }
 
     StockdataService.getInstance().addListener(handleFetch);
-    DataService.getInstance().addListener(handleFetch);
+    dataService.addListener(handleFetch);
     handleFetch();
     return () {
-      DataService.getInstance().removeListener(handleFetch);
+      dataService.removeListener(handleFetch);
       StockdataService.getInstance().removeListener(handleFetch);
     };
   }, [symbol]);
