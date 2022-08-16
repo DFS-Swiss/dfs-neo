@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../services/formatting_service.dart';
+import '../../utils/formatting_utils.dart';
 
 import '../development_indicator/detailed_development_indicator.dart';
 
@@ -39,8 +39,8 @@ class AssetDevelopmentCard extends HookWidget {
           DetailedDevelopmentIndicator(
             positive: !changePercentage.isNegative,
             changePercentage:
-                FormattingService.roundDouble(changePercentage, 2),
-            changeValue: FormattingService.roundDouble(changeValue, 2),
+                FormattingUtils.roundDouble(changePercentage, 2),
+            changeValue: FormattingUtils.roundDouble(changeValue, 2),
           )
         ],
       ),

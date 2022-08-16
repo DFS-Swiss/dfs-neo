@@ -6,7 +6,7 @@ import 'package:neo/pages/dashboard/dashboard_page.dart';
 import 'package:neo/pages/portfolio/portfolio_page.dart';
 import 'package:neo/pages/stocklist/stocklist_page.dart';
 import 'package:neo/services/biometric_auth_service.dart';
-import 'package:neo/services/prefetching_service.dart';
+import 'package:neo/utils/prefetching_utils.dart';
 import 'package:neo/services/websocket/websocket_service.dart';
 
 import '../../widgets/prefetching_loader.dart';
@@ -59,7 +59,7 @@ class MainNavigation extends HookWidget {
         authing.value = false;
         lastAuthRequest.value = DateTime.now();
       });
-      PrefetchingService()
+      PrefetchingUtils()
           .prepareApp()
           .then((value) => prefetching.value = false);
       return;

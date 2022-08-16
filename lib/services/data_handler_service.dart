@@ -25,5 +25,4 @@ class DataHandlerService extends ChangeNotifier {
   addErrorToDataUpstream(String key, Object e){
     dataUpdateStream.add({"key": key, "value": e});
   }
-
 }

@@ -4,7 +4,7 @@ import 'package:neo/types/stockdata_interval_enum.dart';
 
 import '../service_locator.dart';
 
-class PrefetchingService {
+class PrefetchingUtils {
   
   Future prepareApp() async {
     final dataService = locator<DataService>();

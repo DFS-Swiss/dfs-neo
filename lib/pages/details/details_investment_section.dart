@@ -5,7 +5,7 @@ import 'package:neo/hooks/use_userassets.dart';
 import 'package:neo/widgets/cards/asset_development_card.dart';
 import '../../hooks/use_stockdata.dart';
 import '../../hooks/use_user_assets_for_symbol.dart';
-import '../../services/formatting_service.dart';
+import '../../utils/formatting_utils.dart';
 import '../../types/stockdata_interval_enum.dart';
 import '../../widgets/genericheadline_widget.dart';
 import '../../widgets/shimmer_loader_card.dart';
@@ -102,7 +102,7 @@ class DetailsInvestmentsSection extends HookWidget {
                                     height: 10,
                                   ),
                                   Text(
-                                    "${FormattingService.roundDouble(investmentData.data!.buyIn, 2).toString()} d\$",
+                                    "${FormattingUtils.roundDouble(investmentData.data!.buyIn, 2).toString()} d\$",
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       fontSize: 12,
@@ -138,7 +138,7 @@ class DetailsInvestmentsSection extends HookWidget {
                                     height: 10,
                                   ),
                                   Text(
-                                    FormattingService.roundDouble(
+                                    FormattingUtils.roundDouble(
                                             investmentData.data!.quantity, 2)
                                         .toString(),
                                     overflow: TextOverflow.ellipsis,
@@ -175,7 +175,7 @@ class DetailsInvestmentsSection extends HookWidget {
                                     height: 10,
                                   ),
                                   Text(
-                                    "${FormattingService.roundDouble(investmentData.data!.value, 2).toString()} d\$",
+                                    "${FormattingUtils.roundDouble(investmentData.data!.value, 2).toString()} d\$",
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       fontSize: 12,

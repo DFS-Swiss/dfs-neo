@@ -6,7 +6,7 @@ import 'package:neo/hooks/use_stockdata_info.dart';
 import 'package:neo/hooks/use_stockdata_latest_price.dart';
 import 'package:neo/pages/buy_sell/trade_asset_input_field_asset.dart';
 import 'package:neo/pages/buy_sell/trade_asset_input_field_dollar.dart';
-import 'package:neo/services/formatting_service.dart';
+import 'package:neo/utils/formatting_utils.dart';
 
 class AmountSelector extends HookWidget {
   final String symbol;
@@ -38,7 +38,7 @@ class AmountSelector extends HookWidget {
           controller: dollarControler,
           callback: (value) {
             amountInDollar.value = value;
-            final assets = FormattingService.roundDouble(
+            final assets = FormattingUtils.roundDouble(
                 value / latestPrice.data!.price, 3);
             amountInShares.value = assets;
             assetControler.text = assets.toString();
@@ -98,7 +98,7 @@ class AmountSelector extends HookWidget {
           controler: assetControler,
           callback: (value) {
             amountInShares.value = value;
-            final dollar = FormattingService.roundDouble(
+            final dollar = FormattingUtils.roundDouble(
               value * latestPrice.data!.price,
               3,
             );

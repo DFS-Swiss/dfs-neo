@@ -9,7 +9,7 @@ import 'package:neo/pages/dashboard/portfolio_development_chart.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
 import 'package:neo/widgets/hideable_text.dart';
 import 'package:neo/widgets/hidebalance_button.dart';
-import 'package:neo/services/formatting_service.dart';
+import 'package:neo/utils/formatting_utils.dart';
 import '../../utils/print_time_for_interval.dart';
 import '../development_indicator/detailed_development_indicator.dart';
 import '../shimmer_loader_card.dart';
@@ -58,7 +58,7 @@ class PortfolioPerformanceCard extends HookWidget {
                                         CrossAxisAlignment.center,
                                     children: [
                                       HideableText(
-                                        "${FormattingService.roundDouble(scrubbingData.value, 2)}%",
+                                        "${FormattingUtils.roundDouble(scrubbingData.value, 2)}%",
                                         maxLines: 1,
                                         style: GoogleFonts.urbanist(
                                           fontSize: 20,
@@ -84,10 +84,10 @@ class PortfolioPerformanceCard extends HookWidget {
                                     fontSize: 20,
                                     iconSize: 30,
                                     changePercentage:
-                                        FormattingService.roundDouble(
+                                        FormattingUtils.roundDouble(
                                             balanceHistory.data!.perCentChange,
                                             2),
-                                    changeValue: FormattingService.roundDouble(
+                                    changeValue: FormattingUtils.roundDouble(
                                         balanceHistory.data!.absoluteChange, 2),
                                     positive:
                                         balanceHistory.data!.perCentChange > 0,
