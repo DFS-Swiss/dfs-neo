@@ -33,10 +33,8 @@ class StockSearchBar extends HookWidget {
             suffixIcon: searchController.text == ""
                 ? Icon(
                     Icons.cancel,
-                    color: MediaQuery.of(context).platformBrightness ==
-                            Brightness.light
-                        ? Colors.white
-                        : Colors.black,
+                    size:
+                        0, //This is nesessarcy! The icon must not be display, but if it is changed to a container the textfield hint text disappears!
                   )
                 : GestureDetector(
                     onTap: () {

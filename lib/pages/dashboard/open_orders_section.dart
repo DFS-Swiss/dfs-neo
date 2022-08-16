@@ -45,7 +45,11 @@ class OpenOrdersSection extends HookWidget {
             child: PageView(
               controller: constroller,
               onPageChanged: (newPage) => page.value = newPage,
-              children: [OpenOrderCard(), OpenOrderCard(), OpenOrderCard()],
+              children: [
+                OpenOrderCard(),
+                OpenOrderCard(),
+                OpenOrderCard()
+              ],
             ),
           ),
           SizedBox(

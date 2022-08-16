@@ -55,32 +55,33 @@ class RecentlyClosedOrderCard extends HookWidget {
                         SizedBox(
                           width: 12,
                         ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              assetData.data!.symbol,
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                assetData.data!.symbol,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              height: 4,
-                            ),
-                            Text(
-                              assetData.data!.displayName,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Color(0xFF909090),
-                                fontWeight: FontWeight.w500,
+                              SizedBox(
+                                height: 4,
                               ),
-                            )
-                          ],
+                              Text(
+                                assetData.data!.displayName,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF909090),
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              )
+                            ],
+                          ),
                         ),
-                        Expanded(child: Container()),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [

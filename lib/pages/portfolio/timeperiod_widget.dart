@@ -44,7 +44,8 @@ class TimePeriod extends HookWidget {
               : BoxDecoration(
                   color: Theme.of(context).backgroundColor.withOpacity(0.75),
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(width: 1, color: Colors.white),
+                  border: Border.all(
+                      width: 1, color: Colors.white.withOpacity(0.25)),
                 ),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
