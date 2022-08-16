@@ -23,7 +23,7 @@ class WebsocketControler {
   int retryCount = 0;
 
   WebsocketControler(this.wsUrl, {this.getApiKey}) {
-    initWebSocketConnection();
+    //initWebSocketConnection();
   }
 
   initWebSocketConnection() async {
