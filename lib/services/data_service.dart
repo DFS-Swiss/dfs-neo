@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:neo/enums/publisher_event.dart';
 import 'package:neo/models/stockdatadocument.dart';
 import 'package:neo/models/user_model.dart';
 import 'package:neo/models/userasset_datapoint.dart';
-import 'package:neo/services/authentication_service.dart';
 import 'package:neo/services/data_handler_service.dart';
+import 'package:neo/services/publisher_service.dart';
 import 'package:neo/services/rest_service.dart';
 import 'package:neo/types/restdata_storage_container.dart';
 import 'package:rxdart/subjects.dart';
@@ -14,10 +15,9 @@ import '../models/user_balance_datapoint.dart';
 import '../service_locator.dart';
 
 class DataService extends ChangeNotifier {
-
   final RESTService _restService = locator<RESTService>();
   final DataHandlerService _dataHandlerService = locator<DataHandlerService>();
-  final AuthenticationService _authenticationService = locator<AuthenticationService>();
+  final PublisherService _publisherService = locator<PublisherService>();
 
   DataService() {
     _dataHandlerService.getDataUpdateStream().listen((value) {
@@ -25,8 +25,11 @@ class DataService extends ChangeNotifier {
       tempStore[value["key"]] = RestdataStorageContainer(value["value"]);
       _dataStore.add(tempStore);
     });
-    //TODO: Publisher Subscriber Pattern
-    _authenticationService.resetDataStore = () => _dataStore.add({});
+    _publisherService.getSource().listen((e) {
+      if (e == PublisherEvent.logout) {
+        _dataStore.add({});
+      }
+    });
   }
 
   final BehaviorSubject<Map<String, RestdataStorageContainer>> _dataStore =
@@ -37,7 +40,8 @@ class DataService extends ChangeNotifier {
     final Map<String, dynamic> json = JsonDecoder().convert(message);
     final entity = json["entity"];
     if (_dataHandlerService.getUserDataHandlerRegister()[entity] != null) {
-      for (var handler in _dataHandlerService.getUserDataHandlerRegister()[entity]!) {
+      for (var handler
+          in _dataHandlerService.getUserDataHandlerRegister()[entity]!) {
         handler();
       }
     } else {
@@ -61,7 +65,8 @@ class DataService extends ChangeNotifier {
     } else {
       yield await _restService.getUserData();
     }
-    yield* _dataHandlerService.getDataUpdateStream()
+    yield* _dataHandlerService
+        .getDataUpdateStream()
         .where((event) => event["key"] == "user")
         .map((event) {
       return event["value"];
@@ -77,7 +82,8 @@ class DataService extends ChangeNotifier {
     } else {
       yield await _restService.getStockInfo(symbol);
     }
-    yield* _dataHandlerService.getDataUpdateStream()
+    yield* _dataHandlerService
+        .getDataUpdateStream()
         .where((event) => event["key"] == "symbol/$symbol")
         .map((event) {
       return event["value"];
@@ -93,7 +99,8 @@ class DataService extends ChangeNotifier {
     } else {
       yield await _restService.getAvailiableStocks();
     }
-    yield* _dataHandlerService.getDataUpdateStream()
+    yield* _dataHandlerService
+        .getDataUpdateStream()
         .where((event) => event["key"] == "symbols")
         .map((event) {
       return event["value"];
@@ -109,7 +116,8 @@ class DataService extends ChangeNotifier {
     } else {
       yield await _restService.getUserAssets();
     }
-    yield* _dataHandlerService.getDataUpdateStream()
+    yield* _dataHandlerService
+        .getDataUpdateStream()
         .where((event) => event["key"] == "investments")
         .map((event) {
       return event["value"];
@@ -126,7 +134,8 @@ class DataService extends ChangeNotifier {
     } else {
       yield await _restService.getUserAssetsHistory();
     }
-    yield* _dataHandlerService.getDataUpdateStream()
+    yield* _dataHandlerService
+        .getDataUpdateStream()
         .where((event) => event["key"] == "investments/history")
         .map((event) {
       return event["value"];
@@ -143,7 +152,8 @@ class DataService extends ChangeNotifier {
     } else {
       yield await _restService.getUserBalanceHistory();
     }
-    yield* _dataHandlerService.getDataUpdateStream()
+    yield* _dataHandlerService
+        .getDataUpdateStream()
         .where((event) => event["key"] == "balance/history")
         .map((event) {
       return event["value"];
@@ -159,7 +169,8 @@ class DataService extends ChangeNotifier {
     } else {
       yield await _restService.getBalance();
     }
-    yield* _dataHandlerService.getDataUpdateStream()
+    yield* _dataHandlerService
+        .getDataUpdateStream()
         .where((event) => event["key"] == "balance")
         .map((event) {
       return event["value"];

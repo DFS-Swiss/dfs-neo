@@ -3,8 +3,10 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:neo/enums/app_state.dart';
+import 'package:neo/enums/publisher_event.dart';
 import 'package:neo/services/analytics_service.dart';
 import 'package:neo/services/app_state_service.dart';
+import 'package:neo/services/publisher_service.dart';
 import 'package:neo/services/stockdata_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -15,11 +17,7 @@ class AuthenticationService extends ChangeNotifier {
   // Inject dependencies
   final CognitoService _cognitoService = locator<CognitoService>();
   final AppStateService _appStateService = locator<AppStateService>();
-  late Function _resetDataStore;
-
-  set resetDataStore(Function resetDataStore) {
-    _resetDataStore = resetDataStore;
-  }
+  final PublisherService _publisherService = locator<PublisherService>();
 
   Future<String> getCurrentApiKey() async {
     if (!_cognitoService.isSessionPresent()) {
@@ -99,9 +97,8 @@ class AuthenticationService extends ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove("user_name");
     await prefs.remove("refresh_token");
-    
-    _resetDataStore();
-      
+    _publisherService.addEvent(PublisherEvent.logout);
+    _publisherService.close();
     StockdataService.getInstance().clearCache();
     await locator<AnalyticsService>().trackEvent("logout");
     notifyListeners();

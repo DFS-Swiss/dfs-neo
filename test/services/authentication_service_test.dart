@@ -6,7 +6,6 @@ import 'package:neo/service_locator.dart';
 import 'package:neo/services/app_state_service.dart';
 import 'package:neo/services/authentication_service.dart';
 import 'package:neo/services/cognito_service.dart';
-import 'package:neo/services/data_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../helpers/test_helpers.dart';
@@ -127,8 +126,6 @@ void main() {
       when(cognitoService.logoutCurrentPoolUser()).thenReturn(null);
       when(appStateService.state)
           .thenReturn(AppState.signedOut);
-
-      authServiceInstance.resetDataStore = () => {};
 
       // act
       await authServiceInstance.logOut();

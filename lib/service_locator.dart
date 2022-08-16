@@ -7,10 +7,12 @@ import 'package:neo/services/cognito_service.dart';
 import 'package:neo/services/crashlytics_service.dart';
 import 'package:neo/services/data_handler_service.dart';
 import 'package:neo/services/data_service.dart';
+import 'package:neo/services/publisher_service.dart';
 import 'package:neo/services/rest_service.dart';
 
 GetIt locator = GetIt.instance;
 void setupLocator() {
+  locator.registerSingleton<PublisherService>(PublisherService());
   locator.registerSingleton<CognitoService>(CognitoService());
   locator.registerSingleton<AppStateService>(AppStateService());
   locator.registerSingleton<DataHandlerService>(DataHandlerService());
