@@ -2,29 +2,32 @@
 // in neo/test/helpers/test_helpers.dart.
 // Do not manually edit this file.
 
-import 'dart:async' as _i8;
-import 'dart:ui' as _i13;
+import 'dart:async' as _i11;
+import 'dart:ui' as _i16;
 
-import 'package:amazon_cognito_identity_dart_2/cognito.dart' as _i18;
-import 'package:amplitude_flutter/amplitude.dart' as _i6;
-import 'package:bugsnag_flutter/bugsnag_flutter.dart' as _i22;
-import 'package:dio/dio.dart' as _i2;
+import 'package:amazon_cognito_identity_dart_2/cognito.dart' as _i21;
+import 'package:amplitude_flutter/amplitude.dart' as _i7;
+import 'package:bugsnag_flutter/bugsnag_flutter.dart' as _i25;
+import 'package:dio/dio.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:neo/enums/app_state.dart' as _i20;
-import 'package:neo/enums/data_source.dart' as _i15;
-import 'package:neo/models/stockdata_datapoint.dart' as _i9;
-import 'package:neo/models/stockdatadocument.dart' as _i4;
-import 'package:neo/models/user_balance_datapoint.dart' as _i5;
-import 'package:neo/models/user_model.dart' as _i3;
-import 'package:neo/models/userasset_datapoint.dart' as _i12;
-import 'package:neo/services/analytics_service.dart' as _i16;
-import 'package:neo/services/app_state_service.dart' as _i19;
-import 'package:neo/services/cognito_service.dart' as _i17;
-import 'package:neo/services/crashlytics_service.dart' as _i21;
-import 'package:neo/services/data_service.dart' as _i14;
-import 'package:neo/services/rest_service.dart' as _i7;
-import 'package:neo/types/api/stockdata_bulk_fetch_request.dart' as _i11;
-import 'package:neo/types/stockdata_interval_enum.dart' as _i10;
+import 'package:neo/enums/app_state.dart' as _i23;
+import 'package:neo/enums/data_source.dart' as _i18;
+import 'package:neo/enums/publisher_event.dart' as _i9;
+import 'package:neo/models/stockdata_datapoint.dart' as _i12;
+import 'package:neo/models/stockdatadocument.dart' as _i5;
+import 'package:neo/models/user_balance_datapoint.dart' as _i6;
+import 'package:neo/models/user_model.dart' as _i4;
+import 'package:neo/models/userasset_datapoint.dart' as _i15;
+import 'package:neo/services/analytics_service.dart' as _i19;
+import 'package:neo/services/app_state_service.dart' as _i22;
+import 'package:neo/services/cognito_service.dart' as _i20;
+import 'package:neo/services/crashlytics_service.dart' as _i24;
+import 'package:neo/services/data_service.dart' as _i17;
+import 'package:neo/services/publisher_service.dart' as _i8;
+import 'package:neo/services/rest_service.dart' as _i10;
+import 'package:neo/types/api/stockdata_bulk_fetch_request.dart' as _i14;
+import 'package:neo/types/stockdata_interval_enum.dart' as _i13;
+import 'package:rxdart/subjects.dart' as _i2;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -36,151 +39,172 @@ import 'package:neo/types/stockdata_interval_enum.dart' as _i10;
 // ignore_for_file: unnecessary_parenthesis
 // ignore_for_file: camel_case_types
 
-class _FakeDio_0 extends _i1.Fake implements _i2.Dio {}
+class _FakePublishSubject_0<T> extends _i1.Fake
+    implements _i2.PublishSubject<T> {}
 
-class _FakeUserModel_1 extends _i1.Fake implements _i3.UserModel {}
+class _FakeDio_1 extends _i1.Fake implements _i3.Dio {}
 
-class _FakeStockdataDocument_2 extends _i1.Fake
-    implements _i4.StockdataDocument {}
+class _FakeUserModel_2 extends _i1.Fake implements _i4.UserModel {}
 
-class _FakeUserBalanceDatapoint_3 extends _i1.Fake
-    implements _i5.UserBalanceDatapoint {}
+class _FakeStockdataDocument_3 extends _i1.Fake
+    implements _i5.StockdataDocument {}
 
-class _FakeAmplitude_4 extends _i1.Fake implements _i6.Amplitude {}
+class _FakeUserBalanceDatapoint_4 extends _i1.Fake
+    implements _i6.UserBalanceDatapoint {}
+
+class _FakeAmplitude_5 extends _i1.Fake implements _i7.Amplitude {}
+
+/// A class which mocks [PublisherService].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockPublisherService extends _i1.Mock implements _i8.PublisherService {
+  MockPublisherService() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i2.PublishSubject<_i9.PublisherEvent> getSource() =>
+      (super.noSuchMethod(Invocation.method(#getSource, []),
+              returnValue: _FakePublishSubject_0<_i9.PublisherEvent>())
+          as _i2.PublishSubject<_i9.PublisherEvent>);
+  @override
+  dynamic addEvent(_i9.PublisherEvent? subscription) =>
+      super.noSuchMethod(Invocation.method(#addEvent, [subscription]));
+}
 
 /// A class which mocks [RESTService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockRESTService extends _i1.Mock implements _i7.RESTService {
+class MockRESTService extends _i1.Mock implements _i10.RESTService {
   MockRESTService() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i2.Dio get dio =>
-      (super.noSuchMethod(Invocation.getter(#dio), returnValue: _FakeDio_0())
-          as _i2.Dio);
+  _i3.Dio get dio =>
+      (super.noSuchMethod(Invocation.getter(#dio), returnValue: _FakeDio_1())
+          as _i3.Dio);
   @override
-  set dio(_i2.Dio? _dio) => super.noSuchMethod(Invocation.setter(#dio, _dio),
+  set dio(_i3.Dio? _dio) => super.noSuchMethod(Invocation.setter(#dio, _dio),
       returnValueForMissingStub: null);
   @override
   bool get hasListeners =>
       (super.noSuchMethod(Invocation.getter(#hasListeners), returnValue: false)
           as bool);
   @override
-  _i8.Future<List<_i9.StockdataDatapoint>> getStockdata(
-          String? symbol, _i10.StockdataInterval? interval,
+  _i11.Future<List<_i12.StockdataDatapoint>> getStockdata(
+          String? symbol, _i13.StockdataInterval? interval,
           {int? retryCount = 0}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #getStockdata, [symbol, interval], {#retryCount: retryCount}),
-              returnValue: Future<List<_i9.StockdataDatapoint>>.value(
-                  <_i9.StockdataDatapoint>[]))
-          as _i8.Future<List<_i9.StockdataDatapoint>>);
+              returnValue: Future<List<_i12.StockdataDatapoint>>.value(
+                  <_i12.StockdataDatapoint>[]))
+          as _i11.Future<List<_i12.StockdataDatapoint>>);
   @override
-  _i8.Future<Map<String, Map<_i10.StockdataInterval, List<_i9.StockdataDatapoint>>>> getStockdataBulk(
-          _i11.StockdataBulkFetchRequest? request,
+  _i11.Future<Map<String, Map<_i13.StockdataInterval, List<_i12.StockdataDatapoint>>>> getStockdataBulk(
+          _i14.StockdataBulkFetchRequest? request,
           {int? retryCount = 0}) =>
       (super.noSuchMethod(
           Invocation.method(
               #getStockdataBulk, [request], {#retryCount: retryCount}),
-          returnValue: Future<Map<String, Map<_i10.StockdataInterval, List<_i9.StockdataDatapoint>>>>.value(
-              <String, Map<_i10.StockdataInterval, List<_i9.StockdataDatapoint>>>{})) as _i8
-          .Future<Map<String, Map<_i10.StockdataInterval, List<_i9.StockdataDatapoint>>>>);
+          returnValue: Future<Map<String, Map<_i13.StockdataInterval, List<_i12.StockdataDatapoint>>>>.value(
+              <String, Map<_i13.StockdataInterval, List<_i12.StockdataDatapoint>>>{})) as _i11
+          .Future<Map<String, Map<_i13.StockdataInterval, List<_i12.StockdataDatapoint>>>>);
   @override
-  _i8.Future<_i3.UserModel> getUserData({int? retryCount = 0}) =>
+  _i11.Future<_i4.UserModel> getUserData({int? retryCount = 0}) =>
       (super.noSuchMethod(
               Invocation.method(#getUserData, [], {#retryCount: retryCount}),
-              returnValue: Future<_i3.UserModel>.value(_FakeUserModel_1()))
-          as _i8.Future<_i3.UserModel>);
+              returnValue: Future<_i4.UserModel>.value(_FakeUserModel_2()))
+          as _i11.Future<_i4.UserModel>);
   @override
-  _i8.Future<_i4.StockdataDocument> getStockInfo(String? symbol,
+  _i11.Future<_i5.StockdataDocument> getStockInfo(String? symbol,
           {int? retryCount = 0}) =>
       (super.noSuchMethod(
           Invocation.method(#getStockInfo, [symbol], {#retryCount: retryCount}),
-          returnValue: Future<_i4.StockdataDocument>.value(
-              _FakeStockdataDocument_2())) as _i8
-          .Future<_i4.StockdataDocument>);
+          returnValue: Future<_i5.StockdataDocument>.value(
+              _FakeStockdataDocument_3())) as _i11
+          .Future<_i5.StockdataDocument>);
   @override
-  _i8.Future<List<_i4.StockdataDocument>> getStockInfoBulk(
+  _i11.Future<List<_i5.StockdataDocument>> getStockInfoBulk(
           List<String>? symbols,
           {int? retryCount = 0}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #getStockInfoBulk, [symbols], {#retryCount: retryCount}),
-              returnValue: Future<List<_i4.StockdataDocument>>.value(
-                  <_i4.StockdataDocument>[]))
-          as _i8.Future<List<_i4.StockdataDocument>>);
+              returnValue: Future<List<_i5.StockdataDocument>>.value(
+                  <_i5.StockdataDocument>[]))
+          as _i11.Future<List<_i5.StockdataDocument>>);
   @override
-  _i8.Future<bool> addBalance(String? amount) =>
+  _i11.Future<bool> addBalance(String? amount) =>
       (super.noSuchMethod(Invocation.method(#addBalance, [amount]),
-          returnValue: Future<bool>.value(false)) as _i8.Future<bool>);
+          returnValue: Future<bool>.value(false)) as _i11.Future<bool>);
   @override
-  _i8.Future<List<_i4.StockdataDocument>> getAvailiableStocks(
+  _i11.Future<List<_i5.StockdataDocument>> getAvailiableStocks(
           {int? retryCount = 0}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #getAvailiableStocks, [], {#retryCount: retryCount}),
-              returnValue: Future<List<_i4.StockdataDocument>>.value(
-                  <_i4.StockdataDocument>[]))
-          as _i8.Future<List<_i4.StockdataDocument>>);
+              returnValue: Future<List<_i5.StockdataDocument>>.value(
+                  <_i5.StockdataDocument>[]))
+          as _i11.Future<List<_i5.StockdataDocument>>);
   @override
-  _i8.Future<List<_i12.UserassetDatapoint>> getUserAssets(
+  _i11.Future<List<_i15.UserassetDatapoint>> getUserAssets(
           {int? retryCount = 0}) =>
       (super.noSuchMethod(
               Invocation.method(#getUserAssets, [], {#retryCount: retryCount}),
-              returnValue: Future<List<_i12.UserassetDatapoint>>.value(
-                  <_i12.UserassetDatapoint>[]))
-          as _i8.Future<List<_i12.UserassetDatapoint>>);
+              returnValue: Future<List<_i15.UserassetDatapoint>>.value(
+                  <_i15.UserassetDatapoint>[]))
+          as _i11.Future<List<_i15.UserassetDatapoint>>);
   @override
-  _i8.Future<List<_i12.UserassetDatapoint>> getUserAssetsHistory(
-          {_i10.StockdataInterval? interval, int? retryCount = 0}) =>
+  _i11.Future<List<_i15.UserassetDatapoint>> getUserAssetsHistory(
+          {_i13.StockdataInterval? interval, int? retryCount = 0}) =>
       (super.noSuchMethod(
               Invocation.method(#getUserAssetsHistory, [],
                   {#interval: interval, #retryCount: retryCount}),
-              returnValue: Future<List<_i12.UserassetDatapoint>>.value(
-                  <_i12.UserassetDatapoint>[]))
-          as _i8.Future<List<_i12.UserassetDatapoint>>);
+              returnValue: Future<List<_i15.UserassetDatapoint>>.value(
+                  <_i15.UserassetDatapoint>[]))
+          as _i11.Future<List<_i15.UserassetDatapoint>>);
   @override
-  _i8.Future<List<_i5.UserBalanceDatapoint>> getUserBalanceHistory(
-          {_i10.StockdataInterval? interval, int? retryCount = 0}) =>
+  _i11.Future<List<_i6.UserBalanceDatapoint>> getUserBalanceHistory(
+          {_i13.StockdataInterval? interval, int? retryCount = 0}) =>
       (super.noSuchMethod(
               Invocation.method(#getUserBalanceHistory, [],
                   {#interval: interval, #retryCount: retryCount}),
-              returnValue: Future<List<_i5.UserBalanceDatapoint>>.value(
-                  <_i5.UserBalanceDatapoint>[]))
-          as _i8.Future<List<_i5.UserBalanceDatapoint>>);
+              returnValue: Future<List<_i6.UserBalanceDatapoint>>.value(
+                  <_i6.UserBalanceDatapoint>[]))
+          as _i11.Future<List<_i6.UserBalanceDatapoint>>);
   @override
-  _i8.Future<_i5.UserBalanceDatapoint> getBalance({int? retryCount = 0}) =>
+  _i11.Future<_i6.UserBalanceDatapoint> getBalance({int? retryCount = 0}) =>
       (super.noSuchMethod(
               Invocation.method(#getBalance, [], {#retryCount: retryCount}),
-              returnValue: Future<_i5.UserBalanceDatapoint>.value(
-                  _FakeUserBalanceDatapoint_3()))
-          as _i8.Future<_i5.UserBalanceDatapoint>);
+              returnValue: Future<_i6.UserBalanceDatapoint>.value(
+                  _FakeUserBalanceDatapoint_4()))
+          as _i11.Future<_i6.UserBalanceDatapoint>);
   @override
-  _i8.Future<List<_i12.UserassetDatapoint>> getAssetForSymbol(String? symbol,
+  _i11.Future<List<_i15.UserassetDatapoint>> getAssetForSymbol(String? symbol,
           {int? retryCount = 0}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #getAssetForSymbol, [symbol], {#retryCount: retryCount}),
-              returnValue: Future<List<_i12.UserassetDatapoint>>.value(
-                  <_i12.UserassetDatapoint>[]))
-          as _i8.Future<List<_i12.UserassetDatapoint>>);
+              returnValue: Future<List<_i15.UserassetDatapoint>>.value(
+                  <_i15.UserassetDatapoint>[]))
+          as _i11.Future<List<_i15.UserassetDatapoint>>);
   @override
-  _i8.Future<bool> buyAsset(String? symbol, double? amountInDollar) => (super
+  _i11.Future<bool> buyAsset(String? symbol, double? amountInDollar) => (super
       .noSuchMethod(Invocation.method(#buyAsset, [symbol, amountInDollar]),
-          returnValue: Future<bool>.value(false)) as _i8.Future<bool>);
+          returnValue: Future<bool>.value(false)) as _i11.Future<bool>);
   @override
-  _i8.Future<bool> sellAsset(String? symbol, double? ammountOfTokensToSell) =>
+  _i11.Future<bool> sellAsset(String? symbol, double? ammountOfTokensToSell) =>
       (super.noSuchMethod(
           Invocation.method(#sellAsset, [symbol, ammountOfTokensToSell]),
-          returnValue: Future<bool>.value(false)) as _i8.Future<bool>);
+          returnValue: Future<bool>.value(false)) as _i11.Future<bool>);
   @override
-  void addListener(_i13.VoidCallback? listener) =>
+  void addListener(_i16.VoidCallback? listener) =>
       super.noSuchMethod(Invocation.method(#addListener, [listener]),
           returnValueForMissingStub: null);
   @override
-  void removeListener(_i13.VoidCallback? listener) =>
+  void removeListener(_i16.VoidCallback? listener) =>
       super.noSuchMethod(Invocation.method(#removeListener, [listener]),
           returnValueForMissingStub: null);
   @override
@@ -195,7 +219,7 @@ class MockRESTService extends _i1.Mock implements _i7.RESTService {
 /// A class which mocks [DataService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockDataService extends _i1.Mock implements _i14.DataService {
+class MockDataService extends _i1.Mock implements _i17.DataService {
   MockDataService() {
     _i1.throwOnMissingStub(this);
   }
@@ -212,79 +236,79 @@ class MockDataService extends _i1.Mock implements _i14.DataService {
           .noSuchMethod(Invocation.method(#getDataFromCacheIfAvaliable, [key]))
       as T?);
   @override
-  _i8.Stream<_i3.UserModel> getUserData(
-          {_i15.DataSource? source = _i15.DataSource.cache}) =>
+  _i11.Stream<_i4.UserModel> getUserData(
+          {_i18.DataSource? source = _i18.DataSource.cache}) =>
       (super.noSuchMethod(
               Invocation.method(#getUserData, [], {#source: source}),
-              returnValue: Stream<_i3.UserModel>.empty())
-          as _i8.Stream<_i3.UserModel>);
+              returnValue: Stream<_i4.UserModel>.empty())
+          as _i11.Stream<_i4.UserModel>);
   @override
-  _i8.Stream<_i4.StockdataDocument> getStockInfo(String? symbol,
-          {_i15.DataSource? source = _i15.DataSource.cache}) =>
+  _i11.Stream<_i5.StockdataDocument> getStockInfo(String? symbol,
+          {_i18.DataSource? source = _i18.DataSource.cache}) =>
       (super.noSuchMethod(
               Invocation.method(#getStockInfo, [symbol], {#source: source}),
-              returnValue: Stream<_i4.StockdataDocument>.empty())
-          as _i8.Stream<_i4.StockdataDocument>);
+              returnValue: Stream<_i5.StockdataDocument>.empty())
+          as _i11.Stream<_i5.StockdataDocument>);
   @override
-  _i8.Stream<List<_i4.StockdataDocument>> getAvailableStocks(
-          {_i15.DataSource? source = _i15.DataSource.cache}) =>
+  _i11.Stream<List<_i5.StockdataDocument>> getAvailableStocks(
+          {_i18.DataSource? source = _i18.DataSource.cache}) =>
       (super.noSuchMethod(
               Invocation.method(#getAvailableStocks, [], {#source: source}),
-              returnValue: Stream<List<_i4.StockdataDocument>>.empty())
-          as _i8.Stream<List<_i4.StockdataDocument>>);
+              returnValue: Stream<List<_i5.StockdataDocument>>.empty())
+          as _i11.Stream<List<_i5.StockdataDocument>>);
   @override
-  _i8.Stream<List<_i12.UserassetDatapoint>> getUserAssets(
-          {_i15.DataSource? source = _i15.DataSource.cache}) =>
+  _i11.Stream<List<_i15.UserassetDatapoint>> getUserAssets(
+          {_i18.DataSource? source = _i18.DataSource.cache}) =>
       (super.noSuchMethod(
               Invocation.method(#getUserAssets, [], {#source: source}),
-              returnValue: Stream<List<_i12.UserassetDatapoint>>.empty())
-          as _i8.Stream<List<_i12.UserassetDatapoint>>);
+              returnValue: Stream<List<_i15.UserassetDatapoint>>.empty())
+          as _i11.Stream<List<_i15.UserassetDatapoint>>);
   @override
-  _i8.Stream<List<_i12.UserassetDatapoint>> getUserAssetsHistory(
-          {_i15.DataSource? source = _i15.DataSource.cache}) =>
+  _i11.Stream<List<_i15.UserassetDatapoint>> getUserAssetsHistory(
+          {_i18.DataSource? source = _i18.DataSource.cache}) =>
       (super.noSuchMethod(
               Invocation.method(#getUserAssetsHistory, [], {#source: source}),
-              returnValue: Stream<List<_i12.UserassetDatapoint>>.empty())
-          as _i8.Stream<List<_i12.UserassetDatapoint>>);
+              returnValue: Stream<List<_i15.UserassetDatapoint>>.empty())
+          as _i11.Stream<List<_i15.UserassetDatapoint>>);
   @override
-  _i8.Stream<List<_i5.UserBalanceDatapoint>> getUserBalanceHistory(
-          {_i15.DataSource? source = _i15.DataSource.cache}) =>
+  _i11.Stream<List<_i6.UserBalanceDatapoint>> getUserBalanceHistory(
+          {_i18.DataSource? source = _i18.DataSource.cache}) =>
       (super.noSuchMethod(
               Invocation.method(#getUserBalanceHistory, [], {#source: source}),
-              returnValue: Stream<List<_i5.UserBalanceDatapoint>>.empty())
-          as _i8.Stream<List<_i5.UserBalanceDatapoint>>);
+              returnValue: Stream<List<_i6.UserBalanceDatapoint>>.empty())
+          as _i11.Stream<List<_i6.UserBalanceDatapoint>>);
   @override
-  _i8.Stream<_i5.UserBalanceDatapoint> getUserBalance(
-          {_i15.DataSource? source = _i15.DataSource.cache}) =>
+  _i11.Stream<_i6.UserBalanceDatapoint> getUserBalance(
+          {_i18.DataSource? source = _i18.DataSource.cache}) =>
       (super.noSuchMethod(
               Invocation.method(#getUserBalance, [], {#source: source}),
-              returnValue: Stream<_i5.UserBalanceDatapoint>.empty())
-          as _i8.Stream<_i5.UserBalanceDatapoint>);
+              returnValue: Stream<_i6.UserBalanceDatapoint>.empty())
+          as _i11.Stream<_i6.UserBalanceDatapoint>);
   @override
-  _i8.Future<bool> buyAsset(String? symbol, double? amountInDollar) => (super
+  _i11.Future<bool> buyAsset(String? symbol, double? amountInDollar) => (super
       .noSuchMethod(Invocation.method(#buyAsset, [symbol, amountInDollar]),
-          returnValue: Future<bool>.value(false)) as _i8.Future<bool>);
+          returnValue: Future<bool>.value(false)) as _i11.Future<bool>);
   @override
-  _i8.Future<bool> sellAsset(String? symbol, double? ammountOfTokensToSell) =>
+  _i11.Future<bool> sellAsset(String? symbol, double? ammountOfTokensToSell) =>
       (super.noSuchMethod(
           Invocation.method(#sellAsset, [symbol, ammountOfTokensToSell]),
-          returnValue: Future<bool>.value(false)) as _i8.Future<bool>);
+          returnValue: Future<bool>.value(false)) as _i11.Future<bool>);
   @override
-  _i8.Future<bool> addUserBalance(String? amount) =>
+  _i11.Future<bool> addUserBalance(String? amount) =>
       (super.noSuchMethod(Invocation.method(#addUserBalance, [amount]),
-          returnValue: Future<bool>.value(false)) as _i8.Future<bool>);
+          returnValue: Future<bool>.value(false)) as _i11.Future<bool>);
   @override
-  _i8.Stream<List<_i12.UserassetDatapoint>> getUserAssetsForSymbol(
+  _i11.Stream<List<_i15.UserassetDatapoint>> getUserAssetsForSymbol(
           String? symbol) =>
       (super.noSuchMethod(Invocation.method(#getUserAssetsForSymbol, [symbol]),
-              returnValue: Stream<List<_i12.UserassetDatapoint>>.empty())
-          as _i8.Stream<List<_i12.UserassetDatapoint>>);
+              returnValue: Stream<List<_i15.UserassetDatapoint>>.empty())
+          as _i11.Stream<List<_i15.UserassetDatapoint>>);
   @override
-  void addListener(_i13.VoidCallback? listener) =>
+  void addListener(_i16.VoidCallback? listener) =>
       super.noSuchMethod(Invocation.method(#addListener, [listener]),
           returnValueForMissingStub: null);
   @override
-  void removeListener(_i13.VoidCallback? listener) =>
+  void removeListener(_i16.VoidCallback? listener) =>
       super.noSuchMethod(Invocation.method(#removeListener, [listener]),
           returnValueForMissingStub: null);
   @override
@@ -299,47 +323,49 @@ class MockDataService extends _i1.Mock implements _i14.DataService {
 /// A class which mocks [AnalyticsService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockAnalyticsService extends _i1.Mock implements _i16.AnalyticsService {
+class MockAnalyticsService extends _i1.Mock implements _i19.AnalyticsService {
   MockAnalyticsService() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i6.Amplitude get amplitude =>
+  _i7.Amplitude get amplitude =>
       (super.noSuchMethod(Invocation.getter(#amplitude),
-          returnValue: _FakeAmplitude_4()) as _i6.Amplitude);
+          returnValue: _FakeAmplitude_5()) as _i7.Amplitude);
   @override
-  _i8.Future<void> init() => (super.noSuchMethod(Invocation.method(#init, []),
+  _i11.Future<void> init() => (super.noSuchMethod(Invocation.method(#init, []),
       returnValue: Future<void>.value(),
-      returnValueForMissingStub: Future<void>.value()) as _i8.Future<void>);
+      returnValueForMissingStub: Future<void>.value()) as _i11.Future<void>);
   @override
-  _i8.Future<void> identifyUser({bool? forwardToCrashlytics = true}) =>
+  _i11.Future<void> identifyUser({bool? forwardToCrashlytics = true}) =>
       (super.noSuchMethod(
           Invocation.method(
               #identifyUser, [], {#forwardToCrashlytics: forwardToCrashlytics}),
           returnValue: Future<void>.value(),
-          returnValueForMissingStub: Future<void>.value()) as _i8.Future<void>);
+          returnValueForMissingStub:
+              Future<void>.value()) as _i11.Future<void>);
   @override
-  _i8.Future<void> trackEvent(String? eventType,
+  _i11.Future<void> trackEvent(String? eventType,
           {Map<String, dynamic>? eventProperties,
           bool? outOfSession,
           bool? forwardToCrashlytics = true}) =>
       (super.noSuchMethod(
-          Invocation.method(#trackEvent, [
-            eventType
-          ], {
-            #eventProperties: eventProperties,
-            #outOfSession: outOfSession,
-            #forwardToCrashlytics: forwardToCrashlytics
-          }),
-          returnValue: Future<void>.value(),
-          returnValueForMissingStub: Future<void>.value()) as _i8.Future<void>);
+              Invocation.method(#trackEvent, [
+                eventType
+              ], {
+                #eventProperties: eventProperties,
+                #outOfSession: outOfSession,
+                #forwardToCrashlytics: forwardToCrashlytics
+              }),
+              returnValue: Future<void>.value(),
+              returnValueForMissingStub: Future<void>.value())
+          as _i11.Future<void>);
 }
 
 /// A class which mocks [CognitoService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockCognitoService extends _i1.Mock implements _i17.CognitoService {
+class MockCognitoService extends _i1.Mock implements _i20.CognitoService {
   MockCognitoService() {
     _i1.throwOnMissingStub(this);
   }
@@ -367,10 +393,10 @@ class MockCognitoService extends _i1.Mock implements _i17.CognitoService {
   dynamic sendNewPasswordRequired(String? newPassword) => super
       .noSuchMethod(Invocation.method(#sendNewPasswordRequired, [newPassword]));
   @override
-  _i8.Future<_i18.CognitoUser?> getCurrentPoolUser() =>
+  _i11.Future<_i21.CognitoUser?> getCurrentPoolUser() =>
       (super.noSuchMethod(Invocation.method(#getCurrentPoolUser, []),
-              returnValue: Future<_i18.CognitoUser?>.value())
-          as _i8.Future<_i18.CognitoUser?>);
+              returnValue: Future<_i21.CognitoUser?>.value())
+          as _i11.Future<_i21.CognitoUser?>);
   @override
   dynamic registerUser(String? userName, String? email, String? password) =>
       super.noSuchMethod(
@@ -391,16 +417,16 @@ class MockCognitoService extends _i1.Mock implements _i17.CognitoService {
 /// A class which mocks [AppStateService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockAppStateService extends _i1.Mock implements _i19.AppStateService {
+class MockAppStateService extends _i1.Mock implements _i22.AppStateService {
   MockAppStateService() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i20.AppState get state => (super.noSuchMethod(Invocation.getter(#state),
-      returnValue: _i20.AppState.signedOut) as _i20.AppState);
+  _i23.AppState get state => (super.noSuchMethod(Invocation.getter(#state),
+      returnValue: _i23.AppState.signedOut) as _i23.AppState);
   @override
-  set state(_i20.AppState? newState) =>
+  set state(_i23.AppState? newState) =>
       super.noSuchMethod(Invocation.setter(#state, newState),
           returnValueForMissingStub: null);
   @override
@@ -408,11 +434,11 @@ class MockAppStateService extends _i1.Mock implements _i19.AppStateService {
       (super.noSuchMethod(Invocation.getter(#hasListeners), returnValue: false)
           as bool);
   @override
-  void addListener(_i13.VoidCallback? listener) =>
+  void addListener(_i16.VoidCallback? listener) =>
       super.noSuchMethod(Invocation.method(#addListener, [listener]),
           returnValueForMissingStub: null);
   @override
-  void removeListener(_i13.VoidCallback? listener) =>
+  void removeListener(_i16.VoidCallback? listener) =>
       super.noSuchMethod(Invocation.method(#removeListener, [listener]),
           returnValueForMissingStub: null);
   @override
@@ -428,29 +454,30 @@ class MockAppStateService extends _i1.Mock implements _i19.AppStateService {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockCrashlyticsService extends _i1.Mock
-    implements _i21.CrashlyticsService {
+    implements _i24.CrashlyticsService {
   MockCrashlyticsService() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  void start({String? apiKey, _i8.FutureOr<void> Function()? runApp}) =>
+  void start({String? apiKey, _i11.FutureOr<void> Function()? runApp}) =>
       super.noSuchMethod(
           Invocation.method(#start, [], {#apiKey: apiKey, #runApp: runApp}),
           returnValueForMissingStub: null);
   @override
-  _i8.Future<void> identifyUser() =>
-      (super.noSuchMethod(Invocation.method(#identifyUser, []),
-          returnValue: Future<void>.value(),
-          returnValueForMissingStub: Future<void>.value()) as _i8.Future<void>);
+  _i11.Future<void> identifyUser() => (super.noSuchMethod(
+      Invocation.method(#identifyUser, []),
+      returnValue: Future<void>.value(),
+      returnValueForMissingStub: Future<void>.value()) as _i11.Future<void>);
   @override
-  _i8.Future<void> leaveBreadcrumb(String? eventType,
+  _i11.Future<void> leaveBreadcrumb(String? eventType,
           {Map<String, Object>? eventProperties,
-          _i22.BugsnagBreadcrumbType? type =
-              _i22.BugsnagBreadcrumbType.manual}) =>
+          _i25.BugsnagBreadcrumbType? type =
+              _i25.BugsnagBreadcrumbType.manual}) =>
       (super.noSuchMethod(
-          Invocation.method(#leaveBreadcrumb, [eventType],
-              {#eventProperties: eventProperties, #type: type}),
-          returnValue: Future<void>.value(),
-          returnValueForMissingStub: Future<void>.value()) as _i8.Future<void>);
+              Invocation.method(#leaveBreadcrumb, [eventType],
+                  {#eventProperties: eventProperties, #type: type}),
+              returnValue: Future<void>.value(),
+              returnValueForMissingStub: Future<void>.value())
+          as _i11.Future<void>);
 }
