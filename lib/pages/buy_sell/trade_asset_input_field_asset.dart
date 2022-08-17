@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_image/network.dart';
 
 import '../../widgets/shimmer_loader_card.dart';
 
@@ -75,7 +76,8 @@ class TradeAssetInputFieldAsset extends HookWidget {
                                       if (value == "") {
                                         parsedValue = 0;
                                       } else {
-                                        parsedValue = double.parse(value);
+                                        parsedValue =
+                                            double.tryParse(value) ?? 0;
                                       }
                                       callback(parsedValue);
                                     }),
@@ -109,7 +111,8 @@ class TradeAssetInputFieldAsset extends HookWidget {
                       color: Color(0xFF0B223D),
                     ),
                     child: CircleAvatar(
-                      backgroundImage: NetworkImage(imageLink),
+                      key: ValueKey(imageLink),
+                      backgroundImage: NetworkImageWithRetry(imageLink),
                       backgroundColor: Theme.of(context).backgroundColor,
                     ),
                   ),

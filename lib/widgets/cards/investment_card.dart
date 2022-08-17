@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_image/network.dart';
 import 'package:neo/pages/details/details_page.dart';
 import 'package:neo/widgets/development_indicator/small_change_indicator.dart';
 import 'package:neo/widgets/shimmer_loader_card.dart';
@@ -68,8 +69,11 @@ class InvestmentCard extends HookWidget {
                               width: 38,
                               height: 38,
                               child: CircleAvatar(
-                                backgroundImage:
-                                    NetworkImage(symbolInfo.data!.imageUrl),
+                                key: ValueKey(symbolInfo.data!.imageUrl),
+                                backgroundColor: Colors.transparent,
+                                backgroundImage: NetworkImageWithRetry(
+                                  symbolInfo.data!.imageUrl,
+                                ),
                               ),
                             ),
                             SizedBox(
