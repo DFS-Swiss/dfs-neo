@@ -13,17 +13,21 @@ import 'package:rxdart/subjects.dart';
 import '../enums/data_source.dart';
 import '../models/user_balance_datapoint.dart';
 import '../service_locator.dart';
+import 'crashlytics_service.dart';
 
 class DataService extends ChangeNotifier {
   final RESTService _restService = locator<RESTService>();
   final DataHandlerService _dataHandlerService = locator<DataHandlerService>();
   final PublisherService _publisherService = locator<PublisherService>();
+  final CrashlyticsService _crashlyticsService = locator<CrashlyticsService>();
 
   DataService() {
     _dataHandlerService.getDataUpdateStream().listen((value) {
-      final tempStore = _dataStore.value;
-      tempStore[value["key"]] = RestdataStorageContainer(value["value"]);
-      _dataStore.add(tempStore);
+      if (value.isNotEmpty) {
+        final tempStore = _dataStore.value;
+        tempStore[value["key"]] = RestdataStorageContainer(value["value"]);
+        _dataStore.add(tempStore);
+      }
     });
     _publisherService.getSource().listen((e) {
       if (e == PublisherEvent.logout) {
@@ -36,18 +40,31 @@ class DataService extends ChangeNotifier {
       BehaviorSubject.seeded({});
 
   handleUserDataUpdate(String message) {
-    print(message);
-    final Map<String, dynamic> json = JsonDecoder().convert(message);
-    final entity = json["entity"];
-    if (_dataHandlerService.getUserDataHandlerRegister()[entity] != null) {
-      for (var handler
-          in _dataHandlerService.getUserDataHandlerRegister()[entity]!) {
-        handler();
-      }
-    } else {
-      print("Unhandled enity update $entity");
+    if (message.isEmpty) {
+      _crashlyticsService.leaveBreadcrumb("Empty Message");
+      print("Empty Message");
+      return;
     }
-    notifyListeners();
+
+    try {
+      final Map<String, dynamic> json = JsonDecoder().convert(message);
+      final entity = json["entity"];
+
+      if (_dataHandlerService.getUserDataHandlerRegister()?[entity] != null) {
+        for (var handler
+            in _dataHandlerService.getUserDataHandlerRegister()[entity]!) {
+          handler();
+        }
+      } else {
+        _crashlyticsService.leaveBreadcrumb("Unhandled enity update $entity");
+        print("Unhandled enity update $entity");
+      }
+
+      notifyListeners();
+    } on FormatException {
+      _crashlyticsService.leaveBreadcrumb("Unappropriate Format");
+      print("Unappropriate Format");
+    }
   }
 
   T? getDataFromCacheIfAvaliable<T>(String key) {
@@ -192,5 +209,11 @@ class DataService extends ChangeNotifier {
   Stream<List<UserassetDatapoint>> getUserAssetsForSymbol(
       String symbol) async* {
     yield await _restService.getAssetForSymbol(symbol);
+  }
+
+  // Only for testing the class
+  @protected
+  BehaviorSubject<Map<String, RestdataStorageContainer>> getDataStore() {
+    return _dataStore;
   }
 }

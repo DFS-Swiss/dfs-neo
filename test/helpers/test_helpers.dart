@@ -5,6 +5,7 @@ import 'package:neo/services/analytics_service.dart';
 import 'package:neo/services/app_state_service.dart';
 import 'package:neo/services/cognito_service.dart';
 import 'package:neo/services/crashlytics_service.dart';
+import 'package:neo/services/data_handler_service.dart';
 import 'package:neo/services/data_service.dart';
 import 'package:neo/services/publisher_service.dart';
 import 'package:neo/services/rest_service.dart';
@@ -12,6 +13,7 @@ import 'package:neo/services/rest_service.dart';
 import 'test_helpers.mocks.dart';
 
 @GenerateMocks([], customMocks: [
+  MockSpec<DataHandlerService>(),
   MockSpec<PublisherService>(),
   MockSpec<RESTService>(),
   MockSpec<DataService>(),
@@ -24,6 +26,13 @@ MockCognitoService getAndRegisterCognitoService() {
   _removeRegistrationIfExists<CognitoService>();
   final service = MockCognitoService();
   locator.registerSingleton<CognitoService>(service);
+  return service;
+}
+
+MockDataHandlerService getAndRegisterDataHandlerService() {
+  _removeRegistrationIfExists<DataHandlerService>();
+  final service = MockDataHandlerService();
+  locator.registerSingleton<DataHandlerService>(service);
   return service;
 }
 
@@ -78,6 +87,7 @@ void registerServices() {
   getAndRegisterDataService();
   getAndRegisterRESTService();
   getAndRegisterPublisherService();
+  getAndRegisterDataHandlerService();
 }
 
 void unregisterServices() {
@@ -86,6 +96,7 @@ void unregisterServices() {
   locator.unregister<DataService>();
   locator.unregister<RESTService>();
   locator.unregister<PublisherService>();
+  locator.unregister<DataHandlerService>();
 }
 
 void _removeRegistrationIfExists<T extends Object>() {
