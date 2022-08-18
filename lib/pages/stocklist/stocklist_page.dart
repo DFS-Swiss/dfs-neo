@@ -5,6 +5,7 @@ import 'package:neo/hooks/use_available_stocks.dart';
 import 'package:neo/hooks/use_userassets.dart';
 import 'package:neo/pages/details/details_page.dart';
 import 'package:neo/pages/stocklist/stockfilter_widget.dart';
+import 'package:neo/pages/stocklist/stocklist_sorting_widget.dart';
 import 'package:neo/pages/stocklist/stocksearchbar_widget.dart';
 import 'package:neo/utils/display_popup.dart';
 import 'package:neo/widgets/switchrow_widget.dart';
@@ -13,6 +14,7 @@ import 'package:neo/widgets/cards/dynamic_shimmer_cards.dart';
 import 'package:neo/widgets/cards/featuredstockcard_widget.dart';
 import 'package:neo/widgets/genericheadline_widget.dart';
 import 'package:neo/widgets/cards/tradablestockcard_widget.dart';
+import 'package:neo/utils/lists.dart';
 
 class StockList extends HookWidget {
   const StockList({Key? key}) : super(key: key);
@@ -24,6 +26,8 @@ class StockList extends HookWidget {
     final availableStocks = useAvailableStocks();
     final searchPattern = useState<String?>(null);
     final userAssets = useUserassets();
+    final sortState = useState<int>(
+        0); //1 Aufsteigend Name; 2 Absteigend Name; 3 Aufsteigend 24h Entwicklung; 4. Absteigend 24h Entwicklung
     useEffect(() {
       if (searchPattern.value == null) {
       } else {}
@@ -161,11 +165,14 @@ class StockList extends HookWidget {
                   ),
                 )
               : Container(),
-          GenericHeadline(
-            title: switchPosition.value == 1
-                ? AppLocalizations.of(context)!.list_mystocks
-                : AppLocalizations.of(context)!.list_tradable,
-          ),
+          SortingWidget(
+              titel: switchPosition.value == 1
+                  ? AppLocalizations.of(context)!.list_mystocks
+                  : AppLocalizations.of(context)!.list_tradable,
+              status: sortState.value,
+              callback: (int a) {
+                sortState.value = a;
+              }),
           availableStocks.loading == false
               ? Column(
                   children: availableStocks.data!
@@ -196,15 +203,17 @@ class StockList extends HookWidget {
                         }
                       })
                       .where((element) {
-                        if (element.symbol.contains(
-                                searchPattern.value ?? element.symbol) ||
-                            element.displayName.contains(
-                                searchPattern.value ?? element.displayName)) {
+                        if (element.symbol.toLowerCase().replaceAll(" ", "").contains(
+                                searchPattern.value?.toLowerCase().replaceAll(" ", "") ?? element.symbol.toLowerCase().replaceAll(" ", "")) ||
+                            element.displayName.toLowerCase().replaceAll(" ", "").contains(
+                                searchPattern.value?.toLowerCase().replaceAll(" ", "") ?? element.displayName.toLowerCase().replaceAll(" ", ""))) {
                           return true;
                         } else {
                           return false;
                         }
                       })
+                      .toList()
+                      .advancedAssetlistSort(sortState.value)
                       .map(
                         (e) => GestureDetector(
                             onTap: () {
