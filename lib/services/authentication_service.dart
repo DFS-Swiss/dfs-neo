@@ -6,6 +6,7 @@ import 'package:neo/enums/app_state.dart';
 import 'package:neo/enums/publisher_event.dart';
 import 'package:neo/services/analytics_service.dart';
 import 'package:neo/services/app_state_service.dart';
+import 'package:neo/services/crashlytics_service.dart';
 import 'package:neo/services/publisher_service.dart';
 import 'package:neo/services/stockdata_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -153,8 +154,9 @@ class AuthenticationService extends ChangeNotifier {
       try {
         await _cognitoService.refreshSession();
         return true;
-      } catch (e) {
+      } catch (e, trace) {
         print(e);
+        locator<CrashlyticsService>().logError(e, trace);
         _appStateService.state = AppState.signedOut;
         notifyListeners();
         return false;

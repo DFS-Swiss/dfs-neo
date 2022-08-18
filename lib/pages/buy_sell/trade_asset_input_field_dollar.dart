@@ -91,7 +91,8 @@ class TradeAssetInputFieldDollar extends HookWidget {
                                       if (value == "") {
                                         parsedValue = 0;
                                       } else {
-                                        parsedValue = double.parse(value);
+                                        parsedValue =
+                                            double.tryParse(value) ?? 0;
                                       }
                                       callback(parsedValue);
                                     }),

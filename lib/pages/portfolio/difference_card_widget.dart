@@ -64,9 +64,7 @@ class DifferenceCard extends HookWidget {
                           ? "..."
                           : "${FormattingUtils.calculatepercent(
                               balanceHistory.data!.total.first.price,
-                              balanceHistory.data!.total
-                                  .lastWhere((element) => element.price > 0)
-                                  .price,
+                              balanceHistory.data!.total.last.price,
                             )} %",
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),

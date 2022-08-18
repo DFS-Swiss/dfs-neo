@@ -39,8 +39,10 @@ class WebsocketService {
     );
     _stockDataControler!.connectionStateStream
         .pipe(stockDataConnectionStateStream);
+    _stockDataControler!.initWebSocketConnection();
     _userDataControler!.connectionStateStream
         .pipe(userDataConnectionStateStream);
+    _userDataControler!.initWebSocketConnection();
     _userDataControler!.streamController.stream.listen((event) {
       _dataService.handleUserDataUpdate(event);
     });

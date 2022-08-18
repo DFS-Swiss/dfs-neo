@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_image/network.dart';
 import 'package:intl/intl.dart';
 import 'package:neo/hooks/use_stockdata_info.dart';
 import 'package:neo/models/userasset_datapoint.dart';
@@ -45,9 +46,10 @@ class RecentlyClosedOrderCard extends HookWidget {
                           width: 38,
                           height: 38,
                           child: CircleAvatar(
+                            key: ValueKey(assetData.data!.imageUrl),
                             backgroundImage:
-                                NetworkImage(assetData.data!.imageUrl),
-                            backgroundColor: Colors.white,
+                                NetworkImageWithRetry(assetData.data!.imageUrl),
+                            backgroundColor: Colors.transparent,
                           ),
                         ),
                         SizedBox(
