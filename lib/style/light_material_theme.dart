@@ -3,6 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 final lightTheme = ThemeData(
+  sliderTheme: SliderThemeData(
+    overlayShape: SliderComponentShape.noThumb,
+    thumbColor: Color.fromRGBO(32, 209, 209, 1),
+    activeTrackColor: Color.fromRGBO(32, 209, 209, 1).withOpacity(0.7),
+  ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     selectedIconTheme: IconThemeData(
       color: Color(0xFF05889C),
