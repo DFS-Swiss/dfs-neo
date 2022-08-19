@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:neo/hooks/use_brightness.dart';
 import 'package:neo/style/theme.dart';
 
 class Filter extends HookWidget {
@@ -17,6 +18,7 @@ class Filter extends HookWidget {
       : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final brightness = useBrightness();
     final initCheck = useState(initChecked);
     final selected = useState<bool>(false);
     return Padding(
@@ -48,7 +50,7 @@ class Filter extends HookWidget {
             style: TextStyle(
                 color: selected.value ||
                         initCheck.value ||
-                        MediaQuery.of(context).platformBrightness ==
+                        brightness ==
                             Brightness.dark
                     ? Colors.white
                     : Colors.black,

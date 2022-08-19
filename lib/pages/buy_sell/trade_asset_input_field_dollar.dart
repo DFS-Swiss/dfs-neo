@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:neo/hooks/use_balance.dart';
+import 'package:neo/hooks/use_brightness.dart';
 
 import '../../services/formatting_service.dart';
 import '../../widgets/shimmer_loader_card.dart';
@@ -28,6 +29,7 @@ class TradeAssetInputFieldDollar extends HookWidget {
   Widget build(BuildContext context) {
     final percentage = useState<double>(0);
     final balance = useBalance();
+    final brightness = useBrightness();
 
     useEffect(() {
       listener() {
@@ -151,7 +153,7 @@ class TradeAssetInputFieldDollar extends HookWidget {
                         child: Center(
                           child: Icon(
                             Icons.attach_money,
-                            color: MediaQuery.of(context).platformBrightness ==
+                            color: brightness ==
                                     Brightness.dark
                                 ? Theme.of(context).iconTheme.color
                                 : Colors.white,
