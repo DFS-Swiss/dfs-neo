@@ -12,13 +12,15 @@ class AmountSelector extends HookWidget {
   final String symbol;
   final Function(double)? callbackDollarAmount;
   final Function(double)? callbackTokenAmount;
+  final bool buyMode;
 
-  const AmountSelector(
-      {Key? key,
-      required this.symbol,
-      this.callbackDollarAmount,
-      this.callbackTokenAmount})
-      : super(key: key);
+  const AmountSelector({
+    Key? key,
+    required this.symbol,
+    required this.buyMode,
+    this.callbackDollarAmount,
+    this.callbackTokenAmount,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,12 +38,14 @@ class AmountSelector extends HookWidget {
         TradeAssetInputFieldDollar(
           loading: info.loading,
           controller: dollarControler,
+          showPercentageSlider: buyMode,
           callback: (value) {
             amountInDollar.value = value;
             final assets = FormattingUtils.roundDouble(
                 value / latestPrice.data!.price, 3);
             amountInShares.value = assets;
             assetControler.text = assets.toString();
+            dollarControler.text = value.toString();
             if (callbackDollarAmount != null) {
               callbackDollarAmount!(value);
             }
@@ -96,6 +100,8 @@ class AmountSelector extends HookWidget {
           imageLink: info.data?.imageUrl ?? "",
           loading: info.loading,
           controler: assetControler,
+          showPercentageSlider: !buyMode,
+          symbol: symbol,
           callback: (value) {
             amountInShares.value = value;
             final dollar = FormattingUtils.roundDouble(
@@ -104,6 +110,7 @@ class AmountSelector extends HookWidget {
             );
             amountInDollar.value = dollar;
             dollarControler.text = dollar.toString();
+            assetControler.text = value.toString();
             if (callbackDollarAmount != null) {
               callbackDollarAmount!(dollar);
             }

@@ -191,6 +191,7 @@
     "new_order_sell_success_title": "Erfolgreich",
     "new_order_sell_success": "wurde erfolgreich verkauft",
     "new_order_buy_error_ins_token": "Es befindet sich nicht ausreichend Token in ihrem Account.",
+    "new_order_avaliable": "Verfügbar",
     "account_title": "Mein Account",
     "account_user": "Nutzername",
     "account_mail": "E-Mail",
@@ -219,10 +220,15 @@
     "dash_development": "Portfolio Entwicklung",
     "faceID_reason": "Bitte identifiziere dich",
     "account_security": "Sicherheit",
+    "account_settings": "Einstellungen",
     "biometrics_setting": "App beim verlassen sperren?",
     "feature_not_implemented_title": "Feature in Entwicklung",
     "feature_not_implemented_subtitle": "Das feature ist noch nicht implementiert. Für weitere Informationen, besuche uns auf unserer Webseite.",
     "feature_not_implemented_wait_list_info": "Wenn du es nicht abwarten kannst, lass dich auf die Warteliste setzen und gewinne 1000d$!",
     "feature_not_implemented_visit_website": "Besuche unsere Webseite",
-    "util_no_data": "Noch keine Daten verfügbar"
+    "util_no_data": "Noch keine Daten verfügbar",
+    "settings_theme_system": "System",
+    "settings_theme_light": "Hell",
+    "settings_theme_dark": "Dunkel",
+    "settings_brightness": "Design"
 }

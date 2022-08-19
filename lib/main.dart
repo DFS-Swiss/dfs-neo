@@ -5,6 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:neo/enums/app_state.dart';
 import 'package:neo/hooks/use_auth_state.dart';
+import 'package:neo/hooks/use_brightness.dart';
 import 'package:neo/pages/authentication/auth_page_wrapper.dart';
 import 'package:neo/pages/navigation/mainnavigation_page.dart';
 import 'package:neo/pages/onboarding/onboarding_page.dart';
@@ -27,11 +28,13 @@ void main() {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends HookWidget {
   const MyApp({Key? key}) : super(key: key);
-
+  
   @override
   Widget build(BuildContext context) {
+    var brightness = useBrightness();
+
     return NeoTheme(
       child: MaterialApp(
         title: 'DFS Neo',
@@ -45,9 +48,8 @@ class MyApp extends StatelessWidget {
           Locale('en', ''), // English, no country code
         ],
         debugShowCheckedModeBanner: false,
-        darkTheme: darkTheme,
-        theme: lightTheme,
         home: AuthWrapper(),
+        theme: brightness == Brightness.light ? lightTheme : darkTheme,
         builder: (context, child) {
           return MediaQuery(
               data: MediaQuery.of(context).copyWith(textScaleFactor: 1),

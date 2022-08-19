@@ -10,7 +10,7 @@ class StockdataStorageContainer {
   StockdataStorageContainer(
       this.interval, this.symbol, List<StockdataDatapoint> data)
       : lastSync = DateTime.now() {
-    merge(data);
+    merge(data, initial: true);
   }
 
   List<StockdataDatapoint> getSorted() {
@@ -19,7 +19,7 @@ class StockdataStorageContainer {
     return temp;
   }
 
-  merge(List<StockdataDatapoint> newDatapoints) {
+  merge(List<StockdataDatapoint> newDatapoints, {bool initial = false}) {
     lastSync = DateTime.now();
     final Map<DateTime, StockdataDatapoint> temp = {};
     for (var element in newDatapoints) {
