@@ -5,9 +5,11 @@ class SortingWidget extends HookWidget {
   final String titel;
   final Function callback;
   final int status;
+  final bool enableGrowthFilter;
   const SortingWidget(
       {required this.status,
       required this.titel,
+      required this.enableGrowthFilter,
       required this.callback,
       Key? key})
       : super(key: key);
@@ -33,15 +35,21 @@ class SortingWidget extends HookWidget {
                   currentStatus.value = 1;
                   break;
                 case 1:
-                currentStatus.value = 2;
+                  currentStatus.value = 2;
                   break;
                 case 2:
-                currentStatus.value = 0;
+                  currentStatus.value = 0;
+                  break;
+                  case 3:
+                  currentStatus.value = 1;
+                  break;
+                  case 4:
+                  currentStatus.value = 1;
                   break;
               }
               callback(currentStatus.value);
             },
-            child: currentStatus.value == 0
+            child: currentStatus.value == 0 || currentStatus.value >= 3
                 ? Row(
                     children: [
                       Icon(Icons.arrow_upward),
@@ -75,7 +83,69 @@ class SortingWidget extends HookWidget {
                           ),
                         ],
                       ),
-          )
+          ),
+          SizedBox(
+            width: 5,
+          ),
+          enableGrowthFilter
+              ? GestureDetector(
+                  onTap: () {
+                    switch (currentStatus.value) {
+                      case 0:
+                        currentStatus.value = 4;
+                        break;
+                        case 1:
+                        currentStatus.value = 4;
+                        break;
+                        case 2:
+                        currentStatus.value = 4;
+                        break;
+                        case 3:
+                        currentStatus.value = 4;
+                        break;
+                      case 4:
+                        currentStatus.value = 5;
+                        break;
+                      case 5:
+                        currentStatus.value = 3;
+                        break;
+                    }
+                    callback(currentStatus.value);
+                  },
+                  child: currentStatus.value < 4
+                      ? Row(
+                          children: [
+                            Icon(Icons.arrow_upward),
+                            Icon(Icons.sort),
+                          ],
+                        )
+                      : currentStatus.value == 4
+                          ? Row(
+                              children: [
+                                Icon(
+                                  Icons.arrow_upward,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                                Icon(
+                                  Icons.sort,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                              ],
+                            )
+                          : Row(
+                              children: [
+                                Icon(
+                                  Icons.arrow_downward,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                                Icon(
+                                  Icons.sort,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                              ],
+                            ),
+                )
+              : Container(),
         ],
       ),
     );

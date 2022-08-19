@@ -53,13 +53,15 @@ class StockList extends HookWidget {
       body: ListView(
         addAutomaticKeepAlives: true,
         children: [
-          StockSearchBar(callback: (String searchinput) {
-            if (searchinput == "") {
-              searchPattern.value = null;
-            } else {
-              searchPattern.value = searchinput;
-            }
-          }),
+          StockSearchBar(
+              
+              callback: (String searchinput) {
+                if (searchinput == "") {
+                  searchPattern.value = null;
+                } else {
+                  searchPattern.value = searchinput;
+                }
+              }),
           SwitchRow(
             options: [
               SwitchRowItem<int>(
@@ -166,6 +168,7 @@ class StockList extends HookWidget {
                 )
               : Container(),
           SortingWidget(
+            enableGrowthFilter: false,
               titel: switchPosition.value == 1
                   ? AppLocalizations.of(context)!.list_mystocks
                   : AppLocalizations.of(context)!.list_tradable,
@@ -203,10 +206,24 @@ class StockList extends HookWidget {
                         }
                       })
                       .where((element) {
-                        if (element.symbol.toLowerCase().replaceAll(" ", "").contains(
-                                searchPattern.value?.toLowerCase().replaceAll(" ", "") ?? element.symbol.toLowerCase().replaceAll(" ", "")) ||
-                            element.displayName.toLowerCase().replaceAll(" ", "").contains(
-                                searchPattern.value?.toLowerCase().replaceAll(" ", "") ?? element.displayName.toLowerCase().replaceAll(" ", ""))) {
+                        if (element.symbol
+                                .toLowerCase()
+                                .replaceAll(" ", "")
+                                .contains(searchPattern.value
+                                        ?.toLowerCase()
+                                        .replaceAll(" ", "") ??
+                                    element.symbol
+                                        .toLowerCase()
+                                        .replaceAll(" ", "")) ||
+                            element.displayName
+                                .toLowerCase()
+                                .replaceAll(" ", "")
+                                .contains(searchPattern.value
+                                        ?.toLowerCase()
+                                        .replaceAll(" ", "") ??
+                                    element.displayName
+                                        .toLowerCase()
+                                        .replaceAll(" ", ""))) {
                           return true;
                         } else {
                           return false;

@@ -52,14 +52,17 @@ extension InlineSort<E> on List<E> {
       list.sort((a, b) {
         return b.symbol.toLowerCase().compareTo(a.symbol.toLowerCase());
       });
-    } else if (state == 3) {
-      //Sort list by 24h growth ascending
-      //TODO: Implement sort by growth
     } else if (state == 4) {
-      //Sort list by 24h growth descending
-      //TODO: Implement sort by growth
+      //Sort list by token amount ascending
+      list.sort((a, b) {
+        return (a.tokenAmmount).compareTo(b.tokenAmmount);
+      });
+    } else if (state == 5) {
+      //Sort list by token amount descending
+      list.sort((a, b) {
+        return (b.tokenAmmount).compareTo(a.tokenAmmount);
+      });
     }
-    print(list);
     return list;
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:neo/hooks/use_available_stocks.dart';
 import 'package:neo/pages/stocklist/stockfilter_widget.dart';
 import 'package:neo/pages/stocklist/stocklist_sorting_widget.dart';
+import 'package:neo/pages/stocklist/stocksearchbar_widget.dart';
 import 'package:neo/utils/lists.dart';
 import 'package:neo/widgets/cards/dynamic_shimmer_cards.dart';
 
@@ -23,6 +24,7 @@ class CurrentInvestmentPage extends HookWidget {
     final sortState = useState<int>(
         0); //1 Aufsteigend Name; 2 Absteigend Name; 3 Aufsteigend 24h Entwicklung; 4. Absteigend 24h Entwicklung
     final availableStocks = useAvailableStocks();
+    final searchPattern = useState<String?>(null);
     useEffect(() {
       locator<AnalyticsService>().trackEvent("display:current_investments");
       return;
@@ -40,6 +42,15 @@ class CurrentInvestmentPage extends HookWidget {
       ),
       body: ListView(
         children: [
+          StockSearchBar(
+              customPadding: 1,
+              callback: (String searchinput) {
+                if (searchinput == "") {
+                  searchPattern.value = null;
+                } else {
+                  searchPattern.value = searchinput;
+                }
+              }),
           StockFilter(
             init: selectedFilters.value,
             callback: (List<int> selectedFilter) {
@@ -47,6 +58,7 @@ class CurrentInvestmentPage extends HookWidget {
             },
           ),
           SortingWidget(
+            enableGrowthFilter: true,
               titel: AppLocalizations.of(context)!.list_mystocks,
               status: sortState.value,
               callback: (int a) {
@@ -60,23 +72,51 @@ class CurrentInvestmentPage extends HookWidget {
                           return true;
                         } else if (selectedFilters.value.contains(0) &&
                                 availableStocks.data!
+                                .where(
+                                    (element) => element.symbol == asset.symbol)
+                                .first.assetType == "stock" ||
+                            selectedFilters.value.contains(1) &&
+                                availableStocks.data!
+                                .where(
+                                    (element) => element.symbol == asset.symbol)
+                                .first.assetType == "trust" ||
+                            selectedFilters.value.contains(2) &&
+                                availableStocks.data!
+                                .where(
+                                    (element) => element.symbol == asset.symbol)
+                                .first.assetType == "etf") {
+                          return true;
+                        } else {
+                          return false;
+                        }
+                      })
+                      .where((asset) {
+                        if (asset.symbol
+                                .toLowerCase()
+                                .replaceAll(" ", "")
+                                .contains(searchPattern.value
+                                        ?.toLowerCase()
+                                        .replaceAll(" ", "") ??
+                                    asset.symbol
+                                        .toLowerCase()
+                                        .replaceAll(" ", "")) ||
+                            availableStocks.data!
+                                .where(
+                                    (element) => element.symbol == asset.symbol)
+                                .first
+                                .displayName
+                                .toLowerCase()
+                                .replaceAll(" ", "")
+                                .contains(searchPattern.value
+                                        ?.toLowerCase()
+                                        .replaceAll(" ", "") ??
+                                    availableStocks.data!
                                         .where((element) =>
                                             element.symbol == asset.symbol)
                                         .first
-                                        .assetType ==
-                                    "stock" ||
-                            availableStocks.data!
-                                    .where((element) =>
-                                        element.symbol == asset.symbol)
-                                    .first
-                                    .assetType ==
-                                "trust" ||
-                            availableStocks.data!
-                                    .where((element) =>
-                                        element.symbol == asset.symbol)
-                                    .first
-                                    .assetType ==
-                                "etf") {
+                                        .displayName
+                                        .toLowerCase()
+                                        .replaceAll(" ", ""))) {
                           return true;
                         } else {
                           return false;
