@@ -4,9 +4,8 @@ import '../models/userasset_datapoint.dart';
 import '../service_locator.dart';
 import '../types/data_container.dart';
 
-final DataService dataService = locator<DataService>();
-
 DataContainer<List<UserassetDatapoint>> useUserassetsHistory() {
+  final DataService dataService = locator<DataService>();
   final cached = dataService
       .getDataFromCacheIfAvaliable<List<UserassetDatapoint>>(
           "investments/history");

@@ -8,10 +8,9 @@ import 'package:neo/types/stockdata_interval_enum.dart';
 import '../service_locator.dart';
 import '../services/portfoliovalue_service.dart';
 
-final DataService dataService = locator<DataService>();
-
 DataContainer<PortfolioPerformanceContainer> usePortfolioDevelopment(
     StockdataInterval interval) {
+  final DataService dataService = locator<DataService>();
   final state = useState<DataContainer<PortfolioPerformanceContainer>>(
       DataContainer.waiting());
   handleFetch() {

@@ -5,9 +5,8 @@ import 'package:neo/types/data_container.dart';
 
 import '../service_locator.dart';
 
-final DataService dataService = locator<DataService>();
-
 DataContainer<UserBalanceDatapoint> useBalance() {
+  final DataService dataService = locator<DataService>();
   final cached = dataService
       .getDataFromCacheIfAvaliable<UserBalanceDatapoint>("balance");
 

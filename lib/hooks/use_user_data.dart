@@ -5,11 +5,9 @@ import 'package:neo/types/data_container.dart';
 
 import '../service_locator.dart';
 
-final DataService dataService = locator<DataService>();
-
 DataContainer<UserModel> useUserData() {
-  final cached =
-      dataService.getDataFromCacheIfAvaliable<UserModel>("user");
+  final DataService dataService = locator<DataService>();
+  final cached = dataService.getDataFromCacheIfAvaliable<UserModel>("user");
 
   final state = useState<DataContainer<UserModel>>(
       cached != null ? DataContainer(data: cached) : DataContainer.waiting());

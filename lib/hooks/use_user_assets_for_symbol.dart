@@ -7,9 +7,8 @@ import 'package:neo/types/investment/investment_data.dart';
 import '../service_locator.dart';
 import '../services/stockdata_service.dart';
 
-final DataService dataService = locator<DataService>();
-
 DataContainer<InvestmentData> useUserAssetsForSymbol(String symbol) {
+  final DataService dataService = locator<DataService>();
   final state =
       useState<DataContainer<InvestmentData>>(DataContainer.waiting());
   useEffect(() {

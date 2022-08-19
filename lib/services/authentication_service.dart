@@ -99,7 +99,6 @@ class AuthenticationService extends ChangeNotifier {
     await prefs.remove("user_name");
     await prefs.remove("refresh_token");
     _publisherService.addEvent(PublisherEvent.logout);
-    _publisherService.close();
     StockdataService.getInstance().clearCache();
     await locator<AnalyticsService>().trackEvent("logout");
     notifyListeners();

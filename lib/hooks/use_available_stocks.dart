@@ -6,9 +6,8 @@ import 'package:neo/services/data_service.dart';
 import '../service_locator.dart';
 import '../types/data_container.dart';
 
-final DataService dataService = locator<DataService>();
-
 DataContainer<List<StockdataDocument>> useAvailableStocks() {
+  final DataService dataService = locator<DataService>();
   final cached = dataService
       .getDataFromCacheIfAvaliable<List<StockdataDocument>>("symbols");
 

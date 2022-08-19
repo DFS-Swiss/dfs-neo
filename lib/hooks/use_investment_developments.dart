@@ -8,10 +8,9 @@ import '../services/stockdata_service.dart';
 import '../types/data_container.dart';
 import '../types/stockdata_interval_enum.dart';
 
-final DataService dataService = locator<DataService>();
-
 DataContainer<List<AssetPerformanceContainer>> useInvestmentDevelopments(
     StockdataInterval interval) {
+  final DataService dataService = locator<DataService>();
   final state = useState<DataContainer<List<AssetPerformanceContainer>>>(
       DataContainer.waiting());
   useEffect(() {

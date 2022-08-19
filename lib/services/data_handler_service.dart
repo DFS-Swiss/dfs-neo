@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:rxdart/rxdart.dart';
 
-class DataHandlerService extends ChangeNotifier {
+class DataHandlerService {
 
   final Map<String, List<Function()>> _userDataHandlerRegister = {};
   final BehaviorSubject<Map<String, dynamic>> dataUpdateStream = BehaviorSubject();

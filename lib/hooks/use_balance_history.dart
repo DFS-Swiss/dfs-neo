@@ -8,10 +8,9 @@ import '../service_locator.dart';
 import '../services/portfoliovalue_service.dart';
 import '../types/balance_history_container.dart';
 
-final DataService dataService = locator<DataService>();
-
 DataContainer<BalanceHistoryContainer> useBalanceHistory(
     StockdataInterval interval) {
+  final DataService dataService = locator<DataService>();
   final state =
       useState<DataContainer<BalanceHistoryContainer>>(DataContainer.waiting());
   handleFetch() {
