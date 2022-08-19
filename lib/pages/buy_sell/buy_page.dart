@@ -101,6 +101,7 @@ class BuyPage extends HookWidget {
                     ),
                     AmountSelector(
                       key: ValueKey(symbol),
+                      buyMode: true,
                       symbol: symbol,
                       callbackDollarAmount: (v) => amountInDollar.value = v,
                     ),

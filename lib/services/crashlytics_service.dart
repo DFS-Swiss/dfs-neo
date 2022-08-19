@@ -20,6 +20,10 @@ class CrashlyticsService {
     }
   }
 
+  Future<void> logError(dynamic error, StackTrace? trace) async {
+    return bugsnag.notify(error, trace);
+  }
+
   Future<void> leaveBreadcrumb(
     String eventType, {
     Map<String, Object>? eventProperties,

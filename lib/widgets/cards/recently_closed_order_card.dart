@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_image/network.dart';
 import 'package:intl/intl.dart';
 import 'package:neo/hooks/use_stockdata_info.dart';
 import 'package:neo/models/userasset_datapoint.dart';
@@ -45,40 +46,42 @@ class RecentlyClosedOrderCard extends HookWidget {
                           width: 38,
                           height: 38,
                           child: CircleAvatar(
+                            key: ValueKey(assetData.data!.imageUrl),
                             backgroundImage:
-                                NetworkImage(assetData.data!.imageUrl),
-                            backgroundColor: Colors.white,
+                                NetworkImageWithRetry(assetData.data!.imageUrl),
+                            backgroundColor: Colors.transparent,
                           ),
                         ),
                         SizedBox(
                           width: 12,
                         ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              assetData.data!.symbol,
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                assetData.data!.symbol,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              height: 4,
-                            ),
-                            Text(
-                              assetData.data!.displayName,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Color(0xFF909090),
-                                fontWeight: FontWeight.w500,
+                              SizedBox(
+                                height: 4,
                               ),
-                            )
-                          ],
+                              Text(
+                                assetData.data!.displayName,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF909090),
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              )
+                            ],
+                          ),
                         ),
-                        Expanded(child: Container()),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [

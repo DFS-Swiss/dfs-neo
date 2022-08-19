@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:neo/widgets/branded_switch.dart';
+import 'package:neo/widgets/tiles/tile_position_enum.dart';
 
-class SettingsTile extends HookWidget {
+class SwitchTile extends HookWidget {
   final String text;
   final Function(bool) callback;
+  final TilePosition position;
   final bool value;
-  const SettingsTile({
+
+  const SwitchTile({
     required this.text,
     required this.callback,
+    required this.position,
     Key? key,
     this.value = false,
   }) : super(key: key);
@@ -16,11 +20,14 @@ class SettingsTile extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+      padding: EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: position == TilePosition.standalone ? 8 : 0,
+      ),
       child: Container(
         height: 50,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: position.makeRadius(),
             color: Theme.of(context).backgroundColor.withOpacity(0.75),
             border: Border.all(color: Theme.of(context).backgroundColor)),
         child: Padding(

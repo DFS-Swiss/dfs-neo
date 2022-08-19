@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:neo/hooks/use_brightness.dart';
 
 class AppBarActionButton extends HookWidget {
   final IconData icon;
@@ -10,6 +11,7 @@ class AppBarActionButton extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final brightness = useBrightness();
     final isTapped = useState<bool>(false);
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 8, right: 24),
@@ -39,7 +41,7 @@ class AppBarActionButton extends HookWidget {
               width: 1,
               color: Colors.white.withOpacity(0.25),
             ),
-            color: MediaQuery.of(context).platformBrightness == Brightness.dark
+            color: brightness == Brightness.dark
                 ? Theme.of(context).backgroundColor
                 : Theme.of(context).backgroundColor.withOpacity(0.25),
             borderRadius: BorderRadius.circular(12),
@@ -47,7 +49,7 @@ class AppBarActionButton extends HookWidget {
           child: Icon(
             icon,
             color: isTapped.value ||
-                    MediaQuery.of(context).platformBrightness == Brightness.dark
+                    brightness == Brightness.dark
                 ? Colors.white
                 : Colors.black,
           ),

@@ -4,7 +4,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class StockSearchBar extends HookWidget {
   final Function callback;
-  const StockSearchBar({
+  final int? customPadding;
+  const StockSearchBar( {this.customPadding = 0,
     required this.callback,
     Key? key,
   }) : super(key: key);
@@ -13,7 +14,7 @@ class StockSearchBar extends HookWidget {
   Widget build(BuildContext context) {
     final searchController = useTextEditingController();
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+      padding: customPadding != 0 ? const EdgeInsets.only(left: 24, top: 20, right: 24) : const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
       child: Container(
         alignment: Alignment.center,
         //height: 60,
