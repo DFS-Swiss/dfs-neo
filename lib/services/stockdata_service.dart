@@ -118,7 +118,10 @@ class StockdataService extends ChangeNotifier {
       }
       if (existingData.isNotEmpty) {
         tempMap[singleDatapoint.symbol] = {
-          StockdataInterval.twentyFourHours: [...existingData, singleDatapoint]
+          StockdataInterval.twentyFourHours: [
+            ...existingData.skip(1),
+            singleDatapoint
+          ]
         };
       }
     }
