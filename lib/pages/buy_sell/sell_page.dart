@@ -106,6 +106,7 @@ class SellPage extends HookWidget {
                       height: 15,
                     ),
                     AmountSelector(
+                      buyMode: false,
                       symbol: symbol,
                       callbackTokenAmount: (v) => amountToken.value = v,
                     ),

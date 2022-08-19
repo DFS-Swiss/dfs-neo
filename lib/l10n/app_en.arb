@@ -191,6 +191,7 @@
     "new_order_sell_success_title": "Success",
     "new_order_sell_success": "has been sold successfully",
     "new_order_buy_error_ins_token": "Your account has insuficient balance",
+    "new_order_avaliable": "Available",
     "account_title": "My Account",
     "account_user": "Username",
     "account_mail": "E-mail",
