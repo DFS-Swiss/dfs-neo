@@ -40,10 +40,10 @@ class SortingWidget extends HookWidget {
                 case 2:
                   currentStatus.value = 0;
                   break;
-                  case 3:
+                case 3:
                   currentStatus.value = 1;
                   break;
-                  case 4:
+                case 4:
                   currentStatus.value = 1;
                   break;
               }
@@ -53,7 +53,9 @@ class SortingWidget extends HookWidget {
                 ? Row(
                     children: [
                       Icon(Icons.arrow_upward),
-                      Text("A-Z"),
+                      Text(
+                        "A-Z",
+                      ),
                     ],
                   )
                 : currentStatus.value == 1
@@ -94,13 +96,13 @@ class SortingWidget extends HookWidget {
                       case 0:
                         currentStatus.value = 4;
                         break;
-                        case 1:
+                      case 1:
                         currentStatus.value = 4;
                         break;
-                        case 2:
+                      case 2:
                         currentStatus.value = 4;
                         break;
-                        case 3:
+                      case 3:
                         currentStatus.value = 4;
                         break;
                       case 4:
