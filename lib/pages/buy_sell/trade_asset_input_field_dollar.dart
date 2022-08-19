@@ -6,8 +6,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:neo/hooks/use_balance.dart';
 import 'package:neo/hooks/use_brightness.dart';
+import 'package:neo/utils/formatting_utils.dart';
 
-import '../../services/formatting_service.dart';
 import '../../widgets/shimmer_loader_card.dart';
 
 class TradeAssetInputFieldDollar extends HookWidget {
@@ -192,7 +192,7 @@ class TradeAssetInputFieldDollar extends HookWidget {
                                 max: 1,
                                 divisions: 4,
                                 onChanged: (v) {
-                                  callback(FormattingService.roundDouble(
+                                  callback(FormattingUtils.roundDouble(
                                       balance.data!.newBalance * v, 3));
                                 },
                               ),
@@ -201,7 +201,7 @@ class TradeAssetInputFieldDollar extends HookWidget {
                               width: 10,
                             ),
                             Text(
-                              "${FormattingService.roundDouble(balance.data!.newBalance, 2).toString()}\$ ${AppLocalizations.of(context)!.new_order_avaliable}",
+                              "${FormattingUtils.roundDouble(balance.data!.newBalance, 2).toString()}\$ ${AppLocalizations.of(context)!.new_order_avaliable}",
                               style: TextStyle(
                                 color: Theme.of(context)
                                     .textTheme
