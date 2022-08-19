@@ -137,7 +137,6 @@ void main() {
       expect(appStateService.state, AppState.signedOut);
       verify(await cognitoService.logoutCurrentPoolUser()).called(1);
       verify(publisherService.addEvent(PublisherEvent.logout)).called(1);
-      verify(publisherService.close()).called(1);
     });
 
     test(
