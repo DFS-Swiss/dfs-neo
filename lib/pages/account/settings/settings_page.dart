@@ -5,6 +5,9 @@ import 'package:neo/hooks/use_theme_state.dart';
 import 'package:neo/pages/account/settings/brightness_selectable_widget.dart';
 import 'package:neo/service_locator.dart';
 import 'package:neo/services/settings_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../settingstile_widget.dart';
 
 class SettingsPage extends HookWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -12,6 +15,14 @@ class SettingsPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     var themeState = useThemeState();
+    final lockApp = useState(false);
+
+    useEffect(() {
+      SharedPreferences.getInstance().then((value) {
+        lockApp.value = value.getBool("wants_biometric_auth") ?? true;
+      });
+      return;
+    }, ["_"]);
 
     return Scaffold(
       appBar: AppBar(
@@ -29,15 +40,31 @@ class SettingsPage extends HookWidget {
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: ListView(
             children: [
               Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 24, vertical: 0),
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
+                child: Text(
+                  AppLocalizations.of(context)!.account_security,
+                  style: TextStyle(color: Color(0xFF909090), fontSize: 12),
+                ),
+              ),
+              SettingsTile(
+                text: AppLocalizations.of(context)!.biometrics_setting,
+                value: lockApp.value,
+                callback: (v) async {
+                  (await SharedPreferences.getInstance())
+                      .setBool("wants_biometric_auth", v);
+                  lockApp.value = v;
+                },
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
                 child: Text(
                   AppLocalizations.of(context)!.settings_brightness,
+                  style: TextStyle(color: Color(0xFF909090), fontSize: 12),
                 ),
               ),
               BrightnessSelectable(

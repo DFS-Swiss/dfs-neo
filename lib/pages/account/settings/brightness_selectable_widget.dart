@@ -14,39 +14,45 @@ class BrightnessSelectable extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(
-        top: 26,
-      ),
-      child: SizedBox(
-        height: 32,
-        child: ListView(
-          scrollDirection: Axis.horizontal,
-          children: [
-            SizedBox(
-              width: 24,
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+      child: Container(
+        height: 50,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            color: Theme.of(context).backgroundColor.withOpacity(0.75),
+            border: Border.all(color: Theme.of(context).backgroundColor)),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: SizedBox(
+            height: 32,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ValueFilter(
+                    currentValue: currentValue,
+                    text: AppLocalizations.of(context)!.settings_theme_system,
+                    value: ThemeState.system,
+                    callback: (ThemeState a) {
+                      callback(a);
+                    }),
+                ValueFilter(
+                    currentValue: currentValue,
+                    text: AppLocalizations.of(context)!.settings_theme_light,
+                    value: ThemeState.light,
+                    callback: (ThemeState a) {
+                      callback(a);
+                    }),
+                ValueFilter(
+                    currentValue: currentValue,
+                    text: AppLocalizations.of(context)!.settings_theme_dark,
+                    value: ThemeState.dark,
+                    callback: (ThemeState a) {
+                      callback(a);
+                    }),
+              ],
             ),
-            ValueFilter(
-                currentValue: currentValue,
-                text: AppLocalizations.of(context)!.settings_theme_system,
-                value: ThemeState.system,
-                callback: (ThemeState a) {
-                  callback(a);
-                }),
-            ValueFilter(
-                currentValue: currentValue,
-                text: AppLocalizations.of(context)!.settings_theme_light,
-                value: ThemeState.light,
-                callback: (ThemeState a) {
-                  callback(a);
-                }),
-            ValueFilter(
-                currentValue: currentValue,
-                text: AppLocalizations.of(context)!.settings_theme_dark,
-                value: ThemeState.dark,
-                callback: (ThemeState a) {
-                  callback(a);
-                }),
-          ],
+          ),
         ),
       ),
     );
