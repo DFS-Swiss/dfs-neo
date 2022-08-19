@@ -191,6 +191,7 @@
     "new_order_sell_success_title": "Erfolgreich",
     "new_order_sell_success": "wurde erfolgreich verkauft",
     "new_order_buy_error_ins_token": "Es befindet sich nicht ausreichend Token in ihrem Account.",
+    "new_order_avaliable": "Verfügbar",
     "account_title": "Mein Account",
     "account_user": "Nutzername",
     "account_mail": "E-Mail",
