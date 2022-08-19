@@ -230,5 +230,6 @@
     "settings_theme_system": "System",
     "settings_theme_light": "Hell",
     "settings_theme_dark": "Dunkel",
-    "settings_brightness": "Design"
+    "settings_brightness": "Design",
+    "settings_theme": "Theme"
 }

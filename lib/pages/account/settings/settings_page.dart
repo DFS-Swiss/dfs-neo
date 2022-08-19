@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:neo/enums/theme_state.dart';
 import 'package:neo/hooks/use_theme_state.dart';
-import 'package:neo/pages/account/settings/brightness_selectable_widget.dart';
 import 'package:neo/service_locator.dart';
 import 'package:neo/services/settings_service.dart';
+import 'package:neo/widgets/tiles/selectiontile_widget.dart';
+import 'package:neo/widgets/tiles/tile_position_enum.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../settingstile_widget.dart';
+import '../../../widgets/tiles/switchtile_widget.dart';
 
 class SettingsPage extends HookWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -50,8 +52,9 @@ class SettingsPage extends HookWidget {
                   style: TextStyle(color: Color(0xFF909090), fontSize: 12),
                 ),
               ),
-              SettingsTile(
+              SwitchTile(
                 text: AppLocalizations.of(context)!.biometrics_setting,
+                position: TilePosition.standalone,
                 value: lockApp.value,
                 callback: (v) async {
                   (await SharedPreferences.getInstance())
@@ -67,11 +70,16 @@ class SettingsPage extends HookWidget {
                   style: TextStyle(color: Color(0xFF909090), fontSize: 12),
                 ),
               ),
-              BrightnessSelectable(
-                  callback: (state) {
-                    locator<SettingsService>().themeState = state;
-                  },
-                  currentValue: themeState),
+              SelectionTile<ThemeState>(
+                text: AppLocalizations.of(context)!.settings_theme,
+                callback: (state) {
+                  locator<SettingsService>().themeState = state;
+                },
+                position: TilePosition.standalone,
+                value: themeState,
+                options: [ThemeState.dark, ThemeState.light, ThemeState.system],
+                renderTitleCallback: (v) => v.toLocalString(context),
+              ),
             ],
           ),
         ),
