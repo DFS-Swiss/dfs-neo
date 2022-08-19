@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:neo/widgets/branded_switch.dart';
 import 'package:neo/widgets/dialogs/selection_dialog.dart';
 import 'package:neo/widgets/tiles/tile_position_enum.dart';
 
