@@ -7,6 +7,7 @@ import 'package:neo/pages/account/bottomtexttile_widget.dart';
 import 'package:neo/pages/account/change_password_page.dart';
 import 'package:neo/pages/account/logout_widget.dart';
 import 'package:neo/pages/account/middletexttile_widget.dart';
+import 'package:neo/pages/account/settings/settings_page.dart';
 import 'package:neo/pages/account/settingstile_widget.dart';
 import 'package:neo/pages/account/texttile_widget.dart';
 import 'package:neo/pages/account/toptexttile_widget.dart';
@@ -16,12 +17,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../service_locator.dart';
 import '../../services/analytics_service.dart';
+import '../../services/settings_service.dart';
 
 class AccountPage extends HookWidget {
   const AccountPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var settingsService = locator<SettingsService>();
     final loading = useState<bool>(true);
     final usePackageInfo = useState<PackageInfo?>(null);
     final userData = useUserData();
@@ -69,12 +72,12 @@ class AccountPage extends HookWidget {
             child: Theme(
               data: ThemeData(
                 inputDecorationTheme: InputDecorationTheme(
-                  focusColor: MediaQuery.of(context).platformBrightness ==
+                  focusColor: settingsService.brightness ==
                           Brightness.dark
                       ? Colors.grey
                       : Color(0xFF202532),
                   floatingLabelStyle: TextStyle(
-                    color: MediaQuery.of(context).platformBrightness ==
+                    color: settingsService.brightness ==
                             Brightness.dark
                         ? Colors.grey
                         : Color(0xFF202532),
@@ -86,7 +89,7 @@ class AccountPage extends HookWidget {
                 enabled: false,
                 autofocus: false,
                 style:
-                    MediaQuery.of(context).platformBrightness == Brightness.dark
+                    settingsService.brightness == Brightness.dark
                         ? TextStyle(color: Colors.grey[350])
                         : null,
                 controller: usernamecontroller,
@@ -106,7 +109,7 @@ class AccountPage extends HookWidget {
                         ),
                   labelText: AppLocalizations.of(context)!.account_user,
                   labelStyle: TextStyle(
-                      color: MediaQuery.of(context).platformBrightness ==
+                      color: settingsService.brightness ==
                               Brightness.dark
                           ? Colors.grey
                           : Color(0xFF202532)),
@@ -121,12 +124,12 @@ class AccountPage extends HookWidget {
             child: Theme(
               data: ThemeData(
                 inputDecorationTheme: InputDecorationTheme(
-                  focusColor: MediaQuery.of(context).platformBrightness ==
+                  focusColor: settingsService.brightness ==
                           Brightness.dark
                       ? Colors.grey
                       : Color(0xFF202532),
                   floatingLabelStyle: TextStyle(
-                      color: MediaQuery.of(context).platformBrightness ==
+                      color: settingsService.brightness ==
                               Brightness.dark
                           ? Colors.grey
                           : Color(0xFF202532)),
@@ -138,7 +141,7 @@ class AccountPage extends HookWidget {
                 autofocus: false,
                 controller: mailcontroller,
                 style:
-                    MediaQuery.of(context).platformBrightness == Brightness.dark
+                    settingsService.brightness == Brightness.dark
                         ? TextStyle(color: Colors.grey[350])
                         : null,
                 decoration: InputDecoration(
@@ -157,7 +160,7 @@ class AccountPage extends HookWidget {
                         ),
                   labelText: AppLocalizations.of(context)!.account_mail,
                   labelStyle: TextStyle(
-                      color: MediaQuery.of(context).platformBrightness ==
+                      color: settingsService.brightness ==
                               Brightness.dark
                           ? Colors.grey
                           : Color(0xFF202532)),
@@ -182,6 +185,20 @@ class AccountPage extends HookWidget {
             text: AppLocalizations.of(context)!.account_delacc,
             callback: () {
               displayInfoPage(context);
+            },
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
+            child: Text(
+              AppLocalizations.of(context)!.account_settings,
+              style: TextStyle(color: Color(0xFF909090), fontSize: 12),
+            ),
+          ),
+          TextTile(
+            text: AppLocalizations.of(context)!.account_settings,
+            callback: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SettingsPage()));
             },
           ),
           Padding(

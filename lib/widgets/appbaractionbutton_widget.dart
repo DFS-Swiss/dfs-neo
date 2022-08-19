@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
+import '../service_locator.dart';
+import '../services/settings_service.dart';
+
 class AppBarActionButton extends HookWidget {
   final IconData icon;
   final Function callback;
@@ -10,6 +13,7 @@ class AppBarActionButton extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    var settingsService = locator<SettingsService>();
     final isTapped = useState<bool>(false);
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 8, right: 24),
@@ -39,7 +43,7 @@ class AppBarActionButton extends HookWidget {
               width: 1,
               color: Colors.white.withOpacity(0.25),
             ),
-            color: MediaQuery.of(context).platformBrightness == Brightness.dark
+            color: settingsService.brightness == Brightness.dark
                 ? Theme.of(context).backgroundColor
                 : Theme.of(context).backgroundColor.withOpacity(0.25),
             borderRadius: BorderRadius.circular(12),
@@ -47,7 +51,7 @@ class AppBarActionButton extends HookWidget {
           child: Icon(
             icon,
             color: isTapped.value ||
-                    MediaQuery.of(context).platformBrightness == Brightness.dark
+                    settingsService.brightness == Brightness.dark
                 ? Colors.white
                 : Colors.black,
           ),

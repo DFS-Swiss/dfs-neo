@@ -5,9 +5,11 @@ import 'package:neo/services/authentication_service.dart';
 import 'package:neo/services/chart_scrubbing_manager.dart';
 import 'package:neo/services/cognito_service.dart';
 import 'package:neo/services/crashlytics_service.dart';
+import 'package:neo/services/settings_service.dart';
 
 GetIt locator = GetIt.instance;
 void setupLocator() {
+  locator.registerSingleton<SettingsService>(SettingsService());
   locator.registerSingleton<AppStateService>(AppStateService());
   locator.registerSingleton<CognitoService>(CognitoService());
   locator.registerSingleton<AuthenticationService>(AuthenticationService());

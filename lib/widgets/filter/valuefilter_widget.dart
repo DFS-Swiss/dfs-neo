@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:neo/services/settings_service.dart';
 import 'package:neo/style/theme.dart';
+
+import '../../service_locator.dart';
 
 class ValueFilter<T> extends HookWidget {
   final String text;
@@ -44,7 +47,7 @@ class ValueFilter<T> extends HookWidget {
             text,
             style: TextStyle(
                 color: (selected.value && currentValue == value) ||
-                        MediaQuery.of(context).platformBrightness ==
+                        locator<SettingsService>().brightness ==
                             Brightness.dark
                     ? Colors.white
                     : Colors.black,
