@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:neo/hooks/use_brightness.dart';
 import 'package:neo/style/theme.dart';
 import 'package:shimmer/shimmer.dart';
-
-import '../service_locator.dart';
-import '../services/settings_service.dart';
 
 class ShimmerLoadingCard extends StatelessWidget {
   final double height;
@@ -13,13 +11,13 @@ class ShimmerLoadingCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var settingsService = locator<SettingsService>();
+    final brightness = useBrightness();
     return Shimmer.fromColors(
-      baseColor: settingsService.brightness == Brightness.dark
+      baseColor: brightness == Brightness.dark
           ? Theme.of(context).backgroundColor.withOpacity(0.75)
           : Color.fromRGBO(238, 238, 238, 0.75),
       highlightColor:
-          settingsService.brightness == Brightness.dark
+          brightness == Brightness.dark
               ? NeoTheme.of(context)!.primaryColor
               : Colors.white,
       child: Container(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:neo/constants/links.dart';
+import 'package:neo/hooks/use_brightness.dart';
 import 'package:neo/hooks/use_user_data.dart';
 import 'package:neo/pages/account/bottomtexttile_widget.dart';
 import 'package:neo/pages/account/change_password_page.dart';
@@ -17,14 +18,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../service_locator.dart';
 import '../../services/analytics_service.dart';
-import '../../services/settings_service.dart';
 
 class AccountPage extends HookWidget {
   const AccountPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var settingsService = locator<SettingsService>();
+    final brightness = useBrightness();
     final loading = useState<bool>(true);
     final usePackageInfo = useState<PackageInfo?>(null);
     final userData = useUserData();
@@ -72,12 +72,12 @@ class AccountPage extends HookWidget {
             child: Theme(
               data: ThemeData(
                 inputDecorationTheme: InputDecorationTheme(
-                  focusColor: settingsService.brightness ==
+                  focusColor: brightness ==
                           Brightness.dark
                       ? Colors.grey
                       : Color(0xFF202532),
                   floatingLabelStyle: TextStyle(
-                    color: settingsService.brightness ==
+                    color: brightness ==
                             Brightness.dark
                         ? Colors.grey
                         : Color(0xFF202532),
@@ -89,7 +89,7 @@ class AccountPage extends HookWidget {
                 enabled: false,
                 autofocus: false,
                 style:
-                    settingsService.brightness == Brightness.dark
+                    brightness == Brightness.dark
                         ? TextStyle(color: Colors.grey[350])
                         : null,
                 controller: usernamecontroller,
@@ -109,7 +109,7 @@ class AccountPage extends HookWidget {
                         ),
                   labelText: AppLocalizations.of(context)!.account_user,
                   labelStyle: TextStyle(
-                      color: settingsService.brightness ==
+                      color: brightness ==
                               Brightness.dark
                           ? Colors.grey
                           : Color(0xFF202532)),
@@ -124,12 +124,12 @@ class AccountPage extends HookWidget {
             child: Theme(
               data: ThemeData(
                 inputDecorationTheme: InputDecorationTheme(
-                  focusColor: settingsService.brightness ==
+                  focusColor: brightness ==
                           Brightness.dark
                       ? Colors.grey
                       : Color(0xFF202532),
                   floatingLabelStyle: TextStyle(
-                      color: settingsService.brightness ==
+                      color: brightness ==
                               Brightness.dark
                           ? Colors.grey
                           : Color(0xFF202532)),
@@ -141,7 +141,7 @@ class AccountPage extends HookWidget {
                 autofocus: false,
                 controller: mailcontroller,
                 style:
-                    settingsService.brightness == Brightness.dark
+                    brightness == Brightness.dark
                         ? TextStyle(color: Colors.grey[350])
                         : null,
                 decoration: InputDecoration(
@@ -160,7 +160,7 @@ class AccountPage extends HookWidget {
                         ),
                   labelText: AppLocalizations.of(context)!.account_mail,
                   labelStyle: TextStyle(
-                      color: settingsService.brightness ==
+                      color: brightness ==
                               Brightness.dark
                           ? Colors.grey
                           : Color(0xFF202532)),

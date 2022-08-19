@@ -4,9 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:neo/hooks/use_brightness.dart';
 
-import '../../service_locator.dart';
-import '../../services/settings_service.dart';
 import '../../widgets/shimmer_loader_card.dart';
 
 class TradeAssetInputFieldDollar extends HookWidget {
@@ -24,7 +23,7 @@ class TradeAssetInputFieldDollar extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    var settingsService = locator<SettingsService>();
+    final brightness = useBrightness();
     return !loading
         ? GestureDetector(
             onTap: () => node.requestFocus(),
@@ -131,7 +130,7 @@ class TradeAssetInputFieldDollar extends HookWidget {
                     child: Center(
                       child: Icon(
                         Icons.attach_money,
-                        color: settingsService.brightness ==
+                        color: brightness ==
                                 Brightness.dark
                             ? Theme.of(context).iconTheme.color
                             : Colors.white,
