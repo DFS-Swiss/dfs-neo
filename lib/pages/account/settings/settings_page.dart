@@ -39,7 +39,7 @@ class SettingsPage extends HookWidget {
       ),
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+          padding: EdgeInsets.symmetric(horizontal: 0, vertical: 20),
           child: ListView(
             children: [
               Padding(
