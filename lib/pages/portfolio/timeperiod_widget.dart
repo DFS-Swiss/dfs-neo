@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:neo/services/settings_service.dart';
 import 'package:neo/style/theme.dart';
 
+import '../../hooks/use_brightness.dart';
 import '../../service_locator.dart';
 
 class TimePeriod extends HookWidget {
@@ -22,6 +23,7 @@ class TimePeriod extends HookWidget {
       : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final brightness = useBrightness();
     final selected = useState<bool>(false);
     if (id == currentlySelected) {
       selected.value = true;
@@ -56,7 +58,7 @@ class TimePeriod extends HookWidget {
               text,
               style: TextStyle(
                 color: selected.value ||
-                        locator<SettingsService>().brightness ==
+                        brightness ==
                             Brightness.dark
                     ? Colors.white
                     : Colors.black,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:neo/hooks/use_brightness.dart';
 
 import '../service_locator.dart';
 import '../services/settings_service.dart';
@@ -13,6 +14,7 @@ class AppBarActionButton extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final brightness = useBrightness();
     var settingsService = locator<SettingsService>();
     final isTapped = useState<bool>(false);
     return Padding(
@@ -43,7 +45,7 @@ class AppBarActionButton extends HookWidget {
               width: 1,
               color: Colors.white.withOpacity(0.25),
             ),
-            color: settingsService.brightness == Brightness.dark
+            color: brightness == Brightness.dark
                 ? Theme.of(context).backgroundColor
                 : Theme.of(context).backgroundColor.withOpacity(0.25),
             borderRadius: BorderRadius.circular(12),
@@ -51,7 +53,7 @@ class AppBarActionButton extends HookWidget {
           child: Icon(
             icon,
             color: isTapped.value ||
-                    settingsService.brightness == Brightness.dark
+                    brightness == Brightness.dark
                 ? Colors.white
                 : Colors.black,
           ),
