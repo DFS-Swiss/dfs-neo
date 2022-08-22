@@ -231,5 +231,6 @@
     "settings_theme_system": "System",
     "settings_theme_light": "Light",
     "settings_theme_dark": "Dark",
-    "settings_brightness": "Design"
+    "settings_brightness": "Design",
+    "settings_theme": "Theme"
 }

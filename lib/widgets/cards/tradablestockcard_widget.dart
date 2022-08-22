@@ -14,7 +14,8 @@ import '../shimmer_loader_card.dart';
 class TradableStockCard extends HookWidget {
   final String token;
 
-  const TradableStockCard({required this.token, Key? key}) : super(key: key);
+  const 
+  TradableStockCard({required this.token, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -79,8 +78,14 @@ class Deposit extends HookWidget {
     }
 
     bool vailidateAmount() {
+      int? temp;
       try {
-        int? temp = int.tryParse(typedAmount.value);
+        if (typedAmount.value == "" && selectedAmount.value != "") {
+          temp = int.tryParse(selectedAmount.value);
+        } else {
+          temp = int.tryParse(typedAmount.value);
+        }
+
         if (temp! >= 10 && temp <= 10000) {
           return true;
         }

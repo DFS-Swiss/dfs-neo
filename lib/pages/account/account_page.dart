@@ -4,17 +4,13 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:neo/constants/links.dart';
 import 'package:neo/hooks/use_brightness.dart';
 import 'package:neo/hooks/use_user_data.dart';
-import 'package:neo/pages/account/bottomtexttile_widget.dart';
 import 'package:neo/pages/account/change_password_page.dart';
 import 'package:neo/pages/account/logout_widget.dart';
-import 'package:neo/pages/account/middletexttile_widget.dart';
 import 'package:neo/pages/account/settings/settings_page.dart';
-import 'package:neo/pages/account/settingstile_widget.dart';
-import 'package:neo/pages/account/texttile_widget.dart';
-import 'package:neo/pages/account/toptexttile_widget.dart';
 import 'package:neo/utils/display_popup.dart';
+import 'package:neo/widgets/tiles/linktile_widget.dart';
+import 'package:neo/widgets/tiles/tile_position_enum.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../service_locator.dart';
 import '../../services/analytics_service.dart';
@@ -30,8 +26,6 @@ class AccountPage extends HookWidget {
     final userData = useUserData();
     final usernamecontroller = useTextEditingController(text: "...");
     final mailcontroller = useTextEditingController(text: "...");
-
-    final lockApp = useState(false);
 
     useEffect(() {
       if (loading.value) {
@@ -50,13 +44,6 @@ class AccountPage extends HookWidget {
     }, [userData.loading]);
 
     useEffect(() {
-      SharedPreferences.getInstance().then((value) {
-        lockApp.value = value.getBool("wants_biometric_auth") ?? true;
-      });
-      return;
-    }, ["_"]);
-
-    useEffect(() {
       locator<AnalyticsService>().trackEvent("display:account");
       return;
     }, ["_"]);
@@ -72,13 +59,11 @@ class AccountPage extends HookWidget {
             child: Theme(
               data: ThemeData(
                 inputDecorationTheme: InputDecorationTheme(
-                  focusColor: brightness ==
-                          Brightness.dark
+                  focusColor: brightness == Brightness.dark
                       ? Colors.grey
                       : Color(0xFF202532),
                   floatingLabelStyle: TextStyle(
-                    color: brightness ==
-                            Brightness.dark
+                    color: brightness == Brightness.dark
                         ? Colors.grey
                         : Color(0xFF202532),
                   ),
@@ -88,10 +73,9 @@ class AccountPage extends HookWidget {
               child: TextFormField(
                 enabled: false,
                 autofocus: false,
-                style:
-                    brightness == Brightness.dark
-                        ? TextStyle(color: Colors.grey[350])
-                        : null,
+                style: brightness == Brightness.dark
+                    ? TextStyle(color: Colors.grey[350])
+                    : null,
                 controller: usernamecontroller,
                 decoration: InputDecoration(
                   suffix: userData.loading
@@ -109,8 +93,7 @@ class AccountPage extends HookWidget {
                         ),
                   labelText: AppLocalizations.of(context)!.account_user,
                   labelStyle: TextStyle(
-                      color: brightness ==
-                              Brightness.dark
+                      color: brightness == Brightness.dark
                           ? Colors.grey
                           : Color(0xFF202532)),
                   isDense: true,
@@ -124,13 +107,11 @@ class AccountPage extends HookWidget {
             child: Theme(
               data: ThemeData(
                 inputDecorationTheme: InputDecorationTheme(
-                  focusColor: brightness ==
-                          Brightness.dark
+                  focusColor: brightness == Brightness.dark
                       ? Colors.grey
                       : Color(0xFF202532),
                   floatingLabelStyle: TextStyle(
-                      color: brightness ==
-                              Brightness.dark
+                      color: brightness == Brightness.dark
                           ? Colors.grey
                           : Color(0xFF202532)),
                   suffixIconColor: Colors.grey,
@@ -140,10 +121,9 @@ class AccountPage extends HookWidget {
                 enabled: false,
                 autofocus: false,
                 controller: mailcontroller,
-                style:
-                    brightness == Brightness.dark
-                        ? TextStyle(color: Colors.grey[350])
-                        : null,
+                style: brightness == Brightness.dark
+                    ? TextStyle(color: Colors.grey[350])
+                    : null,
                 decoration: InputDecoration(
                   suffix: userData.loading
                       ? SizedBox(
@@ -160,8 +140,7 @@ class AccountPage extends HookWidget {
                         ),
                   labelText: AppLocalizations.of(context)!.account_mail,
                   labelStyle: TextStyle(
-                      color: brightness ==
-                              Brightness.dark
+                      color: brightness == Brightness.dark
                           ? Colors.grey
                           : Color(0xFF202532)),
                   isDense: true,
@@ -170,7 +149,8 @@ class AccountPage extends HookWidget {
               ),
             ),
           ),
-          TextTile(
+          LinkTile(
+            position: TilePosition.standalone,
             text: AppLocalizations.of(context)!.account_changepass,
             callback: () {
               Navigator.push(
@@ -181,7 +161,8 @@ class AccountPage extends HookWidget {
               );
             },
           ),
-          TextTile(
+          LinkTile(
+            position: TilePosition.standalone,
             text: AppLocalizations.of(context)!.account_delacc,
             callback: () {
               displayInfoPage(context);
@@ -194,7 +175,8 @@ class AccountPage extends HookWidget {
               style: TextStyle(color: Color(0xFF909090), fontSize: 12),
             ),
           ),
-          TextTile(
+          LinkTile(
+            position: TilePosition.standalone,
             text: AppLocalizations.of(context)!.account_settings,
             callback: () {
               Navigator.push(context,
@@ -204,29 +186,18 @@ class AccountPage extends HookWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
             child: Text(
-              AppLocalizations.of(context)!.account_security,
-              style: TextStyle(color: Color(0xFF909090), fontSize: 12),
-            ),
-          ),
-          SettingsTile(
-            text: AppLocalizations.of(context)!.biometrics_setting,
-            value: lockApp.value,
-            callback: (v) async {
-              (await SharedPreferences.getInstance())
-                  .setBool("wants_biometric_auth", v);
-              lockApp.value = v;
-            },
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
-            child: Text(
               AppLocalizations.of(context)!.account_links,
               style: TextStyle(color: Color(0xFF909090), fontSize: 12),
             ),
           ),
-          TopTextTile(AppLocalizations.of(context)!.account_open, () {
-            launchUrl(Uri.parse(OPENSOURCE_PROJECTS));
-          }),
+          LinkTile(
+              position: TilePosition.top,
+              text: AppLocalizations.of(context)!.account_open,
+              callback: () {
+                launchUrl(
+                  Uri.parse(OPENSOURCE_PROJECTS),
+                );
+              }),
           Divider(
             color: Theme.of(context).backgroundColor,
             height: 0,
@@ -234,9 +205,12 @@ class AccountPage extends HookWidget {
             indent: 20,
             endIndent: 20,
           ),
-          MiddleTextTile(AppLocalizations.of(context)!.account_imprint, () {
-            launchUrl(Uri.parse(IMPRINT));
-          }),
+          LinkTile(
+              position: TilePosition.middle,
+              text: AppLocalizations.of(context)!.account_imprint,
+              callback: () {
+                launchUrl(Uri.parse(IMPRINT));
+              }),
           Divider(
             color: Theme.of(context).backgroundColor,
             height: 0,
@@ -244,9 +218,12 @@ class AccountPage extends HookWidget {
             indent: 20,
             endIndent: 20,
           ),
-          MiddleTextTile(AppLocalizations.of(context)!.account_privacy, () {
-            launchUrl(Uri.parse(ACCOUNT_PRIVACY));
-          }),
+          LinkTile(
+              position: TilePosition.middle,
+              text: AppLocalizations.of(context)!.account_privacy,
+              callback: () {
+                launchUrl(Uri.parse(ACCOUNT_PRIVACY));
+              }),
           Divider(
             color: Theme.of(context).backgroundColor,
             height: 0,
@@ -254,22 +231,24 @@ class AccountPage extends HookWidget {
             indent: 20,
             endIndent: 20,
           ),
-          BottomTextTile(AppLocalizations.of(context)!.account_contact,
-              () async {
-            final Uri emailLaunchUri = Uri(
-              scheme: 'mailto',
-              path: 'nils@dfsneo.com',
-              queryParameters: {
-                'subject':
-                    'Supportrequest from DFSneo App - Version ${usePackageInfo.value!.version}'
-              },
-            );
-            launchUrl(emailLaunchUri);
-            if (await canLaunchUrl(emailLaunchUri)) {
-            } else {
-              throw 'Could not launch $emailLaunchUri';
-            }
-          }),
+          LinkTile(
+              position: TilePosition.bottom,
+              text: AppLocalizations.of(context)!.account_contact,
+              callback: () async {
+                final Uri emailLaunchUri = Uri(
+                  scheme: 'mailto',
+                  path: 'nils@dfsneo.com',
+                  queryParameters: {
+                    'subject':
+                        'Supportrequest from DFSneo App - Version ${usePackageInfo.value!.version}'
+                  },
+                );
+                launchUrl(emailLaunchUri);
+                if (await canLaunchUrl(emailLaunchUri)) {
+                } else {
+                  throw 'Could not launch $emailLaunchUri';
+                }
+              }),
           LogoutTextButton(),
           SizedBox(
             height: 24,
