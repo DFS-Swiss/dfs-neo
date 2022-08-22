@@ -46,6 +46,7 @@ class MyApp extends HookWidget {
         ],
         supportedLocales: const [
           Locale('en', ''), // English, no country code
+          Locale('de', ''), 
         ],
         debugShowCheckedModeBanner: false,
         home: AuthWrapper(),
