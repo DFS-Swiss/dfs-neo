@@ -46,6 +46,8 @@ class AmountSelector extends HookWidget {
             amountInShares.value = assets;
             assetControler.text = assets.toString();
             dollarControler.text = value.toString();
+            int cursorIndex = value.toString().indexOf(".");
+              dollarControler.selection = TextSelection.fromPosition(TextPosition(offset: cursorIndex));
             if (callbackDollarAmount != null) {
               callbackDollarAmount!(value);
             }
@@ -111,6 +113,8 @@ class AmountSelector extends HookWidget {
             amountInDollar.value = dollar;
             dollarControler.text = dollar.toString();
             assetControler.text = value.toString();
+            int cursorIndex = value.toString().indexOf(".");
+            assetControler.selection = TextSelection.fromPosition(TextPosition(offset: cursorIndex));
             if (callbackDollarAmount != null) {
               callbackDollarAmount!(dollar);
             }
