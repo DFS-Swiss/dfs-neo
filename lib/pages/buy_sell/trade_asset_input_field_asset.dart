@@ -174,8 +174,10 @@ class TradeAssetInputFieldAsset extends HookWidget {
                                 max: 1,
                                 divisions: 4,
                                 onChanged: (v) {
-                                  callback(FormattingService.roundDouble(
-                                      avaliableAssets.data!.quantity * v, 3));
+                                  var value = FormattingService.roundDouble(
+                                      avaliableAssets.data!.quantity * v, 3);
+                                  controler.text = value.toString();
+                                  callback(value);
                                 },
                               ),
                             ),
