@@ -45,7 +45,6 @@ class AmountSelector extends HookWidget {
                 value / latestPrice.data!.price, 3);
             amountInShares.value = assets;
             assetControler.text = assets.toString();
-            dollarControler.text = value.toString();
             if (callbackDollarAmount != null) {
               callbackDollarAmount!(value);
             }
@@ -110,7 +109,6 @@ class AmountSelector extends HookWidget {
             );
             amountInDollar.value = dollar;
             dollarControler.text = dollar.toString();
-            assetControler.text = value.toString();
             if (callbackDollarAmount != null) {
               callbackDollarAmount!(dollar);
             }

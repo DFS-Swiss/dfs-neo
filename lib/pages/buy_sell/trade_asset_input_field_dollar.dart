@@ -192,8 +192,10 @@ class TradeAssetInputFieldDollar extends HookWidget {
                                 max: 1,
                                 divisions: 4,
                                 onChanged: (v) {
-                                  callback(FormattingService.roundDouble(
-                                      balance.data!.newBalance * v, 3));
+                                  var value = FormattingService.roundDouble(
+                                      balance.data!.newBalance * v, 3);
+                                  controller.text = value.toString();
+                                  callback(value);
                                 },
                               ),
                             ),
