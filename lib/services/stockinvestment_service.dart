@@ -6,6 +6,8 @@ import 'package:neo/services/stockdata_service.dart';
 import 'package:neo/types/investment/investment_data.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
 
+import '../service_locator.dart';
+
 /*investments = [
       //Der Nutzer kauft zum aller ersten Mal 2 Apple Aktien
       UserassetDatapoint(
@@ -30,6 +32,9 @@ import 'package:neo/types/stockdata_interval_enum.dart';
     ];*/
 
 class StockInvestmentUtil {
+
+  final DataService _dataService = locator<DataService>();
+  
   StockInvestmentUtil();
 
   Future<InvestmentData> getInvestmentDataForSymbol(
@@ -42,7 +47,7 @@ class StockInvestmentUtil {
         await StockdataService.getInstance().getLatestPrice(symbol).first;
     try {
       final investments =
-          (await DataService.getInstance().getUserAssetsHistory().first)
+          (await _dataService.getUserAssetsHistory().first)
               .where((element) => element.symbol == symbol)
               .toList();
       if (stockData.isEmpty || investments.isEmpty) {

@@ -6,7 +6,12 @@ import 'package:neo/types/stockdata_interval_enum.dart';
 import 'package:neo/types/stockdata_storage_container.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../service_locator.dart';
+
 class StockdataService extends ChangeNotifier {
+
+  final RESTService _restService = locator<RESTService>();
+
   static StockdataService? _instance;
   static StockdataService getInstance() {
     return _instance ??= StockdataService._();
@@ -80,15 +85,15 @@ class StockdataService extends ChangeNotifier {
 
   _handleBulkFetch() async {
     if (_bulkFetchCache.length > 1) {
-      RESTService.getInstance().getStockdataBulk(
+      _restService.getStockdataBulk(
           StockdataBulkFetchRequest.fromMap({"symbols": _bulkFetchCache}));
     } else {
       final singleEntry = _bulkFetchCache.entries.first;
       if (singleEntry.value.length > 1) {
-        RESTService.getInstance().getStockdataBulk(
+        _restService.getStockdataBulk(
             StockdataBulkFetchRequest.fromMap({"symbols": _bulkFetchCache}));
       } else {
-        RESTService.getInstance()
+        _restService
             .getStockdata(singleEntry.key, singleEntry.value.first);
       }
     }

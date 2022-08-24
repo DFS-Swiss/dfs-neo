@@ -6,6 +6,7 @@ import 'package:neo/services/websocket/websocket_service.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
 
 import '../hooks/use_stockdata.dart';
+import '../service_locator.dart';
 import '../services/rest_service.dart';
 
 class MainPage extends HookWidget {
@@ -13,6 +14,7 @@ class MainPage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final RESTService restService = locator<RESTService>();
     final connState = useStockDataSocketConnectionState();
     final connStateUser = useUserDataSocketConnectionState();
     final userData = useUserData();
@@ -37,7 +39,7 @@ class MainPage extends HookWidget {
             Text("User data: ${connStateUser.name}"),
             TextButton(
               onPressed: () {
-                RESTService.getInstance()
+                restService
                     .getUserData()
                     .then((value) => print(value));
               },

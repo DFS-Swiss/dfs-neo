@@ -17,6 +17,7 @@ class SellPage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final DataService dataService = locator<DataService>();
     final amountToken = useRef<double>(0);
     final loading = useState(false);
 
@@ -35,7 +36,7 @@ class SellPage extends HookWidget {
         if (amountToken.value > 0) {
           loading.value = true;
           try {
-            await DataService.getInstance()
+            await dataService
                 .sellAsset(symbol, amountToken.value);
             locator<AnalyticsService>().trackEvent(
               "action:sell",

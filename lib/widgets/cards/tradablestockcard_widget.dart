@@ -4,7 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_image/network.dart';
 import 'package:neo/hooks/use_stockdata.dart';
 import 'package:neo/hooks/use_stockdata_info.dart';
-import 'package:neo/services/formatting_service.dart';
+import 'package:neo/utils/formatting_utils.dart';
 import 'package:neo/style/theme.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
 import 'package:neo/utils/chart_conversion.dart';
@@ -133,7 +133,7 @@ class TradableStockCard extends HookWidget {
                               height: 3,
                             ),
                             Text(
-                              "d\$${FormattingService.roundDouble(stockData.data!.first.price, 2).toString()}",
+                              "d\$${FormattingUtils.roundDouble(stockData.data!.first.price, 2).toString()}",
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
@@ -144,7 +144,7 @@ class TradableStockCard extends HookWidget {
                               positive: chartData.value.first.y >
                                   chartData.value.last.y,
                               changePercentage:
-                                  FormattingService.calculatepercent(
+                                  FormattingUtils.calculatepercent(
                                       chartData.value.first.y,
                                       chartData.value.last.y),
                             ),

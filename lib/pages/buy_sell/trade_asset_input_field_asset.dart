@@ -6,8 +6,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_image/network.dart';
 import 'package:neo/hooks/use_user_assets_for_symbol.dart';
-import 'package:neo/services/formatting_service.dart';
 
+import '../../utils/formatting_utils.dart';
 import '../../widgets/shimmer_loader_card.dart';
 
 class TradeAssetInputFieldAsset extends HookWidget {
@@ -174,7 +174,7 @@ class TradeAssetInputFieldAsset extends HookWidget {
                                 max: 1,
                                 divisions: 4,
                                 onChanged: (v) {
-                                  var value = FormattingService.roundDouble(
+                                  var value = FormattingUtils.roundDouble(
                                       avaliableAssets.data!.quantity * v, 3);
                                   controler.text = value.toString();
                                   callback(value);
@@ -185,7 +185,7 @@ class TradeAssetInputFieldAsset extends HookWidget {
                               width: 10,
                             ),
                             Text(
-                              "${FormattingService.roundDouble(avaliableAssets.data!.quantity, 2).toString()} ${AppLocalizations.of(context)!.new_order_avaliable}",
+                              "${FormattingUtils.roundDouble(avaliableAssets.data!.quantity, 2).toString()} ${AppLocalizations.of(context)!.new_order_avaliable}",
                               style: TextStyle(
                                 color: Theme.of(context)
                                     .textTheme

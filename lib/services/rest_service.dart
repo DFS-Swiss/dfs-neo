@@ -6,44 +6,36 @@ import 'package:neo/models/stockdatadocument.dart';
 import 'package:neo/models/user_model.dart';
 import 'package:neo/models/userasset_datapoint.dart';
 import 'package:neo/services/authentication_service.dart';
-import 'package:neo/services/data_service.dart';
 import 'package:neo/services/stockdata_service.dart';
 import 'package:neo/types/api/stockdata_bulk_fetch_request.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
 
 import '../models/user_balance_datapoint.dart';
 import '../service_locator.dart';
+import 'data_handler_service.dart';
 
 const restApiBaseUrl = "https://rest.dfs-api.ch/v1";
 
 class RESTService extends ChangeNotifier {
+  final DataHandlerService _dataHandlerService = locator<DataHandlerService>();
   final AuthenticationService _authenticationService =
       locator<AuthenticationService>();
 
-  static RESTService? _instance;
   late Dio dio;
-  RESTService._() {
+  RESTService() {
     dio = Dio(BaseOptions(baseUrl: restApiBaseUrl));
     dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
-        final key = await _getCurrentApiKey();
+        final key = await _authenticationService.getCurrentApiKey();
         options.headers["apiKey"] = key;
         handler.next(options);
       },
     ));
-    DataService.getInstance().registerUserDataHandler("user", [getUserData]);
-    DataService.getInstance().registerUserDataHandler(
+    _dataHandlerService.registerUserDataHandler("user", [getUserData]);
+    _dataHandlerService.registerUserDataHandler(
         "investments", [getUserAssets, getUserAssetsHistory]);
-    DataService.getInstance().registerUserDataHandler(
+    _dataHandlerService.registerUserDataHandler(
         "balances", [getUserBalanceHistory, getBalance]);
-  }
-
-  static RESTService getInstance() {
-    return _instance ??= RESTService._();
-  }
-
-  Future<String> _getCurrentApiKey() async {
-    return _authenticationService.getCurrentApiKey();
   }
 
   Future<List<StockdataDatapoint>> getStockdata(
@@ -131,9 +123,7 @@ class RESTService extends ChangeNotifier {
         } catch (e) {
           throw "Parsing error: ${e.toString()}";
         }
-        DataService.getInstance().dataUpdateStream.add(
-          {"key": "user", "value": data},
-        );
+        _dataHandlerService.addToDataUpstream("user", data);
         return data;
       } else {
         throw "Unknown case: ${response.toString()}";
@@ -143,9 +133,7 @@ class RESTService extends ChangeNotifier {
         await Future.delayed(Duration(milliseconds: 100 * retryCount));
         return getUserData(retryCount: retryCount + 1);
       }
-      DataService.getInstance()
-          .dataUpdateStream
-          .addError({"key": "user", "value": e});
+      _dataHandlerService.addErrorToDataUpstream("user", e);
       rethrow;
     }
   }
@@ -161,9 +149,7 @@ class RESTService extends ChangeNotifier {
         } catch (e) {
           throw "Parsing error: ${e.toString()}";
         }
-        DataService.getInstance().dataUpdateStream.add(
-          {"key": "symbol/$symbol", "value": data},
-        );
+        _dataHandlerService.addToDataUpstream("symbol/$symbol", data);
         return data;
       } else {
         throw "Unknown case: ${response.toString()}";
@@ -173,9 +159,7 @@ class RESTService extends ChangeNotifier {
         await Future.delayed(Duration(milliseconds: 100 * retryCount));
         return getStockInfo(symbol, retryCount: retryCount + 1);
       }
-      DataService.getInstance()
-          .dataUpdateStream
-          .addError({"key": "symbol/$symbol", "value": e});
+      _dataHandlerService.addErrorToDataUpstream("symbol/$symbol", e);
       rethrow;
     }
   }
@@ -194,9 +178,7 @@ class RESTService extends ChangeNotifier {
           throw "Parsing error: ${e.toString()}";
         }
         for (var stockInfo in data) {
-          DataService.getInstance().dataUpdateStream.add(
-            {"key": "symbol/${stockInfo.symbol}", "value": stockInfo},
-          );
+          _dataHandlerService.addToDataUpstream("symbol/${stockInfo.symbol}", stockInfo);
         }
 
         return data;
@@ -208,9 +190,7 @@ class RESTService extends ChangeNotifier {
         await Future.delayed(Duration(milliseconds: 100 * retryCount));
         return getStockInfoBulk(symbols, retryCount: retryCount + 1);
       }
-      DataService.getInstance()
-          .dataUpdateStream
-          .addError({"key": "symbols", "value": e});
+      _dataHandlerService.addErrorToDataUpstream("symbols", e);
       rethrow;
     }
   }
@@ -245,13 +225,10 @@ class RESTService extends ChangeNotifier {
         } catch (e) {
           throw "Parsing error: ${e.toString()}";
         }
-        DataService.getInstance().dataUpdateStream.add(
-          {"key": "symbols", "value": data},
-        );
+        _dataHandlerService.addToDataUpstream("symbols", data);
+        
         for (var stockInfo in data) {
-          DataService.getInstance().dataUpdateStream.add(
-            {"key": "symbol/${stockInfo.symbol}", "value": stockInfo},
-          );
+          _dataHandlerService.addToDataUpstream("symbol/${stockInfo.symbol}", stockInfo);
         }
         return data;
       } else {
@@ -262,9 +239,7 @@ class RESTService extends ChangeNotifier {
         await Future.delayed(Duration(milliseconds: 100 * retryCount));
         return getAvailiableStocks(retryCount: retryCount + 1);
       }
-      DataService.getInstance()
-          .dataUpdateStream
-          .addError({"key": "symbols", "value": e});
+      _dataHandlerService.addToDataUpstream("symbols", e);
       rethrow;
     }
   }
@@ -283,9 +258,7 @@ class RESTService extends ChangeNotifier {
         } catch (e) {
           throw "Parsing error: ${e.toString()}";
         }
-        DataService.getInstance().dataUpdateStream.add(
-          {"key": "investments", "value": data},
-        );
+        _dataHandlerService.addToDataUpstream("investments", data);
         return data;
       } else {
         throw "Unknown case: ${response.toString()}";
@@ -295,9 +268,7 @@ class RESTService extends ChangeNotifier {
         await Future.delayed(Duration(milliseconds: 100 * retryCount));
         return getUserAssets(retryCount: retryCount + 1);
       }
-      DataService.getInstance()
-          .dataUpdateStream
-          .addError({"key": "investments", "value": e});
+      _dataHandlerService.addErrorToDataUpstream("investments", e);
       rethrow;
     }
   }
@@ -317,9 +288,7 @@ class RESTService extends ChangeNotifier {
         } catch (e) {
           throw "Parsing error: ${e.toString()}";
         }
-        DataService.getInstance().dataUpdateStream.add(
-          {"key": "investments/history", "value": data},
-        );
+        _dataHandlerService.addToDataUpstream("investments/history", data);
         return data;
       } else {
         throw "Unknown case: ${response.toString()}";
@@ -329,9 +298,7 @@ class RESTService extends ChangeNotifier {
         await Future.delayed(Duration(milliseconds: 100 * retryCount));
         return getUserAssetsHistory(retryCount: retryCount + 1);
       }
-      DataService.getInstance()
-          .dataUpdateStream
-          .addError({"key": "investments/history", "value": e});
+      _dataHandlerService.addErrorToDataUpstream("investments/history", e);
       rethrow;
     }
   }
@@ -353,9 +320,7 @@ class RESTService extends ChangeNotifier {
         } catch (e) {
           throw "Parsing error: ${e.toString()}";
         }
-        DataService.getInstance().dataUpdateStream.add(
-          {"key": "balance/history", "value": data},
-        );
+        _dataHandlerService.addToDataUpstream("balance/history", data);
         return data;
       } else {
         throw "Unknown case: ${response.toString()}";
@@ -365,9 +330,7 @@ class RESTService extends ChangeNotifier {
         await Future.delayed(Duration(milliseconds: 100 * retryCount));
         return getUserBalanceHistory(retryCount: retryCount + 1);
       }
-      DataService.getInstance()
-          .dataUpdateStream
-          .addError({"key": "balance/history", "value": e});
+      _dataHandlerService.addErrorToDataUpstream("balance/history", e);
       rethrow;
     }
   }
@@ -383,9 +346,7 @@ class RESTService extends ChangeNotifier {
         } catch (e) {
           throw "Parsing error: ${e.toString()}";
         }
-        DataService.getInstance().dataUpdateStream.add(
-          {"key": "balance", "value": data},
-        );
+        _dataHandlerService.addToDataUpstream("balance", data);
         return data;
       } else {
         throw "Unknown case: ${response.toString()}";
@@ -395,9 +356,7 @@ class RESTService extends ChangeNotifier {
         await Future.delayed(Duration(milliseconds: 100 * retryCount));
         return getBalance(retryCount: retryCount + 1);
       }
-      DataService.getInstance()
-          .dataUpdateStream
-          .addError({"key": "balance", "value": e});
+      _dataHandlerService.addErrorToDataUpstream("balance", e);
       rethrow;
     }
   }

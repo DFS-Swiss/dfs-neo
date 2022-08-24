@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:neo/hooks/use_stockdata_info.dart';
 import 'package:neo/models/userasset_datapoint.dart';
 import 'package:neo/pages/details/details_page.dart';
-import 'package:neo/services/formatting_service.dart';
+import 'package:neo/utils/formatting_utils.dart';
 import 'package:neo/style/theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -86,7 +86,7 @@ class RecentlyClosedOrderCard extends HookWidget {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Text(
-                              FormattingService.roundDouble(data.difference, 2)
+                              FormattingUtils.roundDouble(data.difference, 2)
                                   .toString(),
                               style: TextStyle(
                                 fontSize: 20,

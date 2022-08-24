@@ -12,7 +12,7 @@ import 'package:neo/widgets/autosize_hideable_text.dart';
 import 'package:neo/widgets/hideable_text.dart';
 import 'package:neo/widgets/hidebalance_button.dart';
 import 'package:neo/widgets/development_indicator/small_change_indicator.dart';
-import 'package:neo/services/formatting_service.dart';
+import 'package:neo/utils/formatting_utils.dart';
 
 import '../../widgets/shimmer_loader_card.dart';
 
@@ -54,8 +54,8 @@ class PortfolioBalanceCard extends HookWidget {
                           ),
                           AutoSizeHideableText(
                             scrubbingData.hasTouch
-                                ? "${FormattingService.roundDouble(scrubbingData.value, 2)} dUSD"
-                                : "${FormattingService.roundDouble(balanceHistory.data!.portfolioIsEmpty ? 0 : balanceHistory.data!.total.first.price, 2)} dUSD",
+                                ? "${FormattingUtils.roundDouble(scrubbingData.value, 2)} dUSD"
+                                : "${FormattingUtils.roundDouble(balanceHistory.data!.portfolioIsEmpty ? 0 : balanceHistory.data!.total.first.price, 2)} dUSD",
                             maxLines: 1,
                             style: GoogleFonts.urbanist(
                               fontSize: 20,
@@ -81,7 +81,7 @@ class PortfolioBalanceCard extends HookWidget {
                               hideable: true,
                               positive: balanceHistory.data!.total.first.price >
                                   balanceHistory.data!.total.last.price,
-                              changePercentage: FormattingService.roundDouble(
+                              changePercentage: FormattingUtils.roundDouble(
                                   balanceHistory.data!.total.first.price -
                                       balanceHistory.data!.total.last.price,
                                   2),
@@ -106,7 +106,7 @@ class PortfolioBalanceCard extends HookWidget {
                                       changePercentage: balanceHistory
                                               .data!.hasNoInvestments
                                           ? 0
-                                          : FormattingService.calculatepercent(
+                                          : FormattingUtils.calculatepercent(
                                               balanceHistory
                                                   .data!.total.first.price,
                                               balanceHistory.data!.total
@@ -163,14 +163,14 @@ class PortfolioBalanceCard extends HookWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         HideableText(
-                          "${FormattingService.roundDouble(balanceHistory.data!.inCash, 2)} dUSD",
+                          "${FormattingUtils.roundDouble(balanceHistory.data!.inCash, 2)} dUSD",
                           style: Theme.of(context).textTheme.labelMedium,
                         ),
                         SizedBox(
                           height: 5,
                         ),
                         HideableText(
-                          "${FormattingService.roundDouble(balanceHistory.data!.inAssets.first.price, 2)} dUSD",
+                          "${FormattingUtils.roundDouble(balanceHistory.data!.inAssets.first.price, 2)} dUSD",
                           style: Theme.of(context).textTheme.labelMedium,
                         ),
                       ],

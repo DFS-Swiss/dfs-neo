@@ -6,6 +6,7 @@ import 'package:neo/services/stockdata_service.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
 
 import '../models/user_balance_datapoint.dart';
+import '../service_locator.dart';
 import '../types/asset_performance_container.dart';
 import '../types/balance_history_container.dart';
 import '../types/portfolio_performance_container.dart';
@@ -14,12 +15,14 @@ import '../utils/interval_to_time.dart';
 
 class PortfolioValueUtil {
   PortfolioValueUtil();
-
+  final DataService _dataService = locator<DataService>();
+  
   Future<PortfolioPerformanceContainer> getPortfolioPerformanceHistory(
       StockdataInterval interval, bool refetch) async {
     final portfolioValue = await getPortfolioValueHistory(interval, refetch);
     final balancesChanges = await _queryHistoricBalanceData(refetch);
     final stockdataTemplate = await _queryHistoricStockData("dAAPL", interval);
+    
 
     final developmentGraph = <PriceDevelopmentDatapoint>[];
     for (var element in stockdataTemplate) {
@@ -322,7 +325,7 @@ class PortfolioValueUtil {
 
   Future<List<UserassetDatapoint>> _queryHistoricInvestmentData(
       bool refetch) async {
-    List<UserassetDatapoint> historicData = await DataService.getInstance()
+    List<UserassetDatapoint> historicData = await _dataService
         .getUserAssetsHistory(
             source: refetch ? DataSource.network : DataSource.cache)
         .first;
@@ -331,14 +334,14 @@ class PortfolioValueUtil {
 
   Future<List<UserassetDatapoint>> _queryCurrentInvestments(
       bool refetch) async {
-    return DataService.getInstance()
+    return _dataService
         .getUserAssets(source: refetch ? DataSource.network : DataSource.cache)
         .first;
   }
 
   Future<List<UserBalanceDatapoint>> _queryHistoricBalanceData(
       bool refetch) async {
-    List<UserBalanceDatapoint> historicData = await DataService.getInstance()
+    List<UserBalanceDatapoint> historicData = await _dataService
         .getUserBalanceHistory(
             source: refetch ? DataSource.network : DataSource.cache)
         .first;
