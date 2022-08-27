@@ -1,14 +1,15 @@
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:neo/service_locator.dart';
 import 'package:neo/services/websocket/websocket_service.dart';
 
 import '../services/websocket/websocket_controler.dart';
 
 SocketConnectionState useUserDataSocketConnectionState() {
   final state = useState(
-      WebsocketService.getInstance().userDataConnectionStateStream.value);
+      locator<WebsocketService>().userDataConnectionStateStream.value);
 
   useEffect(() {
-    final sub = WebsocketService.getInstance()
+    final sub = locator<WebsocketService>()
         .userDataConnectionStateStream
         .listen((value) {
       state.value = value;
@@ -20,10 +21,10 @@ SocketConnectionState useUserDataSocketConnectionState() {
 
 SocketConnectionState useStockDataSocketConnectionState() {
   final state = useState(
-      WebsocketService.getInstance().stockDataConnectionStateStream.value);
+      locator<WebsocketService>().stockDataConnectionStateStream.value);
 
   useEffect(() {
-    final sub = WebsocketService.getInstance()
+    final sub = locator<WebsocketService>()
         .stockDataConnectionStateStream
         .listen((value) {
       state.value = value;

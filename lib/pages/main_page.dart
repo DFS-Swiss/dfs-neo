@@ -49,7 +49,7 @@ class MainPage extends HookWidget {
             ),
             TextButton(
               onPressed: () {
-                WebsocketService.getInstance().init();
+                locator<WebsocketService>().init();
               },
               child: Text(
                 "Connect to user data socket",

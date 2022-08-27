@@ -9,6 +9,7 @@ import 'package:neo/services/biometric_auth_service.dart';
 import 'package:neo/utils/prefetching_utils.dart';
 import 'package:neo/services/websocket/websocket_service.dart';
 
+import '../../service_locator.dart';
 import '../../widgets/prefetching_loader.dart';
 
 class MainNavigation extends HookWidget {
@@ -50,7 +51,7 @@ class MainNavigation extends HookWidget {
     }));
 
     useEffect(() {
-      WebsocketService.getInstance().init();
+      locator<WebsocketService>().init();
       BiometricAuth()
           .ensureAuthed(
         localizedReason: faceIdReason,

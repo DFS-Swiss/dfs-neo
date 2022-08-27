@@ -15,12 +15,6 @@ class WebsocketService {
   final DataService _dataService =
       locator<DataService>();
 
-  WebsocketService._();
-  static WebsocketService? _instance;
-  static WebsocketService getInstance() {
-    return _instance ??= WebsocketService._();
-  }
-
   WebsocketControler? _userDataControler;
   WebsocketControler? _stockDataControler;
   BehaviorSubject<WebsocketStateContainer> stockDataConnectionStateStream =

@@ -3,16 +3,20 @@ import 'package:neo/enums/app_state.dart';
 import 'package:neo/service_locator.dart';
 import 'package:neo/services/analytics_service.dart';
 import 'package:neo/services/app_state_service.dart';
+import 'package:neo/services/authentication_service.dart';
 import 'package:neo/services/cognito_service.dart';
 import 'package:neo/services/crashlytics_service.dart';
 import 'package:neo/services/data_handler_service.dart';
 import 'package:neo/services/data_service.dart';
 import 'package:neo/services/publisher_service.dart';
 import 'package:neo/services/rest_service.dart';
+import 'package:neo/services/websocket/websocket_service.dart';
 
 import 'test_helpers.mocks.dart';
 
 @GenerateMocks([], customMocks: [
+  MockSpec<AuthenticationService>(),
+  MockSpec<WebsocketService>(),
   MockSpec<DataHandlerService>(),
   MockSpec<PublisherService>(),
   MockSpec<RESTService>(),
@@ -22,10 +26,25 @@ import 'test_helpers.mocks.dart';
   MockSpec<AppStateService>(),
   MockSpec<CrashlyticsService>(),
 ])
+
+MockAuthenticationService getAndRegisterAuthenticationService() {
+  _removeRegistrationIfExists<AuthenticationService>();
+  final service = MockAuthenticationService();
+  locator.registerSingleton<AuthenticationService>(service);
+  return service;
+}
+
 MockCognitoService getAndRegisterCognitoService() {
   _removeRegistrationIfExists<CognitoService>();
   final service = MockCognitoService();
   locator.registerSingleton<CognitoService>(service);
+  return service;
+}
+
+MockWebsocketService getAndRegisterWebsocketService() {
+  _removeRegistrationIfExists<WebsocketService>();
+  final service = MockWebsocketService();
+  locator.registerSingleton<WebsocketService>(service);
   return service;
 }
 
@@ -80,6 +99,7 @@ MockDataService getAndRegisterDataService() {
 }
 
 void registerServices() {
+  getAndRegisterAuthenticationService();
   getAndRegisterCrashlyticsService();
   getAndRegisterAnalyticsService();
   getAndRegisterCognitoService();
@@ -88,15 +108,18 @@ void registerServices() {
   getAndRegisterRESTService();
   getAndRegisterPublisherService();
   getAndRegisterDataHandlerService();
+  getAndRegisterWebsocketService();
 }
 
 void unregisterServices() {
-  locator.unregister<CognitoService>();
-  locator.unregister<AppStateService>();
-  locator.unregister<DataService>();
-  locator.unregister<RESTService>();
-  locator.unregister<PublisherService>();
-  locator.unregister<DataHandlerService>();
+  _removeRegistrationIfExists<CognitoService>();
+  _removeRegistrationIfExists<AppStateService>();
+  _removeRegistrationIfExists<DataService>();
+  _removeRegistrationIfExists<RESTService>();
+  _removeRegistrationIfExists<PublisherService>();
+  _removeRegistrationIfExists<DataHandlerService>();
+  _removeRegistrationIfExists<WebsocketService>();
+  _removeRegistrationIfExists<AuthenticationService>();
 }
 
 void _removeRegistrationIfExists<T extends Object>() {
