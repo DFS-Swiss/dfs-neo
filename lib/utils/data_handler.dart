@@ -1,6 +1,6 @@
 import 'package:rxdart/rxdart.dart';
 
-class DataHandlerService {
+class DataHandler {
 
   final Map<String, List<Function()>> _userDataHandlerRegister = {};
   final BehaviorSubject<Map<String, dynamic>> dataUpdateStream = BehaviorSubject();

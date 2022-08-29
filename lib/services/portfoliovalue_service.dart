@@ -16,6 +16,7 @@ import '../utils/interval_to_time.dart';
 class PortfolioValueUtil {
   PortfolioValueUtil();
   final DataService _dataService = locator<DataService>();
+  final StockdataService _stockdataService = locator<StockdataService>();
   
   Future<PortfolioPerformanceContainer> getPortfolioPerformanceHistory(
       StockdataInterval interval, bool refetch) async {
@@ -311,13 +312,13 @@ class PortfolioValueUtil {
   }
 
   Future<double> _queryCurrentStockData(String symbol) async {
-    return (await StockdataService.getInstance().getLatestPrice(symbol).first)
+    return (await _stockdataService.getLatestPrice(symbol).first)
         .price;
   }
 
   Future<List<StockdataDatapoint>> _queryHistoricStockData(
       String symbol, StockdataInterval interval) async {
-    List<StockdataDatapoint> historicData = await StockdataService.getInstance()
+    List<StockdataDatapoint> historicData = await _stockdataService
         .getStockdata(symbol, interval)
         .first;
     return historicData;

@@ -32,24 +32,22 @@ import '../service_locator.dart';
     ];*/
 
 class StockInvestmentUtil {
-
   final DataService _dataService = locator<DataService>();
-  
+  final StockdataService _stockdataService = locator<StockdataService>();
+
   StockInvestmentUtil();
 
   Future<InvestmentData> getInvestmentDataForSymbol(
       String symbol, bool refetch) async {
-    final stockData = await StockdataService.getInstance()
+    final stockData = await _stockdataService
         .getStockdata(symbol, StockdataInterval.oneYear)
         .first;
 
-    final latestPrice =
-        await StockdataService.getInstance().getLatestPrice(symbol).first;
+    final latestPrice = await _stockdataService.getLatestPrice(symbol).first;
     try {
-      final investments =
-          (await _dataService.getUserAssetsHistory().first)
-              .where((element) => element.symbol == symbol)
-              .toList();
+      final investments = (await _dataService.getUserAssetsHistory().first)
+          .where((element) => element.symbol == symbol)
+          .toList();
       if (stockData.isEmpty || investments.isEmpty) {
         return InvestmentData(
           todayIncrease: 0,

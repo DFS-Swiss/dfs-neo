@@ -1,53 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:neo/models/stockdata_datapoint.dart';
+import 'package:neo/services/publisher_service.dart';
 import 'package:neo/services/rest_service.dart';
 import 'package:neo/types/api/stockdata_bulk_fetch_request.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
-import 'package:neo/types/stockdata_storage_container.dart';
-import 'package:rxdart/rxdart.dart';
+import 'package:neo/utils/stockdata_store.dart';
 
+import '../enums/publisher_event.dart';
 import '../service_locator.dart';
 
 class StockdataService extends ChangeNotifier {
-
   final RESTService _restService = locator<RESTService>();
+  final PublisherService _publisherService = locator<PublisherService>();
+  final StockdataStore _stockdataStore = locator<StockdataStore>();
 
-  static StockdataService? _instance;
-  static StockdataService getInstance() {
-    return _instance ??= StockdataService._();
+  StockdataService() {
+    _publisherService.getSource().listen((e) {
+      if (e == PublisherEvent.updateStockdata) {
+        notifyListeners();
+      } else if (e == PublisherEvent.logout) {
+        _stockdataStore.clearCache();
+      }
+    });
   }
-
-  StockdataService._();
-
-  final BehaviorSubject<
-          Map<String, Map<StockdataInterval, StockdataStorageContainer>>>
-      _dataStore = BehaviorSubject.seeded({});
 
   final Map<String, List<StockdataInterval>> _bulkFetchCache = {};
   Future<void>? _bulkFetchTimer;
 
   List<StockdataDatapoint>? getDataFromCacheIfAvaliable(
       String symbol, StockdataInterval interval) {
-    if (_dataStore.value[symbol] != null) {
-      if (_dataStore.value[symbol]![interval] != null &&
-          !_dataStore.value[symbol]![interval]!.isStale()) {
-        return _dataStore.value[symbol]![interval]!.getSorted();
+    var data = _stockdataStore.getData(symbol);
+    if (data != null) {
+      if (data[interval] != null && data[interval]!.isStale()) {
+        return data[interval]!.getSorted();
       }
       return null;
     }
     return null;
   }
 
-  clearCache() {
-    _dataStore.add({});
-  }
-
   Stream<List<StockdataDatapoint>> getStockdata(
       String symbol, StockdataInterval interval) async* {
-    if (_dataStore.value[symbol] != null) {
-      if (_dataStore.value[symbol]![interval] != null) {
-        yield _dataStore.value[symbol]![interval]!.getSorted();
-        if (_dataStore.value[symbol]![interval]!.isStale()) {
+    var data = _stockdataStore.getData(symbol);
+    if (data != null) {
+      if (data[interval] != null) {
+        yield data[interval]!.getSorted();
+        if (data[interval]!.isStale()) {
           _registerFetchRequest(symbol, interval);
         }
       } else {
@@ -58,7 +56,8 @@ class StockdataService extends ChangeNotifier {
     }
 
     //TODO: Add logic to check if the relevant data was updated to prevent unecessary rerenders;
-    yield* _dataStore
+    yield* _stockdataStore
+        .getDataStore()
         .where((event) =>
             event[symbol] != null && event[symbol]![interval] != null)
         .map((event) => event[symbol]![interval]!.getSorted());
@@ -93,8 +92,7 @@ class StockdataService extends ChangeNotifier {
         _restService.getStockdataBulk(
             StockdataBulkFetchRequest.fromMap({"symbols": _bulkFetchCache}));
       } else {
-        _restService
-            .getStockdata(singleEntry.key, singleEntry.value.first);
+        _restService.getStockdata(singleEntry.key, singleEntry.value.first);
       }
     }
     _bulkFetchCache.clear();
@@ -111,13 +109,13 @@ class StockdataService extends ChangeNotifier {
 
     final Map<String, Map<StockdataInterval, List<StockdataDatapoint>>>
         tempMap = {};
+
     for (var singleDatapoint in castedData) {
       var existingData = [];
-      if (_dataStore.value[singleDatapoint.symbol] != null &&
-          _dataStore.value[singleDatapoint.symbol]![
-                  StockdataInterval.twentyFourHours] !=
-              null) {
-        existingData = _dataStore
+      var data = _stockdataStore.getData(singleDatapoint.symbol);
+      if (data != null && data[StockdataInterval.twentyFourHours] != null) {
+        existingData = _stockdataStore
+            .getDataStore()
             .value[singleDatapoint.symbol]![StockdataInterval.twentyFourHours]!
             .getSorted();
       }
@@ -131,53 +129,8 @@ class StockdataService extends ChangeNotifier {
       }
     }
     if (tempMap.isNotEmpty) {
-      updateData(tempMap);
+      _stockdataStore.updateData(tempMap);
     }
-  }
-
-  updateData(
-    Map<String, Map<StockdataInterval, List<StockdataDatapoint>>> streamValue,
-  ) {
-    final tempStore = _dataStore.value;
-    for (var singleSymbol in streamValue.entries) {
-      if (tempStore[singleSymbol.key] == null) {
-        tempStore[singleSymbol.key] = singleSymbol.value.map((key, value) {
-          if (value.length < 2) {
-            print("Error in update detected");
-          }
-          return MapEntry(
-            key,
-            StockdataStorageContainer(
-              key,
-              singleSymbol.key,
-              value,
-            ),
-          );
-        });
-      } else {
-        for (var singleInterval in singleSymbol.value.entries) {
-          if (tempStore[singleSymbol.key]![singleInterval.key] != null) {
-            if (singleInterval.value.length < 2) {
-              print("Single entry detected, could be fine though");
-            }
-            tempStore[singleSymbol.key]![singleInterval.key]!
-                .merge(singleInterval.value);
-          } else {
-            if (singleInterval.value.length < 2) {
-              print("Error in update detected");
-            }
-            tempStore[singleSymbol.key]![singleInterval.key] =
-                StockdataStorageContainer(
-              singleInterval.key,
-              singleSymbol.key,
-              singleInterval.value,
-            );
-          }
-        }
-      }
-    }
-    _dataStore.add(tempStore);
-    notifyListeners();
   }
 
   propagateError(

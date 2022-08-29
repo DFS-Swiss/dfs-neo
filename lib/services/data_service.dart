@@ -4,7 +4,7 @@ import 'package:neo/enums/publisher_event.dart';
 import 'package:neo/models/stockdatadocument.dart';
 import 'package:neo/models/user_model.dart';
 import 'package:neo/models/userasset_datapoint.dart';
-import 'package:neo/services/data_handler_service.dart';
+import 'package:neo/utils/data_handler.dart';
 import 'package:neo/services/publisher_service.dart';
 import 'package:neo/services/rest_service.dart';
 import 'package:neo/types/restdata_storage_container.dart';
@@ -17,7 +17,7 @@ import 'crashlytics_service.dart';
 
 class DataService extends ChangeNotifier {
   final RESTService _restService = locator<RESTService>();
-  final DataHandlerService _dataHandlerService = locator<DataHandlerService>();
+  final DataHandler _dataHandlerService = locator<DataHandler>();
   final PublisherService _publisherService = locator<PublisherService>();
   final CrashlyticsService _crashlyticsService = locator<CrashlyticsService>();
 

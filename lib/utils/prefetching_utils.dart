@@ -8,7 +8,7 @@ class PrefetchingUtils {
   
   Future prepareApp() async {
     final dataService = locator<DataService>();
-    final stockService = StockdataService.getInstance();
+    final stockService = locator<StockdataService>();
     final avlbStocks = await dataService.getAvailableStocks().first;
 
     await Future.any([

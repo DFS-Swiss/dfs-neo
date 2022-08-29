@@ -23,7 +23,7 @@ import 'package:neo/services/app_state_service.dart' as _i27;
 import 'package:neo/services/authentication_service.dart' as _i8;
 import 'package:neo/services/cognito_service.dart' as _i25;
 import 'package:neo/services/crashlytics_service.dart' as _i29;
-import 'package:neo/services/data_handler_service.dart' as _i13;
+import 'package:neo/utils/data_handler.dart' as _i13;
 import 'package:neo/services/data_service.dart' as _i21;
 import 'package:neo/services/publisher_service.dart' as _i14;
 import 'package:neo/services/rest_service.dart' as _i16;
@@ -186,7 +186,7 @@ class MockWebsocketService extends _i1.Mock implements _i11.WebsocketService {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockDataHandlerService extends _i1.Mock
-    implements _i13.DataHandlerService {
+    implements _i13.DataHandler {
   MockDataHandlerService() {
     _i1.throwOnMissingStub(this);
   }

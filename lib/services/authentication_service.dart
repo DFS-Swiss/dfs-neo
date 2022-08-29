@@ -8,7 +8,6 @@ import 'package:neo/services/analytics_service.dart';
 import 'package:neo/services/app_state_service.dart';
 import 'package:neo/services/crashlytics_service.dart';
 import 'package:neo/services/publisher_service.dart';
-import 'package:neo/services/stockdata_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../service_locator.dart';
@@ -99,7 +98,6 @@ class AuthenticationService extends ChangeNotifier {
     await prefs.remove("user_name");
     await prefs.remove("refresh_token");
     _publisherService.addEvent(PublisherEvent.logout);
-    StockdataService.getInstance().clearCache();
     await locator<AnalyticsService>().trackEvent("logout");
     notifyListeners();
   }

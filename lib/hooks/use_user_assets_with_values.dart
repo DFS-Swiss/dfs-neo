@@ -8,6 +8,7 @@ import '../types/user_asset_datapoint_with_value.dart';
 
 DataContainer<List<UserAssetDataWithValue>> useUserAssetsWithValues() {
   final DataService dataService = locator<DataService>();
+  final StockdataService stockdataService = locator<StockdataService>();
   final state = useState<DataContainer<List<UserAssetDataWithValue>>>(
       DataContainer.waiting());
 
@@ -18,7 +19,7 @@ DataContainer<List<UserAssetDataWithValue>> useUserAssetsWithValues() {
                 "investments") ??
             await dataService.getUserAssets().first;
     for (var investment in investments) {
-      final price = await StockdataService.getInstance()
+      final price = await stockdataService
           .getLatestPrice(investment.symbol)
           .first;
       out.add(UserAssetDataWithValue.fromUserAssetDataPoint(
@@ -31,10 +32,10 @@ DataContainer<List<UserAssetDataWithValue>> useUserAssetsWithValues() {
   useEffect(() {
     fetch();
     final sub = dataService.getUserAssets().listen((v) => fetch());
-    StockdataService.getInstance().addListener(fetch);
+    stockdataService.addListener(fetch);
     return () {
       sub.cancel();
-      StockdataService.getInstance().removeListener(fetch);
+      stockdataService.removeListener(fetch);
     };
   }, ["_"]);
   return state.value;

@@ -1,3 +1,4 @@
 enum PublisherEvent {
-  logout
+  logout,
+  updateStockdata
 }

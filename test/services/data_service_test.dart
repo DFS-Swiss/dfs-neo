@@ -4,7 +4,7 @@ import 'package:neo/enums/publisher_event.dart';
 import 'package:neo/models/user_model.dart';
 import 'package:neo/service_locator.dart';
 import 'package:neo/services/crashlytics_service.dart';
-import 'package:neo/services/data_handler_service.dart';
+import 'package:neo/utils/data_handler.dart';
 import 'package:neo/services/data_service.dart';
 import 'package:neo/services/publisher_service.dart';
 import 'package:neo/services/rest_service.dart';
@@ -28,7 +28,7 @@ void main() {
   group('Data Service Test - Constructor', () {
     setUp(() {
       registerServices();
-      var dataHandlerService = locator<DataHandlerService>();
+      var dataHandlerService = locator<DataHandler>();
       var publisherService = locator<PublisherService>();
       var data = <String, dynamic>{};
       data["key"] = "test";
@@ -63,7 +63,7 @@ void main() {
   group("DataServiceTest - handleUserDataUpdate", () {
     setUp(() {
       registerServices();
-      var dataHandlerService = locator<DataHandlerService>();
+      var dataHandlerService = locator<DataHandler>();
       var publisherService = locator<PublisherService>();
       var data = <String, dynamic>{};
       data["key"] = "test";
@@ -114,7 +114,7 @@ void main() {
 
     test('handleUserDataUpdate_registerNull_NoFunctionCalled', () async {
       // arrange
-      var dataHandlerService = locator<DataHandlerService>();
+      var dataHandlerService = locator<DataHandler>();
       when(dataHandlerService.getUserDataHandlerRegister()).thenReturn(null);
 
       var dataService = locator<TestableDataService>();
@@ -132,7 +132,7 @@ void main() {
     test('handleUserDataUpdate_registerDoesntContainEntity_NoFunctionCalled',
         () async {
       // arrange
-      var dataHandlerService = locator<DataHandlerService>();
+      var dataHandlerService = locator<DataHandler>();
       Map<String, List<Function()>> register = <String, List<Function()>>{};
       when(dataHandlerService.getUserDataHandlerRegister())
           .thenReturn(register);
@@ -151,7 +151,7 @@ void main() {
     test('handleUserDataUpdate_registerContainsEntity_FunctionCalled',
         () async {
       // arrange
-      var dataHandlerService = locator<DataHandlerService>();
+      var dataHandlerService = locator<DataHandler>();
       Map<String, List<Function()>> register = <String, List<Function()>>{};
       bool shouldBeTrue = false;
       register["test"] = <Function()>[];
@@ -174,7 +174,7 @@ void main() {
   group("DataServiceTest - getDataFromCacheIfAvailable", () {
     setUp(() {
       registerServices();
-      var dataHandlerService = locator<DataHandlerService>();
+      var dataHandlerService = locator<DataHandler>();
       var publisherService = locator<PublisherService>();
       var webSocketService = locator<WebsocketService>();
       var data = <String, dynamic>{};
@@ -265,7 +265,7 @@ void main() {
   group("DataServiceTest - getUserData", () {
     setUp(() {
       registerServices();
-      var dataHandlerService = locator<DataHandlerService>();
+      var dataHandlerService = locator<DataHandler>();
       var publisherService = locator<PublisherService>();
       var webSocketService = locator<WebsocketService>();
       var restService = locator<RESTService>();
@@ -325,7 +325,7 @@ void main() {
   group("DataServiceTest - getUserData", () {
     setUp(() {
       registerServices();
-      var dataHandlerService = locator<DataHandlerService>();
+      var dataHandlerService = locator<DataHandler>();
       var publisherService = locator<PublisherService>();
       var webSocketService = locator<WebsocketService>();
       var restService = locator<RESTService>();

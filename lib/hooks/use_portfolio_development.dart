@@ -11,6 +11,7 @@ import '../services/portfoliovalue_service.dart';
 DataContainer<PortfolioPerformanceContainer> usePortfolioDevelopment(
     StockdataInterval interval) {
   final DataService dataService = locator<DataService>();
+  final StockdataService stockdataService = locator<StockdataService>();
   final state = useState<DataContainer<PortfolioPerformanceContainer>>(
       DataContainer.waiting());
   handleFetch() {
@@ -29,12 +30,12 @@ DataContainer<PortfolioPerformanceContainer> usePortfolioDevelopment(
   }
 
   useEffect(() {
-    StockdataService.getInstance().addListener(handleFetch);
+    stockdataService.addListener(handleFetch);
     dataService.addListener(handleFetch);
     handleFetch();
     return () {
       dataService.removeListener(handleFetch);
-      StockdataService.getInstance().removeListener(handleFetch);
+      stockdataService.removeListener(handleFetch);
       //future?.ignore();
     };
   }, [interval]);

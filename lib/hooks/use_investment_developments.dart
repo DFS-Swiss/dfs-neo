@@ -11,6 +11,7 @@ import '../types/stockdata_interval_enum.dart';
 DataContainer<List<AssetPerformanceContainer>> useInvestmentDevelopments(
     StockdataInterval interval) {
   final DataService dataService = locator<DataService>();
+  final StockdataService stockdataService = locator<StockdataService>();
   final state = useState<DataContainer<List<AssetPerformanceContainer>>>(
       DataContainer.waiting());
   useEffect(() {
@@ -29,12 +30,12 @@ DataContainer<List<AssetPerformanceContainer>> useInvestmentDevelopments(
       });
     }
 
-    StockdataService.getInstance().addListener(handleFetch);
+    stockdataService.addListener(handleFetch);
     dataService.addListener(handleFetch);
     handleFetch();
     return () {
       dataService.removeListener(handleFetch);
-      StockdataService.getInstance().removeListener(handleFetch);
+      stockdataService.removeListener(handleFetch);
       //future?.ignore();
     };
   }, [interval]);

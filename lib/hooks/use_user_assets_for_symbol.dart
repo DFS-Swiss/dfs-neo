@@ -9,6 +9,7 @@ import '../services/stockdata_service.dart';
 
 DataContainer<InvestmentData> useUserAssetsForSymbol(String symbol) {
   final DataService dataService = locator<DataService>();
+  final StockdataService stockdataService = locator<StockdataService>();
   final state =
       useState<DataContainer<InvestmentData>>(DataContainer.waiting());
   useEffect(() {
@@ -23,12 +24,12 @@ DataContainer<InvestmentData> useUserAssetsForSymbol(String symbol) {
       );
     }
 
-    StockdataService.getInstance().addListener(handleFetch);
+    stockdataService.addListener(handleFetch);
     dataService.addListener(handleFetch);
     handleFetch();
     return () {
       dataService.removeListener(handleFetch);
-      StockdataService.getInstance().removeListener(handleFetch);
+      stockdataService.removeListener(handleFetch);
     };
   }, [symbol]);
   return state.value;

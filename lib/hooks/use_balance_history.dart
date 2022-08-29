@@ -11,6 +11,7 @@ import '../types/balance_history_container.dart';
 DataContainer<BalanceHistoryContainer> useBalanceHistory(
     StockdataInterval interval) {
   final DataService dataService = locator<DataService>();
+  final StockdataService stockdataService = locator<StockdataService>();
   final state =
       useState<DataContainer<BalanceHistoryContainer>>(DataContainer.waiting());
   handleFetch() {
@@ -25,12 +26,12 @@ DataContainer<BalanceHistoryContainer> useBalanceHistory(
   }
 
   useEffect(() {
-    StockdataService.getInstance().addListener(handleFetch);
+    stockdataService.addListener(handleFetch);
     dataService.addListener(handleFetch);
     handleFetch();
     return () {
       dataService.removeListener(handleFetch);
-      StockdataService.getInstance().removeListener(handleFetch);
+      stockdataService.removeListener(handleFetch);
       //future?.ignore();
     };
   }, [interval]);

@@ -9,15 +9,17 @@ import 'package:neo/services/authentication_service.dart';
 import 'package:neo/services/stockdata_service.dart';
 import 'package:neo/types/api/stockdata_bulk_fetch_request.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
+import 'package:neo/utils/stockdata_store.dart';
 
 import '../models/user_balance_datapoint.dart';
 import '../service_locator.dart';
-import 'data_handler_service.dart';
+import '../utils/data_handler.dart';
 
 const restApiBaseUrl = "https://rest.dfs-api.ch/v1";
 
 class RESTService extends ChangeNotifier {
-  final DataHandlerService _dataHandlerService = locator<DataHandlerService>();
+  final DataHandler _dataHandlerService = locator<DataHandler>();
+  final StockdataStore _stockdataStore = locator<StockdataStore>();
   final AuthenticationService _authenticationService =
       locator<AuthenticationService>();
 
@@ -60,7 +62,7 @@ class RESTService extends ChangeNotifier {
           serviceInput = {
         symbol: {interval: data}
       };
-      StockdataService.getInstance().updateData(serviceInput);
+      _stockdataStore.updateData(serviceInput);
       return data;
     } catch (e, stack) {
       if (retryCount < 4) {
@@ -102,7 +104,7 @@ class RESTService extends ChangeNotifier {
       //} catch (e) {
       //throw "Parsing error: ${e.toString()}";
       //}
-      StockdataService.getInstance().updateData(out);
+      _stockdataStore.updateData(out);
       return out;
     } catch (e) {
       if (retryCount < 4) {
