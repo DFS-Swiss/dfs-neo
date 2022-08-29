@@ -1,7 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_image/network.dart';
 import 'package:neo/hooks/use_stockdata.dart';
 import 'package:neo/hooks/use_stockdata_info.dart';
 import 'package:neo/services/formatting_service.dart';
@@ -14,8 +14,7 @@ import '../shimmer_loader_card.dart';
 class TradableStockCard extends HookWidget {
   final String token;
 
-  const 
-  TradableStockCard({required this.token, Key? key}) : super(key: key);
+  const TradableStockCard({required this.token, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -54,8 +53,9 @@ class TradableStockCard extends HookWidget {
                         height: 50,
                         child: CircleAvatar(
                           key: ValueKey(symbolInfo.data!.imageUrl),
-                          backgroundImage:
-                              NetworkImageWithRetry(symbolInfo.data!.imageUrl),
+                          backgroundImage: CachedNetworkImageProvider(
+                            symbolInfo.data!.imageUrl,
+                          ),
                           backgroundColor: Colors.transparent,
                         ),
                       ),
