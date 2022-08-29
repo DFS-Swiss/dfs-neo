@@ -1,12 +1,14 @@
 name: Deploy Staging
 
 on:
-  push:
-    branches: [ "staging"]
-
+  pull_request:
+    branches:
+      - staging
+    types: [closed]
+    
 jobs:
-
   deploy_ios:
+    if: github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'iOS - staging')
     runs-on: macos-latest
     env:
       IOS_API_KEY: ${{ secrets.IOS_API_KEY }}
@@ -45,6 +47,7 @@ jobs:
           subdirectory: "ios"
 
   deploy_android:
+    if: github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'Android - staging')
     runs-on: ubuntu-latest
     env:
       ANDROID_STORE_PASSWORD: ${{ secrets.ANDROID_STORE_PASSWORD }}

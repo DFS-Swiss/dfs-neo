@@ -48,6 +48,7 @@ class PortfolioBalanceCard extends HookWidget {
                           Text(
                             AppLocalizations.of(context)!.dash_balance,
                             style: Theme.of(context).textTheme.bodySmall,
+                            maxLines: 1,
                           ),
                           SizedBox(
                             height: 5,
