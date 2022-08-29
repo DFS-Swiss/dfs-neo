@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bugsnag_flutter/bugsnag_flutter.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -153,7 +155,9 @@ class RESTService extends ChangeNotifier {
   Future<StockdataDocument> getStockInfo(String symbol,
       {int retryCount = 0}) async {
     try {
-      final response = await dio.get("/stockdata/$symbol/info");
+      final currentLanguage = Platform.localeName.split("_")[0];
+      final response =
+          await dio.get("/stockdata/$symbol/info?lang=$currentLanguage");
       if (response.statusCode.toString().startsWith("2")) {
         StockdataDocument data;
         try {
@@ -234,7 +238,8 @@ class RESTService extends ChangeNotifier {
   Future<List<StockdataDocument>> getAvailiableStocks(
       {int retryCount = 0}) async {
     try {
-      final response = await dio.get("/stockdata/");
+      final currentLanguage = Platform.localeName.split("_")[0];
+      final response = await dio.get("/stockdata?lang=$currentLanguage");
       if (response.statusCode.toString().startsWith("2")) {
         List<StockdataDocument> data;
 

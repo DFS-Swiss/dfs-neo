@@ -228,5 +228,9 @@
     "settings_theme_light": "Hell",
     "settings_theme_dark": "Dunkel",
     "settings_brightness": "Design",
-    "settings_theme": "Theme"
+    "settings_theme": "Theme",
+    "dash_balance_switch": "Guthaben",
+    "new_order_avaliable": "Verfügbar",
+    "account_title": "Account",
+    "account_settings": "Einstellungen"
 }
