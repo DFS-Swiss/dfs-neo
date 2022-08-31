@@ -22,6 +22,6 @@ class DataHandler {
   }
 
   addErrorToDataUpstream(String key, Object e){
-    dataUpdateStream.add({"key": key, "value": e});
+    dataUpdateStream.addError({"key": key, "value": e});
   }
 }

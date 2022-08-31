@@ -19,7 +19,7 @@ class FeaturedStockCard extends HookWidget {
     final stockData = useStockdata(token, StockdataInterval.twentyFourHours);
     final symbolInfo = useSymbolInfo(token);
 
-    return stockData.loading == false && symbolInfo.loading == false
+    return!stockData.loading && !symbolInfo.loading && !symbolInfo.refetching && !stockData.refetching
         ? Container(
             height: 139,
             width: 210,

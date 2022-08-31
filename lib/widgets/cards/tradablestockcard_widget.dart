@@ -14,8 +14,7 @@ import '../shimmer_loader_card.dart';
 class TradableStockCard extends HookWidget {
   final String token;
 
-  const 
-  TradableStockCard({required this.token, Key? key}) : super(key: key);
+  const TradableStockCard({required this.token, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +22,9 @@ class TradableStockCard extends HookWidget {
       final chartData = useState<List<FlSpot>>([]);
       final stockData = useStockdata(token, StockdataInterval.twentyFourHours);
       final symbolInfo = useSymbolInfo(token);
+
       useEffect(() {
-        if (stockData.loading == false) {
+        if (!stockData.loading && !stockData.refetching) {
           chartData.value = stockData.data!
               .map((e) =>
                   FlSpot(e.time.millisecondsSinceEpoch.toDouble(), e.price))
@@ -32,9 +32,12 @@ class TradableStockCard extends HookWidget {
         }
 
         return;
-      }, ["_", stockData.loading]);
+      }, ["_", stockData.loading, stockData.refetching]);
 
-      return symbolInfo.loading == false && stockData.loading == false
+      return !symbolInfo.loading &&
+              !stockData.loading &&
+              !symbolInfo.refetching &&
+              !stockData.refetching
           ? Padding(
               padding: const EdgeInsets.only(left: 24, right: 24, bottom: 16),
               child: Container(
@@ -178,7 +181,7 @@ class TradableStockCard extends HookWidget {
                 child: Icon(
                   Icons.error_outline,
                   size: 55,
-                  color: NeoTheme.of(context)!.negativeColor,
+                  color: Colors.white,
                 ),
               ),
               Expanded(

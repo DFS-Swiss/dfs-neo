@@ -41,7 +41,7 @@ class DetailsDevelopmentSection extends HookWidget {
           .toList();
     }
 
-    return !symbolInfo.loading && !stockData.loading
+    return !symbolInfo.loading && !stockData.loading && !stockData.refetching && !stockData.loading
         ? Container(
             alignment: Alignment.centerLeft,
             child: Column(
