@@ -30,9 +30,7 @@ class DetailsInvestmentsSection extends HookWidget {
               .where((element) => element.symbol == symbol)
               .isNotEmpty &&
           !investmentData.loading &&
-          !stockDataToday.loading &&
-          !investmentData.refetching &&
-          !stockDataToday.refetching;
+          !stockDataToday.loading;
       //&& !stockDataAllTime.loading;
     }
 
@@ -42,7 +40,7 @@ class DetailsInvestmentsSection extends HookWidget {
           .isEmpty;
     }
 
-    return !userInvestments.loading && !userInvestments.refetching
+    return !userInvestments.loading
         ? showData()
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

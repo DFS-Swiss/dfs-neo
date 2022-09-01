@@ -40,8 +40,7 @@ class InvestmentCard extends HookWidget {
 
     return !stockData.loading &&
             !symbolInfo.loading &&
-            !assests.loading &&
-            !stockData.refetching
+            !assests.loading 
         ? GestureDetector(
             onTap: () => Navigator.push(
               context,

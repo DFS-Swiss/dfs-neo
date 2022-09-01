@@ -24,7 +24,7 @@ class TradableStockCard extends HookWidget {
       final symbolInfo = useSymbolInfo(token);
 
       useEffect(() {
-        if (!stockData.loading && !stockData.refetching) {
+        if (!stockData.loading) {
           chartData.value = stockData.data!
               .map((e) =>
                   FlSpot(e.time.millisecondsSinceEpoch.toDouble(), e.price))
@@ -32,12 +32,10 @@ class TradableStockCard extends HookWidget {
         }
 
         return;
-      }, ["_", stockData.loading, stockData.refetching]);
+      }, ["_", stockData.loading]);
 
       return !symbolInfo.loading &&
-              !stockData.loading &&
-              !symbolInfo.refetching &&
-              !stockData.refetching
+              !stockData.loading 
           ? Padding(
               padding: const EdgeInsets.only(left: 24, right: 24, bottom: 16),
               child: Container(
