@@ -1,7 +1,7 @@
 import 'dart:ui';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_image/network.dart';
 import 'package:neo/widgets/development_indicator/small_change_indicator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -30,7 +30,7 @@ class OpenOrderCard extends StatelessWidget {
                       height: 38,
                       child: CircleAvatar(
                         key: ValueKey(image),
-                        backgroundImage: NetworkImageWithRetry(
+                        backgroundImage: CachedNetworkImageProvider(
                           image ??
                               "https://prod-dfs-swiss-dfssymboliconbucketd59bac7b-la02u10dfrul.s3.eu-central-1.amazonaws.com/AMZN.png",
                         ),

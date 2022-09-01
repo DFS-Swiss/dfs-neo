@@ -1,7 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_image/network.dart';
 import 'package:neo/hooks/use_stockdata.dart';
 import 'package:neo/hooks/use_stockdata_info.dart';
 import 'package:neo/services/formatting_service.dart';
@@ -46,7 +46,7 @@ class FeaturedStockCard extends HookWidget {
                           child: CircleAvatar(
                             key: ValueKey(symbolInfo.data!.imageUrl),
                             backgroundColor: Colors.transparent,
-                            backgroundImage: NetworkImageWithRetry(
+                            backgroundImage: CachedNetworkImageProvider(
                               symbolInfo.data!.imageUrl,
                             ),
                           ),

@@ -1,7 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_image/network.dart';
 import 'package:intl/intl.dart';
 import 'package:neo/pages/details/details_selectable_widget.dart';
 import 'package:neo/utils/display_popup.dart';
@@ -19,7 +19,6 @@ import '../../services/formatting_service.dart';
 import '../../types/stockdata_interval_enum.dart';
 import '../../utils/chart_conversion.dart';
 import '../../widgets/shimmer_loader_card.dart';
-import '../buy_sell/buy_page.dart';
 import '../buy_sell/sell_page.dart';
 
 class DetailsDevelopmentSection extends HookWidget {
@@ -57,8 +56,8 @@ class DetailsDevelopmentSection extends HookWidget {
                         height: 60,
                         child: CircleAvatar(
                           key: ValueKey(symbolInfo.data!.imageUrl),
-                          backgroundImage:
-                              NetworkImageWithRetry(symbolInfo.data!.imageUrl),
+                          backgroundImage: CachedNetworkImageProvider(
+                              symbolInfo.data!.imageUrl),
                           backgroundColor: Theme.of(context).backgroundColor,
                         ),
                       ),
