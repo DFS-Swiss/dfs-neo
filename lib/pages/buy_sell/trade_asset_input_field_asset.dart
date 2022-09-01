@@ -1,10 +1,10 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_image/network.dart';
 import 'package:neo/hooks/use_user_assets_for_symbol.dart';
 
 import '../../utils/formatting_utils.dart';
@@ -138,7 +138,8 @@ class TradeAssetInputFieldAsset extends HookWidget {
                         ),
                         child: CircleAvatar(
                           key: ValueKey(imageLink),
-                          backgroundImage: NetworkImageWithRetry(imageLink),
+                          backgroundImage:
+                              CachedNetworkImageProvider(imageLink),
                           backgroundColor: Theme.of(context).backgroundColor,
                         ),
                       ),

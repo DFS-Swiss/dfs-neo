@@ -1,7 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_image/network.dart';
 import 'package:intl/intl.dart';
 import 'package:neo/pages/details/details_selectable_widget.dart';
 import 'package:neo/utils/display_popup.dart';
@@ -57,8 +57,8 @@ class DetailsDevelopmentSection extends HookWidget {
                         height: 60,
                         child: CircleAvatar(
                           key: ValueKey(symbolInfo.data!.imageUrl),
-                          backgroundImage:
-                              NetworkImageWithRetry(symbolInfo.data!.imageUrl),
+                          backgroundImage: CachedNetworkImageProvider(
+                              symbolInfo.data!.imageUrl),
                           backgroundColor: Theme.of(context).backgroundColor,
                         ),
                       ),

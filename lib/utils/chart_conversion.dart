@@ -141,6 +141,30 @@ double getMin(List<FlSpot> data) {
 
 LineChartData preview(List<FlSpot> data, bool isNegative) {
   return LineChartData(
+    lineTouchData: LineTouchData(
+      getTouchedSpotIndicator: (line, indizes) {
+        return indizes
+            .map(
+              (e) => TouchedSpotIndicatorData(
+                FlLine(color: Colors.transparent),
+                FlDotData(
+                  getDotPainter: (p0, p1, p2, p3) => CustomDotPainter(),
+                ),
+              ),
+            )
+            .toList();
+      },
+      touchTooltipData: LineTouchTooltipData(
+        getTooltipItems: (touchedBarSpots) {
+          return touchedBarSpots.map((barSpot) {
+            return LineTooltipItem(
+              FormattingService.roundDouble(barSpot.y, 2).toString(),
+              TextStyle(color: Colors.white),
+            );
+          }).toList();
+        },
+      ),
+    ),
     gridData: FlGridData(show: false),
     titlesData: FlTitlesData(
       show: false,
@@ -184,42 +208,47 @@ LineChartData preview(List<FlSpot> data, bool isNegative) {
 
 LineChartData dashboardPortfolio(List<FlSpot> data, bool isNegative) {
   return LineChartData(
-    lineTouchData: LineTouchData(touchTooltipData:
-        LineTouchTooltipData(getTooltipItems: (touchedBarSpots) {
-      return touchedBarSpots.map((barSpot) {
-        return null;
-      }).toList();
-    }), touchCallback: (event, res) {
-      if (event is FlTapUpEvent ||
-          event is FlLongPressEnd ||
-          event is FlPanEndEvent) {
-        locator<ChartSrubbingManager>()
-            .setState(ChartScrubbingState(false, 0, 0));
-        return;
-      }
-      if (res != null &&
-          res.lineBarSpots != null &&
-          res.lineBarSpots!.isNotEmpty) {
-        locator<ChartSrubbingManager>().setState(
-          ChartScrubbingState(
-            true,
-            res.lineBarSpots![0].x,
-            res.lineBarSpots![0].y,
-          ),
-        );
-      }
-    }, getTouchedSpotIndicator: (line, indizes) {
-      return indizes
-          .map(
-            (e) => TouchedSpotIndicatorData(
-              FlLine(color: Colors.transparent),
-              FlDotData(
-                getDotPainter: (p0, p1, p2, p3) => CustomDotPainter(),
-              ),
+    lineTouchData: LineTouchData(
+      touchTooltipData: LineTouchTooltipData(
+        getTooltipItems: (touchedBarSpots) {
+          return touchedBarSpots.map((barSpot) {
+            return null;
+          }).toList();
+        },
+      ),
+      touchCallback: (event, res) {
+        if (event is FlTapUpEvent ||
+            event is FlLongPressEnd ||
+            event is FlPanEndEvent) {
+          locator<ChartSrubbingManager>()
+              .setState(ChartScrubbingState(false, 0, 0));
+          return;
+        }
+        if (res != null &&
+            res.lineBarSpots != null &&
+            res.lineBarSpots!.isNotEmpty) {
+          locator<ChartSrubbingManager>().setState(
+            ChartScrubbingState(
+              true,
+              res.lineBarSpots![0].x,
+              res.lineBarSpots![0].y,
             ),
-          )
-          .toList();
-    }),
+          );
+        }
+      },
+      getTouchedSpotIndicator: (line, indizes) {
+        return indizes
+            .map(
+              (e) => TouchedSpotIndicatorData(
+                FlLine(color: Colors.transparent),
+                FlDotData(
+                  getDotPainter: (p0, p1, p2, p3) => CustomDotPainter(),
+                ),
+              ),
+            )
+            .toList();
+      },
+    ),
     gridData: FlGridData(show: false),
     titlesData: FlTitlesData(
       show: false,
