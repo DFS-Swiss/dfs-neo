@@ -158,7 +158,7 @@ LineChartData preview(List<FlSpot> data, bool isNegative) {
         getTooltipItems: (touchedBarSpots) {
           return touchedBarSpots.map((barSpot) {
             return LineTooltipItem(
-              FormattingService.roundDouble(barSpot.y, 2).toString(),
+              FormattingUtils.roundDouble(barSpot.y, 2).toString(),
               TextStyle(color: Colors.white),
             );
           }).toList();
