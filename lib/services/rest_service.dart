@@ -8,7 +8,6 @@ import 'package:neo/models/stockdatadocument.dart';
 import 'package:neo/models/user_model.dart';
 import 'package:neo/models/userasset_datapoint.dart';
 import 'package:neo/services/authentication_service.dart';
-import 'package:neo/services/stockdata_service.dart';
 import 'package:neo/types/api/stockdata_bulk_fetch_request.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
 import 'package:neo/utils/stockdata_store.dart';
