@@ -22,24 +22,12 @@ class DataService extends ChangeNotifier {
   final CrashlyticsService _crashlyticsService = locator<CrashlyticsService>();
 
   DataService() {
-    _dataHandlerService.getDataUpdateStream().listen((value) {
-      if (value.isNotEmpty) {
-        final tempStore = _dataStore.value;
-        if (value["key"] != null) {
-          tempStore[value["key"]] = RestdataStorageContainer(value["value"]);
-          _dataStore.add(tempStore);
-        }
-      }
-    });
     _publisherService.getSource().listen((e) {
       if (e == PublisherEvent.logout) {
-        _dataStore.add({});
+        _dataHandlerService.emptyCache();
       }
     });
   }
-
-  final BehaviorSubject<Map<String, RestdataStorageContainer>> _dataStore =
-      BehaviorSubject.seeded({});
 
   handleUserDataUpdate(String message) {
     if (message.isEmpty) {
@@ -70,47 +58,122 @@ class DataService extends ChangeNotifier {
   }
 
   T? getDataFromCacheIfAvaliable<T>(String key) {
-    if (_dataStore.value[key] != null && !_dataStore.value[key]!.isStale()) {
-      return _dataStore.value[key]!.data as T;
+    var data = _dataHandlerService.getDataForKey(key);
+    if (data != null && !data!.isStale()) {
+      return data!.data as T;
     }
     return null;
   }
 
-  Stream<UserModel> getUserData({DataSource source = DataSource.cache}) {
-    return getData<UserModel>("user", _restService.getUserData(), source: source);
+  Stream<UserModel> getUserData({DataSource source = DataSource.cache}) async* {
+    var data = _dataHandlerService.getDataForKey("user");
+    if (data != null && !data!.isStale() && source == DataSource.cache) {
+      yield data!.data as UserModel;
+    } else {
+      yield await _restService.getUserData();
+    }
+    yield* _dataHandlerService
+        .getDataUpdateStream()
+        .where((event) => event["key"] == "user")
+        .map((event) {
+      return event["value"];
+    });
   }
 
   Stream<StockdataDocument> getStockInfo(String symbol,
-      {DataSource source = DataSource.cache}) {
-    return getData<StockdataDocument>("symbol/$symbol", _restService.getStockInfo(symbol),
-        source: source);
+      {DataSource source = DataSource.cache}) async* {
+    var data = _dataHandlerService.getDataForKey("symbol/$symbol");
+    if (data != null && !data!.isStale() && source == DataSource.cache) {
+      yield data!.data as StockdataDocument;
+    } else {
+      yield await _restService.getStockInfo(symbol);
+    }
+    yield* _dataHandlerService
+        .getDataUpdateStream()
+        .where((event) => event["key"] == "symbol/$symbol")
+        .map((event) {
+      return event["value"];
+    });
   }
 
   Stream<List<StockdataDocument>> getAvailableStocks(
-      {DataSource source = DataSource.cache}) {
-    return getData<List<StockdataDocument>>("symbols", _restService.getAvailiableStocks(), source: source);
+      {DataSource source = DataSource.cache}) async* {
+    var data = _dataHandlerService.getDataForKey("symbols");
+    if (data != null && !data!.isStale() && source == DataSource.cache) {
+      yield data!.data as List<StockdataDocument>;
+    } else {
+      yield await _restService.getAvailiableStocks();
+    }
+    yield* _dataHandlerService
+        .getDataUpdateStream()
+        .where((event) => event["key"] == "symbols")
+        .map((event) {
+      return event["value"];
+    });
   }
 
   Stream<List<UserassetDatapoint>> getUserAssets(
-      {DataSource source = DataSource.cache}) {
-    return getData<List<UserassetDatapoint>>("investments", _restService.getUserAssets(), source: source);
+      {DataSource source = DataSource.cache}) async* {
+    var data = _dataHandlerService.getDataForKey("investments");
+    if (data != null && !data!.isStale() && source == DataSource.cache) {
+      yield data!.data as List<UserassetDatapoint>;
+    } else {
+      yield await _restService.getUserAssets();
+    }
+    yield* _dataHandlerService
+        .getDataUpdateStream()
+        .where((event) => event["key"] == "investments")
+        .map((event) {
+      return event["value"];
+    });
   }
 
   Stream<List<UserassetDatapoint>> getUserAssetsHistory(
-      {DataSource source = DataSource.cache}) {
-    return getData<List<UserassetDatapoint>>("investments/history", _restService.getUserAssetsHistory(),
-        source: source);
+      {DataSource source = DataSource.cache}) async* {
+    var data = _dataHandlerService.getDataForKey("investments/history");
+    if (data != null && !data!.isStale() && source == DataSource.cache) {
+      yield data!.data as List<UserassetDatapoint>;
+    } else {
+      yield await _restService.getUserAssetsHistory();
+    }
+    yield* _dataHandlerService
+        .getDataUpdateStream()
+        .where((event) => event["key"] == "investments/history")
+        .map((event) {
+      return event["value"];
+    });
   }
 
   Stream<List<UserBalanceDatapoint>> getUserBalanceHistory(
-      {DataSource source = DataSource.cache}) {
-    return getData<List<UserBalanceDatapoint>>("balance/history", _restService.getUserBalanceHistory(),
-        source: source);
+      {DataSource source = DataSource.cache}) async* {
+    var data = _dataHandlerService.getDataForKey("balance/history");
+    if (data != null && !data!.isStale() && source == DataSource.cache) {
+      yield data!.data as List<UserBalanceDatapoint>;
+    } else {
+      yield await _restService.getUserBalanceHistory();
+    }
+    yield* _dataHandlerService
+        .getDataUpdateStream()
+        .where((event) => event["key"] == "balance/history")
+        .map((event) {
+      return event["value"];
+    });
   }
 
   Stream<UserBalanceDatapoint> getUserBalance(
-      {DataSource source = DataSource.cache}) {
-    return getData<UserBalanceDatapoint>("balance", _restService.getBalance(), source: source);
+      {DataSource source = DataSource.cache}) async* {
+         var data = _dataHandlerService.getDataForKey("balance");
+    if (data != null && !data!.isStale() && source == DataSource.cache) {
+      yield data!.data as UserBalanceDatapoint;
+    } else {
+      yield await _restService.getBalance();
+    }
+    yield* _dataHandlerService
+        .getDataUpdateStream()
+        .where((event) => event["key"] == "balance")
+        .map((event) {
+      return event["value"];
+    });
   }
 
   Future<bool> buyAsset(String symbol, double amountInDollar) async {
@@ -132,10 +195,9 @@ class DataService extends ChangeNotifier {
 
   Stream<T> getData<T>(String key, Future<T> callback,
       {DataSource source = DataSource.cache}) async* {
-    if (_dataStore.value[key] != null &&
-        !_dataStore.value[key]!.isStale() &&
-        source == DataSource.cache) {
-      yield _dataStore.value[key]!.data as T;
+    var data = _dataHandlerService.getDataForKey(key);
+    if (data != null && !data!.isStale() && source == DataSource.cache) {
+      yield data!.data as T;
     } else {
       yield await callback;
     }
@@ -150,6 +212,6 @@ class DataService extends ChangeNotifier {
   // Only for testing the class
   @protected
   BehaviorSubject<Map<String, RestdataStorageContainer>> getDataStore() {
-    return _dataStore;
+    return _dataHandlerService.getDataStore();
   }
 }

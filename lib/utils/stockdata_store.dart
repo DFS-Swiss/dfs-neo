@@ -19,7 +19,7 @@ class StockdataStore {
     return _dataStore;
   }
 
-  clearCache(){
+  clearCache() {
     _dataStore.add({});
   }
 
