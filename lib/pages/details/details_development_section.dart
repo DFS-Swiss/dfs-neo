@@ -19,7 +19,6 @@ import '../../utils/formatting_utils.dart';
 import '../../types/stockdata_interval_enum.dart';
 import '../../utils/chart_conversion.dart';
 import '../../widgets/shimmer_loader_card.dart';
-import '../buy_sell/buy_page.dart';
 import '../buy_sell/sell_page.dart';
 
 class DetailsDevelopmentSection extends HookWidget {
