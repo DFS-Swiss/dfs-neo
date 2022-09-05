@@ -30,16 +30,23 @@ void main() {
       registerServices();
       var dataHandlerService = locator<DataHandler>();
       var publisherService = locator<PublisherService>();
-      var data = <String, dynamic>{};
-      data["key"] = "test";
-      data["value"] = "test";
+      var streamData = <String, dynamic>{};
+      streamData["key"] = "test";
+      streamData["value"] = "test";
 
-      final BehaviorSubject<Map<String, dynamic>> dataStore =
-          BehaviorSubject.seeded(data);
+      var storeData = <String, RestdataStorageContainer>{};
+      storeData["test"] = RestdataStorageContainer("test");
+
+      final BehaviorSubject<Map<String, dynamic>> dataUpdateStream =
+          BehaviorSubject.seeded(streamData);
+      final BehaviorSubject<Map<String, RestdataStorageContainer>> dataStore =
+          BehaviorSubject.seeded(storeData);
       final PublishSubject<PublisherEvent> publishSubject =
           PublishSubject<PublisherEvent>();
 
       when(dataHandlerService.getDataUpdateStream())
+          .thenAnswer((realInvocation) => dataUpdateStream);
+      when(dataHandlerService.getDataStore())
           .thenAnswer((realInvocation) => dataStore);
       when(publisherService.getSource())
           .thenAnswer((realInvocation) => publishSubject);
@@ -208,6 +215,9 @@ void main() {
     test('getDataFromCacheIfAvaliable_keyEmpty_returnsNull', () async {
       // arrange
       var dataService = locator<TestableDataService>();
+      var dataHandler = locator<DataHandler>();
+
+      when(dataHandler.getDataForKey("")).thenAnswer((realInvocation) => null);
 
       // act
       var data = dataService.getDataFromCacheIfAvaliable("");
@@ -219,6 +229,10 @@ void main() {
     test('getDataFromCacheIfAvaliable_keyNotInDataStore_returnsNull', () async {
       // arrange
       var dataService = locator<TestableDataService>();
+      var dataHandler = locator<DataHandler>();
+
+      when(dataHandler.getDataForKey("testy"))
+          .thenAnswer((realInvocation) => null);
 
       // act
       var cachedData = dataService.getDataFromCacheIfAvaliable("testy");
@@ -235,6 +249,11 @@ void main() {
       var data = <String, dynamic>{};
       data["key"] = "test";
       data["value"] = "test";
+
+      var dataHandler = locator<DataHandler>();
+
+      when(dataHandler.getDataForKey("test"))
+          .thenAnswer((realInvocation) => RestdataStorageContainer("test"));
 
       WebsocketStateContainer webSocketData =
           WebsocketStateContainer(SocketConnectionState.connected);
@@ -253,6 +272,10 @@ void main() {
     test('getDataFromCacheIfAvaliable_dataStoreNotStale_returnsTest', () async {
       // arrange
       var dataService = locator<TestableDataService>();
+      var dataHandler = locator<DataHandler>();
+
+      when(dataHandler.getDataForKey("test"))
+          .thenAnswer((realInvocation) => RestdataStorageContainer("test"));
 
       // act
       var cachedData = dataService.getDataFromCacheIfAvaliable("test");
@@ -308,6 +331,18 @@ void main() {
     test('getUserData_userExists_returnsTestUser', () async {
       // arrange
       var dataService = TestableDataService();
+      UserModel testUser = UserModel(
+          createdAt: DateTime.now(),
+          lastLogin: DateTime.now(),
+          referalCode: "123",
+          inputWalletAdress: "inputWalletAdress",
+          emailConfirmed: true,
+          email: "email",
+          id: "id");
+      var dataHandler = locator<DataHandler>();
+
+      when(dataHandler.getDataForKey("user"))
+          .thenAnswer((realInvocation) => RestdataStorageContainer(testUser));
 
       // act
       var userData = dataService.getUserData();
@@ -365,6 +400,11 @@ void main() {
       // arrange
       var dataService = TestableDataService();
       
+      var dataHandler = locator<DataHandler>();
+
+      when(dataHandler.getDataForKey("user"))
+          .thenAnswer((realInvocation) => null);
+
       // act
       var userData = dataService.getUserData();
       String email = "";
