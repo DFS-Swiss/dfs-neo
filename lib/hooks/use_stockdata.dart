@@ -14,9 +14,6 @@ DataContainer<List<StockdataDatapoint>> useStockdata(
   final state = useState<DataContainer<List<StockdataDatapoint>>>(
       cached != null ? DataContainer(data: cached) : DataContainer.waiting());
   useEffect(() {
-    if (cached == null) {
-      state.value = DataContainer(data: state.value.data, refetching: true);
-    }
     final sub = stockdataService
         .getStockdata(symbol, interval)
         .listen((event) {
