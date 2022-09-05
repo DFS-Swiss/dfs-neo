@@ -6,11 +6,13 @@ import 'package:neo/services/app_state_service.dart';
 import 'package:neo/services/authentication_service.dart';
 import 'package:neo/services/cognito_service.dart';
 import 'package:neo/services/crashlytics_service.dart';
+import 'package:neo/services/stockdata_service.dart';
 import 'package:neo/utils/data_handler.dart';
 import 'package:neo/services/data_service.dart';
 import 'package:neo/services/publisher_service.dart';
 import 'package:neo/services/rest_service.dart';
 import 'package:neo/services/websocket/websocket_service.dart';
+import 'package:neo/utils/stockdata_handler.dart';
 
 import 'test_helpers.mocks.dart';
 
@@ -19,8 +21,10 @@ import 'test_helpers.mocks.dart';
   MockSpec<WebsocketService>(),
   MockSpec<DataHandler>(),
   MockSpec<PublisherService>(),
+  MockSpec<StockdataHandler>(),
   MockSpec<RESTService>(),
   MockSpec<DataService>(),
+  MockSpec<StockdataService>(),
   MockSpec<AnalyticsService>(),
   MockSpec<CognitoService>(),
   MockSpec<AppStateService>(),
@@ -34,10 +38,24 @@ MockAuthenticationService getAndRegisterAuthenticationService() {
   return service;
 }
 
+MockStockdataService getAndRegisterStockdataService() {
+  _removeRegistrationIfExists<StockdataService>();
+  final service = MockStockdataService();
+  locator.registerSingleton<StockdataService>(service);
+  return service;
+}
+
 MockCognitoService getAndRegisterCognitoService() {
   _removeRegistrationIfExists<CognitoService>();
   final service = MockCognitoService();
   locator.registerSingleton<CognitoService>(service);
+  return service;
+}
+
+MockStockdataHandler getAndRegisterStockdataHandler() {
+  _removeRegistrationIfExists<StockdataHandler>();
+  final service = MockStockdataHandler();
+  locator.registerSingleton<StockdataHandler>(service);
   return service;
 }
 
@@ -48,9 +66,9 @@ MockWebsocketService getAndRegisterWebsocketService() {
   return service;
 }
 
-MockDataHandlerService getAndRegisterDataHandlerService() {
+MockDataHandler getAndRegisterDataHandlerService() {
   _removeRegistrationIfExists<DataHandler>();
-  final service = MockDataHandlerService();
+  final service = MockDataHandler();
   locator.registerSingleton<DataHandler>(service);
   return service;
 }
@@ -109,6 +127,8 @@ void registerServices() {
   getAndRegisterPublisherService();
   getAndRegisterDataHandlerService();
   getAndRegisterWebsocketService();
+  getAndRegisterStockdataHandler();
+  getAndRegisterStockdataService();
 }
 
 void unregisterServices() {
@@ -120,6 +140,7 @@ void unregisterServices() {
   _removeRegistrationIfExists<DataHandler>();
   _removeRegistrationIfExists<WebsocketService>();
   _removeRegistrationIfExists<AuthenticationService>();
+  _removeRegistrationIfExists<StockdataHandler>();
 }
 
 void _removeRegistrationIfExists<T extends Object>() {
