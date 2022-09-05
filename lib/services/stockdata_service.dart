@@ -4,7 +4,7 @@ import 'package:neo/services/publisher_service.dart';
 import 'package:neo/services/rest_service.dart';
 import 'package:neo/types/api/stockdata_bulk_fetch_request.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
-import 'package:neo/utils/stockdata_store.dart';
+import 'package:neo/utils/stockdata_handler.dart';
 
 import '../enums/publisher_event.dart';
 import '../service_locator.dart';
@@ -12,7 +12,7 @@ import '../service_locator.dart';
 class StockdataService extends ChangeNotifier {
   final RESTService _restService = locator<RESTService>();
   final PublisherService _publisherService = locator<PublisherService>();
-  final StockdataStore _stockdataStore = locator<StockdataStore>();
+  final StockdataHandler _stockdataStore = locator<StockdataHandler>();
 
   StockdataService() {
     _publisherService.getSource().listen((e) {
@@ -30,11 +30,8 @@ class StockdataService extends ChangeNotifier {
   List<StockdataDatapoint>? getDataFromCacheIfAvaliable(
       String symbol, StockdataInterval interval) {
     var data = _stockdataStore.getData(symbol);
-    if (data != null) {
-      if (data[interval] != null && data[interval]!.isStale()) {
-        return data[interval]!.getSorted();
-      }
-      return null;
+    if (data?[interval] != null && data![interval]!.isStale()) {
+      return data[interval]!.getSorted();
     }
     return null;
   }
@@ -87,6 +84,7 @@ class StockdataService extends ChangeNotifier {
       _restService.getStockdataBulk(
           StockdataBulkFetchRequest.fromMap({"symbols": _bulkFetchCache}));
     } else {
+      // Geht das leichter?
       final singleEntry = _bulkFetchCache.entries.first;
       if (singleEntry.value.length > 1) {
         _restService.getStockdataBulk(
@@ -97,40 +95,6 @@ class StockdataService extends ChangeNotifier {
     }
     _bulkFetchCache.clear();
     _bulkFetchTimer = null;
-  }
-
-  handleWebsocketUpdate(List<dynamic> newData) {
-    print("${DateTime.now().toIso8601String()}: Stock data update received");
-    final List<StockdataDatapoint> castedData = [];
-
-    for (var element in newData) {
-      castedData.add(StockdataDatapoint.fromMap(element));
-    }
-
-    final Map<String, Map<StockdataInterval, List<StockdataDatapoint>>>
-        tempMap = {};
-
-    for (var singleDatapoint in castedData) {
-      var existingData = [];
-      var data = _stockdataStore.getData(singleDatapoint.symbol);
-      if (data != null && data[StockdataInterval.twentyFourHours] != null) {
-        existingData = _stockdataStore
-            .getDataStore()
-            .value[singleDatapoint.symbol]![StockdataInterval.twentyFourHours]!
-            .getSorted();
-      }
-      if (existingData.isNotEmpty) {
-        tempMap[singleDatapoint.symbol] = {
-          StockdataInterval.twentyFourHours: [
-            ...existingData.skip(1),
-            singleDatapoint
-          ]
-        };
-      }
-    }
-    if (tempMap.isNotEmpty) {
-      _stockdataStore.updateData(tempMap);
-    }
   }
 
   propagateError(

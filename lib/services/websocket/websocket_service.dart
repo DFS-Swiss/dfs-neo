@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:neo/services/authentication_service.dart';
 import 'package:neo/services/data_service.dart';
-import 'package:neo/services/stockdata_service.dart';
 import 'package:neo/services/websocket/websocket_controler.dart';
+import 'package:neo/utils/stockdata_handler.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../service_locator.dart';
@@ -13,7 +13,7 @@ class WebsocketService {
   final AuthenticationService _authenticationService =
       locator<AuthenticationService>();
   final DataService _dataService = locator<DataService>();
-  final StockdataService _stockdataService = locator<StockdataService>();
+  final StockdataHandler _stockdataStore = locator<StockdataHandler>();
 
   WebsocketControler? _userDataControler;
   WebsocketControler? _stockDataControler;
@@ -41,7 +41,7 @@ class WebsocketService {
       _dataService.handleUserDataUpdate(event);
     });
     _stockDataControler!.streamController.stream.listen((event) {
-      _stockdataService.handleWebsocketUpdate(JsonDecoder().convert(event));
+      _stockdataStore.handleWebsocketUpdate(JsonDecoder().convert(event));
     });
   }
 }

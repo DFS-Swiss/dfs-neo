@@ -7,7 +7,7 @@ import '../service_locator.dart';
 import '../types/stockdata_interval_enum.dart';
 import '../types/stockdata_storage_container.dart';
 
-class StockdataStore {
+class StockdataHandler {
   final PublisherService _publisherService = locator<PublisherService>();
   final BehaviorSubject<
           Map<String, Map<StockdataInterval, StockdataStorageContainer>>>
@@ -19,12 +19,41 @@ class StockdataStore {
     return _dataStore;
   }
 
-  clearCache() {
-    _dataStore.add({});
-  }
-
   Map<StockdataInterval, StockdataStorageContainer>? getData(String symbol) {
     return _dataStore.value[symbol];
+  }
+
+  handleWebsocketUpdate(List<dynamic> newData) {
+    print("${DateTime.now().toIso8601String()}: Stock data update received");
+    final List<StockdataDatapoint> castedData = [];
+
+    for (var element in newData) {
+      castedData.add(StockdataDatapoint.fromMap(element));
+    }
+
+    final Map<String, Map<StockdataInterval, List<StockdataDatapoint>>>
+        tempMap = {};
+
+    for (var singleDatapoint in castedData) {
+      var existingData = [];
+      var data = getData(singleDatapoint.symbol);
+      if (data != null && data[StockdataInterval.twentyFourHours] != null) {
+        existingData = _dataStore
+            .value[singleDatapoint.symbol]![StockdataInterval.twentyFourHours]!
+            .getSorted();
+      }
+      if (existingData.isNotEmpty) {
+        tempMap[singleDatapoint.symbol] = {
+          StockdataInterval.twentyFourHours: [
+            ...existingData.skip(1),
+            singleDatapoint
+          ]
+        };
+      }
+    }
+    if (tempMap.isNotEmpty) {
+      updateData(tempMap);
+    }
   }
 
   updateData(
@@ -70,5 +99,9 @@ class StockdataStore {
     }
     _dataStore.add(tempStore);
     _publisherService.addEvent(PublisherEvent.updateStockdata);
+  }
+
+  clearCache() {
+    _dataStore.add({});
   }
 }

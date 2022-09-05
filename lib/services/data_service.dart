@@ -24,7 +24,7 @@ class DataService extends ChangeNotifier {
   DataService() {
     _publisherService.getSource().listen((e) {
       if (e == PublisherEvent.logout) {
-        _dataHandlerService.emptyCache();
+        _dataHandlerService.clearCache();
       }
     });
   }

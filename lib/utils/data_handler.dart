@@ -10,7 +10,6 @@ class DataHandler {
   final BehaviorSubject<Map<String, RestdataStorageContainer>> _dataStore =
       BehaviorSubject.seeded({});
 
-
   DataHandler(){
     dataUpdateStream.listen((value) {
       if (value.isNotEmpty) {
@@ -51,7 +50,7 @@ class DataHandler {
     dataUpdateStream.addError({"key": key, "value": e});
   }
 
-  void emptyCache() {
+  void clearCache() {
     _dataStore.add({});
   }
 }

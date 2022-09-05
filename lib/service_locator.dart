@@ -12,12 +12,12 @@ import 'package:neo/services/rest_service.dart';
 import 'package:neo/services/settings_service.dart';
 import 'package:neo/services/stockdata_service.dart';
 import 'package:neo/services/websocket/websocket_service.dart';
-import 'package:neo/utils/stockdata_store.dart';
+import 'package:neo/utils/stockdata_handler.dart';
 
 GetIt locator = GetIt.instance;
 void setupLocator() {
   locator.registerSingleton<PublisherService>(PublisherService());
-  locator.registerSingleton<StockdataStore>(StockdataStore());
+  locator.registerSingleton<StockdataHandler>(StockdataHandler());
   locator.registerSingleton<CrashlyticsService>(CrashlyticsService());
   locator.registerSingleton<SettingsService>(SettingsService());
   locator.registerSingleton<CognitoService>(CognitoService());
