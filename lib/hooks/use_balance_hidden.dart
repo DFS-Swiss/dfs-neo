@@ -1,16 +1,18 @@
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:neo/services/global_settings_service.dart';
+import '../service_locator.dart';
+import '../services/settings/settings_service.dart';
 
 bool useBalanceHidden() {
-  final state = useState(GlobalSettingsService.getInstance().hideBalance);
+  final state =
+      useState(locator<SettingsService>().hideBalanceSettings.getValue());
   useEffect(() {
     listen() {
-      state.value = GlobalSettingsService.getInstance().hideBalance;
+      state.value = locator<SettingsService>().hideBalanceSettings.getValue();
     }
 
-    GlobalSettingsService.getInstance().addListener(listen);
+    locator<SettingsService>().hideBalanceSettings.addListener(listen);
     return () {
-      GlobalSettingsService.getInstance().removeListener(listen);
+      locator<SettingsService>().hideBalanceSettings.removeListener(listen);
     };
   }, ["_"]);
   return state.value;
