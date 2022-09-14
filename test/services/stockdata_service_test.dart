@@ -4,6 +4,7 @@ import 'package:neo/enums/publisher_event.dart';
 import 'package:neo/models/stockdata_datapoint.dart';
 import 'package:neo/service_locator.dart';
 import 'package:neo/services/publisher_service.dart';
+import 'package:neo/services/rest/rest_service.dart';
 import 'package:neo/services/stockdata/stockdata_service.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
 import 'package:neo/types/stockdata_storage_container.dart';
@@ -11,33 +12,8 @@ import 'package:neo/services/stockdata/stockdata_handler.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../helpers/test_helpers.dart';
-import '../helpers/test_helpers.mocks.dart';
 
 void main() {
-  group('Stock Data Service Test - Constructor', () {
-    setUp(() {
-      registerServices();
-      var publisherService = locator<PublisherService>() as MockPublisherService;
-      final PublishSubject<PublisherEvent> publishSubject =
-          PublishSubject<PublisherEvent>();
-
-      publishSubject.add(PublisherEvent.logout);
-
-      when(publisherService.getSource())
-          .thenAnswer((realInvocation) => publishSubject);
-    });
-    tearDown(() {
-      unregisterServices();
-    });
-
-    test('constructor_handlersSetCorrectly', () async {
-      // arrange
-      StockdataService();
-      locator<StockdataHandler>() as MockStockdataHandler;
-      // assert
-      // verify(stockdataHandler.clearCache()).called(1);
-    });
-  });
 
   group('Stock Data Service Test - GetDataFromCacheIfAvailable', () {
     setUp(() {
@@ -145,7 +121,7 @@ void main() {
       unregisterServices();
     });
 
-    test('getDataFromCacheIfAvaliable_keyEmpty_returnsNull', () async {
+    test('getStockData_keyEmpty_returnsNull', () async {
       // arrange
       var dataService = StockdataService();
       var dataHandler = locator<StockdataHandler>();
@@ -161,8 +137,7 @@ void main() {
       expect(value, true);
     });
 
-/*
-    test('getDataFromCacheIfAvaliable_keyNotInDataStore_returnsNull', () async {
+    test('getStockData_keyNotInDataStore_returnsNull', () async {
       // arrange
       var dataService = StockdataService();
       var dataHandler = locator<StockdataHandler>();
@@ -181,8 +156,8 @@ void main() {
       // assert
       expect(value, true);
     });
-*/
-    test('getDataFromCacheIfAvaliable_keyInDataStore_returnsCorrectData',
+
+    test('getStockData_keyInDataStore_returnsCorrectData',
         () async {
       // arrange
       var dataService = StockdataService();
