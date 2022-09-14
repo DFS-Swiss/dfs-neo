@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:neo/models/user_model.dart';
 import 'package:neo/models/userasset_datapoint.dart';
 import 'package:neo/service_locator.dart';
 import 'package:neo/services/rest/dio_handler.dart';
