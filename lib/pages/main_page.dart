@@ -7,7 +7,7 @@ import 'package:neo/types/stockdata_interval_enum.dart';
 
 import '../hooks/use_stockdata.dart';
 import '../service_locator.dart';
-import '../services/rest_service.dart';
+import '../services/rest/rest_service.dart';
 
 class MainPage extends HookWidget {
   const MainPage({Key? key}) : super(key: key);

@@ -2,7 +2,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../models/stockdata_datapoint.dart';
 import '../service_locator.dart';
-import '../services/stockdata_service.dart';
+import '../services/stockdata/stockdata_service.dart';
 import '../types/data_container.dart';
 
 DataContainer<StockdataDatapoint> useLatestPrice(String symbol) {

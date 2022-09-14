@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:neo/pages/buy_sell/amount_selector.dart';
-import 'package:neo/services/data_service.dart';
+import 'package:neo/services/data/data_service.dart';
 import 'package:neo/widgets/buttons/branded_button.dart';
 import 'package:neo/widgets/dialogs/custom_dialog.dart';
 

@@ -1,6 +1,6 @@
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:neo/models/stockdata_datapoint.dart';
-import 'package:neo/services/stockdata_service.dart';
+import 'package:neo/services/stockdata/stockdata_service.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
 
 import '../service_locator.dart';

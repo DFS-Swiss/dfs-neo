@@ -1,6 +1,6 @@
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:neo/models/user_balance_datapoint.dart';
-import 'package:neo/services/data_service.dart';
+import 'package:neo/services/data/data_service.dart';
 import 'package:neo/types/data_container.dart';
 
 import '../service_locator.dart';

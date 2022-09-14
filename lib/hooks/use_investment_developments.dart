@@ -2,9 +2,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:neo/types/asset_performance_container.dart';
 
 import '../service_locator.dart';
-import '../services/data_service.dart';
+import '../services/data/data_service.dart';
 import '../services/portfoliovalue_service.dart';
-import '../services/stockdata_service.dart';
+import '../services/stockdata/stockdata_service.dart';
 import '../types/data_container.dart';
 import '../types/stockdata_interval_enum.dart';
 

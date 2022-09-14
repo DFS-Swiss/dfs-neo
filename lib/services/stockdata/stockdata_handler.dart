@@ -2,10 +2,10 @@ import 'package:neo/enums/publisher_event.dart';
 import 'package:neo/services/publisher_service.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../models/stockdata_datapoint.dart';
-import '../service_locator.dart';
-import '../types/stockdata_interval_enum.dart';
-import '../types/stockdata_storage_container.dart';
+import '../../models/stockdata_datapoint.dart';
+import '../../service_locator.dart';
+import '../../types/stockdata_interval_enum.dart';
+import '../../types/stockdata_storage_container.dart';
 
 class StockdataHandler {
   final PublisherService _publisherService = locator<PublisherService>();

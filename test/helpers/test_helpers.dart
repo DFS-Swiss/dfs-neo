@@ -3,16 +3,17 @@ import 'package:neo/enums/app_state.dart';
 import 'package:neo/service_locator.dart';
 import 'package:neo/services/analytics_service.dart';
 import 'package:neo/services/app_state_service.dart';
-import 'package:neo/services/authentication_service.dart';
-import 'package:neo/services/cognito_service.dart';
+import 'package:neo/services/authentication/authentication_service.dart';
+import 'package:neo/services/authentication/cognito_service.dart';
 import 'package:neo/services/crashlytics_service.dart';
-import 'package:neo/services/stockdata_service.dart';
-import 'package:neo/utils/data_handler.dart';
-import 'package:neo/services/data_service.dart';
+import 'package:neo/services/rest/dio_handler.dart';
+import 'package:neo/services/stockdata/stockdata_service.dart';
+import 'package:neo/services/data/data_handler.dart';
+import 'package:neo/services/data/data_service.dart';
 import 'package:neo/services/publisher_service.dart';
-import 'package:neo/services/rest_service.dart';
+import 'package:neo/services/rest/rest_service.dart';
 import 'package:neo/services/websocket/websocket_service.dart';
-import 'package:neo/utils/stockdata_handler.dart';
+import 'package:neo/services/stockdata/stockdata_handler.dart';
 
 import 'test_helpers.mocks.dart';
 
@@ -29,12 +30,20 @@ import 'test_helpers.mocks.dart';
   MockSpec<CognitoService>(),
   MockSpec<AppStateService>(),
   MockSpec<CrashlyticsService>(),
+  MockSpec<DioHandler>()
 ])
 
 MockAuthenticationService getAndRegisterAuthenticationService() {
   _removeRegistrationIfExists<AuthenticationService>();
   final service = MockAuthenticationService();
   locator.registerSingleton<AuthenticationService>(service);
+  return service;
+}
+
+MockDioHandler getAndRegisterDioHandler() {
+  _removeRegistrationIfExists<DioHandler>();
+  final service = MockDioHandler();
+  locator.registerSingleton<DioHandler>(service);
   return service;
 }
 
@@ -129,6 +138,7 @@ void registerServices() {
   getAndRegisterWebsocketService();
   getAndRegisterStockdataHandler();
   getAndRegisterStockdataService();
+  getAndRegisterDioHandler();
 }
 
 void unregisterServices() {
@@ -141,6 +151,7 @@ void unregisterServices() {
   _removeRegistrationIfExists<WebsocketService>();
   _removeRegistrationIfExists<AuthenticationService>();
   _removeRegistrationIfExists<StockdataHandler>();
+  _removeRegistrationIfExists<DioHandler>();
 }
 
 void _removeRegistrationIfExists<T extends Object>() {

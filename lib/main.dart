@@ -12,7 +12,7 @@ import 'package:neo/pages/onboarding/onboarding_page.dart';
 import 'package:neo/service_locator.dart';
 import 'package:neo/services/analytics_service.dart';
 import 'package:neo/services/app_state_service.dart';
-import 'package:neo/services/authentication_service.dart';
+import 'package:neo/services/authentication/authentication_service.dart';
 import 'package:neo/style/dark_material_theme.dart';
 import 'package:neo/style/light_material_theme.dart';
 import 'package:neo/style/theme.dart';

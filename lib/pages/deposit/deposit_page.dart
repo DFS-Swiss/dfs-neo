@@ -8,7 +8,7 @@ import 'package:neo/widgets/textfield/money_textfield.dart';
 
 import '../../service_locator.dart';
 import '../../services/analytics_service.dart';
-import '../../services/data_service.dart';
+import '../../services/data/data_service.dart';
 import '../../widgets/buttons/branded_button.dart';
 
 class Deposit extends HookWidget {

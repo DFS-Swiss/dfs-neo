@@ -10,7 +10,7 @@ import 'package:neo/services/crashlytics_service.dart';
 import 'package:neo/services/publisher_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../service_locator.dart';
+import '../../service_locator.dart';
 import 'cognito_service.dart';
 
 class AuthenticationService extends ChangeNotifier {

@@ -1,6 +1,6 @@
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:neo/services/data_service.dart';
-import 'package:neo/services/stockdata_service.dart';
+import 'package:neo/services/data/data_service.dart';
+import 'package:neo/services/stockdata/stockdata_service.dart';
 import '../models/userasset_datapoint.dart';
 import '../service_locator.dart';
 import '../types/data_container.dart';

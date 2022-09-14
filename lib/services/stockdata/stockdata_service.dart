@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:neo/models/stockdata_datapoint.dart';
 import 'package:neo/services/publisher_service.dart';
-import 'package:neo/services/rest_service.dart';
+import 'package:neo/services/rest/rest_service.dart';
 import 'package:neo/types/api/stockdata_bulk_fetch_request.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
-import 'package:neo/utils/stockdata_handler.dart';
+import 'package:neo/services/stockdata/stockdata_handler.dart';
 
-import '../enums/publisher_event.dart';
-import '../service_locator.dart';
+import '../../enums/publisher_event.dart';
+import '../../service_locator.dart';
 
 class StockdataService extends ChangeNotifier {
   final RESTService _restService = locator<RESTService>();
@@ -38,6 +38,10 @@ class StockdataService extends ChangeNotifier {
 
   Stream<List<StockdataDatapoint>> getStockdata(
       String symbol, StockdataInterval interval) async* {
+    if (symbol.isEmpty) {
+      return;
+    }
+
     var data = _stockdataStore.getData(symbol);
     if (data != null) {
       if (data[interval] != null) {
@@ -84,7 +88,7 @@ class StockdataService extends ChangeNotifier {
       _restService.getStockdataBulk(
           StockdataBulkFetchRequest.fromMap({"symbols": _bulkFetchCache}));
     } else {
-      // Geht das leichter?
+      // TODO: Geht das leichter?
       final singleEntry = _bulkFetchCache.entries.first;
       if (singleEntry.value.length > 1) {
         _restService.getStockdataBulk(

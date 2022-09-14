@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:local_auth/error_codes.dart' as auth_error;
 import 'package:neo/service_locator.dart';
-import 'package:neo/services/authentication_service.dart';
+import 'package:neo/services/authentication/authentication_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class BiometricAuth {

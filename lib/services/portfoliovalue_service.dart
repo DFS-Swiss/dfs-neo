@@ -1,8 +1,8 @@
 import 'package:neo/enums/data_source.dart';
 import 'package:neo/models/stockdata_datapoint.dart';
 import 'package:neo/models/userasset_datapoint.dart';
-import 'package:neo/services/data_service.dart';
-import 'package:neo/services/stockdata_service.dart';
+import 'package:neo/services/data/data_service.dart';
+import 'package:neo/services/stockdata/stockdata_service.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
 
 import '../models/user_balance_datapoint.dart';

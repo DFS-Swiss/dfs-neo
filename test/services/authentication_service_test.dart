@@ -5,8 +5,8 @@ import 'package:neo/enums/app_state.dart';
 import 'package:neo/enums/publisher_event.dart';
 import 'package:neo/service_locator.dart';
 import 'package:neo/services/app_state_service.dart';
-import 'package:neo/services/authentication_service.dart';
-import 'package:neo/services/cognito_service.dart';
+import 'package:neo/services/authentication/authentication_service.dart';
+import 'package:neo/services/authentication/cognito_service.dart';
 import 'package:neo/services/publisher_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

@@ -1,6 +1,6 @@
 import 'package:rxdart/rxdart.dart';
 
-import '../types/restdata_storage_container.dart';
+import '../../types/restdata_storage_container.dart';
 
 class DataHandler {
   final Map<String, List<Function()>> _userDataHandlerRegister = {};

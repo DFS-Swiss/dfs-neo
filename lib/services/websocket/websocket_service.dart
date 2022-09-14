@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:neo/services/authentication_service.dart';
-import 'package:neo/services/data_service.dart';
+import 'package:neo/services/authentication/authentication_service.dart';
+import 'package:neo/services/data/data_service.dart';
 import 'package:neo/services/websocket/websocket_controler.dart';
-import 'package:neo/utils/stockdata_handler.dart';
+import 'package:neo/services/stockdata/stockdata_handler.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../service_locator.dart';
