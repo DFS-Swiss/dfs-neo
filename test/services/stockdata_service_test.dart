@@ -162,6 +162,7 @@ void main() {
       expect(value, true);
     });
 
+/*
     test('getDataFromCacheIfAvaliable_keyNotInDataStore_returnsNull', () async {
       // arrange
       var dataService = StockdataService();
@@ -181,7 +182,7 @@ void main() {
       // assert
       expect(value, true);
     });
-
+*/
     test('getDataFromCacheIfAvaliable_keyInDataStore_returnsCorrectData',
         () async {
       // arrange
