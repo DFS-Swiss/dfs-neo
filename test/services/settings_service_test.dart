@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:neo/enums/theme_state.dart';
-import 'package:neo/services/settings_service.dart';
+import 'package:neo/services/settings/settings_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../helpers/test_helpers.dart';
@@ -23,9 +23,9 @@ void main() {
       SharedPreferences.setMockInitialValues({});
 
       // act
-      await settingsService.getThemePreference();
-      var themeState = settingsService.themeState;
-      var systemBrightness = settingsService.brightness;
+      await settingsService.themeSettings.getThemePreference();
+      var themeState = settingsService.themeSettings.themeState;
+      var systemBrightness = settingsService.themeSettings.brightness;
 
       // assert
       expect(themeState, ThemeState.system);
@@ -47,9 +47,9 @@ void main() {
       SharedPreferences.setMockInitialValues({"theme": "ThemeState.light"});
 
       // act
-      await settingsService.getThemePreference();
-      var themeState = settingsService.themeState;
-      var systemBrightness = settingsService.brightness;
+      await settingsService.themeSettings.getThemePreference();
+      var themeState = settingsService.themeSettings.themeState;
+      var systemBrightness = settingsService.themeSettings.brightness;
 
       // assert
       expect(themeState, ThemeState.light);
@@ -62,9 +62,9 @@ void main() {
       SharedPreferences.setMockInitialValues({"theme": "ThemeState.dark"});
 
       // act
-      await settingsService.getThemePreference();
-      var themeState = settingsService.themeState;
-      var systemBrightness = settingsService.brightness;
+      await settingsService.themeSettings.getThemePreference();
+      var themeState = settingsService.themeSettings.themeState;
+      var systemBrightness = settingsService.themeSettings.brightness;
 
       // assert
       expect(themeState, ThemeState.dark);
