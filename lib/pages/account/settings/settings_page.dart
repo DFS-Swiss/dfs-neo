@@ -4,10 +4,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:neo/enums/theme_state.dart';
 import 'package:neo/hooks/use_theme_state.dart';
 import 'package:neo/service_locator.dart';
-import 'package:neo/services/settings_service.dart';
+import 'package:neo/services/settings/settings_service.dart';
 import 'package:neo/widgets/tiles/selectiontile_widget.dart';
 import 'package:neo/widgets/tiles/tile_position_enum.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../widgets/tiles/switchtile_widget.dart';
 
@@ -17,14 +16,8 @@ class SettingsPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     var themeState = useThemeState();
-    final lockApp = useState(false);
-
-    useEffect(() {
-      SharedPreferences.getInstance().then((value) {
-        lockApp.value = value.getBool("wants_biometric_auth") ?? true;
-      });
-      return;
-    }, ["_"]);
+    final lockApp = useState(
+        locator<SettingsService>().biometricsEnabledSettings.getValue());
 
     return Scaffold(
       appBar: AppBar(
@@ -57,8 +50,9 @@ class SettingsPage extends HookWidget {
                 position: TilePosition.standalone,
                 value: lockApp.value,
                 callback: (v) async {
-                  (await SharedPreferences.getInstance())
-                      .setBool("wants_biometric_auth", v);
+                  locator<SettingsService>()
+                      .biometricsEnabledSettings
+                      .setValue(v);
                   lockApp.value = v;
                 },
               ),
@@ -73,7 +67,7 @@ class SettingsPage extends HookWidget {
               SelectionTile<ThemeState>(
                 text: AppLocalizations.of(context)!.settings_theme,
                 callback: (state) {
-                  locator<SettingsService>().themeState = state;
+                  locator<SettingsService>().themeSettings.setValue(state);
                 },
                 position: TilePosition.standalone,
                 value: themeState,

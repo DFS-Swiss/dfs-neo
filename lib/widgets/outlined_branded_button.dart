@@ -23,8 +23,8 @@ class OutlinedBrandedButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          onPrimary: Theme.of(context).primaryColor,
-          primary: Colors.transparent,
+          foregroundColor: Theme.of(context).primaryColor,
+          backgroundColor: Colors.transparent,
           shadowColor: Colors.transparent,
         ),
         child: loading

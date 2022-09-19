@@ -9,7 +9,7 @@ import 'package:neo/services/data/data_handler.dart';
 import 'package:neo/services/data/data_service.dart';
 import 'package:neo/services/publisher_service.dart';
 import 'package:neo/services/rest/rest_service.dart';
-import 'package:neo/services/settings_service.dart';
+import 'package:neo/services/settings/settings_service.dart';
 import 'package:neo/services/stockdata/stockdata_service.dart';
 import 'package:neo/services/websocket/websocket_service.dart';
 import 'package:neo/services/stockdata/stockdata_handler.dart';
