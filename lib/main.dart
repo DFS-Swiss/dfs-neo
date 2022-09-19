@@ -13,6 +13,7 @@ import 'package:neo/service_locator.dart';
 import 'package:neo/services/analytics_service.dart';
 import 'package:neo/services/app_state_service.dart';
 import 'package:neo/services/authentication_service.dart';
+import 'package:neo/services/settings/settings_service.dart';
 import 'package:neo/style/dark_material_theme.dart';
 import 'package:neo/style/light_material_theme.dart';
 import 'package:neo/style/theme.dart';
@@ -21,16 +22,17 @@ import 'package:neo/widgets/prefetching_loader.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   setupLocator();
-
-  bugsnag.start(
-    apiKey: 'cd4315afc1dcc9c6bbeff235758398d3',
-    runApp: () => runApp(const MyApp()),
-  );
+  locator<SettingsService>().init().then((value) {
+    bugsnag.start(
+      apiKey: 'cd4315afc1dcc9c6bbeff235758398d3',
+      runApp: () => runApp(const MyApp()),
+    );
+  });
 }
 
 class MyApp extends HookWidget {
   const MyApp({Key? key}) : super(key: key);
-  
+
   @override
   Widget build(BuildContext context) {
     var brightness = useBrightness();
@@ -46,7 +48,7 @@ class MyApp extends HookWidget {
         ],
         supportedLocales: const [
           Locale('en', ''), // English, no country code
-          Locale('de', ''), 
+          Locale('de', ''),
         ],
         debugShowCheckedModeBanner: false,
         home: AuthWrapper(),
