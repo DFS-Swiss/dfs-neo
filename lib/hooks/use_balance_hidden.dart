@@ -3,16 +3,17 @@ import '../service_locator.dart';
 import '../services/settings/settings_service.dart';
 
 bool useBalanceHidden() {
+  final SettingsService settingsService = locator<SettingsService>();
   final state =
-      useState(locator<SettingsService>().hideBalanceSettings.getValue());
+      useState(settingsService.hideBalanceSettings.getValue());
   useEffect(() {
     listen() {
-      state.value = locator<SettingsService>().hideBalanceSettings.getValue();
+      state.value = settingsService.hideBalanceSettings.getValue();
     }
 
-    locator<SettingsService>().hideBalanceSettings.addListener(listen);
+    settingsService.hideBalanceSettings.addListener(listen);
     return () {
-      locator<SettingsService>().hideBalanceSettings.removeListener(listen);
+      settingsService.hideBalanceSettings.removeListener(listen);
     };
   }, ["_"]);
   return state.value;
