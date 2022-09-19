@@ -8,6 +8,7 @@ import 'package:neo/services/crashlytics_service.dart';
 import 'package:neo/services/data/data_handler.dart';
 import 'package:neo/services/data/data_service.dart';
 import 'package:neo/services/publisher_service.dart';
+import 'package:neo/services/rest/dio_handler.dart';
 import 'package:neo/services/rest/rest_service.dart';
 import 'package:neo/services/settings/settings_service.dart';
 import 'package:neo/services/stockdata/stockdata_service.dart';
@@ -16,6 +17,7 @@ import 'package:neo/services/stockdata/stockdata_handler.dart';
 
 GetIt locator = GetIt.instance;
 void setupLocator() {
+  locator.registerSingleton<DioHandler>(DioHandler());
   locator.registerSingleton<PublisherService>(PublisherService());
   locator.registerSingleton<StockdataHandler>(StockdataHandler());
   locator.registerSingleton<CrashlyticsService>(CrashlyticsService());
