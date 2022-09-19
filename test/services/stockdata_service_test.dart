@@ -14,6 +14,7 @@ import 'package:rxdart/rxdart.dart';
 import '../helpers/test_helpers.dart';
 
 void main() {
+
   group('Stock Data Service Test - GetDataFromCacheIfAvailable', () {
     setUp(() {
       registerServices();
@@ -25,12 +26,11 @@ void main() {
       final PublishSubject<PublisherEvent> publishSubject =
           PublishSubject<PublisherEvent>();
       List<StockdataDatapoint> dataPoints = [];
-      dataPoints.add(StockdataDatapoint(
-          DateTime.now().add(const Duration(days: 1)), 3, "test"));
-      var container =
-          StockdataStorageContainer(StockdataInterval.mtd, "test", dataPoints);
+      dataPoints.add(StockdataDatapoint(DateTime.now().add(const Duration(days: 1)), 3, "test"));
+      var container = StockdataStorageContainer(StockdataInterval.mtd, "test", dataPoints);
       container.lastSync = DateTime.now().subtract(const Duration(days: 1));
       dataStore[StockdataInterval.mtd] = container;
+          
 
       when(dataHandlerService.getData("test"))
           .thenAnswer((realInvocation) => dataStore);
@@ -137,30 +137,8 @@ void main() {
       expect(value, true);
     });
 
-    test('getStockData_keyNotInDataStore_returnsNull', () async {
-      // arrange
-      var dataService = StockdataService();
-      var dataHandler = locator<StockdataHandler>();
-      var restService = locator<RESTService>();
-      List<StockdataDatapoint> dataPoints = [];
-      dataPoints.add(StockdataDatapoint(DateTime.now(), 2, "test"));
-
-      when(dataHandler.getData("testy")).thenAnswer((realInvocation) => null);
-      when(restService.getStockdata("testy", StockdataInterval.oneYear))
-          .thenAnswer((realInvocation) => Future.value(dataPoints));
-
-      // act
-      try {
-        var data = dataService.getStockdata("testy", StockdataInterval.oneYear);
-        var value = await data.isEmpty;
-        // assert
-        expect(value, true);
-      } catch (e) {
-        print("Threw error as expected");
-      }
-    });
-
-    test('getStockData_keyInDataStore_returnsCorrectData', () async {
+    test('getStockData_keyInDataStore_returnsCorrectData',
+        () async {
       // arrange
       var dataService = StockdataService();
 
