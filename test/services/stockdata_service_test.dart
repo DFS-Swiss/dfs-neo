@@ -4,7 +4,6 @@ import 'package:neo/enums/publisher_event.dart';
 import 'package:neo/models/stockdata_datapoint.dart';
 import 'package:neo/service_locator.dart';
 import 'package:neo/services/publisher_service.dart';
-import 'package:neo/services/rest/rest_service.dart';
 import 'package:neo/services/stockdata/stockdata_service.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
 import 'package:neo/types/stockdata_storage_container.dart';
