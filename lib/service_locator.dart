@@ -17,7 +17,6 @@ import 'package:neo/services/stockdata/stockdata_handler.dart';
 
 GetIt locator = GetIt.instance;
 void setupLocator() {
-  locator.registerSingleton<DioHandler>(DioHandler());
   locator.registerSingleton<PublisherService>(PublisherService());
   locator.registerSingleton<StockdataHandler>(StockdataHandler());
   locator.registerSingleton<CrashlyticsService>(CrashlyticsService());
@@ -26,6 +25,7 @@ void setupLocator() {
   locator.registerSingleton<AppStateService>(AppStateService());
   locator.registerSingleton<DataHandler>(DataHandler());
   locator.registerSingleton<AuthenticationService>(AuthenticationService());
+  locator.registerSingleton<DioHandler>(DioHandler());
   locator.registerSingleton<RESTService>(RESTService());
   locator.registerSingleton<StockdataService>(StockdataService());
   locator.registerSingleton<DataService>(DataService());
