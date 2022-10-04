@@ -8,7 +8,9 @@ import 'package:neo/utils/formatting_utils.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
 import 'package:neo/utils/chart_conversion.dart';
 import 'package:neo/widgets/development_indicator/small_change_indicator.dart';
+import '../../style/theme.dart';
 import '../shimmer_loader_card.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TradableStockCard extends HookWidget {
   final String token;
@@ -176,15 +178,17 @@ class TradableStockCard extends HookWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.all(12.0),
-                child: Icon(
-                  Icons.error_outline,
-                  size: 55,
-                  color: Colors.white,
+                child: Material(
+                  child: Icon(
+                    Icons.error_outline,
+                    size: 55,
+                    color: NeoTheme.of(context)!.negativeColor,
+                  ),
                 ),
               ),
               Expanded(
                 child: Text(
-                  "We are currently having technical problems displaying $token",
+                  "${AppLocalizations.of(context)!.stockcard_problem_displaying_token}$token",
                   style: TextStyle(
                     fontSize: 12,
                     color: Color(0xFF909090),
