@@ -36,7 +36,6 @@ extension InlineSort<E> on List<E> {
       //Sort list by 24h growth descending
       //TODO: Implement sort by growth
     }
-    print(list);
     return list;
   }
 

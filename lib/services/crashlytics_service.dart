@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bugsnag_flutter/bugsnag_flutter.dart';
 
 import '../service_locator.dart';
-import 'cognito_service.dart';
+import 'authentication/cognito_service.dart';
 
 class CrashlyticsService {
   void start({

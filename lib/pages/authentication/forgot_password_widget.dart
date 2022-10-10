@@ -5,7 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:neo/enums/app_state.dart';
 import 'package:neo/service_locator.dart';
 import 'package:neo/services/app_state_service.dart';
-import 'package:neo/services/authentication_service.dart';
+import 'package:neo/services/authentication/authentication_service.dart';
 import 'package:neo/widgets/buttons/branded_outline_button.dart';
 import 'package:neo/widgets/password_validation_indicator.dart';
 

@@ -2,7 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:neo/service_locator.dart';
 import 'package:neo/services/chart_scrubbing_manager.dart';
-import 'package:neo/services/formatting_service.dart';
+import 'package:neo/utils/formatting_utils.dart';
 import 'package:neo/types/chart_scrubbing_state.dart';
 import 'package:neo/utils/custom_dot_painter.dart';
 
@@ -29,7 +29,7 @@ Widget leftTileWidget(double value, TitleMeta meta) {
   return SideTitleWidget(
     axisSide: meta.axisSide,
     space: 8.0,
-    child: Text(FormattingService.roundDouble(value, 0).round().toString()),
+    child: Text(FormattingUtils.roundDouble(value, 0).round().toString()),
   );
 }
 
@@ -158,7 +158,7 @@ LineChartData preview(List<FlSpot> data, bool isNegative) {
         getTooltipItems: (touchedBarSpots) {
           return touchedBarSpots.map((barSpot) {
             return LineTooltipItem(
-              FormattingService.roundDouble(barSpot.y, 2).toString(),
+              FormattingUtils.roundDouble(barSpot.y, 2).toString(),
               TextStyle(color: Colors.white),
             );
           }).toList();

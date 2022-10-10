@@ -1,14 +1,17 @@
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:neo/types/asset_performance_container.dart';
 
-import '../services/data_service.dart';
+import '../service_locator.dart';
+import '../services/data/data_service.dart';
 import '../services/portfoliovalue_service.dart';
-import '../services/stockdata_service.dart';
+import '../services/stockdata/stockdata_service.dart';
 import '../types/data_container.dart';
 import '../types/stockdata_interval_enum.dart';
 
 DataContainer<List<AssetPerformanceContainer>> useInvestmentDevelopments(
     StockdataInterval interval) {
+  final DataService dataService = locator<DataService>();
+  final StockdataService stockdataService = locator<StockdataService>();
   final state = useState<DataContainer<List<AssetPerformanceContainer>>>(
       DataContainer.waiting());
   useEffect(() {
@@ -27,12 +30,12 @@ DataContainer<List<AssetPerformanceContainer>> useInvestmentDevelopments(
       });
     }
 
-    StockdataService.getInstance().addListener(handleFetch);
-    DataService.getInstance().addListener(handleFetch);
+    stockdataService.addListener(handleFetch);
+    dataService.addListener(handleFetch);
     handleFetch();
     return () {
-      DataService.getInstance().removeListener(handleFetch);
-      StockdataService.getInstance().removeListener(handleFetch);
+      dataService.removeListener(handleFetch);
+      stockdataService.removeListener(handleFetch);
       //future?.ignore();
     };
   }, [interval]);

@@ -3,7 +3,7 @@ import 'package:neo/service_locator.dart';
 import 'package:neo/services/crashlytics_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'cognito_service.dart';
+import 'authentication/cognito_service.dart';
 
 class AnalyticsService {
   final amplitude = Amplitude.getInstance();

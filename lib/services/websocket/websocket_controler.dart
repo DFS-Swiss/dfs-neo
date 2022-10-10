@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:rxdart/subjects.dart';
 
-import '../../types/websocket_state_container.dart';
+import '../../../types/websocket_state_container.dart';
 
 enum SocketConnectionState { connected, connecting, waiting, error }
 

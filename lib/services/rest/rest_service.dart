@@ -7,52 +7,34 @@ import 'package:neo/models/stockdata_datapoint.dart';
 import 'package:neo/models/stockdatadocument.dart';
 import 'package:neo/models/user_model.dart';
 import 'package:neo/models/userasset_datapoint.dart';
-import 'package:neo/services/authentication_service.dart';
-import 'package:neo/services/data_service.dart';
-import 'package:neo/services/stockdata_service.dart';
+import 'package:neo/services/rest/dio_handler.dart';
 import 'package:neo/types/api/stockdata_bulk_fetch_request.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
+import 'package:neo/services/stockdata/stockdata_handler.dart';
 
-import '../models/user_balance_datapoint.dart';
-import '../service_locator.dart';
-
-const restApiBaseUrl = "https://rest.dfs-api.ch/v1";
+import '../../models/user_balance_datapoint.dart';
+import '../../service_locator.dart';
+import '../data/data_handler.dart';
 
 class RESTService extends ChangeNotifier {
-  final AuthenticationService _authenticationService =
-      locator<AuthenticationService>();
+  final DataHandler _dataHandlerService = locator<DataHandler>();
+  final StockdataHandler _stockdataStore = locator<StockdataHandler>();
+  final DioHandler _dioHandler = locator<DioHandler>();
 
-  static RESTService? _instance;
-  late Dio dio;
-  RESTService._() {
-    dio = Dio(BaseOptions(baseUrl: restApiBaseUrl));
-    dio.interceptors.add(InterceptorsWrapper(
-      onRequest: (options, handler) async {
-        final key = await _getCurrentApiKey();
-        options.headers["apiKey"] = key;
-        handler.next(options);
-      },
-    ));
-    DataService.getInstance().registerUserDataHandler("user", [getUserData]);
-    DataService.getInstance().registerUserDataHandler(
+  RESTService() {
+    _dataHandlerService.registerUserDataHandler("user", [getUserData]);
+    _dataHandlerService.registerUserDataHandler(
         "investments", [getUserAssets, getUserAssetsHistory]);
-    DataService.getInstance().registerUserDataHandler(
+    _dataHandlerService.registerUserDataHandler(
         "balances", [getUserBalanceHistory, getBalance]);
-  }
-
-  static RESTService getInstance() {
-    return _instance ??= RESTService._();
-  }
-
-  Future<String> _getCurrentApiKey() async {
-    return _authenticationService.getCurrentApiKey();
   }
 
   Future<List<StockdataDatapoint>> getStockdata(
       String symbol, StockdataInterval interval,
       {int retryCount = 0}) async {
     try {
-      final response = await dio.get("/stockdata/$symbol?interval=$interval");
+      final response =
+          await _dioHandler.get("/stockdata/$symbol?interval=$interval");
       List<StockdataDatapoint> data;
       try {
         final list = response.data["body"]["items"] as List<dynamic>;
@@ -60,7 +42,6 @@ class RESTService extends ChangeNotifier {
             .map((e) => StockdataDatapoint.fromMap(e))
             .toList()
             .cast<StockdataDatapoint>();
-        print("mattis");
       } catch (e) {
         throw "Parsing error: ${e.toString()}";
       }
@@ -70,7 +51,7 @@ class RESTService extends ChangeNotifier {
           serviceInput = {
         symbol: {interval: data}
       };
-      StockdataService.getInstance().updateData(serviceInput);
+      _stockdataStore.updateData(serviceInput);
       return data;
     } catch (e, stack) {
       if (retryCount < 4) {
@@ -89,7 +70,8 @@ class RESTService extends ChangeNotifier {
     try {
       final Map<String, Map<StockdataInterval, List<StockdataDatapoint>>> out =
           {};
-      final response = await dio.post("/stockdata/bulk", data: request.toMap());
+      final response =
+          await _dioHandler.post("/stockdata/bulk", data: request.toMap());
       //try {
       final data = (response.data["body"]["symbols"] as Map<String, dynamic>);
       for (var symbol in data.entries) {
@@ -109,10 +91,7 @@ class RESTService extends ChangeNotifier {
               mappedList;
         }
       }
-      //} catch (e) {
-      //throw "Parsing error: ${e.toString()}";
-      //}
-      StockdataService.getInstance().updateData(out);
+      _stockdataStore.updateData(out);
       return out;
     } catch (e) {
       if (retryCount < 4) {
@@ -125,7 +104,7 @@ class RESTService extends ChangeNotifier {
 
   Future<UserModel> getUserData({int retryCount = 0}) async {
     try {
-      final response = await dio.get("/user");
+      final response = await _dioHandler.get("/user");
       if (response.statusCode.toString().startsWith("2")) {
         UserModel data;
         try {
@@ -133,9 +112,7 @@ class RESTService extends ChangeNotifier {
         } catch (e) {
           throw "Parsing error: ${e.toString()}";
         }
-        DataService.getInstance().dataUpdateStream.add(
-          {"key": "user", "value": data},
-        );
+        _dataHandlerService.addToDataUpstream("user", data);
         return data;
       } else {
         throw "Unknown case: ${response.toString()}";
@@ -145,9 +122,7 @@ class RESTService extends ChangeNotifier {
         await Future.delayed(Duration(milliseconds: 100 * retryCount));
         return getUserData(retryCount: retryCount + 1);
       }
-      DataService.getInstance()
-          .dataUpdateStream
-          .addError({"key": "user", "value": e});
+      _dataHandlerService.addErrorToDataUpstream("user", e);
       rethrow;
     }
   }
@@ -156,8 +131,8 @@ class RESTService extends ChangeNotifier {
       {int retryCount = 0}) async {
     try {
       final currentLanguage = Platform.localeName.split("_")[0];
-      final response =
-          await dio.get("/stockdata/$symbol/info?lang=$currentLanguage");
+      final response = await _dioHandler
+          .get("/stockdata/$symbol/info?lang=$currentLanguage");
       if (response.statusCode.toString().startsWith("2")) {
         StockdataDocument data;
         try {
@@ -165,9 +140,7 @@ class RESTService extends ChangeNotifier {
         } catch (e) {
           throw "Parsing error: ${e.toString()}";
         }
-        DataService.getInstance().dataUpdateStream.add(
-          {"key": "symbol/$symbol", "value": data},
-        );
+        _dataHandlerService.addToDataUpstream("symbol/$symbol", data);
         return data;
       } else {
         throw "Unknown case: ${response.toString()}";
@@ -177,9 +150,7 @@ class RESTService extends ChangeNotifier {
         await Future.delayed(Duration(milliseconds: 100 * retryCount));
         return getStockInfo(symbol, retryCount: retryCount + 1);
       }
-      DataService.getInstance()
-          .dataUpdateStream
-          .addError({"key": "symbol/$symbol", "value": e});
+      _dataHandlerService.addErrorToDataUpstream("symbol/$symbol", e);
       rethrow;
     }
   }
@@ -187,7 +158,8 @@ class RESTService extends ChangeNotifier {
   Future<List<StockdataDocument>> getStockInfoBulk(List<String> symbols,
       {int retryCount = 0}) async {
     try {
-      final response = await dio.get("/stockdata/info?symbols=$symbols");
+      final response =
+          await _dioHandler.get("/stockdata/info?symbols=$symbols");
       if (response.statusCode.toString().startsWith("2")) {
         List<StockdataDocument> data;
         try {
@@ -198,9 +170,8 @@ class RESTService extends ChangeNotifier {
           throw "Parsing error: ${e.toString()}";
         }
         for (var stockInfo in data) {
-          DataService.getInstance().dataUpdateStream.add(
-            {"key": "symbol/${stockInfo.symbol}", "value": stockInfo},
-          );
+          _dataHandlerService.addToDataUpstream(
+              "symbol/${stockInfo.symbol}", stockInfo);
         }
 
         return data;
@@ -212,16 +183,18 @@ class RESTService extends ChangeNotifier {
         await Future.delayed(Duration(milliseconds: 100 * retryCount));
         return getStockInfoBulk(symbols, retryCount: retryCount + 1);
       }
-      DataService.getInstance()
-          .dataUpdateStream
-          .addError({"key": "symbols", "value": e});
+      _dataHandlerService.addErrorToDataUpstream("symbols", e);
       rethrow;
     }
   }
 
   Future<bool> addBalance(String amount) async {
+    if (amount.isEmpty || double.tryParse(amount) == null) {
+      return false;
+    }
     try {
-      final response = await dio.get("/debug/addBalance?amount=$amount");
+      final response =
+          await _dioHandler.get("/debug/addBalance?amount=$amount");
       if (response.statusCode.toString().startsWith("2")) {
         return true;
       } else if (response.statusCode.toString() == "401") {
@@ -239,7 +212,8 @@ class RESTService extends ChangeNotifier {
       {int retryCount = 0}) async {
     try {
       final currentLanguage = Platform.localeName.split("_")[0];
-      final response = await dio.get("/stockdata?lang=$currentLanguage");
+      final response =
+          await _dioHandler.get("/stockdata?lang=$currentLanguage");
       if (response.statusCode.toString().startsWith("2")) {
         List<StockdataDocument> data;
 
@@ -250,13 +224,11 @@ class RESTService extends ChangeNotifier {
         } catch (e) {
           throw "Parsing error: ${e.toString()}";
         }
-        DataService.getInstance().dataUpdateStream.add(
-          {"key": "symbols", "value": data},
-        );
+        _dataHandlerService.addToDataUpstream("symbols", data);
+
         for (var stockInfo in data) {
-          DataService.getInstance().dataUpdateStream.add(
-            {"key": "symbol/${stockInfo.symbol}", "value": stockInfo},
-          );
+          _dataHandlerService.addToDataUpstream(
+              "symbol/${stockInfo.symbol}", stockInfo);
         }
         return data;
       } else {
@@ -267,16 +239,14 @@ class RESTService extends ChangeNotifier {
         await Future.delayed(Duration(milliseconds: 100 * retryCount));
         return getAvailiableStocks(retryCount: retryCount + 1);
       }
-      DataService.getInstance()
-          .dataUpdateStream
-          .addError({"key": "symbols", "value": e});
+      _dataHandlerService.addErrorToDataUpstream("symbols", e);
       rethrow;
     }
   }
 
   Future<List<UserassetDatapoint>> getUserAssets({int retryCount = 0}) async {
     try {
-      final response = await dio.get("/user/assets");
+      final response = await _dioHandler.get("/user/assets");
       if (response.statusCode.toString().startsWith("2")) {
         List<UserassetDatapoint> data;
 
@@ -288,9 +258,7 @@ class RESTService extends ChangeNotifier {
         } catch (e) {
           throw "Parsing error: ${e.toString()}";
         }
-        DataService.getInstance().dataUpdateStream.add(
-          {"key": "investments", "value": data},
-        );
+        _dataHandlerService.addToDataUpstream("investments", data);
         return data;
       } else {
         throw "Unknown case: ${response.toString()}";
@@ -300,9 +268,7 @@ class RESTService extends ChangeNotifier {
         await Future.delayed(Duration(milliseconds: 100 * retryCount));
         return getUserAssets(retryCount: retryCount + 1);
       }
-      DataService.getInstance()
-          .dataUpdateStream
-          .addError({"key": "investments", "value": e});
+      _dataHandlerService.addErrorToDataUpstream("investments", e);
       rethrow;
     }
   }
@@ -310,8 +276,8 @@ class RESTService extends ChangeNotifier {
   Future<List<UserassetDatapoint>> getUserAssetsHistory(
       {StockdataInterval? interval, int retryCount = 0}) async {
     try {
-      final response =
-          await dio.get("/user/assets/history?interval=${interval ?? "all"}");
+      final response = await _dioHandler
+          .get("/user/assets/history?interval=${interval ?? "all"}");
       if (response.statusCode.toString().startsWith("2")) {
         List<UserassetDatapoint> data;
 
@@ -322,9 +288,7 @@ class RESTService extends ChangeNotifier {
         } catch (e) {
           throw "Parsing error: ${e.toString()}";
         }
-        DataService.getInstance().dataUpdateStream.add(
-          {"key": "investments/history", "value": data},
-        );
+        _dataHandlerService.addToDataUpstream("investments/history", data);
         return data;
       } else {
         throw "Unknown case: ${response.toString()}";
@@ -334,9 +298,7 @@ class RESTService extends ChangeNotifier {
         await Future.delayed(Duration(milliseconds: 100 * retryCount));
         return getUserAssetsHistory(retryCount: retryCount + 1);
       }
-      DataService.getInstance()
-          .dataUpdateStream
-          .addError({"key": "investments/history", "value": e});
+      _dataHandlerService.addErrorToDataUpstream("investments/history", e);
       rethrow;
     }
   }
@@ -346,8 +308,8 @@ class RESTService extends ChangeNotifier {
     int retryCount = 0,
   }) async {
     try {
-      final response =
-          await dio.get("/user/balance/history?interval=${interval ?? "all"}");
+      final response = await _dioHandler
+          .get("/user/balance/history?interval=${interval ?? "all"}");
       if (response.statusCode.toString().startsWith("2")) {
         List<UserBalanceDatapoint> data;
 
@@ -358,9 +320,7 @@ class RESTService extends ChangeNotifier {
         } catch (e) {
           throw "Parsing error: ${e.toString()}";
         }
-        DataService.getInstance().dataUpdateStream.add(
-          {"key": "balance/history", "value": data},
-        );
+        _dataHandlerService.addToDataUpstream("balance/history", data);
         return data;
       } else {
         throw "Unknown case: ${response.toString()}";
@@ -370,16 +330,14 @@ class RESTService extends ChangeNotifier {
         await Future.delayed(Duration(milliseconds: 100 * retryCount));
         return getUserBalanceHistory(retryCount: retryCount + 1);
       }
-      DataService.getInstance()
-          .dataUpdateStream
-          .addError({"key": "balance/history", "value": e});
+      _dataHandlerService.addErrorToDataUpstream("balance/history", e);
       rethrow;
     }
   }
 
   Future<UserBalanceDatapoint> getBalance({int retryCount = 0}) async {
     try {
-      final response = await dio.get("/user/balance");
+      final response = await _dioHandler.get("/user/balance");
       if (response.statusCode.toString().startsWith("2")) {
         UserBalanceDatapoint data;
 
@@ -388,9 +346,7 @@ class RESTService extends ChangeNotifier {
         } catch (e) {
           throw "Parsing error: ${e.toString()}";
         }
-        DataService.getInstance().dataUpdateStream.add(
-          {"key": "balance", "value": data},
-        );
+        _dataHandlerService.addToDataUpstream("balance", data);
         return data;
       } else {
         throw "Unknown case: ${response.toString()}";
@@ -400,17 +356,16 @@ class RESTService extends ChangeNotifier {
         await Future.delayed(Duration(milliseconds: 100 * retryCount));
         return getBalance(retryCount: retryCount + 1);
       }
-      DataService.getInstance()
-          .dataUpdateStream
-          .addError({"key": "balance", "value": e});
+      _dataHandlerService.addErrorToDataUpstream("balance", e);
       rethrow;
     }
   }
 
+  // TODO: Why no data upstream in this method?
   Future<List<UserassetDatapoint>> getAssetForSymbol(String symbol,
       {int retryCount = 0}) async {
     try {
-      final response = await dio.get("/user/assets/$symbol");
+      final response = await _dioHandler.get("/user/assets/$symbol");
       if (response.statusCode.toString().startsWith("2")) {
         List<UserassetDatapoint> data;
 
@@ -439,7 +394,7 @@ class RESTService extends ChangeNotifier {
 
   Future<bool> buyAsset(String symbol, double amountInDollar) async {
     try {
-      final response = await dio.post(
+      final response = await _dioHandler.post(
         "/assets/buy",
         data: {
           "symbol": symbol,
@@ -463,9 +418,10 @@ class RESTService extends ChangeNotifier {
     }
   }
 
+  // TODO: Why no rethrow as above in this method?
   Future<bool> sellAsset(String symbol, double ammountOfTokensToSell) async {
     try {
-      final response = await dio.post("/assets/sell", data: {
+      final response = await _dioHandler.post("/assets/sell", data: {
         "symbol": symbol,
         "ammountOfTokensToSell": ammountOfTokensToSell
       });

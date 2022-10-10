@@ -29,6 +29,8 @@ class StockdataStorageContainer {
   }
 
   bool isStale() {
-    return lastSync.difference(DateTime.now()).inMinutes > 10;
+    // TODO: Fehler??
+    //return lastSync.difference(DateTime.now()).inMinutes > 10;
+    return DateTime.now().difference(lastSync).inMinutes > 10;
   }
 }

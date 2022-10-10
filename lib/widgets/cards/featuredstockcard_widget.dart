@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:neo/hooks/use_stockdata.dart';
 import 'package:neo/hooks/use_stockdata_info.dart';
-import 'package:neo/services/formatting_service.dart';
+import 'package:neo/utils/formatting_utils.dart';
 import 'package:neo/style/theme.dart';
 import 'package:neo/types/stockdata_interval_enum.dart';
 import 'package:neo/utils/chart_conversion.dart';
@@ -19,7 +19,7 @@ class FeaturedStockCard extends HookWidget {
     final stockData = useStockdata(token, StockdataInterval.twentyFourHours);
     final symbolInfo = useSymbolInfo(token);
 
-    return stockData.loading == false && symbolInfo.loading == false
+    return !stockData.loading && !symbolInfo.loading
         ? Container(
             height: 139,
             width: 210,
@@ -95,7 +95,7 @@ class FeaturedStockCard extends HookWidget {
                               height: 3,
                             ),
                             Text(
-                              "d\$${FormattingService.roundDouble(stockData.data!.first.price, 2).toString()}",
+                              "d\$${FormattingUtils.roundDouble(stockData.data!.first.price, 2).toString()}",
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
@@ -103,7 +103,7 @@ class FeaturedStockCard extends HookWidget {
                             ),
                             Expanded(child: Container()),
                             Text(
-                              "${FormattingService.calculatepercent(stockData.data!.first.price, stockData.data!.last.price)}%",
+                              "${FormattingUtils.calculatepercent(stockData.data!.first.price, stockData.data!.last.price)}%",
                               style: TextStyle(
                                 fontSize: 12,
                                 color: stockData.data!.first.price >
