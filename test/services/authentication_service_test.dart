@@ -2,10 +2,12 @@ import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:neo/enums/app_state.dart';
+import 'package:neo/enums/publisher_event.dart';
 import 'package:neo/service_locator.dart';
 import 'package:neo/services/app_state_service.dart';
-import 'package:neo/services/authentication_service.dart';
-import 'package:neo/services/cognito_service.dart';
+import 'package:neo/services/authentication/authentication_service.dart';
+import 'package:neo/services/authentication/cognito_service.dart';
+import 'package:neo/services/publisher_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../helpers/test_helpers.dart';
@@ -64,8 +66,7 @@ void main() {
       var cognitoService = locator<CognitoService>();
       when(cognitoService.createAndAuthenticateUser("", ""))
           .thenThrow(CognitoUserNewPasswordRequiredException());
-      when(appStateService.state)
-          .thenReturn(AppState.newPasswordRequired);
+      when(appStateService.state).thenReturn(AppState.newPasswordRequired);
 
       // act
       await authServiceInstance.login("", "");
@@ -82,8 +83,7 @@ void main() {
 
       when(cognitoService.createAndAuthenticateUser("", ""))
           .thenThrow(CognitoUserConfirmationNecessaryException());
-      when(appStateService.state)
-          .thenReturn(AppState.verifyAccount);
+      when(appStateService.state).thenReturn(AppState.verifyAccount);
 
       // act
       expect(
@@ -100,12 +100,13 @@ void main() {
       var appStateService = locator<AppStateService>();
 
       SharedPreferences.setMockInitialValues({}); //set values here
-      when(cognitoService.createAndAuthenticateUser("testUser", "")).thenReturn(null);
+      when(cognitoService.createAndAuthenticateUser("testUser", ""))
+          .thenReturn(null);
       when(cognitoService.getRefreshToken()).thenReturn("refreshTokenTest");
-      when(cognitoService.getAccesTokenJwtToken()).thenReturn("accesTokenJwtTokenTest");
+      when(cognitoService.getAccesTokenJwtToken())
+          .thenReturn("accesTokenJwtTokenTest");
       when(cognitoService.getIdJwtToken()).thenReturn("idJwtTokenTest");
-      when(appStateService.state)
-          .thenReturn(AppState.signedIn);
+      when(appStateService.state).thenReturn(AppState.signedIn);
 
       // act
       await authServiceInstance.login("testUser", "");
@@ -122,10 +123,12 @@ void main() {
       var authServiceInstance = AuthenticationService();
       var cognitoService = locator<CognitoService>();
       var appStateService = locator<AppStateService>();
+      var publisherService = locator<PublisherService>();
 
+      when(publisherService.addEvent(PublisherEvent.logout)).thenReturn(null);
+      when(publisherService.close()).thenReturn(null);
       when(cognitoService.logoutCurrentPoolUser()).thenReturn(null);
-      when(appStateService.state)
-          .thenReturn(AppState.signedOut);
+      when(appStateService.state).thenReturn(AppState.signedOut);
 
       // act
       await authServiceInstance.logOut();
@@ -133,6 +136,7 @@ void main() {
       // assert
       expect(appStateService.state, AppState.signedOut);
       verify(await cognitoService.logoutCurrentPoolUser()).called(1);
+      verify(publisherService.addEvent(PublisherEvent.logout)).called(1);
     });
 
     test(
@@ -142,9 +146,7 @@ void main() {
       var authServiceInstance = AuthenticationService();
       var cognitoService = locator<CognitoService>();
       var appStateService = locator<AppStateService>();
-      when(appStateService.state)
-          .thenReturn(AppState.signedOut);
-
+      when(appStateService.state).thenReturn(AppState.signedOut);
 
       // act
       await authServiceInstance.completeForceChangePassword("test");
@@ -161,8 +163,7 @@ void main() {
       var appStateService = locator<AppStateService>();
       when(cognitoService.isUserPresent()).thenReturn(true);
       when(cognitoService.sendNewPasswordRequired("test")).thenReturn(true);
-      when(appStateService.state)
-          .thenReturn(AppState.newPasswordRequired);
+      when(appStateService.state).thenReturn(AppState.newPasswordRequired);
 
       // act
       await authServiceInstance.completeForceChangePassword("test");

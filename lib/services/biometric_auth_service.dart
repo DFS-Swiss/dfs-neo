@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:local_auth/error_codes.dart' as auth_error;
 import 'package:neo/service_locator.dart';
-import 'package:neo/services/authentication_service.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:neo/services/authentication/authentication_service.dart';
+import 'package:neo/services/settings/settings_service.dart';
 
 class BiometricAuth {
   Future ensureAuthed({required String localizedReason}) async {
@@ -15,10 +15,11 @@ class BiometricAuth {
 
     print("Requested auth");
     final LocalAuthentication auth = LocalAuthentication();
-    final prefs = await SharedPreferences.getInstance();
+    final watnsAuth =
+        locator<SettingsService>().biometricsEnabledSettings.getValue();
     // ···
 
-    if (prefs.getBool("wants_biometric_auth") ?? true) {
+    if (watnsAuth) {
       try {
         final bool didAuthenticate =
             await auth.authenticate(localizedReason: localizedReason);
@@ -29,15 +30,15 @@ class BiometricAuth {
       } on PlatformException catch (e) {
         if (e.code == auth_error.notEnrolled) {
           await locator<AuthenticationService>().logOut();
-          await prefs.setBool("wants_biometric_auth", false);
+          locator<SettingsService>().biometricsEnabledSettings.setValue(false);
         } else if (e.code == auth_error.lockedOut ||
             e.code == auth_error.permanentlyLockedOut) {
           await locator<AuthenticationService>().logOut();
-          await prefs.setBool("wants_biometric_auth", false);
+          locator<SettingsService>().biometricsEnabledSettings.setValue(false);
         } else if (e.code == "auth_in_progress") {
         } else {
           await locator<AuthenticationService>().logOut();
-          await prefs.setBool("wants_biometric_auth", false);
+          locator<SettingsService>().biometricsEnabledSettings.setValue(false);
         }
       }
     }

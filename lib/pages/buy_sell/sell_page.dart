@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:neo/pages/buy_sell/amount_selector.dart';
-import 'package:neo/services/data_service.dart';
+import 'package:neo/services/data/data_service.dart';
 import 'package:neo/widgets/buttons/branded_button.dart';
 import 'package:neo/widgets/dialogs/custom_dialog.dart';
 
@@ -17,6 +17,7 @@ class SellPage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final DataService dataService = locator<DataService>();
     final amountToken = useRef<double>(0);
     final loading = useState(false);
 
@@ -35,7 +36,7 @@ class SellPage extends HookWidget {
         if (amountToken.value > 0) {
           loading.value = true;
           try {
-            await DataService.getInstance()
+            await dataService
                 .sellAsset(symbol, amountToken.value);
             locator<AnalyticsService>().trackEvent(
               "action:sell",

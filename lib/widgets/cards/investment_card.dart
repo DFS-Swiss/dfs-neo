@@ -9,7 +9,7 @@ import '../../hooks/use_stockdata.dart';
 import '../../hooks/use_stockdata_info.dart';
 import '../../hooks/use_userassets.dart';
 import '../../models/userasset_datapoint.dart';
-import '../../services/formatting_service.dart';
+import '../../utils/formatting_utils.dart';
 import '../../style/theme.dart';
 import '../../types/stockdata_interval_enum.dart';
 import '../../utils/chart_conversion.dart';
@@ -40,8 +40,7 @@ class InvestmentCard extends HookWidget {
 
     return !stockData.loading &&
             !symbolInfo.loading &&
-            !assests.loading &&
-            !stockData.refetching
+            !assests.loading 
         ? GestureDetector(
             onTap: () => Navigator.push(
               context,
@@ -99,7 +98,7 @@ class InvestmentCard extends HookWidget {
                                     ),
                                   ),
                                   HideableText(
-                                    "${FormattingService.roundDouble(relevantInvestment(assests.data!).tokenAmmount, 2)} ${AppLocalizations.of(context)!.dash_currinv_amount_multiple}",
+                                    "${FormattingUtils.roundDouble(relevantInvestment(assests.data!).tokenAmmount, 2)} ${AppLocalizations.of(context)!.dash_currinv_amount_multiple}",
                                     style: TextStyle(
                                       fontSize: 10,
                                       color: Color(0xFF909090),
@@ -152,14 +151,14 @@ class InvestmentCard extends HookWidget {
                                   height: 3,
                                 ),
                                 HideableText(
-                                  "d\$ ${FormattingService.roundDouble(stockData.data!.first.price * relevantInvestment(assests.data!).tokenAmmount, 2).toString()}",
+                                  "d\$ ${FormattingUtils.roundDouble(stockData.data!.first.price * relevantInvestment(assests.data!).tokenAmmount, 2).toString()}",
                                   style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
                                 Text(
-                                  "${FormattingService.calculatepercent(stockData.data!.first.price, stockData.data!.last.price)} %",
+                                  "${FormattingUtils.calculatepercent(stockData.data!.first.price, stockData.data!.last.price)} %",
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: stockData.data!.first.price >
@@ -182,7 +181,7 @@ class InvestmentCard extends HookWidget {
                                   height: 3,
                                 ),
                                 Text(
-                                  "d\$ ${FormattingService.roundDouble(stockData.data!.first.price, 2).toString()}",
+                                  "d\$ ${FormattingUtils.roundDouble(stockData.data!.first.price, 2).toString()}",
                                   style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,
@@ -192,7 +191,7 @@ class InvestmentCard extends HookWidget {
                                   positive: stockData.data!.first.price >
                                       stockData.data!.last.price,
                                   changePercentage:
-                                      FormattingService.calculatepercent(
+                                      FormattingUtils.calculatepercent(
                                           stockData.data!.first.price,
                                           stockData.data!.last.price),
                                 ),

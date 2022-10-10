@@ -15,7 +15,7 @@ import '../../hooks/use_chart_scrubbing_state.dart';
 import '../../hooks/use_latest_asset_price.dart';
 import '../../hooks/use_stockdata.dart';
 import '../../hooks/use_stockdata_info.dart';
-import '../../services/formatting_service.dart';
+import '../../utils/formatting_utils.dart';
 import '../../types/stockdata_interval_enum.dart';
 import '../../utils/chart_conversion.dart';
 import '../../widgets/shimmer_loader_card.dart';
@@ -90,10 +90,10 @@ class DetailsDevelopmentSection extends HookWidget {
                                   BoxConstraints(maxWidth: 150, minWidth: 70),
                               child: Text(
                                 scrubbingData.hasTouch
-                                    ? "${FormattingService.roundDouble(scrubbingData.value, 2).toString()} dUSD"
+                                    ? "${FormattingUtils.roundDouble(scrubbingData.value, 2).toString()} dUSD"
                                     : latestPrice.loading
                                         ? "..."
-                                        : "${FormattingService.roundDouble(latestPrice.data!, 2).toString()} dUSD",
+                                        : "${FormattingUtils.roundDouble(latestPrice.data!, 2).toString()} dUSD",
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.w500,
@@ -121,9 +121,9 @@ class DetailsDevelopmentSection extends HookWidget {
                             DetailedDevelopmentIndicator(
                               positive: plotData().first.y > plotData().last.y,
                               changePercentage:
-                                  FormattingService.calculatepercent(
+                                  FormattingUtils.calculatepercent(
                                       plotData().first.y, plotData().last.y),
-                              changeValue: FormattingService.roundDouble(
+                              changeValue: FormattingUtils.roundDouble(
                                   plotData().first.y - plotData().last.y, 2),
                             ),
                             SizedBox(

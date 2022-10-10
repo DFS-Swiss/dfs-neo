@@ -232,5 +232,6 @@
     "settings_theme_light": "Hell",
     "settings_theme_dark": "Dunkel",
     "settings_brightness": "Helligkeit",
-    "settings_theme": "Theme"
+    "settings_theme": "Theme",
+    "stockcard_problem_displaying_token": "Es gibt ein technisches Problem beim Anzeigen von  "
 }

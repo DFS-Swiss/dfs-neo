@@ -1,6 +1,6 @@
 import 'dart:math';
 
-class FormattingService {
+class FormattingUtils {
   static double roundDouble(double value, int places) {
     try {
       num mod = pow(10.0, places);
