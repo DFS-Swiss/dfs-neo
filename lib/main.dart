@@ -47,7 +47,7 @@ class MyApp extends HookWidget {
           AppLocalizations.delegate
         ],
         supportedLocales: const [
-          Locale('en', ''), // English, no country code
+          Locale('en', ''), // English, no country code 2
           Locale('de', ''),
         ],
         debugShowCheckedModeBanner: false,
